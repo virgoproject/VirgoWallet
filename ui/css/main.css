@@ -1,0 +1,63 @@
+body {
+    height: 600px;
+    width: 350px;
+    margin: 0px;
+}
+
+* {
+    overflow: hidden;
+}
+
+#header {
+    height: 64px;
+    background: #f2f3f4;
+    padding: 0 24px;
+}
+
+#headerStatus {
+    font-size: 12px;
+    color: #444;
+    margin-top: 22px;
+}
+
+#header > * {
+    display: inline-block;
+    margin-right: -5px;
+    overflow: initial;
+}
+
+#headerStatus > div {
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    border-radius: 4px;
+    background: green;
+}
+
+#settingsBtn {
+    cursor: pointer;
+    font-size: 24px;
+    vertical-align: sub;
+    background: transparent;
+    border: none;
+}
+
+#appLogo {
+    text-align: center;
+}
+
+#settingsBtnWrap {
+    text-align: right;
+}
+
+
+.popupBody {
+    height: 470px;
+    max-height: 470px;
+    overflow: auto;
+}
+
+.setActionsPopups {
+    position: absolute;
+    width: 100%;
+}

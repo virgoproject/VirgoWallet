@@ -3,8 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/ui/js/chart.min.js"></script>
+    <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/ui/css/main.css">
+    <link rel="stylesheet" href="/ui/css/wallet.css">
+    <link rel="stylesheet" href="/ui/css/chainSelection.css">
 </head>
 <body>
+<div class="d-block">
+    <div id="header">
+        <div id="headerStatus" class="connected col-4">
+            <div id="headerStatusLight"></div>
+            <span id="headerStatusText">Connected</span>
+        </div>
+        <div class="col-4 text-center">
+            <span class="chain" id="btnChains">BSC</span>
+        </div>
+        <div id="settingsBtnWrap" class="col-4">
+            <button id="settingsBtn">&#9776</button>
+        </div>
+    </div>
 
+    <div id="walletView" class="popupBody setActionsPopups">
+        <div class="text-center mt-3 fw-bold" id="walletValue">
+            <span class="d-block fs-3" id="walletAdress">V2VUb41TuEBYTzA67aZpsmbeRrS2UDhRMHe</span>
+            <span class="d-block">Total Value</span>
+            <span class="d-block fs-6">(234,54$)</span>
+        </div>
+        <div class="text-center mt-5 overflow-auto">
+        <ul id="walletFunds">
+            <li id="BTC">
+                <div class="row">
+                    <div class="col-6 text-start ms-4">
+                        <img src="/ui/images/btc.png" width="40px" alt="btc">
+                        <span>Bitcoin</span>
+                    </div>
+                    <div class="col-5 text-end">
+                        <span>4,53678</span>
+                        <span>(345678,87$)</span>
+                    </div>
+                </div>
+            </li>
+            <li id="ETH">
+                <div class="row">
+                    <div class="col-6 text-start ms-4">
+                        <img src="/ui/images/eth.png" width="40px" alt="eth">
+                        <span>Ethereum</span>
+                    </div>
+                    <div class="col-5 text-end">
+                        <span>4,53678</span>
+                        <span>(12345,87$)</span>
+                    </div>
+                </div>
+            </li>
+            <li id="BNB">
+                <div class="row">
+                    <div class="col-6 text-start ms-4">
+                        <img src="/ui/images/bnb.png" width="40px" alt="eth">
+                        <span>BNB</span>
+                    </div>
+                    <div class="col-5 text-end">
+                        <span>4,53678</span>
+                        <span>(12345,87$)</span>
+                    </div>
+                </div>
+            </li>
+            <li id="TetherUSDT">
+                <div class="row">
+                    <div class="col-6 text-start ms-4">
+                        <img src="/ui/images/tetherusdt.png" width="40px" alt="eth">
+                        <span>Tether USDT</span>
+                    </div>
+                    <div class="col-5 text-end">
+                        <span>23400</span>
+                        <span>(23400$)</span>
+                    </div>
+                </div>
+            </li>
+            <li id="VGO">
+                <div class="row">
+                    <div class="col-6 text-start ms-4">
+                        <img src="/ui/images/VGO.png" width="40px" alt="eth">
+                        <span>Virgo</span>
+                    </div>
+                    <div class="col-5 text-end">
+                        <span>34566</span>
+                        <span>(2034,87$)</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </div>
+
+    </div>
+
+    <div id="chain" class="popupBody setActionsPopups">
+        <span class="mt-2">Choose Chain </span>
+        <ul id="selectChains" class="mt-3">
+            <li id="BSC">Binance smart chain</li>
+            <li id="aa">Ethereum</li>
+            <li id="aaaa">Ethereum</li>
+            <li id="zz">Ethereum</li>
+            <li id="r">Ethereum</li>
+            <li id="e">Ethereum</li>
+            <li id="ooo">Ethereum</li>
+            <li id="iii">Ethereum</li>
+            <li id="uuu">Ethereum</li>
+            <li id="yyy">Ethereum</li>
+            <li id="ttt">Ethereum</li>
+            <li id="sss">Ethereum</li>
+            <li id="wwww">Ethereum</li>
+
+        </ul>
+    </div>
+    <div id="apps" class="popupBody">
+
+    </div>
+</div>
 </body>
 </html>
+<script>
+    /*
+    <!--<canvas id="graph1"></canvas>-->
+
+        async function retieveInfo() {
+            let res = await fetch("https://api.blockchain.info/charts/market-price?format=json");
+            let json = await res.json()
+
+
+            let ctx = document.getElementById('graph1').getContext('2d')
+            let data = {
+                labels: ['lable 1', 'label 2', 'label 3', 'label 4'],
+                datasets: [{
+                    data: [31783.49, 56610.46, 33136.46, 38278.61],
+                    borderColor: "#000000",
+                    borderWidth: "1",
+                    color: [
+                        'blue',
+                        'green',
+                        'yellow',
+                    ]
+                },
+                    {
+                        data: [0.23444, 0.23765, 0.23678, 0.24345],
+                        borderColor: "#FF0000",
+                        borderWidth: "1"
+                    }
+                ]
+            }
+
+            let options = {
+                responsive: true,
+            }
+
+            let config = {
+                type: 'line',
+                data: data,
+                options: options
+            }
+
+            let graph1 = new Chart(ctx, config)
+        }
+
+        retieveInfo()*/
+</script>
+<script src="/ui/js/jquery.min.js"></script>
+<script src="/ui/js/popup.js"></script>
+<script src="/ui/js/selectChains.js"></script>
+<script src="/ui/js/wallet.js"></script>

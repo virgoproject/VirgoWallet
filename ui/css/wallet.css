@@ -1,0 +1,17 @@
+
+#walletFunds > li {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+
+}
+
+#walletFunds > li:hover {
+    background: #ddd;
+    cursor: pointer;
+}
+
+#walletFunds {
+    padding: unset;
+}
