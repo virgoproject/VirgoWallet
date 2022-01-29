@@ -7,6 +7,7 @@ class BaseWallet {
     constructor(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt) {
         this.mnemonic = data.mnemonic
         this.nonce = data.nonce
+
         this.encryptedDataKey = encryptedDataKey
         this.encryptedDataKeyIV = encryptedDataKeyIV
         this.dataKey = dataKey
@@ -15,7 +16,7 @@ class BaseWallet {
         provider = new HDWalletProvider({
             mnemonic: this.mnemonic,
             providerOrUrl: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-            addressIndex: this.nonce
+            numberOfAddresses: this.nonce
         })
 
         web3 = new Web3(provider)
@@ -40,16 +41,18 @@ class BaseWallet {
                 let encryptedData = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.data));
                 let encryptedDataIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.IV));
                 passwordSalt = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.passwordSalt));
+                console.log("password: " + password);
                 let passwordHash = sjcl.misc.pbkdf2(password, passwordSalt, 10000, 256);
                 let cipher = new sjcl.cipher.aes(passwordHash);
                 dataKey = sjcl.mode.ctr.decrypt(cipher, encryptedDataKey, encryptedDataKeyIV);
 
                 cipher = new sjcl.cipher.aes(dataKey);
-                data = JSON.parse(Converter.Utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))));
+                data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))));
             }
 
             return new BaseWallet(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt)
         }catch(e){
+            console.log(e)
             return false
         }
     }
@@ -61,6 +64,7 @@ class BaseWallet {
         this.encryptedDataKeyIV = sjcl.random.randomWords(4);
         let cipher = new sjcl.cipher.aes(passwordHash);
         this.encryptedDataKey = sjcl.mode.ctr.encrypt(cipher, this.dataKey, this.encryptedDataKeyIV);
+        this.save()
     }
 
     isEncrypted(){
@@ -97,17 +101,47 @@ class BaseWallet {
         return json
     }
 
+    static loadFromJSON(password){
+        browser.storage.local.get("wallet").then(
+            function(res){//on success
+                console.log("wallet: ")
+                console.log(res)
+                if (res.wallet === undefined) {
+                    console.log("generating a new wallet")
+                    baseWallet = BaseWallet.generateWallet()
+                    baseWallet.save()
+                    return true
+                } else {
+                    console.log("retrieving wallet from json")
+                    let wallet = BaseWallet.fromJSON(res.wallet, password)
+                    if(wallet){
+                        console.log("success")
+                        baseWallet = wallet
+                        return true
+                    }else{
+                        console.log("failed")
+                    }
+                }
+                return false
+            }
+        )
+    }
+
+    save(){
+        browser.storage.local.set({"wallet": this.toJSON()});
+    }
+
+    addAccount(){
+        this.nonce++;
+        let newProvider = new HDWalletProvider({
+            mnemonic: this.mnemonic,
+            providerOrUrl: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            numberOfAddresses: this.nonce
+        })
+        web3.setProvider(newProvider)
+        provider = newProvider
+        this.save()
+    }
 }
 
-browser.storage.local.get("wallet").then(
-    function(res){//on success
-        if (res.wallet === undefined)
-            baseWallet = BaseWallet.generateWallet()
-        else{
-            let wallet = fromJSON(res)
-            if(wallet)
-                baseWallet = wallet
-        }
-
-    }
-);
+BaseWallet.loadFromJSON()

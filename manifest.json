@@ -18,6 +18,7 @@
     "scripts": [
       "background/browser-polyfill.js",
       "background/bundle.js",
+      "background/utils/converter.js",
       "background/wallet/baseWallet.js",
       "background/background.js"
     ]
