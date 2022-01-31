@@ -13,9 +13,22 @@ class BaseWallet {
         this.dataKey = dataKey
         this.passwordSalt = passwordSalt
 
+        this.wallets = []
+        for(const wallet of data.wallets){
+            switch(wallet.type){
+                case "web3":
+                    this.wallets.push(Web3Wallet.fromJSON(wallet.wallet))
+                    break
+            }
+        }
+
+        this.selectedWallet = data.selectedWallet
+        this.selectedAddress = data.selectedAddress
+
         provider = new HDWalletProvider({
             mnemonic: this.mnemonic,
-            providerOrUrl: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
+            chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce
         })
 
@@ -26,12 +39,34 @@ class BaseWallet {
     }
 
     static generateWallet(){
-        return new BaseWallet({"mnemonic": bip39.generateMnemonic(), "nonce": 1})
+        const wallets = [];
+
+        wallets[0] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Ethereum",
+                "ticker": "ETH",
+                "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+                "chainID": 1
+            }
+        }
+
+        wallets[1] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Smart Chain",
+                "ticker": "BNB",
+                "RPC": "https://bsc-dataseed.binance.org/",
+                "chainID": 56
+            }
+        }
+
+        return new BaseWallet({"mnemonic": bip39.generateMnemonic(), "nonce": 1, "wallets": wallets, "selectedWallet": 0, "selectedAddress": 0})
     }
 
     static fromJSON(json, password){
         try {
-            let data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt
+            let data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt;
 
             if (json.encryptedDataKey === undefined) {
                 data = json.data;
@@ -41,7 +76,6 @@ class BaseWallet {
                 let encryptedData = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.data));
                 let encryptedDataIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.IV));
                 passwordSalt = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.passwordSalt));
-                console.log("password: " + password);
                 let passwordHash = sjcl.misc.pbkdf2(password, passwordSalt, 10000, 256);
                 let cipher = new sjcl.cipher.aes(passwordHash);
                 dataKey = sjcl.mode.ctr.decrypt(cipher, encryptedDataKey, encryptedDataKeyIV);
@@ -79,6 +113,13 @@ class BaseWallet {
         data.nonce = this.nonce
         data.mnemonic = this.mnemonic
 
+        data.wallets = []
+        for(const wallet of this.wallets)
+            data.wallets.push(wallet.toJSON())
+
+        data.selectedWallet = this.selectedWallet
+        data.selectedAddress = this.selectedAddress
+
         //if no dataKey return in plain
         if(this.dataKey === undefined){
             json.data = data
@@ -104,22 +145,15 @@ class BaseWallet {
     static loadFromJSON(password){
         browser.storage.local.get("wallet").then(
             function(res){//on success
-                console.log("wallet: ")
-                console.log(res)
                 if (res.wallet === undefined) {
-                    console.log("generating a new wallet")
                     baseWallet = BaseWallet.generateWallet()
                     baseWallet.save()
                     return true
                 } else {
-                    console.log("retrieving wallet from json")
                     let wallet = BaseWallet.fromJSON(res.wallet, password)
                     if(wallet){
-                        console.log("success")
                         baseWallet = wallet
                         return true
-                    }else{
-                        console.log("failed")
                     }
                 }
                 return false
@@ -133,15 +167,42 @@ class BaseWallet {
 
     addAccount(){
         this.nonce++;
-        let newProvider = new HDWalletProvider({
+        const newProvider = new HDWalletProvider({
             mnemonic: this.mnemonic,
-            providerOrUrl: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
+            chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce
         })
         web3.setProvider(newProvider)
         provider = newProvider
         this.save()
     }
+
+    selectWallet(newWalletID){
+        this.selectedWallet = newWalletID
+        const newProvider = new HDWalletProvider({
+            mnemonic: this.mnemonic,
+            providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
+            chainId: this.wallets[this.selectedWallet].chainID,
+            numberOfAddresses: this.nonce
+        });
+        web3.setProvider(newProvider)
+        provider = newProvider
+        this.save()
+    }
+
+    getCurrentWallet(){
+        return this.wallets[this.selectedWallet];
+    }
+
+    getWalletsJSON(){
+        const json = []
+        for(const wallet of this.wallets)
+            json.push(wallet.toJSON())
+
+        return json
+    }
+
 }
 
 BaseWallet.loadFromJSON()

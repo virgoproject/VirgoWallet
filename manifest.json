@@ -8,7 +8,7 @@
 
   "browser_action": {
     "default_icon": "ui/images/vgoLogoApp.png",
-    "default_popup": "ui/html/popup.html",
+    "default_popup": "ui/html/popupTest.html",
     "default_title": "Virgo"
   },
 
@@ -16,9 +16,10 @@
 
   "background": {
     "scripts": [
-      "background/browser-polyfill.js",
+      "commonJS/browser-polyfill.js",
       "background/bundle.js",
       "background/utils/converter.js",
+      "background/wallet/web3Wallet.js",
       "background/wallet/baseWallet.js",
       "background/background.js"
     ]
