@@ -7,16 +7,30 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "getBaseInfos":
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
+            else
+                sendResponse(getBaseInfos())
+            break;
 
-            sendResponse({
-                "wallets": baseWallet.getWalletsJSON(),
-                "selectedWallet": baseWallet.selectedWallet,
-                "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
-                "selectedAddress": baseWallet.selectedAddress
+        case "unlockWallet":
+            BaseWallet.loadFromJSON(request.password).then(function(res){
+                if(res)
+                    sendResponse(getBaseInfos())
+                else sendResponse(false)
             })
             break
     }
+    //must return true or for some reason message promise will fullfill before sendResponse being called
+    return true
 });
+
+function getBaseInfos(){
+    return {
+        "wallets": baseWallet.getWalletsJSON(),
+        "selectedWallet": baseWallet.selectedWallet,
+        "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
+        "selectedAddress": baseWallet.selectedAddress
+    }
+}
 
 function forgetWallet() {
     browser.storage.local.remove("wallet");

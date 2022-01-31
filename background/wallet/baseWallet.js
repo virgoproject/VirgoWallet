@@ -142,23 +142,20 @@ class BaseWallet {
         return json
     }
 
-    static loadFromJSON(password){
-        browser.storage.local.get("wallet").then(
-            function(res){//on success
-                if (res.wallet === undefined) {
-                    baseWallet = BaseWallet.generateWallet()
-                    baseWallet.save()
-                    return true
-                } else {
-                    let wallet = BaseWallet.fromJSON(res.wallet, password)
-                    if(wallet){
-                        baseWallet = wallet
-                        return true
-                    }
-                }
-                return false
+     static async loadFromJSON(password){
+        const res = await browser.storage.local.get("wallet");
+        if (res.wallet === undefined) {
+            baseWallet = BaseWallet.generateWallet()
+            baseWallet.save()
+            return true
+        } else {
+            let wallet = BaseWallet.fromJSON(res.wallet, password)
+            if(wallet){
+                baseWallet = wallet
+                return true
             }
-        )
+        }
+        return false
     }
 
     save(){
