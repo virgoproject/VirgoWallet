@@ -1,0 +1,84 @@
+#mainPane {
+    height: 100%;
+    width: 100%;
+}
+
+#mainPane .header {
+    background: linear-gradient(0deg, #5a009c14, transparent);
+    text-align: center;
+    height: 110px;
+    padding: 0.5em;
+    border-bottom: 1px solid #5a009c14;
+    margin-bottom: 3.5em;
+}
+
+#mainPane .header .stats {
+    background: radial-gradient(ellipse at 50% 0%, #7700cf36 0%, transparent 120%),
+            linear-gradient(133deg, rgba(0, 0, 0, 0) 0%, rgb(205 69 180 / 10%) 20%, rgba(0, 0, 0, 0) 40%),
+            linear-gradient(133deg, rgba(0, 0, 0, 0) 30%, rgb(205 69 180 / 5%) 50%, rgba(0, 0, 0, 0) 70%);
+    background-color: var(--mainColorDark10);
+    color: white;
+    padding: 0.5em 0em;
+    position: absolute;
+    left: 2em;
+    right: 2em;
+    padding: 1em;
+    top: 54px;
+    border-radius: 0.5em;
+}
+
+#mainPane .header .stats .fluctuation {
+    color: var(--bs-teal);
+    margin-bottom: 0;
+}
+
+#mainPane .header .stats .title {
+    font-size: 0.65em;
+    color: var(--highlightColor1);
+    margin: 0 0 0.25rem;
+}
+
+#mainPane .header .stats .value {
+    margin-bottom: 0.25rem;
+}
+
+#mainPane #body {
+    padding: 1em 2em;
+}
+
+#mainPane #footer {
+    position: absolute;
+    background: white;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#mainPane #footer div {
+    color: var(--mainColorLight);
+    cursor: pointer;
+}
+
+#mainPane #footer .selected p {
+    display: none;
+}
+
+#mainPane #footer .selected div {
+    width: 56px;
+    height: 56px;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--whiteBackground);
+    line-height: 56px;
+}
+
+#mainPane #footer i {
+    font-size: 1.5em;
+}
+
+#mainPane #footer p {
+    font-size: 0.8em;
+    margin: 0;
+}

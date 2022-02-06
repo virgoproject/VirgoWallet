@@ -18,6 +18,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 else sendResponse(false)
             })
             break
+
+        case "sendTransaction":
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

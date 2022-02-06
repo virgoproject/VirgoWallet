@@ -1,63 +1,75 @@
 body {
     height: 600px;
-    width: 350px;
-    margin: 0px;
+    width: 56.25vh;
+    --mainColor: #5a009c;
+    --mainColorDark10: #50008c; /* Darken by 10% */
+    --mainColorLight: #6e00bf; /* Lighten by 20% */
+    --highlightColor1: #c977ff;
+    --highlightColor2: #ffb4f8;
+    --whiteBackground: #f2ebf7;
+    font-family: Ubuntu;
+    color: #545454;
 }
 
-* {
-    overflow: hidden;
-}
-
-#header {
-    height: 64px;
-    background: #f2f3f4;
-    padding: 0 24px;
-}
-
-#headerStatus {
-    font-size: 12px;
-    color: #444;
-    margin-top: 22px;
-}
-
-#header > * {
-    display: inline-block;
-    margin-right: -5px;
-    overflow: initial;
-}
-
-#headerStatus > div {
-    display: inline-block;
-    height: 8px;
-    width: 8px;
-    border-radius: 4px;
-    background: green;
-}
-
-#settingsBtn {
-    cursor: pointer;
-    font-size: 24px;
-    vertical-align: sub;
-    background: transparent;
+.button {
+    color: white;
+    background: var(--bs-purple);
     border: none;
+    border-radius: .5em;
+    padding: .375em .75em;
+    transition: all ease-in 0.1s;
 }
 
-#appLogo {
-    text-align: center;
+.button:hover {
+    background: var(--mainColorDark10);
 }
 
-#settingsBtnWrap {
-    text-align: right;
+.input.outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 0.375em 0.75em;
+    border-radius: 0.5em;
+    outline: none;
 }
 
-
-.popupBody {
-    height: 470px;
-    max-height: 470px;
-    overflow: auto;
+.input.outline.is-invalid {
+    color: #dc3545;
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
-.setActionsPopups {
-    position: absolute;
-    width: 100%;
+.input.outline:focus {
+    outline: 5px solid rgba(255, 255, 255, 0.5);
+}
+
+.input.outline::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.pl-0 {
+    padding-left: 0 !important;
+}
+
+.pr-0 {
+    padding-right: 0 !important;
+}
+
+.pl-1 {
+    padding-left: .25em !important;
+}
+
+.pr-1 {
+    padding-right: .25em !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
 }

@@ -1,19 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
+    <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/ui/css/main.css">
+    <link rel="stylesheet" href="/ui/css/unlockPane.css">
+    <link rel="stylesheet" href="/ui/css/mainPane.css">
+    <link rel="stylesheet" href="/ui/css/mainPaneResume.css">
+
 </head>
 <body>
+
 <div id="unlockPane">
-    <h1>Unlock</h1>
-    <input type="password" id="unlockPassword">
-    <button id="unlockBtn">Unlock</button>
-    <p id="incorrectPassword" style="display: none">incorrect</p>
+    <img src="/ui/images/logoWhite.png">
+    <h1 class="mt-2">Nice to see you!</h1>
+    <p class="subtitle">Decentralization is a *click* away!</p>
+    <div class="passwordBox">
+        <div>
+            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span id="unlockPanePasswordWrong">Wrong password</span></p>
+            <input type="password" id="unlockPanePassword" class="input outline w-100" placeholder="Password">
+        </div>
+        <button class="button w-75" id="unlockPanePasswordSubmit" disabled>
+            <val>UNLOCK</val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
+    </div>
+    <div class="recover mt-5">
+        <p>Or <span>recover your wallet</span> from it's seed</p>
+    </div>
 </div>
+
 <div id="mainPane" style="display: none">
-    <p>my address: <span id="currentAddress"></span></p>
+    <div class="header">
+        <div class="topbar row">
+            <div class="col-3"></div>
+            <div class="col-6" class="chainSelector">
+                <p><val id="mainPaneCurrentChain">Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+            </div>
+            <div class="col-3"></div>
+        </div>
+        <div class="stats row">
+            <p class="title">ESTIMATED VALUE</p>
+            <h1 class="value">$21,067.12</h1>
+            <p class="fluctuation"><i class="fas fa-chevron-up"></i> 0.12%</p>
+        </div>
+    </div>
+    <div id="body">
+        <div class="resume">
+            <div class="address row">
+                <div class="col-10">
+                    <p class="title">Wallet Address</p>
+                    <p class="value">0x9D416342af552b4634FCABaA56dfF8aBd2EE19dB</p>
+                </div>
+                <div class="col-2 justify-content-center align-self-center">
+                    <i class="far fa-copy copy"></i>
+                </div>
+            </div>
+            <div class="row mt-3 actions">
+                <div class="col-6 pl-0 pr-1">
+                    <button class="button"><i class="fas fa-plus"></i> Add funds</button>
+                </div>
+                <div class="col-6 pr-0 pl-1">
+                    <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
+                </div>
+            </div>
+            <div class="assets row mt-3">
+                <p class="title col-12 m-0">Assets <i class="fas fa-chevron-right"></i></p>
+                <div class="col-12 asset mt-2">
+                    <div class="row">
+                        <div class="col-2 justify-content-center align-self-center">
+                            <div class="logo"></div>
+                        </div>
+                        <div class="col-5">
+                            <p class="title">Bitcoin</p>
+                            <p class="amount">0.54</p>
+                        </div>
+                        <div class="col-5 text-right">
+                            <p class="fiatEq">$18,454.56</p>
+                            <p class="fluctuation"><i class="fas fa-chevron-up"></i> 0.12%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 asset mt-2">
+                    <div class="row">
+                        <div class="col-2 justify-content-center align-self-center">
+                            <div class="logo"></div>
+                        </div>
+                        <div class="col-5">
+                            <p class="title">Bitcoin</p>
+                            <p class="amount">0.54</p>
+                        </div>
+                        <div class="col-5 text-right">
+                            <p class="fiatEq">$18,454.56</p>
+                            <p class="fluctuation"><i class="fas fa-chevron-up"></i> 0.12%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer" class="row">
+        <div class="col-4">
+            <div>
+                <i class="fas fa-dollar-sign"></i>
+                <p>Pay</p>
+            </div>
+        </div>
+        <div class="col-4 selected">
+            <div>
+                <i class="fas fa-home"></i>
+                <p>Home</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div>
+                <i class="fas fa-store"></i>
+                <p>Apps</p>
+            </div>
+        </div>
+    </div>
 </div>
+
 <script src="../js/jquery.min.js"></script>
+<script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
+<script src="../js/popup.js"></script>
 <script src="../js/unlockPane.js"></script>
+<script src="../js/selectChains.js"></script>
 </body>
 </html>
