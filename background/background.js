@@ -19,7 +19,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             })
             break
 
-        case "sendTransaction":
+        case "changeWallet":
+            baseWallet.selectWallet(request.walletId)
+            sendResponse(true)
             break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called

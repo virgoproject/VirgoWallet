@@ -52,6 +52,7 @@ class BaseWallet {
             "type": "web3",
             "wallet": {
                 "name": "Ethereum",
+                "asset": "Ethereum",
                 "ticker": "ETH",
                 "decimals": 18,
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -64,9 +65,10 @@ class BaseWallet {
             "type": "web3",
             "wallet": {
                 "name": "Smart Chain",
+                "asset": "Binance Coin",
                 "ticker": "BNB",
                 "decimals": 18,
-                "contract": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                "contract": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
                 "RPC": "https://bsc-dataseed.binance.org/",
                 "chainID": 56
             }

@@ -1,7 +1,8 @@
 class Web3Wallet {
 
-    constructor(name, ticker, decimals, contract, rpcURL, chainID) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID) {
         this.name = name
+        this.asset = asset
         this.ticker = ticker
         this.decimals = decimals
         this.contract = contract
@@ -20,7 +21,7 @@ class Web3Wallet {
     }
 
     static fromJSON(json){
-        return new Web3Wallet(json.name, json.ticker, json.decimals, json.contract, json.RPC, json.chainID)
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID)
     }
 
     toJSON(){
@@ -28,6 +29,7 @@ class Web3Wallet {
             "type": "web3",
             "wallet": {
                 "name": this.name,
+                "asset": this.asset,
                 "ticker": this.ticker,
                 "decimals": this.decimals,
                 "contract": this.contract,
@@ -56,7 +58,7 @@ class Web3Wallet {
         if(balances === undefined){
             balances = {}
             balances[this.ticker] = {
-                "name": this.name,
+                "name": this.asset,
                 "ticker": this.ticker,
                 "decimals": this.decimals,
                 "contract": this.contract,
@@ -82,17 +84,17 @@ class Web3Wallet {
 
             //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
-                balances[wallet.ticker].balance = Date.now();
+                balances[wallet.ticker].balance = res;
             })
 
             //not optimised, better to fetch prices for all addresses at once
             if(this.CG_Platform)
                 Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
-                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract + "&vs_currencies=usd")
+                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd")
                         .then(function(resp){
                             resp.json().then(function(res){
                                 console.log(res)
-                                balance.price = parseFloat(res[balance.contract].usd)
+                                balance.price = parseFloat(res[balance.contract.toLowerCase()].usd)
                             })
                         })
                 })

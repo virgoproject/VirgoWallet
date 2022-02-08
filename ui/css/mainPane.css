@@ -118,6 +118,11 @@
     cursor: pointer;
 }
 
+#chainSelector .chain.selected {
+    background: rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
 #chainSelector .chain:hover {
     background: rgba(0, 0, 0, 0.2);
 }
