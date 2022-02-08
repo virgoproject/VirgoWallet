@@ -48,7 +48,7 @@
 
 #mainPane #footer {
     position: absolute;
-    background: white;
+    background: linear-gradient(0deg, #5a009c14, transparent);
     bottom: 0;
     left: 0;
     right: 0;
@@ -80,5 +80,48 @@
 
 #mainPane #footer p {
     font-size: 0.8em;
+    margin: 0;
+}
+
+#chainSelectionHeader {
+    cursor: pointer;
+    transform: rotate(0deg);
+}
+
+#chainSelectionHeader i {
+    transform: rotate(0deg);
+    transition:transform 0.25s ease;
+}
+
+#chainSelectionHeader.opened i {
+    transform: rotate(180deg);
+}
+
+#chainSelector {
+    display: block;
+    height: 562px;
+    width: 100%;
+    top: 38px;
+    position: absolute;
+    background: #fbf7fc;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition:transform 0.25s ease;
+}
+
+#chainSelector.opened {
+    transform: scaleY(1);
+}
+
+#chainSelector .chain {
+    padding: 1em 0;
+    cursor: pointer;
+}
+
+#chainSelector .chain:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#chainSelector .chain h3, #chainSelector .chain p {
     margin: 0;
 }

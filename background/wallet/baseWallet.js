@@ -54,6 +54,7 @@ class BaseWallet {
                 "name": "Ethereum",
                 "ticker": "ETH",
                 "decimals": 18,
+                "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
                 "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 1
             }
@@ -65,6 +66,7 @@ class BaseWallet {
                 "name": "Smart Chain",
                 "ticker": "BNB",
                 "decimals": 18,
+                "contract": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
                 "RPC": "https://bsc-dataseed.binance.org/",
                 "chainID": 56
             }

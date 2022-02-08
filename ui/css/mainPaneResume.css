@@ -2,6 +2,12 @@
     background: var(--whiteBackground);
     border-radius: 0.5em;
     padding: 0.5em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+#mainPane .resume .address:hover {
+    background: #ece2f3;
 }
 
 #mainPane .resume .address p {
@@ -42,8 +48,9 @@
 #mainPane .resume .assets .asset .logo {
     height: 32px;
     width: 32px;
-    background: var(--mainColor);
+    background-color: var(--mainColor);
     border-radius: 50%;
+    background-size: cover;
 }
 
 #mainPane .resume .assets .asset .title {

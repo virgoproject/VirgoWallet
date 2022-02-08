@@ -9,6 +9,8 @@ body {
     --whiteBackground: #f2ebf7;
     font-family: Ubuntu;
     color: #545454;
+    overflow: hidden;
+    background: linear-gradient(0deg, #5a009c14, transparent);
 }
 
 .button {

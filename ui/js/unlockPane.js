@@ -40,9 +40,9 @@ $("#unlockPanePasswordSubmit").click(function(){
         })
 })
 
-function displayWallet(infos){
+function displayWallet(data){
     $("#unlockPane").hide()
-    console.log(infos.wallets[infos.selectedWallet])
-    $("#mainPaneCurrentChain").html(infos.wallets[infos.selectedWallet].wallet.name)
+    setChains(data)
+    setResume(data)
     $("#mainPane").show()
 }

@@ -1,17 +1,26 @@
 class Web3Wallet {
 
-    constructor(name, ticker, decimals, rpcURL, chainID) {
+    constructor(name, ticker, decimals, contract, rpcURL, chainID) {
         this.name = name
         this.ticker = ticker
         this.decimals = decimals
+        this.contract = contract
         this.rpcURL = rpcURL
         this.chainID = chainID
 
         this.balances = new Map()
+
+        const wallet = this
+        fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
+            .then(function(resp){
+                resp.json().then(function(res){
+                    wallet.CG_Platform = res.CG_Platform
+                })
+            })
     }
 
     static fromJSON(json){
-        return new Web3Wallet(json.name, json.ticker, json.decimals, json.RPC, json.chainID)
+        return new Web3Wallet(json.name, json.ticker, json.decimals, json.contract, json.RPC, json.chainID)
     }
 
     toJSON(){
@@ -21,6 +30,7 @@ class Web3Wallet {
                 "name": this.name,
                 "ticker": this.ticker,
                 "decimals": this.decimals,
+                "contract": this.contract,
                 "RPC": this.rpcURL,
                 "chainID": this.chainID
             }
@@ -31,26 +41,64 @@ class Web3Wallet {
         const json = []
 
         for(const address of baseWallet.getAddresses()){
-            let balance = this.balances.get(address)
-            if(balance === undefined) balance = 0
+            let balances = this.getBalances(address)
             json.push({
                 "address": address,
-                "balance": balance
+                "balances": balances
             })
         }
 
         return json
     }
 
+    getBalances(address){
+        let balances = this.balances.get(address)
+        if(balances === undefined){
+            balances = {}
+            balances[this.ticker] = {
+                "name": this.name,
+                "ticker": this.ticker,
+                "decimals": this.decimals,
+                "contract": this.contract,
+                "balance": 0,
+                "price": 0
+            }
+        }
+
+
+        this.balances.set(address, balances)
+
+        return balances
+    }
+
     update(){
         console.log("updating " + this.name + " wallet")
         const wallet = this
 
-        //updating balances
+        //update balances
         for(const address of baseWallet.getAddresses()){
+
+            let balances = this.getBalances(address)
+
+            //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
-                wallet.balances.set(address, res)
+                balances[wallet.ticker].balance = Date.now();
             })
+
+            //not optimised, better to fetch prices for all addresses at once
+            if(this.CG_Platform)
+                Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
+                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract + "&vs_currencies=usd")
+                        .then(function(resp){
+                            resp.json().then(function(res){
+                                console.log(res)
+                                balance.price = parseFloat(res[balance.contract].usd)
+                            })
+                        })
+                })
+
+            //update assets price
+
         }
     }
 
