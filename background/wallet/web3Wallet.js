@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -8,6 +8,7 @@ class Web3Wallet {
         this.contract = contract
         this.rpcURL = rpcURL
         this.chainID = chainID
+        this.tokens = tokens
 
         this.balances = new Map()
 
@@ -21,7 +22,7 @@ class Web3Wallet {
     }
 
     static fromJSON(json){
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID)
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens)
     }
 
     toJSON(){
@@ -34,7 +35,8 @@ class Web3Wallet {
                 "decimals": this.decimals,
                 "contract": this.contract,
                 "RPC": this.rpcURL,
-                "chainID": this.chainID
+                "chainID": this.chainID,
+                "tokens": this.tokens
             }
         }
     }
@@ -65,6 +67,17 @@ class Web3Wallet {
                 "balance": 0,
                 "price": 0
             }
+
+            for(const token of this.tokens){
+                balances[token.contract] = {
+                    "name": token.name,
+                    "ticker": token.ticker,
+                    "decimals": token.decimals,
+                    "contract": token.contract,
+                    "balance": 0,
+                    "price": 0
+                }
+            }
         }
 
 
@@ -87,21 +100,82 @@ class Web3Wallet {
                 balances[wallet.ticker].balance = res;
             })
 
+            //update tokens balances
+            for(const token of this.tokens){
+                const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
+                contract.methods.balanceOf(address).call()
+                    .then(function(res){
+                        balances[token.contract].balance = res
+                    })
+            }
+
             //not optimised, better to fetch prices for all addresses at once
             if(this.CG_Platform)
                 Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
                     fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd")
                         .then(function(resp){
                             resp.json().then(function(res){
-                                console.log(res)
                                 balance.price = parseFloat(res[balance.contract.toLowerCase()].usd)
                             })
                         })
                 })
 
-            //update assets price
-
         }
+    }
+
+    hasToken(contract){
+        for(const token of this.tokens)
+            if(token.contract == contract) return true
+
+        return false
+    }
+
+    addToken(name, ticker, decimals, contract){
+        if(this.hasToken(contract) || !web3.utils.isAddress(contract)) return;
+
+        console.log("sale pute")
+
+        const token = {
+            "name": name,
+            "ticker": ticker,
+            "decimals": decimals,
+            "contract": contract
+        }
+
+        this.tokens.push(token)
+
+        for(const address of baseWallet.getAddresses()) {
+            let balances = this.getBalances(address)
+            balances[token.contract] = {
+                "name": token.name,
+                "ticker": token.ticker,
+                "decimals": token.decimals,
+                "contract": token.contract,
+                "balance": 0,
+                "price": 0
+            }
+        }
+
+        baseWallet.save()
+
+    }
+
+    removeToken(contract){
+        let i = 0;
+        for(const token of this.tokens){
+            if(token.contract == contract){
+                this.tokens.splice(i,1)
+                for(const address of baseWallet.getAddresses()) {
+                    let balances = this.getBalances(address)
+                    delete balances[token.contract]
+                }
+                baseWallet.save()
+                return;
+            }
+            i++
+        }
+
+
     }
 
 }

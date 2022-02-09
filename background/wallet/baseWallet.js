@@ -57,7 +57,8 @@ class BaseWallet {
                 "decimals": 18,
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
                 "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-                "chainID": 1
+                "chainID": 1,
+                "tokens": []
             }
         }
 
@@ -70,7 +71,15 @@ class BaseWallet {
                 "decimals": 18,
                 "contract": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
                 "RPC": "https://bsc-dataseed.binance.org/",
-                "chainID": 56
+                "chainID": 56,
+                "tokens": [
+                    {
+                        "name": "Virgo",
+                        "ticker": "VGO",
+                        "decimals": 8,
+                        "contract": "0xbee5e147e6e40433ff0310f5ae1a66278bc8d678"
+                    }
+                ]
             }
         }
 

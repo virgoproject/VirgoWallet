@@ -1,0 +1,1 @@
+console.log("virgo wallet - Injected Web3")

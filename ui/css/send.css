@@ -1,0 +1,12 @@
+#body .send .sendForm .label {
+    margin: 0;
+}
+
+#body .send .sendForm .sendMax {
+    font-size: 0.9em;
+    place-self: flex-end;
+}
+
+#body .send .sendForm .sendMax span {
+    color: var(--highlightColor1)
+}

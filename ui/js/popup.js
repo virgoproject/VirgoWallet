@@ -18,3 +18,17 @@ function copyToClipboard(element) {
     document.execCommand("copy")
     temp.remove()
 }
+
+$("#footer .footerElem").click(function(){
+    if($(this).hasClass("selected")) return false
+
+    $("#footer .footerElem").removeClass("selected")
+    $(this).addClass("selected")
+
+    $("#body .bodyElem").hide()
+
+    $("#body .bodyElem."+$(this).attr("data-target")).show()
+
+    return false
+})
+

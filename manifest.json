@@ -19,9 +19,17 @@
       "commonJS/browser-polyfill.js",
       "background/bundle.js",
       "background/utils/converter.js",
+      "background/wallet/web3ABIs.js",
       "background/wallet/web3Wallet.js",
       "background/wallet/baseWallet.js",
       "background/background.js"
     ]
-  }
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content/injectedWeb3Provider.js"]
+    }
+  ]
 }

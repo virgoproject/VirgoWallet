@@ -44,5 +44,6 @@ function displayWallet(data){
     $("#unlockPane").hide()
     setChains(data)
     setResume(data)
+    setSend(data)
     $("#mainPane").show()
 }
