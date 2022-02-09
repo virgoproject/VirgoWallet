@@ -16,3 +16,7 @@ async function getAsset(contract){
 
     return false
 }
+
+async function validateAddress(address){
+    return await browser.runtime.sendMessage({command: 'validateAddress', address: address})
+}

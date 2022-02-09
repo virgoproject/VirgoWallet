@@ -44,6 +44,9 @@ function displayData(data){
         elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
 
         totalBalance += balance.price*balance.balance/10**balance.decimals;
+
+        //permits to display dynamic price anywhere without fetching again background
+        $('[data-bal="'+balance.contract+'"]').html(Utils.formatAmount(balance.balance, balance.decimals))
     })
 
     $("[data-fiatTotal]").html("$" + Utils.beautifyAmount(totalBalance))
@@ -55,5 +58,5 @@ function setResume(data){
 
     setInterval(function(){
         updateData()
-    }, 250)
+    }, 100)
 }

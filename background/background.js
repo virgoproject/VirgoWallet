@@ -23,6 +23,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.selectWallet(request.walletId)
             sendResponse(true)
             break
+        case "validateAddress":
+            sendResponse(web3.utils.isAddress(request.address))
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

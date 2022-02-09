@@ -2,11 +2,11 @@
     margin: 0;
 }
 
-#body .send .sendForm .sendMax {
+#body .send .sendForm .sendBal {
     font-size: 0.9em;
     place-self: flex-end;
 }
 
-#body .send .sendForm .sendMax span {
+#body .send .sendForm .sendBal span {
     color: var(--highlightColor1)
 }

@@ -89,38 +89,26 @@
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
-                <div class="col-12 mb-2">
+                <div class="col-12 mb-3">
                     <p class="label">Send to</p>
-                    <input type="text" class="input col-12" placeholder="Recipient address">
+                    <input type="text" class="input col-12 recipient" placeholder="Recipient address">
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-12 mb-3">
                     <p class="label">Asset</p>
                     <select class="input w-100 assetSelect">
                     </select>
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-12 mb-4">
                     <div class="row">
                         <p class="label col-6">Amount</p>
-                        <p class="label col-6 text-right sendMax">Max: <val>1</val> <span>BNB</span></p>
+                        <p class="label col-6 text-right sendBal">Balance: <val>1</val> <span>BNB</span></p>
                     </div>
-
                     <div class="row w-100 m-0 input inputWButton">
-                        <input type="number" class="col-10" placeholder="0.0">
-                        <button class="col-2">Max</button>
+                        <input type="number" class="col-10 amount" placeholder="0.0">
+                        <button class="col-2 max">Max</button>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="label">Gas price</p>
-                            <p>5 Gwei</p>
-                        </div>
-                        <div class="col-6">
-                            <p class="label">Fees</p>
-                            <p>0.0015 BNB</p>
-                        </div>
-                    </div>
-                </div>
+                <button class="button col-12 submit" disabled="disabled">Next</button>
             </div>
         </div>
         <div class="bodyElem store" style="display: none">
