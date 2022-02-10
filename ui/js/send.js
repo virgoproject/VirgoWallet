@@ -3,6 +3,7 @@ function setSend(data){
     Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
         let elem = $("<option></option>")
         elem.val(balance.contract)
+        elem.attr("data-ticker", balance.ticker)
         elem.html(balance.name + " - " + balance.ticker)
         $("#body .send .sendForm .assetSelect").append(elem)
     })
@@ -33,13 +34,13 @@ $("#body .send .sendForm .recipient").on("input", function(){
     const input = $(this);
     if(input.val().length < 42){
         input.removeClass("is-invalid")
-        $("#body .send .sendForm .submit").attr("disabled", true);
+        $("#body .send .sendForm .submit").attr("disabled", true)
         return
     }
     validateAddress(input.val()).then(function(res){
         if(!res){
             input.addClass("is-invalid")
-            $("#body .send .sendForm .submit").attr("disabled", true);
+            $("#body .send .sendForm .submit").attr("disabled", true)
             return
         }
 
@@ -54,13 +55,13 @@ $("#body .send .sendForm .amount").on("input", function(){
 
     if(isNaN(amount) || amount == 0){
         $(this).removeClass("is-invalid")
-        $("#body .send .sendForm .submit").attr("disabled", true);
+        $("#body .send .sendForm .submit").attr("disabled", true)
         return
     }
 
     if(amount < 0 || amount > max){
         $(this).addClass("is-invalid")
-        $("#body .send .sendForm .submit").attr("disabled", true);
+        $("#body .send .sendForm .submit").attr("disabled", true)
         return
     }
 
@@ -71,18 +72,98 @@ $("#body .send .sendForm .amount").on("input", function(){
 function checkSendFormValues(){
     const recipient = $("#body .send .sendForm .recipient");
     if(recipient.val() < 42 || recipient.hasClass("is-invalid"))
-        return;
+        return
 
-    const amount = $("#body .send .sendForm .amount");
+    const amount = $("#body .send .sendForm .amount")
 
     let amountVal = parseFloat(amount.val())
 
     if(isNaN(amountVal) || amountVal <= 0 || amount.hasClass("is-invalid"))
-        return;
+        return
 
-    $("#body .send .sendForm .submit").attr("disabled", false);
+    $("#body .send .sendForm .submit").attr("disabled", false)
 }
 
+let confirmInterval;
+
 $("#body .send .sendForm .submit").click(function(){
-    
+    disableLoadBtn($(this))
+
+    const recipient = $("#body .send .sendForm .recipient")
+    const amount = $("#body .send .sendForm .amount")
+    const asset = $("#body .send .sendForm .assetSelect")
+
+    recipient.attr("disabled", true)
+    amount.attr("disabled", true)
+    asset.attr("disabled", true)
+
+    let estimateFees = function(){
+        getAsset(asset.val()).then(function(assetInfos){
+            estimateSendFees(recipient.val(), Math.trunc(parseFloat(amount.val())*10**assetInfos.decimals), asset.val()).then(function(fees){
+                getBalance(MAIN_ASSET.ticker).then(function (nativeBalance){
+
+                    enableLoadBtn($("#body .send .sendForm .submit"))
+                    recipient.attr("disabled", false)
+                    amount.attr("disabled", false)
+                    asset.attr("disabled", false)
+
+                    $("#body .send .sendForm").hide()
+                    $("#body .send .sendConfirm .amount .value").html(amount.val())
+                    $("#body .send .sendConfirm .amount .ticker").html(assetInfos.ticker)
+                    $("#body .send .sendConfirm .recipient .value").html(recipient.val())
+                    $("#body .send .sendConfirm .fees .value").html(Utils.formatAmount(fees.gasLimit * fees.gasPrice, fees.decimals))
+                    $("#body .send .sendConfirm").show()
+
+                    let totalForNative = fees.gasLimit * fees.gasPrice;
+                    if(assetInfos.ticker == MAIN_ASSET.ticker)
+                        totalForNative += Math.trunc(parseFloat(amount.val())*10**MAIN_ASSET.decimals)
+
+                    if(totalForNative <= nativeBalance.balance){
+                        $("#body .send .sendConfirm .submit val").html("Send")
+                        $("#body .send .sendConfirm .submit").attr("disabled", false)
+                    }
+
+                })
+            })
+        })
+    }
+
+    estimateFees()
+    confirmInterval = setInterval(function(){
+        estimateFees()
+    }, 2500)
+
+})
+
+$("#body .send .sendConfirm .back").click(function(){
+    if($(this).attr("disabled")) return;
+
+    $("#body .send .sendConfirm").hide()
+    $("#body .send .sendForm").show()
+
+    clearInterval(confirmInterval)
+})
+
+$("#body .send .sendConfirm .submit").click(function(){
+    disableLoadBtn($(this))
+    $("#body .send .sendConfirm .back").attr("disabled", true)
+    clearInterval(confirmInterval)
+
+    const recipient = $("#body .send .sendForm .recipient")
+    const amount = $("#body .send .sendForm .amount")
+    const asset = $("#body .send .sendForm .assetSelect")
+
+    getAsset(asset.val()).then(function(assetInfos){
+        sendTo(recipient.val(), Math.trunc(parseFloat(amount.val())*10**assetInfos.decimals), asset.val()).then(function(res){
+            console.log(res)
+            recipient.val("")
+            amount.val("")
+            asset.val("").trigger("change")
+
+            $("#body .send .sendConfirm .back").attr("disabled", false)
+            enableLoadBtn($("#body .send .sendConfirm .submit"))
+
+            $("#body .send .sendConfirm .back").click()
+        })
+    })
 })

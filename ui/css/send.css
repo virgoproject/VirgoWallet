@@ -8,5 +8,39 @@
 }
 
 #body .send .sendForm .sendBal span {
-    color: var(--highlightColor1)
+    color: var(--highlightColor1);
+}
+
+#body .send .sendConfirm .ticker {
+    color: var(--highlightColor1);
+}
+
+#body .send .sendConfirm .label {
+    margin: 0;
+}
+
+#body .send .sendConfirm .detail {
+    background: #5a009c14;
+    border-radius: 0.5em;
+    color: #545454;
+    padding: 0.375em 2em 0.375em 0.75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+#body .send .sendConfirm .back {
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+    margin-bottom: 0.25em;
+    margin-left: -14px;
+}
+
+#body .send .sendConfirm .back:hover {
+    color: #111;
+}
+
+#body .send .sendConfirm .back[disabled] {
+    color: #111;
+    cursor: default;
 }

@@ -20,3 +20,15 @@ async function getAsset(contract){
 async function validateAddress(address){
     return await browser.runtime.sendMessage({command: 'validateAddress', address: address})
 }
+
+async function estimateSendFees(recipient, amount, asset){
+    return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
+}
+
+async function getBalance(asset){
+    return await browser.runtime.sendMessage({command: 'getBalance', asset: asset})
+}
+
+async function sendTo(recipient, amount, asset){
+    return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset})
+}

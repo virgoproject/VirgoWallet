@@ -37,7 +37,10 @@ function setChains(data){
                     $("#walletAssets").html("")
                     $("#walletAssets").append(baseAssetRow)
 
-                    $("#mainPaneCurrentChain").html(wallet.name)
+                    $("[data-networkname]").html(wallet.name)
+                    $("[data-networkticker]").html(wallet.ticker)
+
+                    MAIN_ASSET = wallet
 
                     $("#chainSelectionHeader").click()
                 })

@@ -83,6 +83,20 @@ class BaseWallet {
             }
         }
 
+        wallets[2] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Polygon",
+                "asset": "Polygon",
+                "ticker": "MATIC",
+                "decimals": 18,
+                "contract": "0x0000000000000000000000000000000000001010",
+                "RPC": "https://polygon-rpc.com",
+                "chainID": 137,
+                "tokens": []
+            }
+        }
+
         return new BaseWallet({"mnemonic": bip39.generateMnemonic(), "nonce": 1, "wallets": wallets, "selectedWallet": 0, "selectedAddress": 0})
     }
 
@@ -214,6 +228,10 @@ class BaseWallet {
 
     getCurrentWallet(){
         return this.wallets[this.selectedWallet];
+    }
+
+    getCurrentAddress(){
+        return this.getAddresses()[this.selectedAddress]
     }
 
     getWalletsJSON(){

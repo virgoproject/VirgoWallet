@@ -1,3 +1,5 @@
+let MAIN_ASSET;
+
 $("#mainPane .resume .address").click(function(){
     copyToClipboard(document.querySelector("[data-mainAddress]"));
     $("#mainPane .resume .address .title").html("Copied!")
@@ -19,6 +21,13 @@ function updateData(){
 function displayData(data){
     const selectedAddress = data.addresses[data.selectedAddress]
     $("[data-mainAddress]").html(selectedAddress.address)
+
+    const selectedWallet = data.wallets[data.selectedWallet].wallet
+
+    $("[data-networkname]").html(selectedWallet.name)
+    $("[data-networkticker]").html(selectedWallet.ticker)
+
+    MAIN_ASSET = selectedWallet
 
     let totalBalance = 0;
 

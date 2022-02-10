@@ -35,7 +35,7 @@
         <div class="topbar row">
             <div class="col-3"></div>
             <div class="col-6" id="chainSelectionHeader">
-                <p><val id="mainPaneCurrentChain">Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+                <p><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
             </div>
             <div class="col-3"></div>
         </div>
@@ -100,15 +100,37 @@
                 </div>
                 <div class="col-12 mb-4">
                     <div class="row">
-                        <p class="label col-6">Amount</p>
-                        <p class="label col-6 text-right sendBal">Balance: <val>1</val> <span>BNB</span></p>
+                        <p class="label col-3">Amount</p>
+                        <p class="label col-9 text-right sendBal">Balance: <val>1</val> <span>BNB</span></p>
                     </div>
                     <div class="row w-100 m-0 input inputWButton">
                         <input type="number" class="col-10 amount" placeholder="0.0">
                         <button class="col-2 max">Max</button>
                     </div>
                 </div>
-                <button class="button col-12 submit" disabled="disabled">Next</button>
+                <button class="button col-12 submit" disabled="disabled">
+                    <val>Next</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+            <div class="row sendConfirm" style="display: none">
+                <p class="back"><i class="fas fa-chevron-left"></i> Edit</p>
+                <div class="col-12 mb-3 amount">
+                    <p class="label">Sending</p>
+                    <p class="detail"><span class="value">0.01</span> <span class="ticker">ETH</span></p>
+                </div>
+                <div class="col-12 mb-3 recipient">
+                    <p class="label">To</p>
+                    <p class="detail value">0x000</p>
+                </div>
+                <div class="col-12 mb-4 fees">
+                    <p class="label">Fees</p>
+                    <p class="detail"><span class="value">0.01</span> <span class="ticker" data-networkticker>ETH</span></p>
+                </div>
+                <button class="button col-12 submit" disabled="disabled">
+                    <val>Insufficient <val data-networkticker=""></val> balance</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
             </div>
         </div>
         <div class="bodyElem store" style="display: none">
