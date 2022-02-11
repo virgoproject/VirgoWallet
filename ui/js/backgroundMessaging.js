@@ -1,5 +1,9 @@
+async function getBaseInfos(){
+    return await browser.runtime.sendMessage({command: 'getBaseInfos'})
+}
+
 async function getAsset(contract){
-    const res = await browser.runtime.sendMessage({command: 'getBaseInfos'})
+    const res = await getBaseInfos()
 
     const selectedWallet = res.wallets[res.selectedWallet].wallet;
 

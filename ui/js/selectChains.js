@@ -37,6 +37,12 @@ function setChains(data){
                     $("#walletAssets").html("")
                     $("#walletAssets").append(baseAssetRow)
 
+                    //reset send form
+                    getBaseInfos().then(function(res){
+                        $("#body .send .sendForm .assetSelect").html("")
+                        setSend(res)
+                    })
+
                     $("[data-networkname]").html(wallet.name)
                     $("[data-networkticker]").html(wallet.ticker)
 
