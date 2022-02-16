@@ -32,3 +32,15 @@ $("#footer .footerElem").click(function(){
     return false
 })
 
+window.jdenticon_config = {
+    hues: [281],
+    lightness: {
+        color: [0.47, 0.67],
+        grayscale: [0.28, 0.48]
+    },
+    saturation: {
+        color: 0.61,
+        grayscale: 0.02
+    },
+    backColor: "#5533802e"
+};

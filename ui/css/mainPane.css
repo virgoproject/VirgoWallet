@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-#mainPane .header {
+#mainPane>.header {
     background: linear-gradient(0deg, #5a009c14, transparent);
     text-align: center;
     height: 110px;
@@ -12,7 +12,7 @@
     margin-bottom: 3.5em;
 }
 
-#mainPane .header .stats {
+#mainPane>.header>.stats {
     background: radial-gradient(ellipse at 50% 0%, #7700cf36 0%, transparent 120%),
             linear-gradient(133deg, rgba(0, 0, 0, 0) 0%, rgb(205 69 180 / 10%) 20%, rgba(0, 0, 0, 0) 40%),
             linear-gradient(133deg, rgba(0, 0, 0, 0) 30%, rgb(205 69 180 / 5%) 50%, rgba(0, 0, 0, 0) 70%);
@@ -97,6 +97,11 @@
     transform: rotate(180deg);
 }
 
+#accountSelectionHeader svg {
+    border-radius: 50%;
+    border: 1px solid #e9e9e9;
+}
+
 #chainSelector {
     display: block;
     height: 562px;
@@ -130,3 +135,13 @@
 #chainSelector .chain h3, #chainSelector .chain p {
     margin: 0;
 }
+
+#backupPopup span {
+    color: var(--highlightColor1);
+}
+
+#backupPopup p {
+    font-size: 0.9em;
+    line-height: 1.3em;
+}
+

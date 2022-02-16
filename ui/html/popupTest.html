@@ -35,9 +35,11 @@
         <div class="topbar row">
             <div class="col-3"></div>
             <div class="col-6" id="chainSelectionHeader">
-                <p><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
             </div>
-            <div class="col-3"></div>
+            <div class="col-3" id="accountSelectionHeader">
+                <svg data-jdenticon-value="user127" width="36" height="36"></svg>
+            </div>
         </div>
         <div class="stats row">
             <p class="title">ESTIMATED VALUE</p>
@@ -166,6 +168,29 @@
             <div class="col-3"></div>
         </div>
     </div>
+    <div id="backupPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row text-center p-4 pt-0">
+                <div class="col-12">
+                    <img src="/ui/images/backup.png" style="width: 40%;margin-left: 10%;">
+                </div>
+                <div class="col-12 p-3">
+                    <h3>Secure your assets!</h3>
+                    <p class="m-0">Save your <span>seed phrase</span> and<br>setup a <span>password</span> now.</p>
+                </div>
+                <div class="col-12">
+                    <button class="button">Secure my assets</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -177,5 +202,6 @@
 <script src="../js/selectChains.js"></script>
 <script src="../js/resume.js"></script>
 <script src="../js/send.js"></script>
+<script src="../js/jdenticon.min.js"></script>
 </body>
 </html>
