@@ -150,6 +150,7 @@ input[type=number] {
     height: 100%;
     top: 0;
     background: #00000075;
+    display: none;
 }
 
 .popup .box {
@@ -165,4 +166,9 @@ input[type=number] {
 
 .popup .header .close {
     cursor: pointer;
+    transition: color ease-in 0.1s;
+}
+
+.popup .header .close:hover {
+    color: black;
 }

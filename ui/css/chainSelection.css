@@ -1,37 +1,47 @@
-div > #chain {
-    list-style-type: none;
-    text-align: center;
+#chainSelector {
+    display: block;
+    height: 562px;
+    width: 100%;
+    top: 44px;
+    position: absolute;
+    background: #faf6fc;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition:transform 0.25s ease;
 }
 
-#chain > span {
-    text-align: center;
-    font-size: 1.4em;
+#chainSelector.opened {
+    transform: scaleY(1);
 }
 
-#selectChains {
-    padding: unset;
-}
-
-#selectChains > li {
-    padding: 12px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-}
-
-#BSC {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-}
-
-#selectChains > li:hover {
-    background: #ddd;
-}
-
-.chain {
+#chainSelector .chain {
+    padding: 1em 0;
     cursor: pointer;
 }
 
-#chain {
-    display: none;
-    background-color: #ffffff;
+#chainSelector .chain.selected {
+    background: rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+#chainSelector .chain:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#chainSelector .chain h3, #chainSelector .chain p {
+    margin: 0;
+}
+
+#chainSelectionHeader {
+    cursor: pointer;
+    transform: rotate(0deg);
+}
+
+#chainSelectionHeader i {
+    transform: rotate(0deg);
+    transition:transform 0.25s ease;
+}
+
+#chainSelectionHeader.opened i {
+    transform: rotate(180deg);
 }

@@ -42,5 +42,18 @@ window.jdenticon_config = {
         color: 0.61,
         grayscale: 0.02
     },
-    backColor: "#5533802e"
+    backColor: "#dcd3e6"
 };
+
+$(".popup .box").click(function(){
+    //prevent triggering popup close when clicking on the box
+    return false
+})
+
+$(".popup").click(function(){
+    $(this).hide()
+})
+
+$(".popup .close").click(function(){
+    $(this).parents(".popup").hide()
+})

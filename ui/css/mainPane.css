@@ -83,59 +83,6 @@
     margin: 0;
 }
 
-#chainSelectionHeader {
-    cursor: pointer;
-    transform: rotate(0deg);
-}
-
-#chainSelectionHeader i {
-    transform: rotate(0deg);
-    transition:transform 0.25s ease;
-}
-
-#chainSelectionHeader.opened i {
-    transform: rotate(180deg);
-}
-
-#accountSelectionHeader svg {
-    border-radius: 50%;
-    border: 1px solid #e9e9e9;
-}
-
-#chainSelector {
-    display: block;
-    height: 562px;
-    width: 100%;
-    top: 38px;
-    position: absolute;
-    background: #fbf7fc;
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    transition:transform 0.25s ease;
-}
-
-#chainSelector.opened {
-    transform: scaleY(1);
-}
-
-#chainSelector .chain {
-    padding: 1em 0;
-    cursor: pointer;
-}
-
-#chainSelector .chain.selected {
-    background: rgba(0, 0, 0, 0.2);
-    cursor: default;
-}
-
-#chainSelector .chain:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#chainSelector .chain h3, #chainSelector .chain p {
-    margin: 0;
-}
-
 #backupPopup span {
     color: var(--highlightColor1);
 }

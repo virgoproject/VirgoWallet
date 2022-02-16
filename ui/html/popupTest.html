@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/ui/css/mainPane.css">
     <link rel="stylesheet" href="/ui/css/mainPaneResume.css">
     <link rel="stylesheet" href="/ui/css/send.css">
+    <link rel="stylesheet" href="/ui/css/chainSelection.css">
+    <link rel="stylesheet" href="/ui/css/settings.css">
 </head>
 <body>
 
@@ -168,6 +170,70 @@
             <div class="col-3"></div>
         </div>
     </div>
+    <div id="settings" class="p-4 pt-2">
+        <p class="text-center title">My Wallet</p>
+        <div class="mt-4 p-2 mainPane">
+            <div class="row">
+                <p class="col-6 mb-0">Accounts <i class="fas fa-chevron-right"></i></p>
+                <p class="col-6 text-right mb-0"><i class="fas fa-plus"></i> Add</p>
+            </div>
+            <div class="accounts">
+                <div class="row account mt-2">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="identicon">
+                            <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <p class="address">0x0000000000000000000000000000000000000000</p>
+                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check isSelected"></i>
+                    </div>
+                </div>
+                <div class="row account mt-2 selected">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="identicon">
+                            <svg data-jdenticon-value="user127" width="32" height="32"></svg>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <p class="address">0x0000000000000000000000000000000000000000</p>
+                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check isSelected"></i>
+                    </div>
+                </div>
+                <div class="row account mt-2">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="identicon">
+                            <svg data-jdenticon-value="sesesfse" width="32" height="32"></svg>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <p class="address">0x0000000000000000000000000000000000000000</p>
+                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check isSelected"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-6 pl-0 pr-1">
+                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i> Settings</button>
+                </div>
+                <div class="col-6 pl-1 pr-0">
+                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i> Support</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 p-2 settingsPane">
+
+        </div>
+    </div>
     <div id="backupPopup" class="popup">
         <div class="box">
             <div class="header row">
@@ -190,7 +256,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div >
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -202,6 +268,7 @@
 <script src="../js/selectChains.js"></script>
 <script src="../js/resume.js"></script>
 <script src="../js/send.js"></script>
+<script src="../js/settings.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 </body>
 </html>

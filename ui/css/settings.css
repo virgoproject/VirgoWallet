@@ -1,0 +1,71 @@
+#accountSelectionHeader {
+    z-index: 10;
+}
+
+#accountSelectionHeader svg {
+    border-radius: 50%;
+    border: 1px solid #e9e9e9;
+    cursor: pointer;
+    transform: rotate(0deg);
+    transition: transform 0.25s ease;
+}
+
+#accountSelectionHeader.opened svg {
+    transform: rotate(-90deg);
+}
+
+#settings {
+    display: block;
+    height: 600px;
+    width: 100%;
+    top: 0px;
+    position: absolute;
+    background: #faf6fc;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition:transform 0.25s ease;
+}
+
+#settings.opened {
+    transform: scaleY(1);
+}
+
+#settings .accounts .account {
+    background: #ede3f4;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: background ease 0.25s;
+}
+
+#settings .accounts .account:hover {
+    background: #e2d2ed;
+}
+
+#settings .accounts .account.selected {
+    background: #e2d2ed;
+    cursor: default;
+}
+
+#settings .accounts .account p {
+    margin-bottom: 0;
+}
+
+#settings .accounts .account .identicon svg {
+    border-radius: 50%;
+}
+
+#settings .accounts .account .address {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#settings .accounts .account .isSelected {
+    display: none;
+}
+
+#settings .accounts .account.selected .isSelected {
+    display: flex;
+}
