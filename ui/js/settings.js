@@ -10,5 +10,6 @@ $("#accountSelectionHeader").click(function(){
 
 $("#settings .mainPane .openSettings").click(function(){
     $("#settings .mainPane").hide()
+    $("#settings .settingsPane").show()
     $("#settings .title").html("Settings")
 })

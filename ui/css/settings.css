@@ -69,3 +69,39 @@
 #settings .accounts .account.selected .isSelected {
     display: flex;
 }
+
+#settings .settingsPane .tab {
+    padding: 1em 2em;
+    cursor: pointer;
+}
+
+#settings .settingsPane .tab:hover {
+    background: #00000025;
+}
+
+#settings .settingsPane .tab p {
+    font-size: 0.9em;
+}
+
+#settings .settingsPane .tab i {
+    font-size: 1.5em;
+}
+
+#settings .settingsPane .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#settings .settingsPane .back i {
+    font-size: 1.5em;
+}
+
+#settings .settingsPane .back:hover {
+    color: black
+}
