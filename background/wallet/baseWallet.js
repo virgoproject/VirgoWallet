@@ -146,7 +146,7 @@ class BaseWallet {
         let cipher = new sjcl.cipher.aes(passwordHash);
         let trialDataKey = sjcl.mode.ctr.decrypt(cipher, this.encryptedDataKey, this.encryptedDataKeyIV);
 
-        return this.dataKey == trialDataKey
+        return JSON.stringify(this.dataKey) == JSON.stringify(trialDataKey)
     }
 
     toJSON(){

@@ -44,3 +44,12 @@ async function getMnemonic(){
 async function setPassword(password, oldPassword){
     return await browser.runtime.sendMessage({command: 'setPassword', password: password, oldPassword: oldPassword})
 }
+
+async function passwordMatch(password){
+    return await browser.runtime.sendMessage({command: 'passwordMatch', password: password})
+}
+
+async function isEncrypted(){
+    const res = await getBaseInfos()
+    return res.encrypted
+}

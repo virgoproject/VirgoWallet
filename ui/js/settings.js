@@ -54,23 +54,34 @@ $("#settings .settingsPane .tab").click(function(){
 $("#settings .settingsPane .tab[data-target=setupPassword]").click(function(){
 
     //reset forms
+    $("#settings .settingsPane .writeMnemonic").hide()
     $("#settings .settingsPane .mnemonicTest").hide()
     $("#settings .settingsPane .setupPassword").hide()
+    $("#settings .settingsPane .getOldPassword").hide()
 
     $("#settings .settingsPane .mnemonicTest textarea").val("")
     $("#settings .settingsPane .setupPassword input").val("")
+    $("#settings .settingsPane .getOldPassword input").val("")
 
     $("#settings .settingsPane .mnemonicTest button").attr("disabled", true)
     $("#settings .settingsPane .setupPassword button").attr("disabled", true)
+    $("#settings .settingsPane .getOldPassword button").attr("disabled", true)
+    $("#settings .settingsPane .getOldPassword input").attr("disabled", false)
 
-
-    getMnemonic().then(function(mnemonic){
-        const mnemonicArray = mnemonic.split(" ")
-        $("#settings .settingsPane .writeMnemonic .word").each(function(index){
-            $(this).find("val").html(mnemonicArray[index])
-        })
-        $("#settings .settingsPane .writeMnemonic").show()
+    isEncrypted().then(function(isEncrypted){
+        if(isEncrypted){
+            $("#settings .settingsPane .getOldPassword").show()
+        }else{
+            getMnemonic().then(function(mnemonic){
+                const mnemonicArray = mnemonic.split(" ")
+                $("#settings .settingsPane .writeMnemonic .word").each(function(index){
+                    $(this).find("val").html(mnemonicArray[index])
+                })
+                $("#settings .settingsPane .writeMnemonic").show()
+            })
+        }
     })
+
 })
 
 $("#settings .settingsPane .writeMnemonic button").click(function(){
@@ -116,10 +127,34 @@ $("#settings .settingsPane .setupPassword button").click(function(){
 
     disableLoadBtn(btn)
 
-    setPassword(input1.val(), "").then(function(){
+    setPassword(input1.val(), $("#settings .settingsPane .getOldPassword input").val()).then(function(){
         enableLoadBtn(btn)
         notyf.success("Password changed!")
         $("#accountSelectionHeader").click()
     })
 })
 
+$("#settings .settingsPane .getOldPassword input").click(function(){
+    $("#settings .settingsPane .getOldPassword input").removeClass("is-invalid")
+    $("#settings .settingsPane .getOldPassword .error").hide()
+})
+
+$("#settings .settingsPane .getOldPassword input").on("input", function(){
+    $("#settings .settingsPane .getOldPassword button").attr("disabled", $(this).val().length < 8)
+})
+
+$("#settings .settingsPane .getOldPassword button").click(function(){
+    $("#settings .settingsPane .getOldPassword input").attr("disabled", true)
+
+    passwordMatch($("#settings .settingsPane .getOldPassword input").val())
+        .then(function(match){
+            if(!match){
+                $("#settings .settingsPane .getOldPassword input").addClass("is-invalid")
+                $("#settings .settingsPane .getOldPassword .error").show()
+                $("#settings .settingsPane .getOldPassword input").attr("disabled", false)
+                return
+            }
+            $("#settings .settingsPane .getOldPassword").hide()
+            $("#settings .settingsPane .setupPassword").show()
+        })
+})

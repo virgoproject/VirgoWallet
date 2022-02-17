@@ -94,6 +94,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendResponse(true)
 
             break
+
+        case "passwordMatch":
+            sendResponse(baseWallet.passwordMatch(request.password))
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -104,7 +108,8 @@ function getBaseInfos(){
         "wallets": baseWallet.getWalletsJSON(),
         "selectedWallet": baseWallet.selectedWallet,
         "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
-        "selectedAddress": baseWallet.selectedAddress
+        "selectedAddress": baseWallet.selectedAddress,
+        "encrypted": baseWallet.isEncrypted()
     }
 }
 
