@@ -105,3 +105,27 @@
 #settings .settingsPane .back:hover {
     color: black
 }
+
+#settings .settingsPane .settingsCat {
+    display: none;
+    position: absolute;
+    top: 3.5em;
+    width: 100%;
+    background: #faf6fc;
+    height: 544px;
+}
+
+#settings .settingsPane .writeMnemonic .word {
+    background: #ede3f4;
+    padding: 0.25em;
+    border-radius: 0.5em;
+    width: 4.5em;
+}
+
+#settings .settingsPane .writeMnemonic .word i {
+    font-size: 0.6em;
+}
+
+#settings .settingsPane .writeMnemonic .word val {
+    font-size: 0.85em;
+}

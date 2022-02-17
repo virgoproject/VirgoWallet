@@ -76,8 +76,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         sendResponse(receipt)
                     })
             })
+            break
 
-
+        case "getMnemonic"://protect with a password later
+            sendResponse(baseWallet.mnemonic)
             break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called

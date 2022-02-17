@@ -36,3 +36,7 @@ async function getBalance(asset){
 async function sendTo(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset})
 }
+
+async function getMnemonic(){
+    return await browser.runtime.sendMessage({command: 'getMnemonic'})
+}

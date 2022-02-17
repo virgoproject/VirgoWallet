@@ -235,32 +235,85 @@
                 <i class="fas fa-chevron-left"></i>
             </div>
             <div class="mainSettings">
-                <div class="row tab">
+                <div class="row tab" data-target="security">
                     <div class="col-10">
                         <h4 class="m-0">Security</h4>
+                        <p class="m-0">Secure and backup your wallet</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="settingsCat" data-settingId="security" data-title="Security" data-settingsLevel="1">
+                <div class="row tab" data-target="setupPassword">
+                    <div class="col-10">
+                        <h4 class="m-0">Password</h4>
                         <p class="m-0">Setup and change your password</p>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
-                <div class="row tab">
-                    <div class="col-10">
-                        <h4 class="m-0">Security</h4>
-                        <p class="m-0">Setup and change your password</p>
+            </div>
+            <div class="settingsCat" data-settingId="setupPassword" data-settingsLevel="2">
+                <div class="text-center p-2 writeMnemonic" style="display: none">
+                    <h3>Write down your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>1.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>2.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>3.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>4.</i> <val>love</val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>5.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>6.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>7.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>8.</i> <val>love</val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i> <val>love</val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i> <val>love</val></p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-2 justify-content-center align-self-center text-right">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
+                    <button class="button w-100 mt-2">Next</button>
                 </div>
-                <div class="row tab">
-                    <div class="col-10">
-                        <h4 class="m-0">Security</h4>
-                        <p class="m-0">Setup and change your password</p>
-                    </div>
-                    <div class="col-2 justify-content-center align-self-center text-right">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
+                <div class="text-center p-2 mnemonicTest" style="display: none">
+                    <h3>Confirm your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
+                    <textarea class="form-control" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <button class="button w-100 mt-3" disabled>Next</button>
+                </div>
+                <div class="text-center p-2 setupPassword" style="display: none">
+
                 </div>
             </div>
         </div>
