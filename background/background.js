@@ -81,6 +81,19 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "getMnemonic"://protect with a password later
             sendResponse(baseWallet.mnemonic)
             break
+
+        case "setPassword":
+            if(baseWallet.isEncrypted() && !baseWallet.passwordMatch(request.oldPassword)){
+                sendResponse(false)
+                break
+            }
+
+            baseWallet.encrypt(request.password)
+            baseWallet.save()
+
+            sendResponse(true)
+
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

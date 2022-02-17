@@ -57,3 +57,11 @@ $(".popup").click(function(){
 $(".popup .close").click(function(){
     $(this).parents(".popup").hide()
 })
+
+const notyf = new Notyf({
+    duration: 2500,
+    position: {
+        x: 'center',
+        y: 'top'
+    }
+})

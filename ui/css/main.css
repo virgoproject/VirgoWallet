@@ -105,6 +105,9 @@ body {
     color: var(--mainColorLight)
 }
 
+.label {
+    margin: 0;
+}
 
 /* remove input number arrows */
 /* Chrome, Safari, Edge, Opera */

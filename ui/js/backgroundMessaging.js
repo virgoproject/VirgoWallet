@@ -40,3 +40,7 @@ async function sendTo(recipient, amount, asset){
 async function getMnemonic(){
     return await browser.runtime.sendMessage({command: 'getMnemonic'})
 }
+
+async function setPassword(password, oldPassword){
+    return await browser.runtime.sendMessage({command: 'setPassword', password: password, oldPassword: oldPassword})
+}

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/ui/css/send.css">
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
     <link rel="stylesheet" href="/ui/css/settings.css">
+    <link rel="stylesheet" href="/ui/css/notyf.min.css">
 </head>
 <body>
 
@@ -256,64 +257,77 @@
                     </div>
                 </div>
             </div>
-            <div class="settingsCat" data-settingId="setupPassword" data-settingsLevel="2">
-                <div class="text-center p-2 writeMnemonic" style="display: none">
+            <div class="settingsCat p-3 text-center" data-settingId="setupPassword" data-settingsLevel="2">
+                <div class="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
                     <div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>1.</i> <val>love</val></p>
+                                <p class="word"><i>1.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>2.</i> <val>love</val></p>
+                                <p class="word"><i>2.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>3.</i> <val>love</val></p>
+                                <p class="word"><i>3.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>4.</i> <val>love</val></p>
-                            </div>
-                        </div>
-                        <div class="row g-1">
-                            <div class="col-3">
-                                <p class="word"><i>5.</i> <val>love</val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>6.</i> <val>love</val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>7.</i> <val>love</val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>8.</i> <val>love</val></p>
+                                <p class="word"><i>4.</i> <val></val></p>
                             </div>
                         </div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>9.</i> <val>love</val></p>
+                                <p class="word"><i>5.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>10.</i> <val>love</val></p>
+                                <p class="word"><i>6.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>11.</i> <val>love</val></p>
+                                <p class="word"><i>7.</i> <val></val></p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>12.</i> <val>love</val></p>
+                                <p class="word"><i>8.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i> <val></val></p>
                             </div>
                         </div>
                     </div>
                     <button class="button w-100 mt-2">Next</button>
                 </div>
-                <div class="text-center p-2 mnemonicTest" style="display: none">
+                <div class="mnemonicTest" style="display: none">
                     <h3>Confirm your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
                     <textarea class="form-control" rows="3" placeholder="antenna frequent mule pill..."></textarea>
                     <button class="button w-100 mt-3" disabled>Next</button>
                 </div>
-                <div class="text-center p-2 setupPassword" style="display: none">
-
+                <div class="setupPassword" style="display: none">
+                    <h4>Setup a new password</h4>
+                    <div class="mt-3">
+                        <p class="label text-left">New password</p>
+                        <input type="password" class="input col-12" placeholder="Enter your new password">
+                    </div>
+                    <div class="mt-3">
+                        <p class="label text-left">Repeat password</p>
+                        <input type="password" class="input col-12" placeholder="Repeat your new password">
+                    </div>
+                    <button class="button w-100 mt-4" disabled="disabled">
+                        <val>Confirm</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                    <p class="error mt-2 text-danger" style="display: none">Passwords don't match</p>
                 </div>
             </div>
         </div>
@@ -346,6 +360,7 @@
 <script src="../js/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
+<script src="../js/notyf.min.js"></script>
 <script src="../js/backgroundMessaging.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/unlockPane.js"></script>

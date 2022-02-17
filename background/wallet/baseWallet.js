@@ -141,6 +141,14 @@ class BaseWallet {
         return this.encryptedDataKey !== undefined;
     }
 
+    passwordMatch(password){
+        let passwordHash = sjcl.misc.pbkdf2(password, this.passwordSalt, 10000, 256);
+        let cipher = new sjcl.cipher.aes(passwordHash);
+        let trialDataKey = sjcl.mode.ctr.decrypt(cipher, this.encryptedDataKey, this.encryptedDataKeyIV);
+
+        return this.dataKey == trialDataKey
+    }
+
     toJSON(){
         let json = {}
 

@@ -52,6 +52,18 @@ $("#settings .settingsPane .tab").click(function(){
 
 /** -- Password setup and mnemonic -- **/
 $("#settings .settingsPane .tab[data-target=setupPassword]").click(function(){
+
+    //reset forms
+    $("#settings .settingsPane .mnemonicTest").hide()
+    $("#settings .settingsPane .setupPassword").hide()
+
+    $("#settings .settingsPane .mnemonicTest textarea").val("")
+    $("#settings .settingsPane .setupPassword input").val("")
+
+    $("#settings .settingsPane .mnemonicTest button").attr("disabled", true)
+    $("#settings .settingsPane .setupPassword button").attr("disabled", true)
+
+
     getMnemonic().then(function(mnemonic){
         const mnemonicArray = mnemonic.split(" ")
         $("#settings .settingsPane .writeMnemonic .word").each(function(index){
@@ -77,3 +89,37 @@ $("#settings .settingsPane .mnemonicTest button").click(function(){
     $("#settings .settingsPane .mnemonicTest").hide()
     $("#settings .settingsPane .setupPassword").show()
 })
+
+$("#settings .settingsPane .setupPassword input").click(function(){
+    $("#settings .settingsPane .setupPassword input").removeClass("is-invalid")
+    $("#settings .settingsPane .setupPassword .error").hide()
+})
+
+$("#settings .settingsPane .setupPassword input").on("input", function(){
+    const input1 = $("#settings .settingsPane .setupPassword input").eq(0)
+    const input2 = $("#settings .settingsPane .setupPassword input").eq(1)
+
+    $("#settings .settingsPane .setupPassword button").attr("disabled", input1.val().length < 8 || input2.val().length < 8)
+})
+
+$("#settings .settingsPane .setupPassword button").click(function(){
+    const input1 = $("#settings .settingsPane .setupPassword input").eq(0)
+    const input2 = $("#settings .settingsPane .setupPassword input").eq(1)
+
+    if(input1.val() != input2.val()){
+        $("#settings .settingsPane .setupPassword input").addClass("is-invalid")
+        $("#settings .settingsPane .setupPassword .error").show()
+        return
+    }
+
+    const btn = $(this)
+
+    disableLoadBtn(btn)
+
+    setPassword(input1.val(), "").then(function(){
+        enableLoadBtn(btn)
+        notyf.success("Password changed!")
+        $("#accountSelectionHeader").click()
+    })
+})
+

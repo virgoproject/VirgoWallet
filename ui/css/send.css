@@ -1,7 +1,3 @@
-#body .send .sendForm .label {
-    margin: 0;
-}
-
 #body .send .sendForm .sendBal {
     font-size: 0.9em;
     place-self: flex-end;
@@ -13,10 +9,6 @@
 
 #body .send .sendConfirm .ticker {
     color: var(--highlightColor1);
-}
-
-#body .send .sendConfirm .label {
-    margin: 0;
 }
 
 #body .send .sendConfirm .detail {
