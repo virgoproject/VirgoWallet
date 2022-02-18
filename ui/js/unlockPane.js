@@ -5,10 +5,7 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
     })
 
 $("#unlockPanePassword").on("input", function(){
-    if ($(this).val().length >= 8)
-        $("#unlockPanePasswordSubmit").prop("disabled", false);
-    else
-        $("#unlockPanePasswordSubmit").prop("disabled", true);
+    $("#unlockPanePasswordSubmit").prop("disabled", $(this).val().length < 8);
 });
 
 $("#unlockPanePassword").click(function(){
@@ -47,3 +44,45 @@ function displayWallet(data){
     setSend(data)
     $("#mainPane").show()
 }
+
+$("#unlockPane .passwordBox .recover").click(function(){
+    $("#unlockPane .passwordBox").hide()
+    $("#unlockPane .recoverBox").show()
+})
+
+$("#unlockPane .recoverBox .back").click(function(){
+    $("#unlockPane .passwordBox").show()
+    $("#unlockPane .recoverBox").hide()
+})
+
+$("#recoverPaneMnemonic").on("input", function(){
+    $("#recoverPaneMnemonicSubmit").prop("disabled", $(this).val().split(" ").length < 12);
+});
+
+$("#recoverPaneMnemonic").click(function(){
+    $(this).removeClass("is-invalid");
+    $("#recoverPaneMnemonicWrong").hide();
+    $("#recoverPaneMnemonicBase").show();
+});
+
+$("#recoverPaneMnemonicSubmit").click(function(){
+    disableLoadBtn($(this))
+    restoreFromMnemonic($("#recoverPaneMnemonic").val()).then(function(response){
+        if(response)
+            displayWallet(response)
+        else{
+            enableLoadBtn($("#recoverPaneMnemonicSubmit"))
+            $("#recoverPaneMnemonic").addClass("is-invalid");
+            $("#recoverPaneMnemonicWrong").show();
+            $("#recoverPaneMnemonicBase").hide();
+
+            setTimeout(function (){
+                if($("#recoverPaneMnemonicBase").is(":hidden")){
+                    $("#recoverPaneMnemonic").removeClass("is-invalid");
+                    $("#recoverPaneMnemonicWrong").hide();
+                    $("#recoverPaneMnemonicBase").show();
+                }
+            }, 5000)
+        }
+    })
+})

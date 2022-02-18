@@ -98,6 +98,20 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "passwordMatch":
             sendResponse(baseWallet.passwordMatch(request.password))
             break
+
+        case "restoreFromMnemonic":
+            try {
+                baseWallet = BaseWallet.generateWallet(request.mnemonic)
+                baseWallet.save()
+                sendResponse(getBaseInfos())
+            }catch(e){
+                console.log(e)
+                sendResponse(false)
+            }
+            break
+        case "web3Request":
+            handleWeb3Request(sendResponse, request.origin, request.method, request.params)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -117,4 +131,44 @@ function forgetWallet() {
     browser.storage.local.remove("wallet");
     browser.storage.local.remove("lastShowedSetupPwMsg");
     wallet = null;
+}
+
+function handleWeb3Request(sendResponse, origin, method, params){
+    switch(method){
+        case "eth_requestAccounts":
+            sendResponse({
+                success: true,
+                data: [baseWallet.getCurrentAddress()]
+            })
+            break
+        case "eth_accounts":
+            sendResponse({
+                success: true,
+                data: [baseWallet.getCurrentAddress()]
+            })
+            break
+        default:
+            console.log(method)
+            web3.currentProvider.send({
+                jsonrpc: "2.0",
+                id: Date.now(),
+                method: method,
+                params: params
+            }, function(error, resp){
+                if(!resp.error){
+                    sendResponse({
+                        success: true,
+                        data: resp.result
+                    })
+                    return
+                }
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: error.message,
+                        code: error.code
+                    }
+                })
+            })
+    }
 }

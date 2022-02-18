@@ -53,3 +53,7 @@ async function isEncrypted(){
     const res = await getBaseInfos()
     return res.encrypted
 }
+
+async function restoreFromMnemonic(mnemonic){
+    return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
+}

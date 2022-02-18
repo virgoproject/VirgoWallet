@@ -29,7 +29,10 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["content/injectedWeb3Provider.js"]
+      "js": [
+        "commonJS/browser-polyfill.js",
+        "content/injectedWeb3Provider.js"
+      ]
     }
   ]
 }

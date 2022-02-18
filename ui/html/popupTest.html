@@ -15,21 +15,32 @@
 <body>
 
 <div id="unlockPane">
-    <img src="/ui/images/logoWhite.png">
+    <img src="/ui/images/logoPurpleBig.png">
     <h1 class="mt-2">Nice to see you!</h1>
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
         <div>
             <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span id="unlockPanePasswordWrong">Wrong password</span></p>
-            <input type="password" id="unlockPanePassword" class="input outline w-100" placeholder="Password">
+            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="Password">
         </div>
-        <button class="button w-75" id="unlockPanePasswordSubmit" disabled>
+        <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
             <val>UNLOCK</val>
             <i class="fas fa-spinner fa-pulse" style="display: none"></i>
         </button>
+        <div class="recover mt-5">
+            <p>Or <span>recover your wallet</span> from a Secret</p>
+        </div>
     </div>
-    <div class="recover mt-5">
-        <p>Or <span>recover your wallet</span> from it's seed</p>
+    <div class="recoverBox" style="display: none">
+        <p class="back text-left"><i class="fas fa-chevron-left"></i> Back</p>
+        <div>
+            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
+            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
+        </div>
+        <button class="button w-100" id="recoverPaneMnemonicSubmit" disabled>
+            <val>RECOVER</val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
     </div>
 </div>
 
@@ -310,7 +321,7 @@
                 <div class="mnemonicTest" style="display: none">
                     <h3>Confirm your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
-                    <textarea class="form-control" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
                     <button class="button w-100 mt-3" disabled>Next</button>
                 </div>
                 <div class="getOldPassword" style="display: none">

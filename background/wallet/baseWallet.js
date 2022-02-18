@@ -45,7 +45,7 @@ class BaseWallet {
         }, 2500)
     }
 
-    static generateWallet(){
+    static generateWallet(mnemonic){
         const wallets = [];
 
         wallets[0] = {
@@ -97,7 +97,10 @@ class BaseWallet {
             }
         }
 
-        return new BaseWallet({"mnemonic": bip39.generateMnemonic(), "nonce": 1, "wallets": wallets, "selectedWallet": 0, "selectedAddress": 0})
+        if(mnemonic === undefined)
+            mnemonic = bip39.generateMnemonic()
+
+        return new BaseWallet({"mnemonic": mnemonic, "nonce": 1, "wallets": wallets, "selectedWallet": 0, "selectedAddress": 0})
     }
 
     static fromJSON(json, password){
