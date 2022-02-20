@@ -22,6 +22,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "changeWallet":
             baseWallet.selectWallet(request.walletId)
             sendResponse(true)
+            sendMessageToTabs("chainChanged", baseWallet.getCurrentWallet.chainID)
             break
 
         case "validateAddress":
@@ -171,4 +172,15 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 })
             })
     }
+}
+
+function sendMessageToTabs(command, data){
+
+    console.log("sending message")
+    browser.tabs.query().then(function(tabs){
+        for(let tab of tabs){
+            console.log(tab.id)
+            browser.tabs.sendMessage(tab.id, {command: command, data: data})
+        }
+    })
 }

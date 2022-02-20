@@ -122,3 +122,11 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
         if(response.locked) return
         window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: response.wallets[response.selectedWallet].wallet.chainID}))
     })
+
+browser.runtime.onMessage.addListener(request => {
+    switch(request.command){
+        case "chainChanged":
+            window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: request.data}))
+            break
+    }
+})
