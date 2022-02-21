@@ -1,6 +1,8 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
+const pendingAuthorizations = new Map();
+
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.command) {
@@ -22,7 +24,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "changeWallet":
             baseWallet.selectWallet(request.walletId)
             sendResponse(true)
-            sendMessageToTabs("chainChanged", baseWallet.getCurrentWallet.chainID)
+            sendMessageToTabs("chainChanged", baseWallet.getCurrentWallet().chainID)
             break
 
         case "validateAddress":
@@ -113,6 +115,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "web3Request":
             handleWeb3Request(sendResponse, request.origin, request.method, request.params)
             break
+
+        case "authorizeWebsiteConnection":
+            pendingAuthorizations.set(request.id, request.decision)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -137,9 +143,20 @@ function forgetWallet() {
 function handleWeb3Request(sendResponse, origin, method, params){
     switch(method){
         case "eth_requestAccounts":
-            sendResponse({
-                success: true,
-                data: [baseWallet.getCurrentAddress()]
+            askConnectToWebsite(origin).then(function(result){
+                if(result)
+                    sendResponse({
+                        success: true,
+                        data: [baseWallet.getCurrentAddress()]
+                    })
+                else
+                    sendResponse({
+                        success: false,
+                        error: {
+                            message: "The user rejected the request.",
+                            code: 4001
+                        }
+                    })
             })
             break
         case "eth_accounts":
@@ -175,12 +192,23 @@ function handleWeb3Request(sendResponse, origin, method, params){
 }
 
 function sendMessageToTabs(command, data){
-
-    console.log("sending message")
-    browser.tabs.query().then(function(tabs){
+    browser.tabs.query({}).then(function(tabs){
         for(let tab of tabs){
-            console.log(tab.id)
             browser.tabs.sendMessage(tab.id, {command: command, data: data})
         }
     })
+}
+
+async function askConnectToWebsite(origin){
+    const requestID = Date.now() + "." + Math.random()
+
+    pendingAuthorizations.set(requestID, null)
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+    window.open('chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+
+    while(pendingAuthorizations.get(requestID) == null){
+        await new Promise(r => setTimeout(r, 50));
+    }
+
+    return pendingAuthorizations.get(requestID)
 }

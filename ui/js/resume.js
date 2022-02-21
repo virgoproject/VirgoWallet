@@ -41,7 +41,7 @@ function displayData(data){
 
             elem.find(".title").html(balance.name)
             elem.find(".ticker").html(balance.ticker)
-            elem.find(".balance").html(Utils.beautifyAmount(Utils.formatAmount(balance.balance, balance.decimals)))
+            elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
             elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png')");
             elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
             $("#walletAssets").append(elem)
@@ -49,7 +49,7 @@ function displayData(data){
         }
 
         //update displayed balance
-        elem.find(".balance").html(Utils.beautifyAmount(Utils.formatAmount(balance.balance, balance.decimals)))
+        elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
         elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
 
         totalBalance += balance.price*balance.balance/10**balance.decimals;

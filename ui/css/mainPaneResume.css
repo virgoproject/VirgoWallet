@@ -61,6 +61,16 @@
     font-size: 0.85em;
 }
 
+#mainPane .resume .assets .asset .amount val {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 5em;
+    display: inline-block;
+    line-height: 1em;
+    vertical-align: middle;
+    padding-bottom: 2px;
+}
+
 #mainPane .resume .assets .asset .fluctuation {
     font-size: 0.85em;
     color: #2d955a;
