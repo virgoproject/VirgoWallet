@@ -30,6 +30,15 @@
     transform: scaleY(1);
 }
 
+#settings .addAccount {
+    cursor: pointer;
+    color: #545454;
+}
+
+#settings .addAccount:hover {
+    color: var(--bs-body-color)
+}
+
 #settings .accounts .account {
     background: #ede3f4;
     border-radius: 0.5em;

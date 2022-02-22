@@ -81,7 +81,12 @@
                 </div>
             </div>
             <div class="assets row mt-3">
-                <p class="title col-12 m-0">Assets <i class="fas fa-chevron-right"></i></p>
+                <div class="title col-12 m-0">
+                    <div class="row">
+                        <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
+                        <p class="col-6 text-right mb-0 addAsset"><i class="fas fa-plus"></i> Add</p>
+                    </div>
+                </div>
                 <div>
                     <div id="walletAssets" class="row">
                         <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none">
@@ -187,10 +192,10 @@
         <div class="mt-4 p-4 pt-0 mainPane">
             <div class="row p-2 pb-0">
                 <p class="col-6 mb-0">Accounts <i class="fas fa-chevron-right"></i></p>
-                <p class="col-6 text-right mb-0"><i class="fas fa-plus"></i> Add</p>
+                <p class="col-6 text-right mb-0 addAccount"><i class="fas fa-plus"></i> Add</p>
             </div>
             <div class="accounts p-2 pb-0 pt-0">
-                <div class="row account mt-2">
+                <div class="row account mt-2" style="display: none" id="baseAccountRow">
                     <div class="col-2 justify-content-center align-self-center">
                         <div class="identicon">
                             <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
@@ -198,35 +203,7 @@
                     </div>
                     <div class="col-8">
                         <p class="address">0x0000000000000000000000000000000000000000</p>
-                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
-                    </div>
-                    <div class="col-2 text-right justify-content-center align-self-center">
-                        <i class="fas fa-check isSelected"></i>
-                    </div>
-                </div>
-                <div class="row account mt-2 selected">
-                    <div class="col-2 justify-content-center align-self-center">
-                        <div class="identicon">
-                            <svg data-jdenticon-value="user127" width="32" height="32"></svg>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <p class="address">0x0000000000000000000000000000000000000000</p>
-                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
-                    </div>
-                    <div class="col-2 text-right justify-content-center align-self-center">
-                        <i class="fas fa-check isSelected"></i>
-                    </div>
-                </div>
-                <div class="row account mt-2">
-                    <div class="col-2 justify-content-center align-self-center">
-                        <div class="identicon">
-                            <svg data-jdenticon-value="sesesfse" width="32" height="32"></svg>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <p class="address">0x0000000000000000000000000000000000000000</p>
-                        <p class="amount"><val class="balance">0</val> <b class="ticker">BNB</b></p>
+                        <p class="amount"><val class="balance">0</val> <b class="ticker" data-networkticker></b></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center">
                         <i class="fas fa-check isSelected"></i>

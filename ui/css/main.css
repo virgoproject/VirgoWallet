@@ -153,6 +153,7 @@ input[type=number] {
     top: 0;
     background: #00000075;
     display: none;
+    z-index: 11;
 }
 
 .popup .box {

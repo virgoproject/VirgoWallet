@@ -1,3 +1,53 @@
+function setSettings(data){
+    let i = 0;
+    for(const addressObj of data.addresses){
+        const address = addressObj.address
+
+        const elem = $("#baseAccountRow").clone()
+        elem.find("svg").attr("data-jdenticon-value", address)
+        elem.find(".address").html(address)
+
+        const mainAssetBalance = addressObj.balances[data.wallets[data.selectedWallet].wallet.ticker]
+        elem.find(".balance").html(Utils.formatAmount(mainAssetBalance.balance, mainAssetBalance.decimals))
+        elem.find(".ticker").html(mainAssetBalance.ticker)
+
+        elem.attr("data-addressId", i)
+        elem.find(".balance").attr("data-accountMainBalance", address)
+
+        if(data.selectedAddress == i){
+            $("#accountSelectionHeader svg").attr("data-jdenticon-value", address)
+            elem.addClass("selected")
+        }
+
+        elem.click(function(){
+            if(elem.hasClass("selected")) return
+
+            changeAccount(elem.attr("data-addressId")).then(function(){
+                $("#settings .accounts .account.selected").removeClass("selected")
+                elem.addClass("selected")
+                $("#accountSelectionHeader").click()
+                $("#accountSelectionHeader svg").attr("data-jdenticon-value", address)
+                jdenticon()
+            })
+        })
+
+        $("#settings .accounts").append(elem)
+        elem.show()
+        i++
+    }
+    jdenticon()
+}
+
+$("#settings .addAccount").click(function(){
+    addAccount().then(function(data){
+        const baseElem = $("#baseAccountRow").clone()
+        $("#settings .accounts").html("")
+        $("#settings .accounts").append(baseElem)
+
+        setSettings(data)
+    })
+})
+
 $("#accountSelectionHeader").click(function(){
     if($("#settings").hasClass("opened")){
         $("#settings").removeClass("opened")

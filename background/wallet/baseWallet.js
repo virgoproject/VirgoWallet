@@ -237,6 +237,11 @@ class BaseWallet {
         this.save()
     }
 
+    selectAddress(addressID){
+        this.selectedAddress = addressID
+        this.save()
+    }
+
     getCurrentWallet(){
         return this.wallets[this.selectedWallet];
     }

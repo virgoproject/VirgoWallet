@@ -42,6 +42,7 @@ function displayWallet(data){
     setChains(data)
     setResume(data)
     setSend(data)
+    setSettings(data)
     $("#mainPane").show()
 }
 

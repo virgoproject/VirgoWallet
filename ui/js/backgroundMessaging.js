@@ -57,3 +57,11 @@ async function isEncrypted(){
 async function restoreFromMnemonic(mnemonic){
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
 }
+
+async function addAccount(){
+    return await browser.runtime.sendMessage({command: 'addAccount'})
+}
+
+async function changeAccount(accountID){
+    return await browser.runtime.sendMessage({command: 'changeAccount', accountID: accountID})
+}

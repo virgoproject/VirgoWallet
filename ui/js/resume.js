@@ -60,6 +60,10 @@ function displayData(data){
 
     $("[data-fiatTotal]").html("$" + Utils.beautifyAmount(totalBalance))
 
+    for(const addressObj of data.addresses) {
+        const address = addressObj.address
+        $('[data-accountMainBalance="'+address+'"]').html(Utils.formatAmount(addressObj.balances[selectedWallet.ticker].balance, selectedWallet.decimals))
+    }
 }
 
 function setResume(data){

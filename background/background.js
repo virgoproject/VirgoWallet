@@ -2,6 +2,7 @@
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
 const pendingAuthorizations = new Map();
+const pendingTransactions = new Map();
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -29,6 +30,16 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case "validateAddress":
             sendResponse(web3.utils.isAddress(request.address))
+            break
+
+        case "addAccount":
+            baseWallet.addAccount()
+            sendResponse(getBaseInfos())
+            break
+
+        case "changeAccount":
+            baseWallet.selectAddress(request.accountID)
+            sendResponse(getBaseInfos())
             break
 
         case "estimateSendFees"://only support web3 R/N
@@ -119,6 +130,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "authorizeWebsiteConnection":
             pendingAuthorizations.set(request.id, request.decision)
             break
+        case "authorizeTransaction":
+            pendingTransactions.set(request.id, request.decision)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -163,6 +177,40 @@ function handleWeb3Request(sendResponse, origin, method, params){
             sendResponse({
                 success: true,
                 data: [baseWallet.getCurrentAddress()]
+            })
+            break
+        case "eth_sendTransaction":
+            signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas, params[0].gasPrice).then(function(result){
+                if(result)
+                    web3.currentProvider.send({
+                        jsonrpc: "2.0",
+                        id: Date.now(),
+                        method: method,
+                        params: params
+                    }, function(error, resp){
+                        if(!resp.error){
+                            sendResponse({
+                                success: true,
+                                data: resp.result
+                            })
+                            return
+                        }
+                        sendResponse({
+                            success: false,
+                            error: {
+                                message: error.message,
+                                code: error.code
+                            }
+                        })
+                    })
+                else
+                    sendResponse({
+                        success: false,
+                        error: {
+                            message: "The user rejected the request.",
+                            code: 4001
+                        }
+                    })
             })
             break
         default:
@@ -219,4 +267,29 @@ async function askConnectToWebsite(origin){
     }
 
     return pendingAuthorizations.get(requestID)
+}
+
+async function signTransaction(origin, from, to, value, data, gas, gasPrice){
+    const requestID = Date.now() + "." + Math.random()
+
+    if(value === undefined)
+        value = 0x0
+
+    pendingTransactions.set(requestID, null)
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+    const wdw = window.open(`chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&gasPrice=${gasPrice}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+
+    setInterval(function() {
+        if(wdw.closed) {
+            clearInterval(this);
+            if(pendingTransactions.get(requestID) == null)
+                pendingTransactions.set(requestID, false)
+        }
+    }, 100);
+
+    while(pendingTransactions.get(requestID) == null){
+        await new Promise(r => setTimeout(r, 50));
+    }
+
+    return pendingTransactions.get(requestID)
 }
