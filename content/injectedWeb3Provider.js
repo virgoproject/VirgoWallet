@@ -47,6 +47,7 @@ function web3Provider(){
 
     window.ethereum = new Proxy({
         isVirgo: true,
+        isMetamask: true,
         isEIP1193: true,
         networkVersion: '1',
         chainId: '0x1',

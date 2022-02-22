@@ -204,7 +204,15 @@ async function askConnectToWebsite(origin){
 
     pendingAuthorizations.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    window.open('chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+    const wdw = window.open('chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+
+    setInterval(function() {
+        if(wdw.closed) {
+            clearInterval(this);
+            if(pendingAuthorizations.get(requestID) == null)
+                pendingAuthorizations.set(requestID, false)
+        }
+    }, 100);
 
     while(pendingAuthorizations.get(requestID) == null){
         await new Promise(r => setTimeout(r, 50));
