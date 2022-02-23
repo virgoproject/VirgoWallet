@@ -71,6 +71,16 @@
     text-overflow: ellipsis;
 }
 
+#settings .accounts .account .balance {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 7em;
+    display: inline-block;
+    line-height: 1em;
+    vertical-align: middle;
+    padding-bottom: 2px;
+}
+
 #settings .accounts .account .isSelected {
     display: none;
 }

@@ -96,6 +96,8 @@ $("#body .send .sendForm .submit").click(function(){
     recipient.attr("disabled", true)
     amount.attr("disabled", true)
     asset.attr("disabled", true)
+    $("#body .send .sendConfirm .submit").attr("disabled", true)
+    $("#body .send .sendConfirm .submit val").html('Insufficient <val data-networkticker=""></val> balance')
 
     let estimateFees = function(){
         getAsset(asset.val()).then(function(assetInfos){
@@ -155,10 +157,10 @@ $("#body .send .sendConfirm .submit").click(function(){
 
     getAsset(asset.val()).then(function(assetInfos){
         sendTo(recipient.val(), Math.trunc(parseFloat(amount.val())*10**assetInfos.decimals), asset.val()).then(function(res){
-            console.log(res)
+            notyf.success("Transaction sent!")
             recipient.val("")
             amount.val("")
-            asset.val("").trigger("change")
+            asset.val(MAIN_ASSET.contract).trigger("change")
 
             $("#body .send .sendConfirm .back").attr("disabled", false)
             enableLoadBtn($("#body .send .sendConfirm .submit"))

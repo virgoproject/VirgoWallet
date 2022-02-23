@@ -9,13 +9,79 @@ $("#mainPane .resume .address").click(function(){
     }, 2500)
 })
 
-function updateData(){
+$("#mainPane .resume .assets .addAsset").click(function(){
+    $("#body .bodyElem.addAsset .assetContract .input").val("")
+    $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", false)
+    enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
+    $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", true)
+    $("#body .bodyElem.addAsset .assetContract").show()
+    $("#body .bodyElem.addAsset .assetResume").hide()
+    $("#body .bodyElem.resume").hide()
+    $("#body .bodyElem.addAsset").show()
+})
 
+$("#body .bodyElem.addAsset .back").click(function(){
+    $("#body .bodyElem.resume").show()
+    $("#body .bodyElem.addAsset").hide()
+})
+
+$("#body .bodyElem.addAsset .assetContract .input").on("input", function(){
+    validateAddress($(this).val()).then(function(res){
+        $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", !res)
+    })
+})
+
+$("#body .bodyElem.addAsset .assetContract .submit").click(function(){
+    $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", true)
+    disableLoadBtn($(this))
+
+    getTokenDetails($("#body .bodyElem.addAsset .assetContract .input").val()).then(function(details){
+        if(!details){
+            $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", false)
+            enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
+            $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", true)
+
+            $("#body .bodyElem.addAsset .assetContract .input").addClass("is-invalid")
+            $("#body .bodyElem.addAsset .assetContract .label").addClass("text-danger")
+            $("#body .bodyElem.addAsset .assetContract .label").html("Invalid contract")
+
+            setTimeout(function(){
+                $("#body .bodyElem.addAsset .assetContract .input").removeClass("is-invalid")
+                $("#body .bodyElem.addAsset .assetContract .label").removeClass("text-danger")
+                $("#body .bodyElem.addAsset .assetContract .label").html("Contract address")
+            }, 2500)
+            return
+        }
+
+        $("#body .bodyElem.addAsset .assetResume .name").val(details.name)
+        $("#body .bodyElem.addAsset .assetResume .decimals").val(details.decimals)
+        $("#body .bodyElem.addAsset .assetResume .symbol").val(details.symbol)
+        $("#body .bodyElem.addAsset .assetResume .ticker").html(details.symbol)
+
+        enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
+        $("#body .bodyElem.addAsset .assetContract").hide()
+        $("#body .bodyElem.addAsset .assetResume").show()
+    })
+})
+
+$("#body .bodyElem.addAsset .assetResume .submit").click(function(){
+    const contract = $("#body .bodyElem.addAsset .assetContract .input").val().toLowerCase()
+    const name = $("#body .bodyElem.addAsset .assetResume .name").val()
+    const decimals = $("#body .bodyElem.addAsset .assetResume .decimals").val()
+    const symbol = $("#body .bodyElem.addAsset .assetResume .symbol").val()
+
+    addAsset(name, symbol, decimals, contract).then(function(){
+        $("#body .bodyElem.addAsset .back").click()
+        notyf.success("Added "+symbol+"!")
+    })
+
+})
+
+function updateData(){
     browser.runtime.sendMessage({command: 'getBaseInfos'})
         .then(function (response) {
             displayData(response)
         })
-
 }
 
 function displayData(data){

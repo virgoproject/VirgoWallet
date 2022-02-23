@@ -175,3 +175,7 @@ input[type=number] {
 .popup .header .close:hover {
     color: black;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+}

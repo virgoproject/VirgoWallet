@@ -65,3 +65,11 @@ async function addAccount(){
 async function changeAccount(accountID){
     return await browser.runtime.sendMessage({command: 'changeAccount', accountID: accountID})
 }
+
+async function getTokenDetails(asset){
+    return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
+}
+
+async function addAsset(name, symbol, decimals, contract){
+    return await browser.runtime.sendMessage({command: 'addToken', name: name, ticker: symbol, decimals: decimals, contract: contract})
+}

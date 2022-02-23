@@ -7,6 +7,16 @@
     color: var(--highlightColor1);
 }
 
+#body .send .sendForm .sendBal val {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 6.5em;
+    display: inline-block;
+    line-height: 1em;
+    vertical-align: middle;
+    padding-bottom: 2px;
+}
+
 #body .send .sendConfirm .ticker {
     color: var(--highlightColor1);
 }

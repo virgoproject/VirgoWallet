@@ -72,7 +72,7 @@
                     <i class="far fa-copy copy"></i>
                 </div>
             </div>
-            <div class="row mt-3 actions">
+            <div class="row mt-3 actions" style="display: none">
                 <div class="col-6 pl-0 pr-1">
                     <button class="button"><i class="fas fa-plus"></i> Add funds</button>
                 </div>
@@ -155,6 +155,40 @@
             </div>
         </div>
         <div class="bodyElem store" style="display: none">
+        </div>
+        <div class="bodyElem addAsset" style="display: none">
+            <div class="row">
+                <p class="back col-3"><i class="fas fa-chevron-left"></i> Back</p>
+                <p class="title col-6">Add a new Asset</p>
+                <div class="col-3"></div>
+            </div>
+            <div class="row assetContract">
+                <div>
+                    <p class="label text-left">Contract address</p>
+                    <input type="text" class="input col-12" placeholder="Enter the asset's contract address">
+                </div>
+                <button class="button col-12 submit mt-3" disabled="disabled">
+                    <val>Next</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+            <div class="row assetResume" style="display: none">
+                <div>
+                    <p class="label text-left">Asset name</p>
+                    <input type="text" class="input col-12 name" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">Symbol</p>
+                    <input type="text" class="input col-12 symbol" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">Decimals</p>
+                    <input type="text" class="input col-12 decimals" placeholder="" disabled>
+                </div>
+                <button class="button col-12 submit mt-3">
+                    <val>Add <span class="ticker"></span></val>
+                </button>
+            </div>
         </div>
     </div>
     <div id="footer" class="row">

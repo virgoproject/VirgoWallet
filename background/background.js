@@ -92,6 +92,33 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             })
             break
 
+        case "getTokenDetails":
+            const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
+            tokenContract.methods.name().call().then(function(name){
+                tokenContract.methods.decimals().call().then(function(decimals){
+                    tokenContract.methods.symbol().call().then(function(symbol){
+                        sendResponse({
+                            contract: request.asset,
+                            name: name,
+                            decimals: decimals,
+                            symbol: symbol
+                        })
+                    }).catch(function(){
+                        sendResponse(false)
+                    })
+                }).catch(function(){
+                    sendResponse(false)
+                })
+            }).catch(function(){
+                sendResponse(false)
+            })
+            break
+
+        case "addToken":
+            baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
+            sendResponse(true)
+            break
+
         case "getMnemonic"://protect with a password later
             sendResponse(baseWallet.mnemonic)
             break

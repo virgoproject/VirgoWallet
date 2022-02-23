@@ -75,3 +75,26 @@
     font-size: 0.85em;
     color: #2d955a;
 }
+
+#mainPane .resume .assets .addAsset {
+    cursor: pointer;
+    color: #545454;
+}
+
+#mainPane .resume .assets .addAsset:hover {
+    color: var(--bs-body-color);
+}
+
+#body .bodyElem.addAsset .back {
+    cursor: pointer;
+    color: #545454;
+}
+
+#body .bodyElem.addAsset .back:hover {
+    color: var(--bs-body-color);
+}
+
+#walletAssets {
+    max-height: 250px;
+    overflow-y: scroll;
+}
