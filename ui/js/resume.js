@@ -97,9 +97,15 @@ function displayData(data){
 
     let totalBalance = 0;
 
+    let hasChanged = false
+
     //display tokens balances
     Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
         let elem = $("#bal"+contractAddr);
+
+        const bal = Utils.formatAmount(balance.balance, balance.decimals)
+        const fiatBal = "$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals)
+
         if(!elem.length){
             //create row for this asset
             elem = $("#baseAssetRow").clone()
@@ -111,12 +117,26 @@ function displayData(data){
             elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png')");
             elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
             $("#walletAssets").append(elem)
+            hasChanged = true
+            if(contractAddr == MAIN_ASSET.ticker)
+                elem.attr("data-sort", 9999999999999999)
+            else
+                elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
             elem.show()
-        }
+        }else{
+            elem.find(".balance").html(bal)
+            elem.find(".fiatEq").html(fiatBal)
+            if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
+                //serve for sorting
+                if(contractAddr == MAIN_ASSET.ticker)
+                    elem.attr("data-sort", 9999999999999999)
+                else
+                    elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
 
-        //update displayed balance
-        elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
-        elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
+                hasChanged = true
+            }
+
+        }
 
         totalBalance += balance.price*balance.balance/10**balance.decimals;
 
@@ -124,12 +144,16 @@ function displayData(data){
         $('[data-bal="'+balance.contract+'"]').html(Utils.formatAmount(balance.balance, balance.decimals))
     })
 
+    if(!hasChanged) return
+
     $("[data-fiatTotal]").html("$" + Utils.beautifyAmount(totalBalance))
 
     for(const addressObj of data.addresses) {
         const address = addressObj.address
         $('[data-accountMainBalance="'+address+'"]').html(Utils.formatAmount(addressObj.balances[selectedWallet.ticker].balance, selectedWallet.decimals))
     }
+
+    tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
 }
 
 function setResume(data){
