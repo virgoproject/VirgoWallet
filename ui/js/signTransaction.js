@@ -15,3 +15,10 @@ $("#refuse").click(function (){
     browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: false})
     window.close()
 })
+
+$("#from").html(get("from"))
+$("#to").html(get("to"))
+$("#amount").html(get("value"))
+$("#fees").html(get("fees"))
+$("#data").html(get("data"))
+$(".ticker").html(get("ticker"))

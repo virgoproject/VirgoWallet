@@ -239,6 +239,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 })
                 return
             }
+            console.log(params[0])
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas, params[0].gasPrice).then(function(result){
                 if(result)
                     web3.currentProvider.send({
@@ -343,9 +344,18 @@ async function signTransaction(origin, from, to, value, data, gas, gasPrice){
     if(value === undefined)
         value = 0x0
 
+    value = web3.utils.fromWei(web3.utils.toBN(value))
+
+    if(gasPrice === undefined)
+        gasPrice = web3.utils.fromWei(await web3.eth.getGasPrice());
+    else
+        gasPrice = web3.utils.fromWei(web3.utils.toBN(gasPrice))
+
+    const fees = gasPrice*gas
+
     pendingTransactions.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open(`chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&gasPrice=${gasPrice}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+    const wdw = window.open(`chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&fees=${fees}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
     setInterval(function() {
         if(wdw.closed) {

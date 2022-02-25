@@ -109,17 +109,22 @@ class Web3Wallet {
                     })
             }
 
-            //not optimised, better to fetch prices for all addresses at once
-            if(this.CG_Platform)
+        }
+    }
+
+    updatePrices(){
+        //not optimised, better to fetch prices for all addresses at once
+        for(const address of baseWallet.getAddresses()) {
+            if (this.CG_Platform)
                 Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
                     fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd")
-                        .then(function(resp){
-                            resp.json().then(function(res){
+                        .then(function (resp) {
+                            resp.json().then(function (res) {
                                 balance.price = parseFloat(res[balance.contract.toLowerCase()].usd)
                             })
-                        })
+                        }).catch(function (e) {
+                    })
                 })
-
         }
     }
 
@@ -132,8 +137,6 @@ class Web3Wallet {
 
     addToken(name, ticker, decimals, contract){
         if(this.hasToken(contract) || !web3.utils.isAddress(contract)) return;
-
-        console.log("sale pute")
 
         const token = {
             "name": name,

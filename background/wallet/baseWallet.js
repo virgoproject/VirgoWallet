@@ -40,9 +40,15 @@ class BaseWallet {
     }
 
     startLoop(){
+        baseWallet.getCurrentWallet().update()
         setInterval(function(){
             baseWallet.getCurrentWallet().update()
         }, 2500)
+
+        baseWallet.getCurrentWallet().updatePrices()
+        setInterval(function(){
+            baseWallet.getCurrentWallet().updatePrices()
+        }, 30000)
     }
 
     static generateWallet(mnemonic){

@@ -7,10 +7,43 @@
     <link rel="stylesheet" href="/ui/css/main.css">
     <link rel="stylesheet" href="/ui/css/signTransaction.css">
 </head>
-<body>
-<p>sign transaction from <val id="siteName"></val> ?</p>
-<button class="button" id="allow">Allow</button>
-<button class="button" id="refuse">Refuse</button>
+<body class="text-center w-100">
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 p-4 mb-4">
+        <p class="col-12">sign transaction from <val id="siteName"></val> ?</p>
+        <div class="col-12 mb-3">
+            <p class="label">Sending</p>
+            <p class="detail"><span id="amount"></span> <span class="ticker"></span></p>
+        </div>
+        <div class="col-12 mb-3">
+            <p class="label">From</p>
+            <p class="detail value" id="from"></p>
+        </div>
+        <div class="col-12 mb-3">
+            <p class="label">To</p>
+            <p class="detail value" id="to"></p>
+        </div>
+        <div class="col-12 mb-4">
+            <p class="label">Fees</p>
+            <p class="detail"><span class="value" id="fees"></span> <span class="ticker"></span></p>
+        </div>
+        <div class="col-12 mb-4">
+            <p class="label">Data</p>
+            <p class="detail" id="data">0x0</p>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 p-2">
+                    <button class="button w-100" id="allow">Allow</button>
+                </div>
+                <div class="col-6 p-2">
+                    <button class="button w-100" id="refuse">Refuse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../js/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
