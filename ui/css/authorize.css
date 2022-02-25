@@ -1,0 +1,26 @@
+#siteName {
+    color: var(--mainColor);
+}
+
+#virgoLogo {
+    width: 90px;
+    height: 90px;
+    margin: auto;
+    background: var(--mainColor);
+    border-radius: 50%;
+    padding-top: 26px;
+}
+
+#siteLogo {
+    width: 90px;
+    height: 90px;
+    margin: auto;
+    background: #ede3f4;
+    border-radius: 50%;
+}
+
+#linkIcon {
+    font-size: 2.5em;
+    padding: 0.25em;
+    color: var(--mainColor);
+}

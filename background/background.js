@@ -1,6 +1,8 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
+const connectedWebsites = [];
+
 const pendingAuthorizations = new Map();
 const pendingTransactions = new Map();
 
@@ -40,6 +42,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "changeAccount":
             baseWallet.selectAddress(request.accountID)
             sendResponse(getBaseInfos())
+            sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
             break
 
         case "estimateSendFees"://only support web3 R/N
@@ -184,12 +187,21 @@ function forgetWallet() {
 function handleWeb3Request(sendResponse, origin, method, params){
     switch(method){
         case "eth_requestAccounts":
+            if(connectedWebsites.includes(origin)){
+                sendResponse({
+                    success: true,
+                    data: [baseWallet.getCurrentAddress()]
+                })
+                return
+            }
             askConnectToWebsite(origin).then(function(result){
-                if(result)
+                if(result){
+                    connectedWebsites.push(origin)
                     sendResponse({
                         success: true,
                         data: [baseWallet.getCurrentAddress()]
                     })
+                }
                 else
                     sendResponse({
                         success: false,
@@ -201,12 +213,32 @@ function handleWeb3Request(sendResponse, origin, method, params){
             })
             break
         case "eth_accounts":
+            if(!connectedWebsites.includes(origin)){
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: "The requested method and/or account has not been authorized by the user.",
+                        code: 4100
+                    }
+                })
+                return
+            }
             sendResponse({
                 success: true,
                 data: [baseWallet.getCurrentAddress()]
             })
             break
         case "eth_sendTransaction":
+            if(!connectedWebsites.includes(origin)){
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: "The requested method and/or account has not been authorized by the user.",
+                        code: 4100
+                    }
+                })
+                return
+            }
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas, params[0].gasPrice).then(function(result){
                 if(result)
                     web3.currentProvider.send({
@@ -241,7 +273,16 @@ function handleWeb3Request(sendResponse, origin, method, params){
             })
             break
         default:
-            console.log(method)
+            if(!connectedWebsites.includes(origin)){
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: "The requested method and/or account has not been authorized by the user.",
+                        code: 4100
+                    }
+                })
+                return
+            }
             web3.currentProvider.send({
                 jsonrpc: "2.0",
                 id: Date.now(),

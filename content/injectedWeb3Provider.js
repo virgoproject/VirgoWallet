@@ -50,6 +50,7 @@ function web3Provider(){
         isEIP1193: true,
         networkVersion: '1',
         chainId: '0x1',
+        selectedAddress: '',
         enable: async () => {
             return await window.providerRequestTransmitter.transmit("eth_requestAccounts", [])
         },
@@ -99,6 +100,11 @@ function web3Provider(){
         window.ethereum.networkVersion = ""+chainId
         window.ethereum.chainId = '0x'+chainId.toString(16)
     })
+
+    window.addEventListener('virgoAccountsChanged', (response) => {
+        const addresses = response.detail
+        window.ethereum.selectedAddress = addresses[0]
+    })
 }
 
 inject(providerRequestTransmitter)
@@ -121,12 +127,16 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
     .then(function(response){
         if(response.locked) return
         window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: response.wallets[response.selectedWallet].wallet.chainID}))
+        window.dispatchEvent(new CustomEvent("virgoAccountsChanged", {detail: [response.addresses[response.selectedAddress].address]}))
     })
 
 browser.runtime.onMessage.addListener(request => {
     switch(request.command){
         case "chainChanged":
             window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: request.data}))
+            break
+        case "accountsChanged":
+            window.dispatchEvent(new CustomEvent("virgoAccountsChanged", {detail: request.data}))
             break
     }
 })

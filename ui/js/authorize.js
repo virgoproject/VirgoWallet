@@ -6,6 +6,12 @@ function get(name){
 
 $("#siteName").html(get("origin"))
 
+$("#siteLogo img").on("error", function(){
+    $("#siteLogo img").attr("src", get("origin")+"/favicon.png")
+})
+
+$("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
+
 $("#allow").click(function (){
     browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: true})
     window.close()
