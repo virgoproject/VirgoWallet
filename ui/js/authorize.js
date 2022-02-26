@@ -9,7 +9,6 @@ $("#siteName").html(get("origin"))
 $("#siteLogo img").on("error", function(){
     $("#siteLogo img").attr("src", get("origin")+"/favicon.png")
 })
-
 $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
 $("#allow").click(function (){

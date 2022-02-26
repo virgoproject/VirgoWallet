@@ -16,6 +16,11 @@ $("#refuse").click(function (){
     window.close()
 })
 
+$("#siteLogo img").on("error", function(){
+    $("#siteLogo img").attr("src", get("origin")+"/favicon.png")
+})
+$("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
+
 $("#from").html(get("from"))
 $("#to").html(get("to"))
 $("#amount").html(get("value"))
