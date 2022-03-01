@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
     <link rel="stylesheet" href="/ui/css/settings.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
+    <link rel="stylesheet" href="/ui/css/apps.css">
 </head>
 <body>
 
@@ -20,8 +21,10 @@
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
         <div>
-            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span id="unlockPanePasswordWrong">Wrong password</span></p>
-            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="Password">
+            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span
+                    id="unlockPanePasswordWrong">Wrong password</span></p>
+            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;"
+                   placeholder="Password">
         </div>
         <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
             <val>UNLOCK</val>
@@ -34,8 +37,10 @@
     <div class="recoverBox" style="display: none">
         <p class="back text-left"><i class="fas fa-chevron-left"></i> Back</p>
         <div>
-            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
-            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
+            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span
+                    id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
+            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100"
+                      style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
         </div>
         <button class="button w-100" id="recoverPaneMnemonicSubmit" disabled>
             <val>RECOVER</val>
@@ -49,7 +54,9 @@
         <div class="topbar row">
             <div class="col-3"></div>
             <div class="col-6" id="chainSelectionHeader">
-                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+                <p class="mb-0">
+                    <val id="mainPaneCurrentChain" data-networkname>Smart Chain</val>
+                    <i class="fas fa-chevron-down"></i></p>
             </div>
             <div class="col-3" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
@@ -96,7 +103,9 @@
                                 </div>
                                 <div class="col-6">
                                     <p class="title">Bitcoin</p>
-                                    <p class="amount"><val class="balance">0</val> <b class="ticker"></b></p>
+                                    <p class="amount">
+                                        <val class="balance">0</val>
+                                        <b class="ticker"></b></p>
                                 </div>
                                 <div class="col-4 text-right">
                                     <p class="fiatEq">$0</p>
@@ -122,7 +131,9 @@
                 <div class="col-12 mb-4">
                     <div class="row">
                         <p class="label col-3">Amount</p>
-                        <p class="label col-9 text-right sendBal">Balance: <val>-</val> <span></span></p>
+                        <p class="label col-9 text-right sendBal">Balance:
+                            <val>-</val>
+                            <span></span></p>
                     </div>
                     <div class="row w-100 m-0 input inputWButton">
                         <input type="number" class="col-10 amount" placeholder="0.0">
@@ -149,18 +160,137 @@
                     <p class="detail"><span class="value"></span> <span class="ticker" data-networkticker></span></p>
                 </div>
                 <button class="button col-12 submit" disabled="disabled">
-                    <val>Insufficient <val data-networkticker=""></val> balance</val>
+                    <val>Insufficient
+                        <val data-networkticker=""></val>
+                        balance
+                    </val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
         </div>
         <div class="bodyElem store" style="display: none">
-            <div class="col-12">
-                <ul>
-                    <li>Teste</li>
-                    <li>Teste 2</li>
-                    <li>Teste 3</li>
-                </ul>
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-8 ms-3 mt-2 ">
+                    <div class="mt-2">
+                        <span class="date fw-bold ">Vendredi 1 mars 2022</span>
+                    </div>
+                    <div class="mt-2">
+                        <span class="fs-1 fw-bold">Aujourd'hui</span>
+                    </div>
+                </div>
+                <div class="col-3 mt-2">
+                    <span>Teste</span>
+                </div>
+                <div class="row mt-3 mb-3">
+                    <div class="col-12 justify-content-center d-flex align-items-center">
+                        <div class="searchBox w-75">
+                            <input placeholder="teste" class="input-field" id="searchAppsBar">
+                            <i class="fas fa-search icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mainPart d-flex justify-content-center align-items-center overflow-auto">
+                    <div class="row mt-3 d-flex justify-content-center align-items-center">
+                        <div class="firstPage"></div>
+                    </div>
+                    <div class="row mt-3 d-flex justify-content-center align-items-center">
+                        <span class="fw-bold ms-1">Categories</span>
+                        <div class="col-12 d-flex justify-content-center align-items-center text-center p-2" >
+                            <a class="col-2 p-1 ms-3 me-3 flex-column align-items-center d-flex" href="#">
+                                <div class="filter d-flex justify-content-center align-items-center">
+                                    <img src="../images/games.png" alt="games" width="80px">
+                                </div>
+                                <span class="mt-1">Games</span>
+                            </a>
+                            <a class="col-2 p-1 ms-3 me-3 flex-column align-items-center d-flex" href="#">
+                                <div class="filter d-flex justify-content-center align-items-center">
+                                    <img src="../images/defi.png" alt="defi" width="80px">
+                                </div>
+                                <span class="mt-1">Defi</span>
+                            </a>
+                            <a class="col-2 p-1 ms-3 me-3 flex-column align-items-center d-flex" href="#">
+                                <div class="filter d-flex justify-content-center align-items-center">
+                                    <img src="../images/social.png" alt="social" width="80px">
+                                </div>
+                                <span class="mt-1">Socials</span>
+                            </a>
+                            <a class="col-2 p-1 ms-3 me-3 flex-column align-items-center d-flex" href="#">
+                                <div class="filter d-flex justify-content-center align-items-center">
+                                    <img src="../images/securite.png" alt="security" width="80px">
+                                </div>
+                                <span class="mt-1">Secruite</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center align-items-center d-flex mt-3">
+                        <a class="col-12 d-flex justify-content-between fw-bold align-items-center" href="#">
+                            <span class="ms-1">Decouvrir</span>
+                            <i class="fas fa-arrow-right me-3"></i>
+                        </a>
+                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center align-items-center d-flex mt-3">
+                        <a class="col-12 d-flex justify-content-between fw-bold align-items-center" href="#">
+                            <span class="ms-1">Nos suggestions</span>
+                            <i class="fas fa-arrow-right me-3"></i>
+                        </a>
+                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center align-items-center d-flex mt-3">
+                        <a class="col-12 d-flex justify-content-between fw-bold align-items-center" href="#">
+                            <span class="ms-1">Virgo Liste</span>
+                            <i class="fas fa-arrow-right me-3"></i>
+                        </a>
+                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center align-items-center d-flex mt-3">
+                        <a class="col-12 d-flex justify-content-between fw-bold align-items-center" href="#">
+                            <span class="ms-1">Virgo Liste</span>
+                            <i class="fas fa-arrow-right me-3"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="bodyElem addAsset" style="display: none">
@@ -244,7 +374,9 @@
                     </div>
                     <div class="col-8">
                         <p class="address">0x0000000000000000000000000000000000000000</p>
-                        <p class="amount"><val class="balance">0</val> <b class="ticker" data-networkticker></b></p>
+                        <p class="amount">
+                            <val class="balance">0</val>
+                            <b class="ticker" data-networkticker></b></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center">
                         <i class="fas fa-check isSelected"></i>
@@ -289,48 +421,73 @@
             <div class="settingsCat p-3 text-center" data-settingId="setupPassword" data-settingsLevel="2">
                 <div class="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
-                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down
+                        on paper and keep it safe</b>, away from regard.</p>
                     <div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>1.</i> <val></val></p>
+                                <p class="word"><i>1.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>2.</i> <val></val></p>
+                                <p class="word"><i>2.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>3.</i> <val></val></p>
+                                <p class="word"><i>3.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>4.</i> <val></val></p>
-                            </div>
-                        </div>
-                        <div class="row g-1">
-                            <div class="col-3">
-                                <p class="word"><i>5.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>6.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>7.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>8.</i> <val></val></p>
+                                <p class="word"><i>4.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>9.</i> <val></val></p>
+                                <p class="word"><i>5.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>10.</i> <val></val></p>
+                                <p class="word"><i>6.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>11.</i> <val></val></p>
+                                <p class="word"><i>7.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>12.</i> <val></val></p>
+                                <p class="word"><i>8.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -339,7 +496,8 @@
                 <div class="mnemonicTest" style="display: none">
                     <h3>Confirm your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
-                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <textarea style="resize: none;" class="input w-100" rows="3"
+                              placeholder="antenna frequent mule pill..."></textarea>
                     <button class="button w-100 mt-3" disabled>Next</button>
                 </div>
                 <div class="getOldPassword" style="display: none">
@@ -395,7 +553,7 @@
                 </div>
             </div>
         </div>
-    </div >
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>

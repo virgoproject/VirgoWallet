@@ -1,0 +1,82 @@
+.bodyElem.store li {
+    list-style-type: none !important;
+    transition: 0.250ms;
+}
+
+.bodyElem.store li:hover {
+    color: var(--mainColor);
+    cursor: pointer;
+}
+
+.bodyElem.store .date {
+    color: rgba(0,0,0,0.5);
+    font-size: 12px;
+}
+
+.bodyElem.store .mainPart{
+    max-height: 370px;
+}
+
+.bodyElem.store .searchBox {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    padding-left: 20px;
+    border-radius: 25px;
+    background-color: var(--whiteBackground);
+    transition: 0.250ms;
+}
+
+.bodyElem.store .searchBox:hover {
+    background: #ece2f3;
+
+}
+
+.bodyElem.store .searchBox:focus-within {
+    box-shadow: 0px 1px 5px 2px #0000003b;
+    background: #ece2f3;
+}
+
+.bodyElem.store .icon {
+    padding: 10px;
+    min-width: 50px;
+    text-align: center;
+    color: var(--mainColor);
+}
+
+.bodyElem.store .input-field {
+    width: 75%;
+    outline: none;
+    border: none !important;
+    background: unset !important;
+}
+
+.bodyElem.store .firstPage{
+    height: 110px;
+    width: 85%;
+    border-radius: 25px;
+    background-color: var(--mainColorLight);
+}
+
+.bodyElem.store .filter{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: var(--mainColorLight);
+}
+
+.bodyElem.store a {
+    color: black;
+    text-decoration: unset;
+    transition: 250ms;
+}
+
+.bodyElem.store a:hover{
+    color: var(--mainColorLight);
+}
+
+.bodyElem.store .discoverBox{
+    background-color: var(--mainColorLight);
+    border-radius: 15px;
+    height: 80px;
+    width: 80px;
+}
