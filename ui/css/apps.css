@@ -3,18 +3,18 @@
     transition: 0.250ms;
 }
 
-.bodyElem.store li:hover {
+/*.bodyElem.store li:hover {
     color: var(--mainColor);
     cursor: pointer;
-}
+}*/
 
 .bodyElem.store .date {
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
     font-size: 12px;
 }
 
-.bodyElem.store .mainPart{
-    max-height: 370px;
+.bodyElem.store .mainPart {
+    max-height: 390px;
 }
 
 .bodyElem.store .searchBox {
@@ -50,33 +50,175 @@
     background: unset !important;
 }
 
-.bodyElem.store .firstPage{
+.bodyElem.store .firstPage {
     height: 110px;
     width: 85%;
     border-radius: 25px;
     background-color: var(--mainColorLight);
 }
 
-.bodyElem.store .filter{
+.bodyElem.store .filter {
     height: 50px;
     width: 50px;
     border-radius: 50%;
     background-color: var(--mainColorLight);
 }
 
-.bodyElem.store a {
+.bodyElem.store .linksToApps {
     color: black;
     text-decoration: unset;
     transition: 250ms;
 }
 
-.bodyElem.store a:hover{
+.bodyElem.store .linksToApps:hover {
     color: var(--mainColorLight);
 }
 
-.bodyElem.store .discoverBox{
+.bodyElem.store .discoverBox {
     background-color: var(--mainColorLight);
     border-radius: 15px;
     height: 80px;
     width: 80px;
+}
+
+.bodyElem.store #topApps {
+
+}
+
+.bodyElem.store .shortDescrib {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+
+.bodyElem.store ol {
+    list-style: none;
+    margin-left: 0;
+}
+
+.bodyElem.store .topAppsList {
+    counter-increment: custom;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    /*
+    transition: border-right-color 250ms;
+    */
+}
+
+.bodyElem.store .topAppsList:hover {
+    border-right: 10px solid var(--mainColor);
+    background: var(--whiteBackground);
+    cursor: pointer;
+}
+
+.bodyElem.store ol .topAppsList:before {
+    content: counter(custom) " ";
+}
+
+.bodyElem.store ol .topAppsList:first-child {
+    counter-reset: custom;
+}
+
+/*.bodyElem.selectedApp img{
+    height: 50% !important;
+    width: 100% !important;
+}*/
+
+.bodyElem.selectedApp .appHeader {
+    border-bottom: 3px solid var(--mainColor);
+    border-top: 3px solid var(--mainColor);
+}
+
+.bodyElem.selectedApp .appLogo {
+    border-radius: 10px;
+}
+
+.bodyElem.selectedApp .btnObtain{
+    width: 100px !important;
+    background-color: var(--mainColor);
+    color: white;
+    border-radius: 5px;
+}
+
+.bodyElem.selectedApp .btnObtain:focus-within,
+.bodyElem.selectedApp .btnObtain:focus,
+.bodyElem.selectedApp .btnObtain:active,
+.bodyElem.selectedApp .btnObtain:focus-within{
+    box-shadow: 0 0 0 0.25rem rgb(86 0 255 / 15%);
+}
+
+.bodyElem.selectedApp .appDescribe {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.bodyElem.selectedApp .developpementHeader{
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+
+}
+
+.bodyElem.selectedApp .appDeveloppeurDescribe {
+    font-size: 12px;
+    color: rgba(110, 0, 191, 0.25);
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.bodyElem.selectedApp .starRate{
+    font-size: 10px;
+}
+
+.bodyElem.selectedApp .starBorder{
+    border-right: 1px solid gray;
+}
+
+.bodyElem.selectedApp .leftBorder{
+    border-left: 1px solid gray;
+}
+
+.bodyElem.selectedApp .appMain{
+    max-height: 390px;
+}
+
+.bodyElem.selectedApp .descriptionApp{
+    max-height: 370px;
+    font-size: 12px;
+}
+
+.bodyElem.selectedApp .fontDesc {
+font-size: 12px;
+}
+
+.bodyElem.selectedApp .linkToDev {
+    text-decoration: unset;
+    transition: 250ms;
+    color: black ;
+}
+
+.bodyElem.selectedApp .linkToDev:hover {
+    color: var(--mainColorLight);
+}
+
+
+.bodyElem.selectedApp .devName {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.bodyElem.selectedApp .seeRating{
+    color: var(--mainColorLight) !important;
+    text-decoration: unset;
+    cursor: pointer;
+}
+
+.bodyElem.selectedApp .ratingLine{
+    line-height: 30px;
+}
+
+.bodyElem.selectedApp .ratingScore{
+    font-size: 35px !important;
 }

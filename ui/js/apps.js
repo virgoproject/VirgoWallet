@@ -16,3 +16,8 @@ $(".footerElem").click(function () {
     }
 
 })
+
+$(".bodyElem.store .topAppsList").click(function () {
+    $(".bodyElem.store").hide()
+    $(".bodyElem.selectedApp").show()
+})
