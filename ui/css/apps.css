@@ -140,7 +140,6 @@
     border-radius: 5px;
 }
 
-.bodyElem.selectedApp .btnObtain:focus-within,
 .bodyElem.selectedApp .btnObtain:focus,
 .bodyElem.selectedApp .btnObtain:active,
 .bodyElem.selectedApp .btnObtain:focus-within{
@@ -182,7 +181,7 @@
 }
 
 .bodyElem.selectedApp .appMain{
-    max-height: 390px;
+    max-height: 405px;
 }
 
 .bodyElem.selectedApp .descriptionApp{
@@ -221,4 +220,43 @@ font-size: 12px;
 
 .bodyElem.selectedApp .ratingScore{
     font-size: 35px !important;
+}
+
+.bodyElem.selectedApp .info{
+    color: rgba(0,0,0,0.5);
+}
+
+.bodyElem.selectedApp .devWebSite {
+    color: var(--mainColor);
+    text-decoration: unset;
+    transition: 250ms;
+}
+
+.bodyElem.selectedApp .devWebSite:hover {
+    color: var(--mainColorLight);
+    text-decoration: underline;
+    text-decoration-color: var(--mainColorLight);
+}
+
+.bodyElem.selectedApp .backgroundSimilarApps{
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.bodyElem.selectedApp .btnWhite{
+    background-color: white;
+    color: var(--mainColorLight);
+    transition: all 0.250ms ease-in-out;
+}
+
+.bodyElem.selectedApp .btnWhite:hover{
+    background-color: var(--mainColorLight);
+    color: white;
+}
+
+.bodyElem.selectedApp .btnWhite:focus,
+.bodyElem.selectedApp .btnWhite:active,
+.bodyElem.selectedApp .btnWhite:focus-within{
+    box-shadow: 0 0 0 0.25rem rgb(86 0 255 / 15%);
+    background-color: var(--mainColorLight);
+    color: white;
 }
