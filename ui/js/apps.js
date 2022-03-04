@@ -1,20 +1,26 @@
 $(".footerElem").click(function () {
     let data = $(this).attr("data-target")
+    let selector = $("#mainPane .header ")
+    let selectorStats = $("#mainPane .header .stats")
 
-    if (data === "store") {
-        $("#mainPane .header .stats").hide()
-        $("#mainPane .header ").hide()
-        $("#mainPane .header").css({"height" : "auto","margin-bottom":"0px"})
-        console.log("Store")
-    }
+    switch (data) {
+        case "store":
+            $("#mainPane .header .stats").hide()
+            $("#mainPane .header ").hide()
+            $("#mainPane .header").css({"height": "auto", "margin-bottom": "0px"})
+            break;
+        case "swap" :
+            $("#mainPane .header .stats").show()
+            $("#mainPane .header ").show()
+            $("#mainPane .header").css({"height": "110px", "margin-bottom": "3.5em"})
+            $("#mainPane .swapPart").show()
 
-    if (data !== "store" && $("#mainPane .header .stats").is(":hidden")) {
-        $("#mainPane .header .stats").show()
-        $("#mainPane .header ").show()
-        $("#mainPane .header").css({"height" : "110px","margin-bottom":"3.5em"})
-
-        console.log("Pas store")
-
+            break;
+        default:
+            $("#mainPane .header .stats").show()
+            $("#mainPane .header ").show()
+            $("#mainPane .header").css({"height": "110px", "margin-bottom": "3.5em"})
+            break;
     }
 
 })
