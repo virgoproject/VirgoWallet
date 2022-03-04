@@ -1,25 +1,18 @@
 $(".footerElem").click(function () {
     let data = $(this).attr("data-target")
 
-    if (data === "store") {
+    if (data === "swap") {
         $("#mainPane .header .stats").hide()
         $("#mainPane .header ").hide()
         $("#mainPane .header").css({"height" : "auto","margin-bottom":"0px"})
-        console.log("Store")
     }
 
-    if (data !== "store" && $("#mainPane .header .stats").is(":hidden")) {
+    if (data !== "swap" && $("#mainPane .header .stats").is(":hidden")) {
         $("#mainPane .header .stats").show()
         $("#mainPane .header ").show()
         $("#mainPane .header").css({"height" : "110px","margin-bottom":"3.5em"})
 
-        console.log("Pas store")
 
     }
 
-})
-
-$(".bodyElem.store .topAppsList").click(function () {
-    $(".bodyElem.store").hide()
-    $(".bodyElem.selectedApp").show()
 })

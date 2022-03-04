@@ -25,6 +25,7 @@ $("#body .bodyElem.addAsset .back").click(function(){
     $("#body .bodyElem.addAsset").hide()
 })
 
+
 $("#body .bodyElem.addAsset .assetContract .input").on("input", function(){
     validateAddress($(this).val()).then(function(res){
         $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", !res)
