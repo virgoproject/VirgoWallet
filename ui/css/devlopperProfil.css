@@ -1,0 +1,15 @@
+.bodyElem.devProfil .profilDev{
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid var(--mainColorLight);
+}
+
+.bodyElem.devProfil .devName {
+color: var(--mainColorLight);
+}
+
+.bodyElem.devProfil .appsCards {
+    box-shadow: 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 2px 1px -1px rgb(0 0 0 / 12%), 0px 1px 3px 0px rgb(0 0 0 / 20%);
+    background: brown;
+}

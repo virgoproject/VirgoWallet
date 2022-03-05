@@ -29,3 +29,12 @@ $(".bodyElem.store .topAppsList").click(function () {
     $(".bodyElem.store").hide()
     $(".bodyElem.selectedApp").show()
 })
+
+$(".bodyElem .devRedirect").click(function () {
+    $(".bodyElem.store").hide()
+    $(".bodyElem.selectedApp").hide()
+    $(".bodyElem.devProfil").show()
+
+
+    console.log("slt")
+})

@@ -166,6 +166,7 @@
     overflow:hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
 }
 
 .bodyElem.selectedApp .starRate{
