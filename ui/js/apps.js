@@ -38,3 +38,8 @@ $(".bodyElem .devRedirect").click(function () {
 
     console.log("slt")
 })
+
+window.onload = () => {
+    let cnt = $('.appsCards').length;
+    $("#appsCount").html(cnt)
+}
