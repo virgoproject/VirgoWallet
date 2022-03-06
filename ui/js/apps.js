@@ -34,12 +34,16 @@ $(".bodyElem .devRedirect").click(function () {
     $(".bodyElem.store").hide()
     $(".bodyElem.selectedApp").hide()
     $(".bodyElem.devProfil").show()
+})
 
+$(".bodyElem.store #profileUser").click(function (){
+    $(".bodyElem.store").hide()
+    $(".bodyElem.selectedApp").hide()
+    $(".bodyElem.userProfil").show()
 
-    console.log("slt")
 })
 
 window.onload = () => {
-    let cnt = $('.appsCards').length;
+    let cnt = $('.devApps').length;
     $("#appsCount").html(cnt)
 }

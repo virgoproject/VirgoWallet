@@ -1,0 +1,23 @@
+.bodyElem.userProfil .profilPic{
+    border: 2px solid var(--mainColor);
+    border-radius: 50%;
+}
+
+.bodyElem.userProfil .topBody{
+background: linear-gradient(180deg, #5a009c14, transparent);
+}
+
+.bodyElem.userProfil .validedIcon{
+    background: var(--mainColor);
+    padding: 2%;
+    border-radius: 50%;
+    color: white;
+}
+
+.bodyElem.userProfil li {
+    list-style-type: none;
+}
+
+.bodyElem.userProfil li:hover{
+    background: rgba(0,0,0,0.05);
+}

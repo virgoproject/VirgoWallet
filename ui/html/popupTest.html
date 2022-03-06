@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/ui/css/apps.css">
     <link rel="stylesheet" href="/ui/css/swap.css">
     <link rel="stylesheet" href="/ui/css/devlopperProfil.css">
+    <link rel="stylesheet" href="/ui/css/userProfile.css">
 </head>
 <body>
 
@@ -170,6 +171,48 @@
                 </button>
             </div>
         </div>
+        <div class="bodyElem userProfil" style="display: none">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12 d-flex justify-content-center align-items-center topBody">
+                    <img src="../images/VGO.png" alt="profilePic" height="135px" width="135px" class="profilPic mt-3">
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-3">
+                    <span>Nom du gars</span>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                        <i class="fas fa-check validedIcon ms-2 me-2"></i>
+                        <img src="../images/VGO.png" alt="vgo" class="rounded-circle ms-2 me-2" width="32px">
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                    <ol class="d-flex justify-content-center flex-column p-0 col-12">
+                        <li class="p-2 d-flex justify-content-between" id="profil">
+                            <span>Profil</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                        <li class="p-2 d-flex justify-content-between" id="cart">
+                            <span>Panier</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                        <li class="p-2 d-flex justify-content-between" id="download">
+                            <span>Telechargement</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                        <li class="p-2 d-flex justify-content-between" id="params_user">
+                            <span>Parametres utilisateurs</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                        <li class="p-2 d-flex justify-content-between" id="params_dev">
+                            <span>Parametres developpeur</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                        <li class="p-2 d-flex justify-content-between" id="deconnect">
+                            <span>Deconnexion</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
         <div class="bodyElem store" style="display: none">
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-8 ms-3 mt-2 ">
@@ -180,8 +223,10 @@
                         <span class="fs-1 fw-bold">Aujourd'hui</span>
                     </div>
                 </div>
-                <div class="col-3 mt-2">
-                    <span>Teste</span>
+                <div class="col-3 mt-2 d-flex justify-content-center align-items-center">
+                    <a href="#" id="profileUser">
+                        <img src="../images/VGO.png" alt="userPic" width="35px" height="35px" class="rounded-circle">
+                    </a>
                 </div>
                 <div class="row mt-3 mb-3">
                     <div class="col-12 justify-content-center d-flex align-items-center">
@@ -534,21 +579,57 @@
                 <div class="row d-flex justify-content-center align-items-center mt-5">
                     <span>Liste d'applications <span id="appsCount"></span> <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <div class="row bodyApps">
-                    <div class="col-4 d-flex justify-content-center align-items-center flex-column appsCards p-3">
-                        <img src="../images/tiktoklogo.png" alt="profilePic" class="profilDev">
-                        <span>Teste</span>
-                    </div>
-                    <div class="col-4 d-flex justify-content-center align-items-center flex-column appsCards p-3">
-                        <img src="../images/tiktoklogo.png" alt="profilePic" class="profilDev">
-                        <span>Teste</span>
-
-                    </div>
-                    <div class="col-4 d-flex justify-content-center align-items-center flex-column appsCards p-3">
-                        <img src="../images/tiktoklogo.png" alt="profilePic" class="profilDev">
-                        <span>Teste</span>
-
-                    </div>
+                <div class="row bodyApps justify-content-evenly mt-3">
+                    <ol class="d-flex align-items-start flex-column fw-bold p-0 m-0" id="listDevApps">
+                        <li class="devApps d-flex align-items-center col-12">
+                            <div class="p-3 col-2">
+                                <img src="../images/tiktoklogo.png" alt="app" class="rounded-3" width="50px">
+                            </div>
+                            <div class="col-10 p-3 ms-3 d-flex flex-column">
+                                <a href="#" class="appsDevTitle fw-bold">Teste</a>
+                                <a href="#" class="appsDevDescribe">Numero 1 de lappli web SMB</a>
+                                <ol class="star-rating d-flex align-items-center flex-row p-0">
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                </ol>
+                            </div>
+                        </li>
+                        <li class="devApps d-flex align-items-center col-12">
+                            <div class="p-3 col-2">
+                                <img src="../images/tiktoklogo.png" alt="app" class="rounded-3" width="50px">
+                            </div>
+                            <div class="col-10 p-3 ms-3 d-flex flex-column">
+                                <a href="#" class="appsDevTitle fw-bold">Teste</a>
+                                <a href="#" class="appsDevDescribe">Numero 1 de lappli web SMB</a>
+                                <ol class="star-rating d-flex align-items-center flex-row p-0">
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                </ol>
+                            </div>
+                        </li>
+                        <li class="devApps d-flex align-items-center col-12">
+                            <div class="p-3 col-2">
+                                <img src="../images/tiktoklogo.png" alt="app" class="rounded-3" width="50px">
+                            </div>
+                            <div class="col-10 p-3 ms-3 d-flex flex-column">
+                                <a href="#" class="appsDevTitle fw-bold">Teste</a>
+                                <span class="appsDevDescribe">Numero 1 de lappli web SMB</span>
+                                <ol class="star-rating d-flex align-items-center flex-row p-0">
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                    <i class="fa fa-star starRate"></i>
+                                </ol>
+                            </div>
+                        </li>
+                    </ol>
                 </div>
             </div>
         </div>
