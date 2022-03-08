@@ -65,6 +65,7 @@ class Web3Wallet {
                 "decimals": this.decimals,
                 "contract": this.contract,
                 "balance": 0,
+                "change": 0,
                 "price": 0
             }
 
@@ -75,6 +76,7 @@ class Web3Wallet {
                     "decimals": token.decimals,
                     "contract": token.contract,
                     "balance": 0,
+                    "change": 0,
                     "price": 0
                 }
             }
@@ -117,10 +119,11 @@ class Web3Wallet {
         for(const address of baseWallet.getAddresses()) {
             if (this.CG_Platform)
                 Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
-                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd")
+                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
                         .then(function (resp) {
                             resp.json().then(function (res) {
                                 balance.price = parseFloat(res[balance.contract.toLowerCase()].usd)
+                                balance.change = parseFloat(res[balance.contract.toLowerCase()].usd_24h_change)
                             })
                         }).catch(function (e) {
                     })
@@ -155,6 +158,7 @@ class Web3Wallet {
                 "decimals": token.decimals,
                 "contract": token.contract,
                 "balance": 0,
+                "change": 0,
                 "price": 0
             }
         }

@@ -76,6 +76,15 @@
     color: #2d955a;
 }
 
+#mainPane .resume .assets .asset .fluctuation.negative {
+    color: #952d2d;
+}
+
+#mainPane .resume .assets .asset .fluctuation.negative i {
+    transform: rotate(180deg);
+    vertical-align: text-top;
+}
+
 #mainPane .resume .assets .addAsset {
     cursor: pointer;
     color: #545454;

@@ -116,6 +116,14 @@ function displayData(data){
             elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
             elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png')");
             elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
+
+            elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
+            if(balance.change >= 0)
+                elem.find(".fluctuation").removeClass("negative")
+            else
+                elem.find(".fluctuation").addClass("negative")
+
+
             $("#walletAssets").append(elem)
             hasChanged = true
             if(contractAddr == MAIN_ASSET.ticker)
@@ -147,6 +155,20 @@ function displayData(data){
     if(!hasChanged) return
 
     $("[data-fiatTotal]").html("$" + Utils.beautifyAmount(totalBalance))
+
+    let totalChange = 0;
+
+    Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
+        totalChange += balance.change*balance.price*balance.balance/10**balance.decimals/totalBalance
+    })
+
+    let headerFluct = $("#mainPane .header .stats .fluctuation")
+
+    headerFluct.find("val").html(Math.abs(totalChange).toFixed(2))
+    if(totalChange >= 0)
+        headerFluct.removeClass("negative")
+    else
+        headerFluct.addClass("negative")
 
     for(const addressObj of data.addresses) {
         const address = addressObj.address

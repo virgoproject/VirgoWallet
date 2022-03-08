@@ -32,6 +32,15 @@
     margin-bottom: 0;
 }
 
+#mainPane .header .stats .fluctuation.negative {
+    color: #C92020;
+}
+
+#mainPane .header .stats .fluctuation.negative i {
+    transform: rotate(180deg);
+    vertical-align: text-top;
+}
+
 #mainPane .header .stats .title {
     font-size: 0.65em;
     color: var(--highlightColor1);
