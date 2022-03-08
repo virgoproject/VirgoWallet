@@ -45,10 +45,12 @@ class BaseWallet {
             baseWallet.getCurrentWallet().update()
         }, 2500)
 
-        baseWallet.getCurrentWallet().updatePrices()
-        setInterval(function(){
+        setTimeout(function(){
             baseWallet.getCurrentWallet().updatePrices()
-        }, 30000)
+            setInterval(function(){
+                baseWallet.getCurrentWallet().updatePrices()
+            }, 30000)
+        }, 2000)
     }
 
     static generateWallet(mnemonic){

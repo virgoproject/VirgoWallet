@@ -158,9 +158,10 @@ function displayData(data){
 
     let totalChange = 0;
 
-    Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
-        totalChange += balance.change*balance.price*balance.balance/10**balance.decimals/totalBalance
-    })
+    if(totalBalance != 0)
+        Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
+            totalChange += balance.change*balance.price*balance.balance/10**balance.decimals/totalBalance
+        })
 
     let headerFluct = $("#mainPane .header .stats .fluctuation")
 

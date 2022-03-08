@@ -47,6 +47,7 @@ function web3Provider(){
 
     window.ethereum = new Proxy({
         isVirgo: true,
+        isMetamask: true,
         isEIP1193: true,
         networkVersion: '1',
         chainId: '0x1',
@@ -105,6 +106,15 @@ function web3Provider(){
         const addresses = response.detail
         window.ethereum.selectedAddress = addresses[0]
     })
+
+    window.web3 = new Proxy({
+        currentProvider: window.ethereum,
+        __isMetaMaskShim__: true
+    }, {
+        deleteProperty: () => true
+    })
+
+    web3 = window.web3
 }
 
 inject(providerRequestTransmitter)

@@ -39,6 +39,11 @@
     color: var(--bs-body-color)
 }
 
+#settings .accounts {
+    max-height: 410px;
+    overflow-y: auto;
+}
+
 #settings .accounts .account {
     background: #ede3f4;
     border-radius: 0.5em;
