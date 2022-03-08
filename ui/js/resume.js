@@ -78,10 +78,15 @@ $("#body .bodyElem.addAsset .assetResume .submit").click(function(){
 
 })
 
+let oldData
+
 function updateData(){
     browser.runtime.sendMessage({command: 'getBaseInfos'})
         .then(function (response) {
-            displayData(response)
+            if(oldData != response) {
+                displayData(response)
+                oldData = response
+            }
         })
 }
 
@@ -96,7 +101,7 @@ function displayData(data){
 
     MAIN_ASSET = selectedWallet
 
-    let totalBalance = 0;
+    let totalBalance = 0
 
     let hasChanged = false
 
@@ -162,5 +167,5 @@ function setResume(data){
 
     setInterval(function(){
         updateData()
-    }, 100)
+    }, 250)
 }
