@@ -83,9 +83,9 @@ let oldData
 function updateData(){
     browser.runtime.sendMessage({command: 'getBaseInfos'})
         .then(function (response) {
-            if(oldData != response) {
+            if(oldData !== JSON.stringify(response)) {
                 displayData(response)
-                oldData = response
+                oldData = JSON.stringify(response)
             }
         })
 }
