@@ -77,8 +77,8 @@
 .bodyElem.store .discoverBox {
     background-color: var(--mainColorLight);
     border-radius: 15px;
-    height: 80px;
-    width: 80px;
+    height: 65px;
+    width: 65px;
 }
 
 .bodyElem.store #topApps {
@@ -117,6 +117,24 @@
 
 .bodyElem.store ol .topAppsList:first-child {
     counter-reset: custom;
+}
+
+.bodyElem.store .seeMore{
+    background-color: var(--mainColorLight);
+    color: white;
+    border: 1px solid transparent;
+    transition: all 250ms;
+}
+
+.bodyElem.store .seeMore:hover{
+    background-color: transparent;
+    border: 1px solid var(--mainColorLight);
+    color: black;
+    cursor: pointer;
+}
+
+.bodyElem.store .overflow-y{
+overflow-y: auto;
 }
 
 /*.bodyElem.selectedApp img{

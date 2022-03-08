@@ -9,13 +9,6 @@ $(".footerElem").click(function () {
             $("#mainPane .header ").hide()
             $("#mainPane .header").css({"height": "auto", "margin-bottom": "0px"})
             break;
-        case "swap" :
-            $("#mainPane .header .stats").show()
-            $("#mainPane .header ").show()
-            $("#mainPane .header").css({"height": "110px", "margin-bottom": "3.5em"})
-            $("#mainPane .swapPart").show()
-
-            break;
         default:
             $("#mainPane .header .stats").show()
             $("#mainPane .header ").show()
@@ -41,6 +34,11 @@ $(".bodyElem.store #profileUser").click(function (){
     $(".bodyElem.selectedApp").hide()
     $(".bodyElem.userProfil").show()
 
+})
+
+$(".bodyElem.userProfil li").click(function () {
+    let id = $(this).attr("id")
+    console.log(id)
 })
 
 window.onload = () => {

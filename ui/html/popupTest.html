@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/ui/css/settings.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/apps.css">
-    <link rel="stylesheet" href="/ui/css/swap.css">
     <link rel="stylesheet" href="/ui/css/devlopperProfil.css">
     <link rel="stylesheet" href="/ui/css/userProfile.css">
 </head>
@@ -189,6 +188,9 @@
                             <span>Profil</span>
                             <i class="fas fa-chevron-right"></i>
                         </li>
+                        <div class="col-12">
+                            <span>Bite</span>
+                        </div>
                         <li class="p-2 d-flex justify-content-between" id="cart">
                             <span>Panier</span>
                             <i class="fas fa-chevron-right"></i>
@@ -275,18 +277,28 @@
                             <span class="ms-1">Decouvrir</span>
                             <i class="fas fa-arrow-right me-3"></i>
                         </a>
-                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                        <div class="col-12 d-flex mt-2 justify-content-between overflow-y w-auto">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox d-flex justify-content-center align-items-center seeMore">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <span class="mt-1">Voir plus</span>
                             </div>
                         </div>
                     </div>
@@ -297,16 +309,20 @@
                             <span class="ms-1">Nos suggestions</span>
                             <i class="fas fa-arrow-right me-3"></i>
                         </a>
-                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                        <div class="col-12 d-flex mt-2 justify-content-between">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
@@ -319,16 +335,20 @@
                             <span class="ms-1">Virgo Liste</span>
                             <i class="fas fa-arrow-right me-3"></i>
                         </a>
-                        <div class="col-12 d-flex mt-2 justify-content-center mt-2">
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center me-2">
+                        <div class="col-12 d-flex mt-2 justify-content-between">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
-                            <div class="col-4 d-flex justify-content-center flex-column align-items-center ms-2">
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
+                                <div class="discoverBox"></div>
+                                <span class="mt-1">Devs</span>
+                            </div>
+                            <div class="col-3 d-flex justify-content-center flex-column align-items-center">
                                 <div class="discoverBox"></div>
                                 <span class="mt-1">Devs</span>
                             </div>
@@ -633,27 +653,6 @@
                 </div>
             </div>
         </div>
-        <div class="bodyElem swapPart" style="display: none">
-            <div class="row d-flex justify-content-center align-items-center mt-6">
-                <div class=" col-10 d-flex justify-content-center align-items-center swap-btn swap-box mb-3">
-                    <div class="col-6 d-flex justify-content-center align-items-center swpBtn active"
-                         id="exchangeBtn">
-                        <p style="margin: 0 auto;">Exchange VGO</p>
-                    </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center swpBtn" id="referralBtn">
-                        <p style="margin: 0 auto;">Invite &amp; earn</p>
-                    </div>
-                </div>
-                <div class="col-10 d-flex p-0">
-                    <p id="amountText">
-                        You have <b id="bnbBalance">-</b> <span>BNB</span> and <b id="vgoBalance">-</b> <span>VGO</span>
-                    </p>
-                </div>
-                <div class="col-10 swapInput" id="otherInput">
-                    <p>Ok</p>
-                </div>
-            </div>
-        </div>
         <div class="bodyElem addAsset" style="display: none">
             <div class="row">
                 <p class="back col-3"><i class="fas fa-chevron-left"></i> Back</p>
@@ -690,25 +689,19 @@
         </div>
     </div>
     <div id="footer" class="row">
-        <div class="footerElem col-3" data-target="send">
+        <div class="footerElem col-4" data-target="send">
             <div>
                 <i class="fas fa-dollar-sign"></i>
                 <p>Pay</p>
             </div>
         </div>
-        <div class="footerElem col-3" data-target="swap">
-            <div>
-                <i class="fas fa-exchange-alt"></i>
-                <p>Swap</p>
-            </div>
-        </div>
-        <div class="footerElem col-3 selected" data-target="resume">
+        <div class="footerElem col-4 selected" data-target="resume">
             <div>
                 <i class="fas fa-home"></i>
                 <p>Home</p>
             </div>
         </div>
-        <div class="footerElem col-3" data-target="store">
+        <div class="footerElem col-4" data-target="store">
             <div>
                 <i class="fas fa-store"></i>
                 <p>Apps</p>
@@ -938,7 +931,5 @@
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 <script src="../js/apps.js"></script>
-<script src="../js/swap.js"></script>
-
 </body>
 </html>
