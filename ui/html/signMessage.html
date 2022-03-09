@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Sign Transaction - Virgo Wallet</title>
+    <title>Sign - Virgo Wallet</title>
     <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
     <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
     <link rel="stylesheet" href="/ui/css/main.css">
@@ -13,21 +13,9 @@
         <div id="siteLogo" class="d-flex align-items-center justify-content-center">
             <img src="/ui/images/logoIndigo.png" width="55px">
         </div>
-        <p class="col-12 mt-2">Sign transaction from <val id="siteName"></val> ?</p>
-        <div class="col-12 mb-2 text-left">
-            <p class="label">Sending</p>
-            <p class="detail"><span id="amount"></span> <span class="ticker"></span></p>
-        </div>
-        <div class="col-12 mb-2 text-left">
-            <p class="label">To</p>
-            <p class="detail value" id="to"></p>
-        </div>
-        <div class="col-12 mb-2 text-left">
-            <p class="label">Fees</p>
-            <p class="detail"><span class="value" id="fees"></span> <span class="ticker"></span></p>
-        </div>
+        <p class="col-12 mt-2">Sign message from <val id="siteName"></val> ?</p>
         <div class="col-12 mb-3 text-left">
-            <p class="label">Data</p>
+            <p class="label">Message</p>
             <p class="detail" id="data">0x0</p>
         </div>
         <div class="col-12">
@@ -46,6 +34,6 @@
 <script src="../js/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
-<script src="../js/signTransaction.js"></script>
+<script src="../js/signMessage.js"></script>
 </body>
 </html>

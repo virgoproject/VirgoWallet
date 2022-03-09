@@ -5,6 +5,7 @@ const connectedWebsites = [];
 
 const pendingAuthorizations = new Map();
 const pendingTransactions = new Map();
+const pendingSigns = new Map();
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -160,8 +161,13 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "authorizeWebsiteConnection":
             pendingAuthorizations.set(request.id, request.decision)
             break
+
         case "authorizeTransaction":
             pendingTransactions.set(request.id, request.decision)
+            break
+
+        case "authorizeSign":
+            pendingSigns.set(request.id, request.decision)
             break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
@@ -185,6 +191,7 @@ function forgetWallet() {
 }
 
 function handleWeb3Request(sendResponse, origin, method, params){
+    console.log("method:" + method)
     switch(method){
         case "eth_requestAccounts":
             if(connectedWebsites.includes(origin)){
@@ -228,6 +235,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 data: [baseWallet.getCurrentAddress()]
             })
             break
+        case "eth_signTransaction":
         case "eth_sendTransaction":
             if(!connectedWebsites.includes(origin)){
                 sendResponse({
@@ -239,14 +247,13 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 })
                 return
             }
-            console.log(params[0])
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas, params[0].gasPrice).then(function(result){
                 if(result)
                     web3.currentProvider.send({
                         jsonrpc: "2.0",
                         id: Date.now(),
                         method: method,
-                        params: params
+                        params: [{from: params[0].from, to: params[0].to, value: params[0].value, data: params[0].data, gas: params[0].gas, gasPrice: params[0].gasPrice}]
                     }, function(error, resp){
                         if(!resp.error){
                             sendResponse({
@@ -271,6 +278,50 @@ function handleWeb3Request(sendResponse, origin, method, params){
                             code: 4001
                         }
                     })
+            })
+            break
+        case "eth_sign":
+            if(!connectedWebsites.includes(origin)){
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: "The requested method and/or account has not been authorized by the user.",
+                        code: 4100
+                    }
+                })
+                return
+            }
+            signMessage(origin, params[1]).then(function(result){
+                if(result)
+                    web3.currentProvider.send({
+                        jsonrpc: "2.0",
+                        id: Date.now(),
+                        method: method,
+                        params: params
+                    }, function(error, resp){
+                        if(!resp.error){
+                            sendResponse({
+                                success: true,
+                                data: resp.result
+                            })
+                            return
+                        }
+                        sendResponse({
+                            success: false,
+                            error: {
+                                message: error.message,
+                                code: error.code
+                            }
+                        })
+                    })
+                else
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: "The user rejected the request.",
+                        code: 4001
+                    }
+                })
             })
             break
         default:
@@ -321,7 +372,7 @@ async function askConnectToWebsite(origin){
 
     pendingAuthorizations.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open('chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+    const wdw = window.open('/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
     setInterval(function() {
         if(wdw.closed) {
@@ -355,7 +406,7 @@ async function signTransaction(origin, from, to, value, data, gas, gasPrice){
 
     pendingTransactions.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open(`chrome-extension://fjfjnimgccnlloinkpkgelbonpjolinn/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&fees=${fees}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+    const wdw = window.open(`/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&fees=${fees}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
     setInterval(function() {
         if(wdw.closed) {
@@ -370,4 +421,26 @@ async function signTransaction(origin, from, to, value, data, gas, gasPrice){
     }
 
     return pendingTransactions.get(requestID)
+}
+
+async function signMessage(origin, data){
+    const requestID = Date.now() + "." + Math.random()
+
+    pendingSigns.set(requestID, null)
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+    const wdw = window.open(`/ui/html/signMessage.html?id=${requestID}&origin=${origin}&data=${data}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+
+    setInterval(function() {
+        if(wdw.closed) {
+            clearInterval(this);
+            if(pendingSigns.get(requestID) == null)
+                pendingSigns.set(requestID, false)
+        }
+    }, 100);
+
+    while(pendingSigns.get(requestID) == null){
+        await new Promise(r => setTimeout(r, 50));
+    }
+
+    return pendingSigns.get(requestID)
 }
