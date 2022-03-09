@@ -92,3 +92,10 @@
     line-height: 1.3em;
 }
 
+.bodyElem.resume .newsBox{
+    height: 90px;
+    /*
+    background-color: black;
+    */
+    border-radius: 0.5em;
+}

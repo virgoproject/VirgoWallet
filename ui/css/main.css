@@ -188,3 +188,13 @@ input[type=number] {
 .bodyElem.resume {
     padding: 1em 2em;
 }
+
+.backgroundNews{
+    background: url(/ui/images/backgroundnewstest.jpg) no-repeat;
+    background-size: 100%;
+    transition: 250ms all;
+}
+
+.backgroundNews:hover{
+    background-size: 120%;
+}
