@@ -278,8 +278,17 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
+                <div class="row tab" data-target="getMnemonic">
+                    <div class="col-10">
+                        <h4 class="m-0">Reveal recovery phrase</h4>
+                        <p class="m-0">Show your secret recovery phrase</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
             </div>
-            <div class="settingsCat p-3 text-center" data-settingId="setupPassword" data-settingsLevel="2">
+            <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword" data-settingsLevel="2">
                 <div class="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
@@ -362,6 +371,68 @@
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                     </button>
                     <p class="error mt-2 text-danger" style="display: none">Passwords don't match</p>
+                </div>
+            </div>
+            <div class="settingsCat p-3 text-center getMnemonic" data-settingId="getMnemonic" data-settingsLevel="2">
+                <div class="getPassword">
+                    <h4>Unveal your phrase</h4>
+                    <div class="mt-3">
+                        <p class="label text-left">Current password</p>
+                        <input type="password" class="input col-12" placeholder="Enter your current password">
+                    </div>
+                    <button class="button w-100 mt-4" disabled="disabled">
+                        <val>Continue</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                    <p class="error mt-2 text-danger" style="display: none">Incorrect password</p>
+                </div>
+                <div class="writeMnemonic" style="display: none">
+                    <h3>Write down your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>1.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>2.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>3.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>4.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>5.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>6.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>7.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>8.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i> <val></val></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
