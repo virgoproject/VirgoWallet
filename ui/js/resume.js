@@ -77,10 +77,15 @@ $("#body .bodyElem.addAsset .assetResume .submit").click(function(){
 
 })
 
+let oldData
+
 function updateData(){
     browser.runtime.sendMessage({command: 'getBaseInfos'})
         .then(function (response) {
-            displayData(response)
+            if(oldData !== JSON.stringify(response)) {
+                displayData(response)
+                oldData = JSON.stringify(response)
+            }
         })
 }
 
