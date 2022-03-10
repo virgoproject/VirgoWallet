@@ -187,8 +187,6 @@ function displayData(data){
 function setResume(data){
     displayData(data)
 
-    console.log(data)
-
     if(data.backupPopup)
         $("#backupPopup").show()
 

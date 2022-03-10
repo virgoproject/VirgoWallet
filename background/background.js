@@ -84,8 +84,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
                     .then(function(gasLimit){
                         web3.eth.sendTransaction({from: baseWallet.getCurrentAddress(), to: request.recipient, value: request.amount, gas: gasLimit})
-                            .then(function(receipt){
-                                sendResponse(receipt)
+                            .on("transactionHash", function(hash){
+                                sendResponse(hash)
                             })
                     })
                 break
@@ -96,8 +96,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             transaction.estimateGas().then(function(gasLimit){
                 transaction.send({gas: gasLimit})
-                    .then(function(receipt){
-                        sendResponse(receipt)
+                    .on("transactionHash", function(hash){
+                        sendResponse(hash)
                     })
             })
             break
