@@ -187,7 +187,28 @@ function displayData(data){
 function setResume(data){
     displayData(data)
 
+    console.log(data)
+
+    if(data.backupPopup)
+        $("#backupPopup").show()
+
     setInterval(function(){
         updateData()
-    }, 100)
+    }, 250)
 }
+
+$("#backupPopup").click(function(){
+    closedBackupPopup()
+})
+
+$("#backupPopup .close").click(function(){
+    closedBackupPopup()
+})
+
+$("#backupPopup .button").click(function(){
+    $("#accountSelectionHeader").click()
+    $("#settings .mainPane .openSettings").click()
+    $("#settings .mainSettings [data-target=security]").click()
+    $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
+    $("#backupPopup .close").click()
+})

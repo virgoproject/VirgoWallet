@@ -7,6 +7,12 @@ const pendingAuthorizations = new Map();
 const pendingTransactions = new Map();
 const pendingSigns = new Map();
 
+let backupPopupDate = 0;
+browser.storage.local.get("backupPopupDate").then(function(res){
+    if(res.backupPopupDate !== undefined)
+        backupPopupDate = res.backupPopupDate
+})
+
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.command) {
@@ -169,6 +175,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "authorizeSign":
             pendingSigns.set(request.id, request.decision)
             break
+
+        case "closedBackupPopup":
+            backupPopupDate = Date.now() + 604800000
+            browser.storage.local.set({"backupPopupDate": backupPopupDate});
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -180,7 +191,8 @@ function getBaseInfos(){
         "selectedWallet": baseWallet.selectedWallet,
         "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
         "selectedAddress": baseWallet.selectedAddress,
-        "encrypted": baseWallet.isEncrypted()
+        "encrypted": baseWallet.isEncrypted(),
+        "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now()
     }
 }
 

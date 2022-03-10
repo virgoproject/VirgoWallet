@@ -1,173 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="/ui/js/chart.min.js"></script>
+    <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
     <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
     <link rel="stylesheet" href="/ui/css/main.css">
-    <link rel="stylesheet" href="/ui/css/wallet.css">
+    <link rel="stylesheet" href="/ui/css/unlockPane.css">
+    <link rel="stylesheet" href="/ui/css/mainPane.css">
+    <link rel="stylesheet" href="/ui/css/mainPaneResume.css">
+    <link rel="stylesheet" href="/ui/css/send.css">
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
+    <link rel="stylesheet" href="/ui/css/settings.css">
+    <link rel="stylesheet" href="/ui/css/notyf.min.css">
 </head>
 <body>
-<div class="d-block">
-    <div id="header">
-        <div id="headerStatus" class="connected col-4">
-            <div id="headerStatusLight"></div>
-            <span id="headerStatusText">Connected</span>
+
+<div id="unlockPane">
+    <img src="/ui/images/logoIndigo.png">
+    <h1 class="mt-2">Nice to see you!</h1>
+    <p class="subtitle">Decentralization is a *click* away!</p>
+    <div class="passwordBox">
+        <div>
+            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span id="unlockPanePasswordWrong">Wrong password</span></p>
+            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="Password">
         </div>
-        <div class="col-4 text-center">
-            <span class="chain" id="btnChains">BSC</span>
-        </div>
-        <div id="settingsBtnWrap" class="col-4">
-            <button id="settingsBtn">&#9776</button>
+        <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
+            <val>UNLOCK</val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
+        <div class="recover mt-5">
+            <p>Or <span>recover your wallet</span> from a Secret</p>
         </div>
     </div>
-
-    <div id="walletView" class="popupBody setActionsPopups">
-        <div class="text-center mt-3 fw-bold" id="walletValue">
-            <span class="d-block fs-3" id="walletAdress">V2VUb41TuEBYTzA67aZpsmbeRrS2UDhRMHe</span>
-            <span class="d-block">Total Value</span>
-            <span class="d-block fs-6">(234,54$)</span>
+    <div class="recoverBox" style="display: none">
+        <p class="back text-left"><i class="fas fa-chevron-left"></i> Back</p>
+        <div>
+            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
+            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
         </div>
-        <div class="text-center mt-5 overflow-auto">
-        <ul id="walletFunds">
-            <li id="BTC">
-                <div class="row">
-                    <div class="col-6 text-start ms-4">
-                        <img src="/ui/images/btc.png" width="40px" alt="btc">
-                        <span>Bitcoin</span>
-                    </div>
-                    <div class="col-5 text-end">
-                        <span>4,53678</span>
-                        <span>(345678,87$)</span>
-                    </div>
-                </div>
-            </li>
-            <li id="ETH">
-                <div class="row">
-                    <div class="col-6 text-start ms-4">
-                        <img src="/ui/images/eth.png" width="40px" alt="eth">
-                        <span>Ethereum</span>
-                    </div>
-                    <div class="col-5 text-end">
-                        <span>4,53678</span>
-                        <span>(12345,87$)</span>
-                    </div>
-                </div>
-            </li>
-            <li id="BNB">
-                <div class="row">
-                    <div class="col-6 text-start ms-4">
-                        <img src="/ui/images/bnb.png" width="40px" alt="eth">
-                        <span>BNB</span>
-                    </div>
-                    <div class="col-5 text-end">
-                        <span>4,53678</span>
-                        <span>(12345,87$)</span>
-                    </div>
-                </div>
-            </li>
-            <li id="TetherUSDT">
-                <div class="row">
-                    <div class="col-6 text-start ms-4">
-                        <img src="/ui/images/tetherusdt.png" width="40px" alt="eth">
-                        <span>Tether USDT</span>
-                    </div>
-                    <div class="col-5 text-end">
-                        <span>23400</span>
-                        <span>(23400$)</span>
-                    </div>
-                </div>
-            </li>
-            <li id="VGO">
-                <div class="row">
-                    <div class="col-6 text-start ms-4">
-                        <img src="/ui/images/VGO.png" width="40px" alt="eth">
-                        <span>Virgo</span>
-                    </div>
-                    <div class="col-5 text-end">
-                        <span>34566</span>
-                        <span>(2034,87$)</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        </div>
-
-    </div>
-
-    <div id="chain" class="popupBody setActionsPopups">
-        <span class="mt-2">Choose Chain </span>
-        <ul id="selectChains" class="mt-3">
-            <li id="BSC">Binance smart chain</li>
-            <li id="aa">Ethereum</li>
-            <li id="aaaa">Ethereum</li>
-            <li id="zz">Ethereum</li>
-            <li id="r">Ethereum</li>
-            <li id="e">Ethereum</li>
-            <li id="ooo">Ethereum</li>
-            <li id="iii">Ethereum</li>
-            <li id="uuu">Ethereum</li>
-            <li id="yyy">Ethereum</li>
-            <li id="ttt">Ethereum</li>
-            <li id="sss">Ethereum</li>
-            <li id="wwww">Ethereum</li>
-
-        </ul>
-    </div>
-    <div id="apps" class="popupBody">
-
+        <button class="button w-100" id="recoverPaneMnemonicSubmit" disabled>
+            <val>RECOVER</val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
     </div>
 </div>
+
+<div id="mainPane" style="display: none">
+    <div class="header">
+        <div class="topbar row">
+            <div class="col-3"></div>
+            <div class="col-6" id="chainSelectionHeader">
+                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+            </div>
+            <div class="col-3" id="accountSelectionHeader">
+                <svg data-jdenticon-value="user127" width="36" height="36"></svg>
+            </div>
+        </div>
+        <div class="stats row">
+            <p class="title">ESTIMATED VALUE</p>
+            <h1 class="value" data-fiatTotal>$0</h1>
+            <p class="fluctuation"><i class="fas fa-chevron-up"></i> <val>0</val>%</p>
+        </div>
+    </div>
+    <div id="body">
+        <div class="bodyElem resume">
+            <div class="address row">
+                <div class="col-10">
+                    <p class="title">Wallet Address</p>
+                    <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>
+                </div>
+                <div class="col-2 justify-content-center align-self-center">
+                    <i class="far fa-copy copy"></i>
+                </div>
+            </div>
+            <div class="row mt-3 actions" style="display: none">
+                <div class="col-6 pl-0 pr-1">
+                    <button class="button"><i class="fas fa-plus"></i> Add funds</button>
+                </div>
+                <div class="col-6 pr-0 pl-1">
+                    <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
+                </div>
+            </div>
+            <div class="assets row mt-3">
+                <div class="title col-12 m-0">
+                    <div class="row">
+                        <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
+                        <p class="col-6 text-right mb-0 addAsset"><i class="fas fa-plus"></i> Add</p>
+                    </div>
+                </div>
+                <div>
+                    <div id="walletAssets" class="row">
+                        <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
+                            <div class="row">
+                                <div class="col-2 justify-content-center align-self-center">
+                                    <div class="logo"></div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">Bitcoin</p>
+                                    <p class="amount"><val class="balance">0</val> <b class="ticker"></b></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <p class="fiatEq">$0</p>
+                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i> <val></val>%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bodyElem send" style="display: none">
+            <div class="row sendForm">
+                <div class="col-12 mb-3">
+                    <p class="label">Send to</p>
+                    <input type="text" class="input col-12 recipient" placeholder="Recipient address">
+                </div>
+                <div class="col-12 mb-3">
+                    <p class="label">Asset</p>
+                    <select class="input w-100 assetSelect">
+                    </select>
+                </div>
+                <div class="col-12 mb-4">
+                    <div class="row">
+                        <p class="label col-3">Amount</p>
+                        <p class="label col-9 text-right sendBal">Balance: <val>-</val> <span></span></p>
+                    </div>
+                    <div class="row w-100 m-0 input inputWButton">
+                        <input type="number" class="col-10 amount" placeholder="0.0">
+                        <button class="col-2 max">Max</button>
+                    </div>
+                </div>
+                <button class="button col-12 submit" disabled="disabled">
+                    <val>Next</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+            <div class="row sendConfirm" style="display: none">
+                <p class="back"><i class="fas fa-chevron-left"></i> Edit</p>
+                <div class="col-12 mb-3 amount">
+                    <p class="label">Sending</p>
+                    <p class="detail"><span class="value"></span> <span class="ticker"></span></p>
+                </div>
+                <div class="col-12 mb-3 recipient">
+                    <p class="label">To</p>
+                    <p class="detail value"></p>
+                </div>
+                <div class="col-12 mb-4 fees">
+                    <p class="label">Fees</p>
+                    <p class="detail"><span class="value"></span> <span class="ticker" data-networkticker></span></p>
+                </div>
+                <button class="button col-12 submit" disabled="disabled">
+                    <val>Insufficient <val data-networkticker=""></val> balance</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+        </div>
+        <div class="bodyElem store" style="display: none">
+        </div>
+        <div class="bodyElem addAsset" style="display: none">
+            <div class="row">
+                <p class="back col-3"><i class="fas fa-chevron-left"></i> Back</p>
+                <p class="title col-6">Add a new Asset</p>
+                <div class="col-3"></div>
+            </div>
+            <div class="row assetContract">
+                <div>
+                    <p class="label text-left">Contract address</p>
+                    <input type="text" class="input col-12" placeholder="Enter the asset's contract address">
+                </div>
+                <button class="button col-12 submit mt-3" disabled="disabled">
+                    <val>Next</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+            <div class="row assetResume" style="display: none">
+                <div>
+                    <p class="label text-left">Asset name</p>
+                    <input type="text" class="input col-12 name" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">Symbol</p>
+                    <input type="text" class="input col-12 symbol" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">Decimals</p>
+                    <input type="text" class="input col-12 decimals" placeholder="" disabled>
+                </div>
+                <button class="button col-12 submit mt-3">
+                    <val>Add <span class="ticker"></span></val>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="footer" class="row">
+        <div class="footerElem col-4" data-target="send">
+            <div>
+                <i class="fas fa-dollar-sign"></i>
+                <p>Pay</p>
+            </div>
+        </div>
+        <div class="footerElem col-4 selected" data-target="resume">
+            <div>
+                <i class="fas fa-home"></i>
+                <p>Home</p>
+            </div>
+        </div>
+        <div class="footerElem col-4" data-target="store">
+            <div>
+                <i class="fas fa-store"></i>
+                <p>Apps</p>
+            </div>
+        </div>
+    </div>
+    <div id="chainSelector">
+        <div class="row chain" id="baseChainRow" style="display: none">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <h3>Ethereum</h3>
+                <p>ETH</p>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+    <div id="settings" class="pt-2">
+        <p class="text-center title">My Wallet</p>
+        <div class="mt-4 p-4 pt-0 mainPane">
+            <div class="row p-2 pb-0">
+                <p class="col-6 mb-0">Accounts <i class="fas fa-chevron-right"></i></p>
+                <p class="col-6 text-right mb-0 addAccount"><i class="fas fa-plus"></i> Add</p>
+            </div>
+            <div class="accounts p-2 pb-0 pt-0 row d-flex justify-content-center">
+                <div class="row account mt-2" style="display: none" id="baseAccountRow">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="identicon">
+                            <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <p class="address">0x0000000000000000000000000000000000000000</p>
+                        <p class="amount"><val class="balance">0</val> <b class="ticker" data-networkticker></b></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check isSelected"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 p-2 pt-0">
+                <div class="col-6 pl-0 pr-1">
+                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i> Settings</button>
+                </div>
+                <div class="col-6 pl-1 pr-0">
+                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i> Support</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 settingsPane" style="display: none">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="mainSettings">
+                <div class="row tab" data-target="security">
+                    <div class="col-10">
+                        <h4 class="m-0">Security</h4>
+                        <p class="m-0">Secure and backup your wallet</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="settingsCat" data-settingId="security" data-title="Security" data-settingsLevel="1">
+                <div class="row tab" data-target="setupPassword">
+                    <div class="col-10">
+                        <h4 class="m-0">Password</h4>
+                        <p class="m-0">Setup and change your password</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="row tab" data-target="getMnemonic">
+                    <div class="col-10">
+                        <h4 class="m-0">Reveal recovery phrase</h4>
+                        <p class="m-0">Show your secret recovery phrase</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword" data-settingsLevel="2">
+                <div class="writeMnemonic" style="display: none">
+                    <h3>Write down your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>1.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>2.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>3.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>4.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>5.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>6.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>7.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>8.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i> <val></val></p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-2">Next</button>
+                </div>
+                <div class="mnemonicTest" style="display: none">
+                    <h3>Confirm your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
+                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <button class="button w-100 mt-3" disabled>Next</button>
+                </div>
+                <div class="getOldPassword" style="display: none">
+                    <h4>Setup a new password</h4>
+                    <div class="mt-3">
+                        <p class="label text-left">Current password</p>
+                        <input type="password" class="input col-12" placeholder="Enter your current password">
+                    </div>
+                    <button class="button w-100 mt-4" disabled="disabled">
+                        <val>Continue</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                    <p class="error mt-2 text-danger" style="display: none">Incorrect password</p>
+                </div>
+                <div class="setupPassword" style="display: none">
+                    <h4>Setup a new password</h4>
+                    <div class="mt-3">
+                        <p class="label text-left">New password</p>
+                        <input type="password" class="input col-12" placeholder="Enter your new password">
+                    </div>
+                    <div class="mt-3">
+                        <p class="label text-left">Repeat password</p>
+                        <input type="password" class="input col-12" placeholder="Repeat your new password">
+                    </div>
+                    <button class="button w-100 mt-4" disabled="disabled">
+                        <val>Confirm</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                    <p class="error mt-2 text-danger" style="display: none">Passwords don't match</p>
+                </div>
+            </div>
+            <div class="settingsCat p-3 text-center getMnemonic" data-settingId="getMnemonic" data-settingsLevel="2">
+                <div class="getPassword">
+                    <h4>Unveal your phrase</h4>
+                    <div class="mt-3">
+                        <p class="label text-left">Current password</p>
+                        <input type="password" class="input col-12" placeholder="Enter your current password">
+                    </div>
+                    <button class="button w-100 mt-4" disabled="disabled">
+                        <val>Continue</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                    <p class="error mt-2 text-danger" style="display: none">Incorrect password</p>
+                </div>
+                <div class="writeMnemonic" style="display: none">
+                    <h3>Write down your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>1.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>2.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>3.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>4.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>5.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>6.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>7.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>8.</i> <val></val></p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i> <val></val></p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i> <val></val></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="backupPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row text-center p-4 pt-0">
+                <div class="col-12">
+                    <img src="/ui/images/backup.png" style="width: 40%;margin-left: 10%;">
+                </div>
+                <div class="col-12 p-3">
+                    <h3>Secure your assets!</h3>
+                    <p class="m-0">Save your <span>seed phrase</span> and<br>setup a <span>password</span> now.</p>
+                </div>
+                <div class="col-12">
+                    <button class="button">Secure my assets</button>
+                </div>
+            </div>
+        </div>
+    </div >
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="/commonJS/utils.js"></script>
+<script src="/commonJS/browser-polyfill.js"></script>
+<script src="../js/notyf.min.js"></script>
+<script src="../js/backgroundMessaging.js"></script>
+<script src="../js/popup.js"></script>
+<script src="../js/unlockPane.js"></script>
+<script src="../js/selectChains.js"></script>
+<script src="../js/resume.js"></script>
+<script src="../js/send.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/jdenticon.min.js"></script>
+<script src="../js/tinysort.min.js"></script>
 </body>
 </html>
-<script>
-    /*
-    <!--<canvas id="graph1"></canvas>-->
-
-        async function retieveInfo() {
-            let res = await fetch("https://api.blockchain.info/charts/market-price?format=json");
-            let json = await res.json()
-
-
-            let ctx = document.getElementById('graph1').getContext('2d')
-            let data = {
-                labels: ['lable 1', 'label 2', 'label 3', 'label 4'],
-                datasets: [{
-                    data: [31783.49, 56610.46, 33136.46, 38278.61],
-                    borderColor: "#000000",
-                    borderWidth: "1",
-                    color: [
-                        'blue',
-                        'green',
-                        'yellow',
-                    ]
-                },
-                    {
-                        data: [0.23444, 0.23765, 0.23678, 0.24345],
-                        borderColor: "#FF0000",
-                        borderWidth: "1"
-                    }
-                ]
-            }
-
-            let options = {
-                responsive: true,
-            }
-
-            let config = {
-                type: 'line',
-                data: data,
-                options: options
-            }
-
-            let graph1 = new Chart(ctx, config)
-        }
-
-        retieveInfo()*/
-</script>
-<script src="/ui/js/jquery.min.js"></script>
-<script src="/ui/js/popup.js"></script>
-<script src="/ui/js/selectChains.js"></script>
-<script src="/ui/js/wallet.js"></script>

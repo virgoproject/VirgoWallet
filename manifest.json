@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Virgo Wallet",
-  "version": "0.4",
+  "version": "0.5",
   "short_name": "Virgo Wallet",
   "description": "Store your VGOs and use Apps built on Virgo",
   "permissions": ["storage","notifications"],
 
   "browser_action": {
     "default_icon": "ui/images/vgoLogoApp.png",
-    "default_popup": "ui/html/popupTest.html",
+    "default_popup": "ui/html/popup.html",
     "default_title": "Virgo"
   },
 

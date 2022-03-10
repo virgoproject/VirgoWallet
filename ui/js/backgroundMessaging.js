@@ -73,3 +73,7 @@ async function getTokenDetails(asset){
 async function addAsset(name, symbol, decimals, contract){
     return await browser.runtime.sendMessage({command: 'addToken', name: name, ticker: symbol, decimals: decimals, contract: contract})
 }
+
+function closedBackupPopup(){
+    browser.runtime.sendMessage({command: 'closedBackupPopup'})
+}
