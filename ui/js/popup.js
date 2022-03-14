@@ -10,6 +10,10 @@ function enableLoadBtn(elem) {
     elem.attr("disabled", false)
 }
 
+function isBtnDisabled(elem){
+    return elem.is(":visible") && !elem.find("val").is(":visible")
+}
+
 function copyToClipboard(element) {
     let temp = $("<input>")
     temp.css("position", "absolute")

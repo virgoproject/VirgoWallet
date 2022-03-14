@@ -39,6 +39,11 @@ function setChains(data){
 
                     //reset send form
                     getBaseInfos().then(function(res){
+                        $("#body .send .sendForm .recipient").val("")
+                        $("#body .send .sendForm .amount").val("")
+                        $("#body .send .sendConfirm .back").attr("disabled", false)
+                        enableLoadBtn($("#body .send .sendConfirm .submit"))
+                        $("#body .send .sendConfirm .back").click()
                         $("#body .send .sendForm .assetSelect").html("")
                         setSend(res)
                     })

@@ -16,6 +16,7 @@ $("#body .send .sendForm .assetSelect").change(function(){
     getAsset($(this).val()).then(function(asset){
         $("#body .send .sendForm .sendBal span").html(asset.ticker)
         $("#body .send .sendForm .sendBal val").attr("data-bal", asset.contract)
+        $("#body .send .sendForm .sendBal val").html(Utils.formatAmount(asset.balance, asset.decimals))
 
         //wait for price to be updated
         setTimeout(function(){
@@ -103,6 +104,8 @@ $("#body .send .sendForm .submit").click(function(){
         getAsset(asset.val()).then(function(assetInfos){
             estimateSendFees(recipient.val(), Math.trunc(parseFloat(amount.val())*10**assetInfos.decimals), asset.val()).then(function(fees){
                 getBalance(MAIN_ASSET.ticker).then(function (nativeBalance){
+
+                    if(fees.gasLimit === undefined || isBtnDisabled($("#body .send .sendConfirm .submit"))) return
 
                     enableLoadBtn($("#body .send .sendForm .submit"))
                     recipient.attr("disabled", false)

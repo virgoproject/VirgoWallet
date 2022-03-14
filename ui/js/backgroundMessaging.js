@@ -12,11 +12,18 @@ async function getAsset(contract){
             "name": selectedWallet.name,
             "ticker": selectedWallet.ticker,
             "decimals": selectedWallet.decimals,
-            "contract": selectedWallet.contract
+            "contract": selectedWallet.contract,
+            "balance": res.addresses[res.selectedAddress].balances[selectedWallet.ticker].balance
         }
 
     for(const asset of selectedWallet.tokens)
-        if(asset.contract == contract) return asset
+        if(asset.contract == contract) return {
+            "name": asset.name,
+            "ticker": asset.ticker,
+            "decimals": asset.decimals,
+            "contract": asset.contract,
+            "balance": res.addresses[res.selectedAddress].balances[asset.contract].balance
+        }
 
     return false
 }
