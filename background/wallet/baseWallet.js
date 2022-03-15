@@ -73,6 +73,20 @@ class BaseWallet {
         wallets[1] = {
             "type": "web3",
             "wallet": {
+                "name": "Ropsten Testnet",
+                "asset": "Ethereum",
+                "ticker": "ETH",
+                "decimals": 18,
+                "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                "RPC": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+                "chainID": 3,
+                "tokens": []
+            }
+        }
+
+        wallets[2] = {
+            "type": "web3",
+            "wallet": {
                 "name": "Smart Chain",
                 "asset": "Binance Coin",
                 "ticker": "BNB",
@@ -91,7 +105,7 @@ class BaseWallet {
             }
         }
 
-        wallets[2] = {
+        wallets[3] = {
             "type": "web3",
             "wallet": {
                 "name": "Polygon",

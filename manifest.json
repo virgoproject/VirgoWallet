@@ -3,16 +3,16 @@
   "name": "Virgo Wallet",
   "version": "0.5",
   "short_name": "Virgo Wallet",
-  "description": "Store your VGOs and use Apps built on Virgo",
+  "description": "An easy-to-use, cross-chain wallet in your browser!",
   "permissions": ["storage","notifications"],
 
   "browser_action": {
-    "default_icon": "ui/images/vgoLogoApp.png",
+    "default_icon": "ui/images/walletLogo.png",
     "default_popup": "ui/html/popup.html",
     "default_title": "Virgo"
   },
 
-  "icons": {"128": "ui/images/vgoLogoApp.png"},
+  "icons": {"128": "ui/images/walletLogo.png"},
 
   "background": {
     "scripts": [
