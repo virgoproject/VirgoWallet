@@ -137,8 +137,6 @@ function displayData(data){
                 elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
             elem.show()
         }else{
-            elem.find(".balance").html(bal)
-            elem.find(".fiatEq").html(fiatBal)
             if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
                 //serve for sorting
                 if(contractAddr == MAIN_ASSET.ticker)
@@ -148,7 +146,8 @@ function displayData(data){
 
                 hasChanged = true
             }
-
+            elem.find(".balance").html(bal)
+            elem.find(".fiatEq").html(fiatBal)
         }
 
         totalBalance += balance.price*balance.balance/10**balance.decimals;

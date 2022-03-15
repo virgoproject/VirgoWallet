@@ -54,7 +54,7 @@ class BaseWallet {
     }
 
     static generateWallet(mnemonic){
-        const wallets = [];
+        const wallets = []
 
         wallets[0] = {
             "type": "web3",
@@ -127,22 +127,22 @@ class BaseWallet {
 
     static fromJSON(json, password){
         try {
-            let data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt;
+            let data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt
 
             if (json.encryptedDataKey === undefined) {
                 data = json.data;
             }else{
-                encryptedDataKey = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.encryptedDataKey));
-                encryptedDataKeyIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.encryptedDataKeyIV));
-                let encryptedData = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.data));
-                let encryptedDataIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.IV));
-                passwordSalt = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.passwordSalt));
-                let passwordHash = sjcl.misc.pbkdf2(password, passwordSalt, 10000, 256);
-                let cipher = new sjcl.cipher.aes(passwordHash);
-                dataKey = sjcl.mode.ctr.decrypt(cipher, encryptedDataKey, encryptedDataKeyIV);
+                encryptedDataKey = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.encryptedDataKey))
+                encryptedDataKeyIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.encryptedDataKeyIV))
+                let encryptedData = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.data))
+                let encryptedDataIV = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.IV))
+                passwordSalt = sjcl.codec.bytes.toBits(Converter.hexToBytes(json.passwordSalt))
+                let passwordHash = sjcl.misc.pbkdf2(password, passwordSalt, 10000, 256)
+                let cipher = new sjcl.cipher.aes(passwordHash)
+                dataKey = sjcl.mode.ctr.decrypt(cipher, encryptedDataKey, encryptedDataKeyIV)
 
-                cipher = new sjcl.cipher.aes(dataKey);
-                data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))));
+                cipher = new sjcl.cipher.aes(dataKey)
+                data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))))
             }
 
             return new BaseWallet(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt)
@@ -153,12 +153,12 @@ class BaseWallet {
     }
 
     encrypt(password){
-        this.passwordSalt = sjcl.random.randomWords(32);
-        let passwordHash = sjcl.misc.pbkdf2(password, this.passwordSalt, 10000, 256);
-        this.dataKey = sjcl.random.randomWords(8);
-        this.encryptedDataKeyIV = sjcl.random.randomWords(4);
-        let cipher = new sjcl.cipher.aes(passwordHash);
-        this.encryptedDataKey = sjcl.mode.ctr.encrypt(cipher, this.dataKey, this.encryptedDataKeyIV);
+        this.passwordSalt = sjcl.random.randomWords(32)
+        let passwordHash = sjcl.misc.pbkdf2(password, this.passwordSalt, 10000, 256)
+        this.dataKey = sjcl.random.randomWords(8)
+        this.encryptedDataKeyIV = sjcl.random.randomWords(4)
+        let cipher = new sjcl.cipher.aes(passwordHash)
+        this.encryptedDataKey = sjcl.mode.ctr.encrypt(cipher, this.dataKey, this.encryptedDataKeyIV)
         this.save()
     }
 
@@ -167,9 +167,9 @@ class BaseWallet {
     }
 
     passwordMatch(password){
-        let passwordHash = sjcl.misc.pbkdf2(password, this.passwordSalt, 10000, 256);
-        let cipher = new sjcl.cipher.aes(passwordHash);
-        let trialDataKey = sjcl.mode.ctr.decrypt(cipher, this.encryptedDataKey, this.encryptedDataKeyIV);
+        let passwordHash = sjcl.misc.pbkdf2(password, this.passwordSalt, 10000, 256)
+        let cipher = new sjcl.cipher.aes(passwordHash)
+        let trialDataKey = sjcl.mode.ctr.decrypt(cipher, this.encryptedDataKey, this.encryptedDataKeyIV)
 
         return JSON.stringify(this.dataKey) == JSON.stringify(trialDataKey)
     }
@@ -212,7 +212,7 @@ class BaseWallet {
     }
 
      static async loadFromJSON(password){
-        const res = await browser.storage.local.get("wallet");
+        const res = await browser.storage.local.get("wallet")
         if (res.wallet === undefined) {
             baseWallet = BaseWallet.generateWallet()
             baseWallet.startLoop()
@@ -230,7 +230,7 @@ class BaseWallet {
     }
 
     save(){
-        browser.storage.local.set({"wallet": this.toJSON()});
+        browser.storage.local.set({"wallet": this.toJSON()})
     }
 
     addAccount(){
@@ -253,10 +253,12 @@ class BaseWallet {
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce
-        });
+        })
         web3.setProvider(newProvider)
         provider = newProvider
         this.save()
+        this.getCurrentWallet().update()
+        this.getCurrentWallet().updatePrices()
     }
 
     selectAddress(addressID){
@@ -265,7 +267,7 @@ class BaseWallet {
     }
 
     getCurrentWallet(){
-        return this.wallets[this.selectedWallet];
+        return this.wallets[this.selectedWallet]
     }
 
     getCurrentAddress(){
