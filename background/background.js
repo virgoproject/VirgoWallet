@@ -152,9 +152,24 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case "restoreFromMnemonic":
             try {
+                const startLoop = baseWallet === undefined
                 baseWallet = BaseWallet.generateWallet(request.mnemonic)
                 baseWallet.save()
+                if(startLoop) baseWallet.startLoop()
+                else {
+                    baseWallet.getCurrentWallet().update()
+                    baseWallet.getCurrentWallet().updatePrices()
+                }
                 sendResponse(getBaseInfos())
+            }catch(e){
+                console.log(e)
+                sendResponse(false)
+            }
+            break
+        case "isMnemonicValid":
+            try {
+                BaseWallet.generateWallet(request.mnemonic)
+                sendResponse(true)
             }catch(e){
                 console.log(e)
                 sendResponse(false)

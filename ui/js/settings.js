@@ -268,3 +268,88 @@ $("#settings .getMnemonic .getPassword button").click(function(){
             })
         })
 })
+
+
+/** -- Restore from mnemonic -- **/
+$("#settings .settingsPane .tab[data-target=importMnemonic]").click(function(){
+    //reset forms
+    $("#settings .importMnemonic .mnemonicWarn").hide()
+    $("#settings .importMnemonic .mnemonicAsk").show()
+
+    $("#settings .importMnemonic .mnemonicAsk textarea").val("")
+    $("#settings .importMnemonic .mnemonicAsk button").attr("disabled", true)
+    $("#settings .importMnemonic .mnemonicAsk input").attr("disabled", false)
+})
+
+$("#settings .importMnemonic .mnemonicAsk textarea").on("input", function(){
+    $("#settings .importMnemonic .mnemonicAsk button").prop("disabled", $(this).val().split(" ").length < 12);
+});
+
+$("#settings .importMnemonic .mnemonicAsk textarea").click(function(){
+    $(this).removeClass("is-invalid")
+    $("#settings .importMnemonic .mnemonicAsk .label.error").hide()
+    $("#settings .importMnemonic .mnemonicAsk .label.normal").show()
+});
+
+$("#settings .importMnemonic .mnemonicAsk button").click(function(){
+    disableLoadBtn($(this))
+    isMnemonicValid($("#settings .importMnemonic .mnemonicAsk textarea").val()).then(function(response){
+        enableLoadBtn($("#settings .importMnemonic .mnemonicAsk button"))
+        $("#settings .importMnemonic .mnemonicAsk button").attr("disabled", true)
+        if(!response){
+            $("#settings .importMnemonic .mnemonicAsk .label.normal").hide()
+            $("#settings .importMnemonic .mnemonicAsk .label.error").show()
+            $("#settings .importMnemonic .mnemonicAsk textarea").addClass("is-invalid")
+
+            setTimeout(function (){
+                if($("#settings .importMnemonic .mnemonicAsk .label.normal").is(":hidden")){
+                    $("#settings .importMnemonic .mnemonicAsk textarea").removeClass("is-invalid")
+                    $("#settings .importMnemonic .mnemonicAsk .label.error").hide()
+                    $("#settings .importMnemonic .mnemonicAsk .label.normal").show()
+                }
+            }, 5000)
+            return
+        }
+        $("#settings .importMnemonic .mnemonicAsk").hide()
+        $("#settings .importMnemonic .mnemonicWarn").show()
+    })
+})
+
+$("#settings .importMnemonic .mnemonicWarn button").click(function(){
+    disableLoadBtn($(this))
+    restoreFromMnemonic($("#settings .importMnemonic .mnemonicAsk textarea").val()).then(function(data){
+        setTimeout(function(){
+
+            //reset current display
+            //chain selection
+            let elem = $("#baseChainRow").clone()
+            $("#chainSelector").html("")
+            $("#chainSelector").append(elem)
+            setChains(data)
+            //settings
+            elem = $("#baseAccountRow").clone()
+            $("#settings .accounts").html("")
+            $("#settings .accounts").append(elem)
+            setSettings(data)
+            //assets
+            elem = $("#baseAssetRow").clone()
+            $("#walletAssets").html("")
+            $("#walletAssets").append(elem)
+            displayData(data)
+            console.log("qzdzqd")
+            console.log(data)
+            //send form
+            $("#body .send .sendForm .recipient").val("")
+            $("#body .send .sendForm .amount").val("")
+            $("#body .send .sendConfirm .back").attr("disabled", false)
+            enableLoadBtn($("#body .send .sendConfirm .submit"))
+            $("#body .send .sendConfirm .back").click()
+            $("#body .send .sendForm .assetSelect").html("")
+            setSend(data)
+
+            enableLoadBtn($("#settings .importMnemonic .mnemonicWarn button"))
+            notyf.success("Wallet recovered!")
+            $("#accountSelectionHeader").click()
+        }, 2000)
+    })
+})

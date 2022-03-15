@@ -291,6 +291,15 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
+                <div class="row tab" data-target="importMnemonic">
+                    <div class="col-10">
+                        <h4 class="m-0">Restore a wallet</h4>
+                        <p class="m-0">Import or restore a wallet from a recovery phrase</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
             </div>
             <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword" data-settingsLevel="2">
                 <div class="writeMnemonic" style="display: none">
@@ -437,6 +446,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="settingsCat p-3 text-center importMnemonic" data-settingId="importMnemonic" data-settingsLevel="2">
+                <div class="mnemonicAsk">
+                    <h3>Enter your Secret Recovery Phrase</h3>
+                    <p style="font-size: 0.9em">Write each word in the right order</p>
+                    <p class="label text-left normal">Secret recovery phrase</p>
+                    <p class="label text-left error text-danger" style="display: none">Invalid phrase</p>
+                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <button class="button w-100 mt-3" disabled="disabled">
+                        <val>Next</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                </div>
+                <div class="mnemonicWarn" style="display: none">
+                    <h3>Warning</h3>
+                    <p style="font-size: 0.9em">Restoring this wallet will erase your current wallet, be sure to have saved your secret recovery phrase!</p>
+                    <button class="button w-100 mt-3">
+                        <val>I understand, continue</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
                 </div>
             </div>
         </div>

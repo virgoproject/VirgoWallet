@@ -65,6 +65,10 @@ async function restoreFromMnemonic(mnemonic){
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
 }
 
+async function isMnemonicValid(mnemonic){
+    return await browser.runtime.sendMessage({command: 'isMnemonicValid', mnemonic: mnemonic})
+}
+
 async function addAccount(){
     return await browser.runtime.sendMessage({command: 'addAccount'})
 }

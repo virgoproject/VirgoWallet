@@ -50,7 +50,7 @@ class BaseWallet {
             setInterval(function(){
                 baseWallet.getCurrentWallet().updatePrices()
             }, 30000)
-        }, 2000)
+        }, 3000)
     }
 
     static generateWallet(mnemonic){
