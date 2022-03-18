@@ -4,7 +4,7 @@
   "version": "0.5",
   "short_name": "Virgo Wallet",
   "description": "An easy-to-use, cross-chain wallet in your browser!",
-  "permissions": ["storage","notifications"],
+  "permissions": ["storage"],
 
   "browser_action": {
     "default_icon": "ui/images/walletLogo.png",
