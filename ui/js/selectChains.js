@@ -45,7 +45,7 @@ function setChains(data){
                         enableLoadBtn($("#body .send .sendConfirm .submit"))
                         $("#body .send .sendConfirm .back").click()
                         $("#body .send .sendForm .assetSelect").html("")
-                        setSend(res)
+                        sendPane.setSend(res)
                     })
 
                     $("[data-networkname]").html(wallet.name)

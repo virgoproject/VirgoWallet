@@ -40,8 +40,8 @@ $("#unlockPanePasswordSubmit").click(function(){
 function displayWallet(data){
     $("#unlockPane").hide()
     setChains(data)
-    setResume(data)
-    setSend(data)
+    mainPane.setResume(data)
+    sendPane.setSend(data)
     setSettings(data)
     $("#mainPane").show()
 }

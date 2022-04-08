@@ -345,7 +345,7 @@ $("#settings .importMnemonic .mnemonicWarn button").click(function(){
             enableLoadBtn($("#body .send .sendConfirm .submit"))
             $("#body .send .sendConfirm .back").click()
             $("#body .send .sendForm .assetSelect").html("")
-            setSend(data)
+            sendPane.setSend(data)
 
             enableLoadBtn($("#settings .importMnemonic .mnemonicWarn button"))
             notyf.success("Wallet recovered!")
