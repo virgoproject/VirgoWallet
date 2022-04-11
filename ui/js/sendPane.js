@@ -41,7 +41,7 @@ class SendPane {
                             SendPane.assetSelect.attr("disabled", false)
 
                             SendPane.sendForm.hide()
-                            .html(SendPane.amount.val())
+                            SendPane.confirmValue.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
                             SendPane.confirmValue.html(SendPane.recipient.val())
                             SendPane.confirmFees.html(Utils.formatAmount(fees.gasLimit * fees.gasPrice, fees.decimals))
