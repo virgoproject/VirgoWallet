@@ -1,67 +1,77 @@
-$("#chainSelectionHeader").click(function(){
-    if($("#chainSelector").hasClass("opened")){
-        $("#chainSelector").removeClass("opened")
-        $("#chainSelectionHeader").removeClass("opened")
-    } else{
-        $("#chainSelector").addClass("opened")
-        $("#chainSelectionHeader").addClass("opened")
+class SelectChains {
+    
+    static header = $("#chainSelectionHeader")
+    static selector = $("#chainSelector")
+    
+    constructor() {
+        SelectChains.header.click(function(){
+            if(SelectChains.selector.hasClass("opened")){
+                SelectChains.selector.removeClass("opened")
+                SelectChains.header.removeClass("opened")
+            } else{
+                SelectChains.selector.addClass("opened")
+                SelectChains.header.addClass("opened")
+            }
+        })
     }
-})
 
-function setChains(data){
-    $("#mainPaneCurrentChain").html(data.wallets[data.selectedWallet].wallet.name)
+    setChains(data){
+        $("#mainPaneCurrentChain").html(data.wallets[data.selectedWallet].wallet.name)
 
-    let i = 0;
-    for(const walletObj of data.wallets){
-        const wallet = walletObj.wallet
-        const elem = $("#baseChainRow").clone()
+        let i = 0;
+        for(const walletObj of data.wallets){
+            const wallet = walletObj.wallet
+            const elem = $("#baseChainRow").clone()
 
-        elem.attr("data-walletid", i)
+            elem.attr("data-walletid", i)
 
-        if(walletObj === data.wallets[data.selectedWallet])
-            elem.addClass("selected")
+            if(walletObj === data.wallets[data.selectedWallet])
+                elem.addClass("selected")
 
-        elem.find("h3").html(wallet.name)
-        elem.find("p").html(wallet.ticker)
+            elem.find("h3").html(wallet.name)
+            elem.find("p").html(wallet.ticker)
 
-        elem.click(function(){
-            if(elem.hasClass("selected")) return
+            elem.click(function(){
+                if(elem.hasClass("selected")) return
 
-            browser.runtime.sendMessage({command: 'changeWallet', walletId: elem.attr("data-walletid")})
-                .then(function () {
-                    $("#chainSelector .chain.selected").removeClass("selected")
-                    elem.addClass("selected")
+                browser.runtime.sendMessage({command: 'changeWallet', walletId: elem.attr("data-walletid")})
+                    .then(function () {
+                        $("#chainSelector .chain.selected").removeClass("selected")
+                        elem.addClass("selected")
 
-                    //reset assets
-                    const baseAssetRow = $("#baseAssetRow").clone()
-                    $("#walletAssets").html("")
-                    $("#walletAssets").append(baseAssetRow)
+                        //reset assets
+                        const baseAssetRow = $("#baseAssetRow").clone()
+                        $("#walletAssets").html("")
+                        $("#walletAssets").append(baseAssetRow)
 
-                    //reset send form
-                    getBaseInfos().then(function(res){
-                        $("#body .send .sendForm .recipient").val("")
-                        $("#body .send .sendForm .amount").val("")
-                        $("#body .send .sendConfirm .back").attr("disabled", false)
-                        enableLoadBtn($("#body .send .sendConfirm .submit"))
-                        $("#body .send .sendConfirm .back").click()
-                        $("#body .send .sendForm .assetSelect").html("")
-                        sendPane.setSend(res)
+                        //reset send form
+                        getBaseInfos().then(function(res){
+                            SendPane.recipient.val("")
+                            SendPane.amount.val("")
+                            SendPane.backBtn.attr("disabled", false)
+                            enableLoadBtn(SendPane.btnSubmit)
+                            SendPane.backBtn.click()
+                            SendPane.assetSelect.html("")
+                            sendPane.setSend(res)
+                        })
+
+                        $("[data-networkname]").html(wallet.name)
+                        $("[data-networkticker]").html(wallet.ticker)
+
+                        MAIN_ASSET = wallet
+
+                        SelectChains.header.click()
                     })
 
-                    $("[data-networkname]").html(wallet.name)
-                    $("[data-networkticker]").html(wallet.ticker)
+            })
 
-                    MAIN_ASSET = wallet
+            SelectChains.selector.append(elem)
+            elem.show()
 
-                    $("#chainSelectionHeader").click()
-                })
-
-        })
-
-        $("#chainSelector").append(elem)
-        elem.show()
-
-        i++
+            i++
+        }
     }
+    
 }
 
+const selectChains = new SelectChains()
