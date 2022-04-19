@@ -234,3 +234,6 @@ input[type=number] {
 ::-webkit-scrollbar {
     width: 0px;
 }
+
+[data-target="resume"]:hover {
+}
