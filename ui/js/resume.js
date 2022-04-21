@@ -2,101 +2,130 @@ MAIN_ASSET = undefined
 
 class MainPane {
 
+    static resume = $("#body .bodyElem.resume")
+    static address = $("#mainPane .resume .address")
+    static addressTitle = $("#mainPane .resume .address .title")
+    static addAsset = {
+        pane: $("#body .bodyElem.addAsset"),
+        contract: $("#body .bodyElem.addAsset .assetContract"),
+        contractInput: $("#body .bodyElem.addAsset .assetContract .input"),
+        contractSubmit: $("#body .bodyElem.addAsset .assetContract .submit"),
+        contractLabel: $("#body .bodyElem.addAsset .assetContract .label"),
+        resume: {
+            self: $("#body .bodyElem.addAsset .assetResume"),
+            name: $("#body .bodyElem.addAsset .assetResume .name"),
+            decimals: $("#body .bodyElem.addAsset .assetResume .decimals"),
+            symbol: $("#body .bodyElem.addAsset .assetResume .symbol"),
+            ticker: $("#body .bodyElem.addAsset .assetResume .ticker"),
+            submit: $("#body .bodyElem.addAsset .assetResume .submit")
+        },
+        back: $("#body .bodyElem.addAsset .back")
+    }
+    static backupPopup = {
+        self: $("#backupPopup"),
+        close: $("#backupPopup .close"),
+        button: $("#backupPopup .button")
+    }
+    static addAssetBtn = $("#mainPane .resume .assets .addAsset")
+    static baseAssetRow = $("#baseAssetRow")
+    static walletAssets = $("#walletAssets")
+    static fluctuation = $("#mainPane .header .stats .fluctuation")
+
     constructor() {
 
         this.oldData = ""
 
-        $("#mainPane .resume .address").click(function(){
+        MainPane.address.click(function(){
             copyToClipboard(document.querySelector("[data-mainAddress]"));
-            $("#mainPane .resume .address .title").html("Copied!")
+            MainPane.addressTitle.html("Copied!")
 
             setTimeout(function(){
-                $("#mainPane .resume .address .title").html("Wallet Address")
+                MainPane.addressTitle.html("Wallet Address")
             }, 2500)
         })
 
-        $("#mainPane .resume .assets .addAsset").click(function(){
-            $("#body .bodyElem.addAsset .assetContract .input").val("")
-            $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", false)
-            enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
-            $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", true)
-            $("#body .bodyElem.addAsset .assetContract").show()
-            $("#body .bodyElem.addAsset .assetResume").hide()
-            $("#body .bodyElem.resume").hide()
-            $("#body .bodyElem.addAsset").show()
+        MainPane.addAssetBtn.click(function(){
+            MainPane.addAsset.contractInput.val("")
+            MainPane.addAsset.contractInput.attr("disabled", false)
+            enableLoadBtn(MainPane.addAsset.contractSubmit)
+            MainPane.addAsset.contractSubmit.attr("disabled", true)
+            MainPane.addAsset.contract.show()
+            MainPane.addAsset.resume.self.hide()
+            MainPane.resume.hide()
+            MainPane.addAsset.pane.show()
         })
 
-        $("#body .bodyElem.addAsset .back").click(function(){
-            $("#body .bodyElem.resume").show()
-            $("#body .bodyElem.addAsset").hide()
+        MainPane.addAsset.back.click(function(){
+            MainPane.resume.show()
+            MainPane.addAsset.pane.hide()
         })
 
-        $("#body .bodyElem.addAsset .assetContract .input").on("input", function(){
+        MainPane.addAsset.contractInput.on("input", function(){
             validateAddress($(this).val()).then(function(res){
-                $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", !res)
+                MainPane.addAsset.contractSubmit.attr("disabled", !res)
             })
         })
 
-        $("#body .bodyElem.addAsset .assetContract .submit").click(function(){
-            $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", true)
+        MainPane.addAsset.contractSubmit.click(function(){
+            MainPane.addAsset.contractInput.attr("disabled", true)
             disableLoadBtn($(this))
 
-            getTokenDetails($("#body .bodyElem.addAsset .assetContract .input").val()).then(function(details){
+            getTokenDetails(MainPane.addAsset.contractInput.val()).then(function(details){
                 if(!details){
-                    $("#body .bodyElem.addAsset .assetContract .input").attr("disabled", false)
-                    enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
-                    $("#body .bodyElem.addAsset .assetContract .submit").attr("disabled", true)
+                    MainPane.addAsset.contractInput.attr("disabled", false)
+                    enableLoadBtn(MainPane.addAsset.contractSubmit)
+                    MainPane.addAsset.contractSubmit.attr("disabled", true)
 
-                    $("#body .bodyElem.addAsset .assetContract .input").addClass("is-invalid")
-                    $("#body .bodyElem.addAsset .assetContract .label").addClass("text-danger")
-                    $("#body .bodyElem.addAsset .assetContract .label").html("Invalid contract")
+                    MainPane.addAsset.contractInput.addClass("is-invalid")
+                    MainPane.addAsset.contractLabel.addClass("text-danger")
+                    MainPane.addAsset.contractLabel.html("Invalid contract")
 
                     setTimeout(function(){
-                        $("#body .bodyElem.addAsset .assetContract .input").removeClass("is-invalid")
-                        $("#body .bodyElem.addAsset .assetContract .label").removeClass("text-danger")
-                        $("#body .bodyElem.addAsset .assetContract .label").html("Contract address")
+                        MainPane.addAsset.contractInput.removeClass("is-invalid")
+                        MainPane.addAsset.contractLabel.removeClass("text-danger")
+                        MainPane.addAsset.contractLabel.html("Contract address")
                     }, 2500)
                     return
                 }
 
-                $("#body .bodyElem.addAsset .assetResume .name").val(details.name)
-                $("#body .bodyElem.addAsset .assetResume .decimals").val(details.decimals)
-                $("#body .bodyElem.addAsset .assetResume .symbol").val(details.symbol)
-                $("#body .bodyElem.addAsset .assetResume .ticker").html(details.symbol)
+                MainPane.addAsset.resume.name.val(details.name)
+                MainPane.addAsset.resume.decimals.val(details.decimals)
+                MainPane.addAsset.resume.symbol.val(details.symbol)
+                MainPane.addAsset.resume.ticker.html(details.symbol)
 
-                enableLoadBtn($("#body .bodyElem.addAsset .assetContract .submit"))
-                $("#body .bodyElem.addAsset .assetContract").hide()
-                $("#body .bodyElem.addAsset .assetResume").show()
+                enableLoadBtn(MainPane.addAsset.contractSubmit)
+                MainPane.addAsset.contract.hide()
+                MainPane.addAsset.resume.self.show()
             })
         })
 
-        $("#body .bodyElem.addAsset .assetResume .submit").click(function(){
-            const contract = $("#body .bodyElem.addAsset .assetContract .input").val().toLowerCase()
-            const name = $("#body .bodyElem.addAsset .assetResume .name").val()
-            const decimals = $("#body .bodyElem.addAsset .assetResume .decimals").val()
-            const symbol = $("#body .bodyElem.addAsset .assetResume .symbol").val()
+        MainPane.addAsset.resume.submit.click(function(){
+            const contract = MainPane.addAsset.contractInput.val().toLowerCase()
+            const name = MainPane.addAsset.resume.name.val()
+            const decimals = MainPane.addAsset.resume.decimals.val()
+            const symbol = MainPane.addAsset.resume.symbol.val()
 
             addAsset(name, symbol, decimals, contract).then(function(){
-                $("#body .bodyElem.addAsset .back").click()
+                MainPane.addAsset.back.click()
                 notyf.success("Added "+symbol+"!")
             })
 
         })
 
-        $("#backupPopup").click(function(){
+        MainPane.backupPopup.self.click(function(){
             closedBackupPopup()
         })
 
-        $("#backupPopup .close").click(function(){
+        MainPane.backupPopup.close.click(function(){
             closedBackupPopup()
         })
 
-        $("#backupPopup .button").click(function(){
-            $("#accountSelectionHeader").click()
-            $("#settings .mainPane .openSettings").click()
+        MainPane.backupPopup.button.click(function(){
+            SettingsPane.accountSelectionHeader.click()
+            SettingsPane.openSettingsBtn.click()
             $("#settings .mainSettings [data-target=security]").click()
             $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
-            $("#backupPopup .close").click()
+            MainPane.backupPopup.close.click()
         })
 
     }
@@ -135,7 +164,7 @@ class MainPane {
 
             if(!elem.length){
                 //create row for this asset
-                elem = $("#baseAssetRow").clone()
+                elem = MainPane.baseAssetRow.clone()
                 elem.attr("id", "bal"+contractAddr)
 
                 elem.find(".title").html(balance.name)
@@ -151,7 +180,7 @@ class MainPane {
                     elem.find(".fluctuation").addClass("negative")
 
 
-                $("#walletAssets").append(elem)
+                MainPane.walletAssets.append(elem)
                 hasChanged = true
                 if(contractAddr == MAIN_ASSET.ticker)
                     elem.attr("data-sort", 9999999999999999)
@@ -189,13 +218,12 @@ class MainPane {
                 totalChange += balance.change*balance.price*balance.balance/10**balance.decimals/totalBalance
             })
 
-        let headerFluct = $("#mainPane .header .stats .fluctuation")
+        MainPane.fluctuation.find("val").html(Math.abs(totalChange).toFixed(2))
 
-        headerFluct.find("val").html(Math.abs(totalChange).toFixed(2))
         if(totalChange >= 0)
-            headerFluct.removeClass("negative")
+            MainPane.fluctuation.removeClass("negative")
         else
-            headerFluct.addClass("negative")
+            MainPane.fluctuation.addClass("negative")
 
         for(const addressObj of data.addresses) {
             const address = addressObj.address
@@ -209,7 +237,7 @@ class MainPane {
         this.displayData(data)
 
         if(data.backupPopup)
-            $("#backupPopup").show()
+            MainPane.backupPopup.self.show()
 
         setInterval(function(){
             mainPane.updateData()

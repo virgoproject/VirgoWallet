@@ -1,8 +1,9 @@
 class SelectChains {
-    
+
     static header = $("#chainSelectionHeader")
     static selector = $("#chainSelector")
-    
+    static baseChainRow = $("#baseChainRow")
+
     constructor() {
         SelectChains.header.click(function(){
             if(SelectChains.selector.hasClass("opened")){
@@ -21,7 +22,7 @@ class SelectChains {
         let i = 0;
         for(const walletObj of data.wallets){
             const wallet = walletObj.wallet
-            const elem = $("#baseChainRow").clone()
+            const elem = SelectChains.baseChainRow.clone()
 
             elem.attr("data-walletid", i)
 
@@ -40,9 +41,9 @@ class SelectChains {
                         elem.addClass("selected")
 
                         //reset assets
-                        const baseAssetRow = $("#baseAssetRow").clone()
-                        $("#walletAssets").html("")
-                        $("#walletAssets").append(baseAssetRow)
+                        const baseAssetRow = MainPane.baseAssetRow.clone()
+                        MainPane.walletAssets.html("")
+                        MainPane.walletAssets.append(baseAssetRow)
 
                         //reset send form
                         getBaseInfos().then(function(res){
@@ -71,7 +72,7 @@ class SelectChains {
             i++
         }
     }
-    
+
 }
 
 const selectChains = new SelectChains()
