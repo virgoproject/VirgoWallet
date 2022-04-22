@@ -1,10 +1,12 @@
 $("#assetsMenu").click(function () {
-/*    $(".header").hide()
-    $("#body .bodyElem.resume").hide()
-    $("#assetList").hide()*/
+    /*    $(".header").hide()
+        $("#body .bodyElem.resume").hide()
+        $("#assetList").hide()*/
     $(".addAssetMenu").show()
 
 })
+
+
 
 /*
 $(".searchIcon").click(function () {

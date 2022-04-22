@@ -162,7 +162,27 @@
     align-items: center;
     background: var(--whiteBackground);
     padding: 0.2em;
+}
 
-    /*    position: relative;
-        left: 9px;*/
+#assetsList{
+    max-height: 400px;
+    overflow: auto;
+}
+
+#assetsList::-webkit-scrollbar-track {
+/*    border: 1px solid var(--whiteBackground);
+    padding: 2px 0;
+    background-color: var(--mainColorLight);*/
+}
+
+
+#assetsList::-webkit-scrollbar {
+    width: 10px;
+}
+
+#assetsList::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+/*    background-color: var(--mainColorLight);
+    border: 1px solid var(--whiteBackground);*/
 }
