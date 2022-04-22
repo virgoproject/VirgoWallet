@@ -9,8 +9,9 @@ class SendPane {
     static sendForm = $("#body .send .sendForm")
     static confirmForm = $("#body .send .sendConfirm")
     static backBtn = $("#body .send .sendConfirm .back")
-    static confirmTicker = $("#body .send .sendConfirm .amount .value")
-    static confirmValue = $("#body .send .sendConfirm .recipient .value")
+    static confirmAmount = $("#body .send .sendConfirm .amount .value")
+    static confirmTicker = $("#body .send .sendConfirm .amount .ticker")
+    static confirmRecipient = $("#body .send .sendConfirm .recipient .value")
     static confirmFees = $("#body .send .sendConfirm .fees .value")
     static sendBal = $("#body .send .sendForm .sendBal span")
     static maxBtn = $("#body .send .sendForm button.max")
@@ -41,9 +42,9 @@ class SendPane {
                             SendPane.assetSelect.attr("disabled", false)
 
                             SendPane.sendForm.hide()
-                            SendPane.confirmValue.html(SendPane.amount.val())
+                            SendPane.confirmAmount.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
-                            SendPane.confirmValue.html(SendPane.recipient.val())
+                            SendPane.confirmRecipient.html(SendPane.recipient.val())
                             SendPane.confirmFees.html(Utils.formatAmount(fees.gasLimit * fees.gasPrice, fees.decimals))
                             SendPane.confirmForm.show()
 
