@@ -121,17 +121,21 @@ class SendPane {
             const input = $(this);
             if(input.val().length < 42){
                 input.removeClass("is-invalid")
+                $(".submit").text("Amount")
                 SendPane.btnSubmit.attr("disabled", true)
                 return
             }
             validateAddress(input.val()).then(function(res){
                 if(!res){
                     input.addClass("is-invalid")
+                    $(".submit").text("Insufficient balance")
+
                     SendPane.btnSubmit.attr("disabled", true)
                     return
                 }
 
                 input.removeClass("is-invalid")
+                $(".submit").text("Amount")
                 sendPane.checkSendFormValues()
             })
         })
@@ -142,17 +146,20 @@ class SendPane {
 
             if(isNaN(amount) || amount == 0){
                 $(this).removeClass("is-invalid")
+                $(".submit").text("Amount")
                 SendPane.btnSubmit.attr("disabled", true)
                 return
             }
 
             if(amount < 0 || amount > max){
                 $(this).addClass("is-invalid")
+                $(".submit").text("Insufficient balance")
                 SendPane.btnSubmit.attr("disabled", true)
                 return
             }
 
             $(this).removeClass("is-invalid")
+            $(".submit").text("Amount")
             sendPane.checkSendFormValues()
         })
 
