@@ -226,109 +226,41 @@
             <div class="col-3"></div>
         </div>
     </div>
-    <div id="assetsList" style="display: none">
+    <div id="assetsPane" style="display: none">
         <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
             <p class="text-center">My Assets</p>
-            <i class="fas fa-chevron-left back"></i>
         </div>
         <label class="text-center searchLabel mt-3">
             <input type="text" class="inputSearch" placeholder="Search for an asset">
             <i class="fas fa-search searchIcon"></i>
         </label>
-        <div class="row assetsContent">
-            <ol class="d-flex w-100 align-items-center flex-column list">
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
+        <div class="content">
+            <div class="listItem" id="assetsListBaseAsset" style="display: none !important;">
+                <div class="row">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="logo"></div>
                     </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
+                    <div class="col-6">
+                        <p class="name">Ethereum</p>
+                        <p class="ticker">ETH</p>
                     </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
+                    <div class="col-4 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check checkActivate stateCoin"></i>
                     </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>Ethereum</span>
-                            <span class="shortName">ETH</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check checkActivate stateCoin"></i>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex align-items-center">
-                    <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/BNB/BNB/logo.png"
-                         alt="coin" width="15px">
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <div class="d-flex flex-column ms-3">
-                            <span>BNB</span>
-                            <span class="shortName">BNB</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-check  checkedDisabled stateCoin"></i>
-                        </div>
-                    </div>
-                </li>
-            </ol>
+                </div>
+            </div>
+            <div class="listEnd text-center mt-5 mb-5" style="display: none">
+                <h4>That's it!</h4>
+                <p>Didn't see the asset you want? <br><span>Add it now!</span></p>
+            </div>
+            <div class="row list mt-3">
+            </div>
+            <div class="loading text-center mt-2 mb-2">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
         </div>
         <div class="addBottomLogo">
             <i class="fas fa-plus addLogo"></i>
@@ -616,6 +548,7 @@
 <script src="../js/resume.js"></script>
 <script src="../js/sendPane.js"></script>
 <script src="../js/settings.js"></script>
+<script src="../js/assetsPane.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 </body>

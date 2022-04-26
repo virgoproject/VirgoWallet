@@ -64,6 +64,7 @@ class Web3Wallet {
                 "ticker": this.ticker,
                 "decimals": this.decimals,
                 "contract": this.contract,
+                "tracked": true,
                 "balance": 0,
                 "change": 0,
                 "price": 0
@@ -75,6 +76,7 @@ class Web3Wallet {
                     "ticker": token.ticker,
                     "decimals": token.decimals,
                     "contract": token.contract,
+                    "tracked": true,
                     "balance": 0,
                     "change": 0,
                     "price": 0
@@ -104,6 +106,8 @@ class Web3Wallet {
 
             //update tokens balances
             for(const token of this.tokens){
+                if(!token.tracked) continue
+
                 const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
                 contract.methods.balanceOf(address).call()
                     .then(function(res){
@@ -119,6 +123,7 @@ class Web3Wallet {
         for(const address of baseWallet.getAddresses()) {
             if (this.CG_Platform)
                 Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
+                    if(!balance.tracked) return;
                     fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
                         .then(function (resp) {
                             resp.json().then(function (res) {
@@ -145,7 +150,8 @@ class Web3Wallet {
             "name": name,
             "ticker": ticker,
             "decimals": decimals,
-            "contract": contract
+            "contract": contract,
+            "tracked": true
         }
 
         this.tokens.push(token)
@@ -157,6 +163,7 @@ class Web3Wallet {
                 "ticker": token.ticker,
                 "decimals": token.decimals,
                 "contract": token.contract,
+                "tracked": true,
                 "balance": 0,
                 "change": 0,
                 "price": 0

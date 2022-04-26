@@ -26,7 +26,6 @@ class MainPane {
         close: $("#backupPopup .close"),
         button: $("#backupPopup .button")
     }
-    static addAssetBtn = $("#mainPane .resume .assets .addAsset")
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -44,7 +43,7 @@ class MainPane {
             }, 2500)
         })
 
-        MainPane.addAssetBtn.click(function(){
+        /**MainPane.addAssetBtn.click(function(){
             MainPane.addAsset.contractInput.val("")
             MainPane.addAsset.contractInput.attr("disabled", false)
             enableLoadBtn(MainPane.addAsset.contractSubmit)
@@ -53,7 +52,7 @@ class MainPane {
             MainPane.addAsset.resume.self.hide()
             MainPane.resume.hide()
             MainPane.addAsset.pane.show()
-        })
+        })**/
 
         MainPane.addAsset.back.click(function(){
             MainPane.resume.show()
