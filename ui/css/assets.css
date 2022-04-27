@@ -96,42 +96,25 @@
     font-size: 1.2em;
 }
 
-#assetsPane .content ol li .activeCoin {
-    background: #e2d2ed;
-    filter: brightness(1);
-}
-
-#assetsPane .activeCoin {
-    filter: brightness(1) !important;
-}
-
-#assetsPane .checkActivate{
-    color: white;
-    background: rgb(25,135,84);
-    transition: 250ms all;
-}
-
-#assetsPane  .checkActivate:hover{
-    color: white;
-    background: red;
-    transition: 250ms all;
-}
-
-#assetsPane .checkedDisabled{
+#assetsPane .stateCoin {
+    padding: 8px;
+    border-radius: 25px;
+    cursor: pointer;
     color: white;
     background: gray;
     transition: 250ms all;
 }
 
-#assetsPane .checkedDisabled:hover{
-    color: white;
-    background: rgb(25,135,84);
+#assetsPane .stateCoin:hover {
+    background: #9f9f9f;
 }
 
-#assetsPane .stateCoin {
-    padding: 8px;
-    border-radius: 25px;
-    cursor: pointer;
+#assetsPane .stateCoin.activated {
+    background: rgb(35, 183, 115);
+}
+
+#assetsPane .stateCoin.activated:hover {
+    background: rgb(31, 162, 104);
 }
 
 #assetsPane .searchLabel {

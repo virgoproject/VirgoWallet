@@ -37,6 +37,24 @@ class AssetsPane {
                 elem.find(".name").html(token.name)
                 elem.find(".ticker").html(token.ticker)
                 elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + infos.wallets[infos.selectedWallet].wallet.ticker + "/" + token.contract + "/logo.png')");
+
+                console.log(token.tracked)
+
+                if(token.tracked)
+                    elem.find(".stateCoin").addClass("activated")
+
+                elem.find(".stateCoin").click(function(){
+                    const coin = $(this)
+                    changeAssetTracking(token.contract).then(function(){
+                        if(coin.hasClass("activated")){
+                            coin.removeClass("activated")
+                            $("#bal"+token.contract).remove()
+                        }else{
+                            coin.addClass("activated")
+                        }
+                    })
+                })
+
                 AssetsPane.list.self.append(elem)
                 elem.show()
 

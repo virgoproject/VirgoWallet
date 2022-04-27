@@ -12,11 +12,26 @@ class Web3Wallet {
 
         this.balances = new Map()
 
+        this.tokenSet = new Map()
+
+        for(let token of this.tokens)
+            this.tokenSet.set(token.contract, true)
+
         const wallet = this
         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
             .then(function(resp){
                 resp.json().then(function(res){
                     wallet.CG_Platform = res.CG_Platform
+                    for(let token of res.tokens){
+                        if(!wallet.hasToken(token)){
+                            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
+                                .then(function(resp2){
+                                    resp2.json().then(function(res2){
+                                        wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
+                                    })
+                                })
+                        }
+                    }
                 })
             })
     }
@@ -76,7 +91,7 @@ class Web3Wallet {
                     "ticker": token.ticker,
                     "decimals": token.decimals,
                     "contract": token.contract,
-                    "tracked": true,
+                    "tracked": token.tracked,
                     "balance": 0,
                     "change": 0,
                     "price": 0
@@ -137,13 +152,10 @@ class Web3Wallet {
     }
 
     hasToken(contract){
-        for(const token of this.tokens)
-            if(token.contract == contract) return true
-
-        return false
+        return this.tokenSet.has(contract)
     }
 
-    addToken(name, ticker, decimals, contract){
+    addToken(name, ticker, decimals, contract, track = true){
         if(this.hasToken(contract) || !web3.utils.isAddress(contract)) return;
 
         const token = {
@@ -151,10 +163,11 @@ class Web3Wallet {
             "ticker": ticker,
             "decimals": decimals,
             "contract": contract,
-            "tracked": true
+            "tracked": track
         }
 
         this.tokens.push(token)
+        this.tokenSet.set(token.contract, true)
 
         for(const address of baseWallet.getAddresses()) {
             let balances = this.getBalances(address)
@@ -183,13 +196,27 @@ class Web3Wallet {
                     let balances = this.getBalances(address)
                     delete balances[token.contract]
                 }
+                this.tokenSet.remove(token.contract)
                 baseWallet.save()
                 return;
             }
             i++
         }
+    }
 
-
+    changeTracking(contract){
+        for(const token of this.tokens){
+            if(token.contract == contract){
+                const newState = !token.tracked
+                token.tracked = newState
+                for(const address of baseWallet.getAddresses()) {
+                    let balances = this.getBalances(address)
+                    balances[token.contract].tracked = newState
+                }
+                baseWallet.save()
+                return;
+            }
+        }
     }
 
 }

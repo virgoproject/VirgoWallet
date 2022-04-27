@@ -195,6 +195,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             backupPopupDate = Date.now() + 604800000
             browser.storage.local.set({"backupPopupDate": backupPopupDate});
             break
+
+        case "changeTokenTracking":
+            baseWallet.getCurrentWallet().changeTracking(request.contract)
+            sendResponse(true)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
