@@ -125,17 +125,17 @@
     padding: 0.2em;
 }
 
-#assetsPane .list {
+#assetsPane .listWrap {
     overflow: auto;
-    max-height: 494px;
+    max-height: 478px;
     padding: 0 1em;
 }
 
-#assetsPane .list::-webkit-scrollbar {
+#assetsPane .listWrap::-webkit-scrollbar {
     width: 10px;
 }
 
-#assetsPane .list::-webkit-scrollbar-thumb {
+#assetsPane .listWrap::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }
@@ -189,4 +189,18 @@
     border-radius: 50%;
     background-size: cover;
     margin: auto;
+}
+
+#assetsListAdd .resume .ticker {
+    color: white;
+}
+
+#assetsPane .listEnd span, #assetsPane .searchNotFound span {
+    color: var(--highlightColor1);
+    transition: all ease 0.25s;
+    cursor: pointer;
+}
+
+#assetsPane .listEnd span:hover, #assetsPane .searchNotFound span:hover {
+    color: var(--mainColorLight30);
 }

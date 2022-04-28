@@ -54,63 +54,6 @@ class MainPane {
             MainPane.addAsset.pane.show()
         })**/
 
-        MainPane.addAsset.back.click(function(){
-            MainPane.resume.show()
-            MainPane.addAsset.pane.hide()
-        })
-
-        MainPane.addAsset.contractInput.on("input", function(){
-            validateAddress($(this).val()).then(function(res){
-                MainPane.addAsset.contractSubmit.attr("disabled", !res)
-            })
-        })
-
-        MainPane.addAsset.contractSubmit.click(function(){
-            MainPane.addAsset.contractInput.attr("disabled", true)
-            disableLoadBtn($(this))
-
-            getTokenDetails(MainPane.addAsset.contractInput.val()).then(function(details){
-                if(!details){
-                    MainPane.addAsset.contractInput.attr("disabled", false)
-                    enableLoadBtn(MainPane.addAsset.contractSubmit)
-                    MainPane.addAsset.contractSubmit.attr("disabled", true)
-
-                    MainPane.addAsset.contractInput.addClass("is-invalid")
-                    MainPane.addAsset.contractLabel.addClass("text-danger")
-                    MainPane.addAsset.contractLabel.html("Invalid contract")
-
-                    setTimeout(function(){
-                        MainPane.addAsset.contractInput.removeClass("is-invalid")
-                        MainPane.addAsset.contractLabel.removeClass("text-danger")
-                        MainPane.addAsset.contractLabel.html("Contract address")
-                    }, 2500)
-                    return
-                }
-
-                MainPane.addAsset.resume.name.val(details.name)
-                MainPane.addAsset.resume.decimals.val(details.decimals)
-                MainPane.addAsset.resume.symbol.val(details.symbol)
-                MainPane.addAsset.resume.ticker.html(details.symbol)
-
-                enableLoadBtn(MainPane.addAsset.contractSubmit)
-                MainPane.addAsset.contract.hide()
-                MainPane.addAsset.resume.self.show()
-            })
-        })
-
-        MainPane.addAsset.resume.submit.click(function(){
-            const contract = MainPane.addAsset.contractInput.val().toLowerCase()
-            const name = MainPane.addAsset.resume.name.val()
-            const decimals = MainPane.addAsset.resume.decimals.val()
-            const symbol = MainPane.addAsset.resume.symbol.val()
-
-            addAsset(name, symbol, decimals, contract).then(function(){
-                MainPane.addAsset.back.click()
-                notyf.success("Added "+symbol+"!")
-            })
-
-        })
-
         MainPane.backupPopup.self.click(function(){
             closedBackupPopup()
         })

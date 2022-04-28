@@ -176,7 +176,7 @@ class Web3Wallet {
                 "ticker": token.ticker,
                 "decimals": token.decimals,
                 "contract": token.contract,
-                "tracked": true,
+                "tracked": track,
                 "balance": 0,
                 "change": 0,
                 "price": 0
