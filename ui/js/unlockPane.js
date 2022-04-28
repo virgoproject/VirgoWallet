@@ -37,7 +37,7 @@ class UnlockPane {
             browser.runtime.sendMessage({command: 'unlockWallet', password: UnlockPane.password.val()})
                 .then(function (response) {
                     if(response)
-                        this.displayWallet(response)
+                        unlockPane.displayWallet(response)
                     else{
                         enableLoadBtn(UnlockPane.passSubmit)
                         UnlockPane.password.addClass("is-invalid");

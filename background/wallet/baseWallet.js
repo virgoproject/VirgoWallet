@@ -99,7 +99,8 @@ class BaseWallet {
                         "name": "Virgo",
                         "ticker": "VGO",
                         "decimals": 8,
-                        "contract": "0xbee5e147e6e40433ff0310f5ae1a66278bc8d678"
+                        "contract": "0xbee5e147e6e40433ff0310f5ae1a66278bc8d678",
+                        "tracked": true
                     }
                 ]
             }

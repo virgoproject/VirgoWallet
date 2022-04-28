@@ -1,0 +1,206 @@
+#assetsPane {
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    /* transform: scaleY(0); */
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+    background: linear-gradient(0deg, #5a009c14, transparent);
+    background-color: white;
+}
+
+#assetsPane .content {
+    z-index: 99999;
+    padding: 0 1em;
+}
+
+#assetsPane .searchIcon {
+    cursor: pointer;
+    color: #545454;
+    position: relative;
+    right: 30px;
+}
+
+
+#assetsPane .inputSearch {
+    background: transparent;
+    border-radius: 0.5em;
+    border: none;
+    color: #545454;
+    padding: 0.375em 2em 0.375em 0.75em;
+}
+
+#assetsPane .inputSearch:focus-visible{
+    outline: none;
+}
+
+#closeSearchAssets {
+    cursor: pointer;
+    padding: 15px;
+    color: white;
+}
+
+#assetsPane .content ol li img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    margin-left: 16px;
+}
+
+#assetsPane .content ol li {
+    list-style-type: none;
+    background: #ede3f4;
+    transition: background ease 0.25s;
+    width: 100%;
+    border-radius: 0.375rem;
+    margin-top: 1em;
+
+}
+
+#assetsPane .content ol li:hover {
+    background: #e2d2ed;
+}
+
+#assetsPane .ticker {
+    color: #696969;
+}
+
+#assetsPane .assetsLogo {
+    cursor: pointer;
+}
+
+#assetsPane .addAsset {
+    cursor: pointer;
+}
+
+#assetsPane .addBottomLogo {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    background: var(--mainColorLight);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 250ms;
+}
+
+#assetsPane .addBottomLogo:hover{
+    background: #8200e2;
+}
+
+#assetsPane .addLogo {
+    padding: 15px;
+    font-size: 1.2em;
+}
+
+#assetsPane .stateCoin {
+    padding: 8px;
+    border-radius: 25px;
+    cursor: pointer;
+    color: white;
+    background: gray;
+    transition: 250ms all;
+}
+
+#assetsPane .stateCoin:hover {
+    background: #9f9f9f;
+}
+
+#assetsPane .stateCoin.activated {
+    background: rgb(35, 183, 115);
+}
+
+#assetsPane .stateCoin.activated:hover {
+    background: rgb(31, 162, 104);
+}
+
+#assetsPane .searchLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--whiteBackground);
+    padding: 0.2em;
+}
+
+#assetsPane .listWrap {
+    overflow: auto;
+    max-height: 478px;
+    padding: 0 1em;
+}
+
+#assetsPane .listWrap::-webkit-scrollbar {
+    width: 10px;
+}
+
+#assetsPane .listWrap::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
+
+#assetsPane .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#assetsPane .back:hover {
+    color: black;
+}
+
+#assetsPane .back i {
+    font-size: 1.5em;
+}
+
+#assetsPane .content .loading {
+    font-size: 2em;
+}
+
+#assetsPane .listItem {
+    background: #5a009c14;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+}
+
+#assetsPane .listItem p {
+    margin-bottom: 0;
+}
+
+#assetsPane .listItem .name {
+    font-weight: bold;
+}
+
+#assetsPane .listItem .ticker {
+    font-size: 0.85em;
+}
+
+#assetsPane .listItem .logo {
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    margin: auto;
+}
+
+#assetsListAdd .resume .ticker {
+    color: white;
+}
+
+#assetsPane .listEnd span, #assetsPane .searchNotFound span {
+    color: var(--highlightColor1);
+    transition: all ease 0.25s;
+    cursor: pointer;
+}
+
+#assetsPane .listEnd span:hover, #assetsPane .searchNotFound span:hover {
+    color: var(--mainColorLight30);
+}
