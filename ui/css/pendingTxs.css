@@ -1,0 +1,32 @@
+#pendingTxsPane {
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    /* transform: scaleY(0); */
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+    background: linear-gradient(0deg, #5a009c14, transparent);
+    background-color: white;
+}
+
+#pendingTxsPane .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#pendingTxsPane .back:hover {
+    color: black;
+}
+
+#pendingTxsPane .back i {
+    font-size: 1.5em;
+}

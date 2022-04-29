@@ -51,6 +51,16 @@
     margin-bottom: 0.25rem;
 }
 
+#mainPane .header .pendingTxs {
+    height: 36px;
+    width: 36px;
+    background: #5a009c14;
+    border-radius: 50%;
+    line-height: 36px;
+    margin: auto;
+    cursor: pointer;
+}
+
 #mainPane #body {
     padding: 1em 2em;
 }

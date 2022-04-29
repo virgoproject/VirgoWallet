@@ -99,7 +99,6 @@ class MainPane {
 
         //display tokens balances
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
-            console.log(contractAddr + " " + balance.tracked)
             if(!balance.tracked) return;
 
             let elem = $("#bal"+contractAddr);
