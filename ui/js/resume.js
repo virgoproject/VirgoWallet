@@ -43,17 +43,6 @@ class MainPane {
             }, 2500)
         })
 
-        /**MainPane.addAssetBtn.click(function(){
-            MainPane.addAsset.contractInput.val("")
-            MainPane.addAsset.contractInput.attr("disabled", false)
-            enableLoadBtn(MainPane.addAsset.contractSubmit)
-            MainPane.addAsset.contractSubmit.attr("disabled", true)
-            MainPane.addAsset.contract.show()
-            MainPane.addAsset.resume.self.hide()
-            MainPane.resume.hide()
-            MainPane.addAsset.pane.show()
-        })**/
-
         MainPane.backupPopup.self.click(function(){
             closedBackupPopup()
         })
@@ -77,6 +66,7 @@ class MainPane {
             .then(function (response) {
                 if(mainPane.oldData !== JSON.stringify(response)) {
                     mainPane.displayData(response)
+                    pendingTxsPane.displayTxs(response)
                     mainPane.oldData = JSON.stringify(response)
                 }
             })
@@ -122,7 +112,6 @@ class MainPane {
                     elem.find(".fluctuation").removeClass("negative")
                 else
                     elem.find(".fluctuation").addClass("negative")
-
 
                 MainPane.walletAssets.append(elem)
                 hasChanged = true

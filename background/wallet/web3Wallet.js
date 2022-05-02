@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -9,6 +9,7 @@ class Web3Wallet {
         this.rpcURL = rpcURL
         this.chainID = chainID
         this.tokens = tokens
+        this.transactions = transactions
 
         this.balances = new Map()
 
@@ -37,7 +38,8 @@ class Web3Wallet {
     }
 
     static fromJSON(json){
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens)
+        if(json.transactions === undefined) json.transactions = []
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions)
     }
 
     toJSON(){
@@ -51,7 +53,8 @@ class Web3Wallet {
                 "contract": this.contract,
                 "RPC": this.rpcURL,
                 "chainID": this.chainID,
-                "tokens": this.tokens
+                "tokens": this.tokens,
+                "transactions": this.transactions
             }
         }
     }
@@ -130,6 +133,23 @@ class Web3Wallet {
                     })
             }
 
+        }
+
+        if(this.transactions.length > 0){
+            web3.eth.getBlockNumber().then(function(blockNumber){
+                for(const transaction of wallet.transactions){
+                    console.log(transaction)
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12) continue
+
+                    web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
+                        if(receipt == null) return
+
+                        transaction.confirmations = blockNumber - receipt.blockNumber
+                        transaction.gasUsed = receipt.gasUsed
+                        transaction.status = receipt.status
+                    })
+                }
+            })
         }
     }
 

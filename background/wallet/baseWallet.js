@@ -66,7 +66,8 @@ class BaseWallet {
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
                 "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 1,
-                "tokens": []
+                "tokens": [],
+                "transactions": []
             }
         }
 
@@ -80,7 +81,8 @@ class BaseWallet {
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
                 "RPC": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 3,
-                "tokens": []
+                "tokens": [],
+                "transactions": []
             }
         }
 
@@ -102,7 +104,8 @@ class BaseWallet {
                         "contract": "0xbee5e147e6e40433ff0310f5ae1a66278bc8d678",
                         "tracked": true
                     }
-                ]
+                ],
+                "transactions": []
             }
         }
 
@@ -116,7 +119,8 @@ class BaseWallet {
                 "contract": "0x0000000000000000000000000000000000001010",
                 "RPC": "https://polygon-rpc.com",
                 "chainID": 137,
-                "tokens": []
+                "tokens": [],
+                "transactions": []
             }
         }
 

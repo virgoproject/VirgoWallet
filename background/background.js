@@ -79,26 +79,71 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "sendTo":
+            let txResume = null;
             //send native asset
-            if(request.asset == baseWallet.getCurrentWallet().contract){
-                web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
-                    .then(function(gasLimit){
-                        web3.eth.sendTransaction({from: baseWallet.getCurrentAddress(), to: request.recipient, value: request.amount, gas: gasLimit})
-                            .on("transactionHash", function(hash){
-                                sendResponse(hash)
+            if (request.asset == baseWallet.getCurrentWallet().contract) {
+                web3.eth.getGasPrice().then(function(gasPrice){
+                    web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
+                        .then(function (gasLimit) {
+                            web3.eth.sendTransaction({
+                                from: baseWallet.getCurrentAddress(),
+                                to: request.recipient,
+                                value: request.amount,
+                                gas: gasLimit,
+                                gasPrice: gasPrice
                             })
+                                .on("transactionHash", function (hash) {
+                                    txResume = {
+                                        "hash": hash,
+                                        "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                        "date": Date.now(),
+                                        "recipient": request.recipient,
+                                        "amount": request.amount,
+                                        "gasPrice": gasPrice,
+                                        "gasLimit": gasLimit
+                                    }
+                                    baseWallet.getCurrentWallet().transactions.push(txResume)
+                                    sendResponse(hash)
+                                    baseWallet.save()
+                                })
+                                .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                                    txResume.gasUsed = receipt.gasUsed
+                                    txResume.status = receipt.status
+                                    txResume.confirmations = confirmationNumber
+                                    baseWallet.save()
+                                })
+                        })
                     })
                 break
             }
 
-            const contract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
+            const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
             const transaction = contract.methods.transfer(request.recipient, request.amount);
 
-            transaction.estimateGas().then(function(gasLimit){
-                transaction.send({gas: gasLimit})
-                    .on("transactionHash", function(hash){
-                        sendResponse(hash)
-                    })
+            web3.eth.getGasPrice().then(function(gasPrice){
+                transaction.estimateGas().then(function (gasLimit) {
+                    transaction.send({gas: gasLimit, gasPrice: gasPrice})
+                        .on("transactionHash", function (hash) {
+                            txResume = {
+                                "hash": hash,
+                                "contractAddr": request.asset,
+                                "date": Date.now(),
+                                "recipient": request.recipient,
+                                "amount": request.amount,
+                                "gasPrice": gasPrice,
+                                "gasLimit": gasLimit
+                            }
+                            baseWallet.getCurrentWallet().transactions.push(txResume)
+                            sendResponse(hash)
+                            baseWallet.save()
+                        })
+                        .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                            txResume.gasUsed = receipt.gasUsed
+                            txResume.status = receipt.status
+                            txResume.confirmations = confirmationNumber
+                            baseWallet.save()
+                        })
+                })
             })
             break
 

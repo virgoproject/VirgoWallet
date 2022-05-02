@@ -59,6 +59,7 @@
     line-height: 36px;
     margin: auto;
     cursor: pointer;
+    padding: 0;
 }
 
 #mainPane #body {
