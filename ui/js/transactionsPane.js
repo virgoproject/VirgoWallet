@@ -80,6 +80,15 @@ class TransactionsPane {
         }
 
         elem.find(".recipient").html(transaction.recipient)
+        elem.find(".recipient").click(function(){
+            copyToClipboard($(this).get(0))
+            elem.find(".recipientTitle").hide()
+            elem.find(".recipientCopied").show()
+            setTimeout(function (){
+                elem.find(".recipientTitle").show()
+                elem.find(".recipientCopied").hide()
+            }, 2000)
+        })
 
         elem.attr("data-date", transaction.date)
         const date = new Date(transaction.date)

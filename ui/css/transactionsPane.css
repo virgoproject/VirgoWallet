@@ -147,3 +147,13 @@
 #transactionsPane .listItem .confirmed, #transactionsPane .listItem .refused {
     margin-right: 18px;
 }
+
+#transactionsPane .listItem .recipient {
+    color: var(--highlightColor1);
+    cursor: pointer;
+    transition: color ease 0.25s;
+}
+
+#transactionsPane .listItem .recipient:hover {
+    color: var(--mainColorLight30);
+}
