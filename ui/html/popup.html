@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
     <link rel="stylesheet" href="/ui/css/settings.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
+    <link rel="stylesheet" href="/ui/css/feesManagement.css">
 </head>
 <body>
 
@@ -161,17 +162,30 @@
                     <p class="detail value"></p>
                 </div>
                 <div class="col-12 fees">
-                    <p class="label">Fees</p>
-                    <p>
-                    <div id="leftStep"></div>
-                    <div id="centerStep"></div>
-                    <div id="rightStep"></div>
-                    <span class="value"></span>
-                    <span class="ticker" data-networkticker></span>
+                    <div class="col-12 d-flex mb-2">
+                        <div class="col-3">
+                            <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
+                        </div>
+                        <div class="col-9 text-right">
+                            <span class="value"></span>
+                            <span class="ticker" data-networkticker></span>
+                        </div>
+                    </div>
+
+                    <div id="leftStep">
+                        <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                    </div>
+                    <div id="centerStep">
+                        <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                    </div>
+                    <div id="rightStep">
+                        <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                    </div>
+
                     <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
-                    </p>
+
                 </div>
-                <button class="button col-12 submit" disabled="disabled">
+                <button class="button col-12 submit mt-5" disabled="disabled">
                     <val>Insufficient
                         <val data-networkticker=""></val>
                         balance
