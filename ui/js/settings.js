@@ -76,6 +76,9 @@ class SettingsPane {
                 SettingsPane.settingsBackBtn.click()
             } while(mainSettingsBackLevel != 0)
 
+            //close transaction pane
+            if(TransactionsPane.self.is(":visible"))
+                TransactionsPane.back.click()
         })
 
         SettingsPane.openSettingsBtn.click(function(){

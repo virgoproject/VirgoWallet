@@ -67,7 +67,8 @@ class BaseWallet {
                 "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 1,
                 "tokens": [],
-                "transactions": []
+                "transactions": [],
+                "explorer": "https://etherscan.io/tx/"
             }
         }
 
@@ -82,7 +83,8 @@ class BaseWallet {
                 "RPC": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 3,
                 "tokens": [],
-                "transactions": []
+                "transactions": [],
+                "explorer": "https://ropsten.etherscan.io/tx/"
             }
         }
 
@@ -105,7 +107,8 @@ class BaseWallet {
                         "tracked": true
                     }
                 ],
-                "transactions": []
+                "transactions": [],
+                "explorer": "https://bscscan.com/tx/"
             }
         }
 
@@ -120,7 +123,8 @@ class BaseWallet {
                 "RPC": "https://polygon-rpc.com",
                 "chainID": 137,
                 "tokens": [],
-                "transactions": []
+                "transactions": [],
+                "explorer": "https://polygonscan.com/tx/"
             }
         }
 

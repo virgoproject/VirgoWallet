@@ -1,4 +1,4 @@
-#pendingTxsPane {
+#transactionsPane {
     display: block;
     height: 600px;
     width: 100%;
@@ -12,12 +12,12 @@
     background-color: white;
 }
 
-#pendingTxsPane .content {
+#transactionsPane .content {
     z-index: 99999;
     padding: 0 1em;
 }
 
-#pendingTxsPane .back {
+#transactionsPane .back {
     position: absolute;
     top: 0.9em;
     width: 2em;
@@ -28,30 +28,30 @@
     transition: color ease 0.25s;
 }
 
-#pendingTxsPane .back:hover {
+#transactionsPane .back:hover {
     color: black;
 }
 
-#pendingTxsPane .back i {
+#transactionsPane .back i {
     font-size: 1.5em;
 }
 
-#pendingTxsPane .listWrap {
+#transactionsPane .listWrap {
     overflow: auto;
     max-height: 548px;
     padding: 0 1em;
 }
 
-#pendingTxsPane .listWrap::-webkit-scrollbar {
+#transactionsPane .listWrap::-webkit-scrollbar {
     width: 10px;
 }
 
-#pendingTxsPane .listWrap::-webkit-scrollbar-thumb {
+#transactionsPane .listWrap::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }
 
-#pendingTxsPane .listItem {
+#transactionsPane .listItem {
     background: rgba(90, 0, 156, 0.08);
     border-radius: 0.5em;
     padding-top: 0.375em;
@@ -60,15 +60,15 @@
     cursor: pointer;
 }
 
-#pendingTxsPane .listItem:hover {
+#transactionsPane .listItem:hover {
     background: rgba(90, 0, 156, 0.12);
 }
 
-#pendingTxsPane .listItem p {
+#transactionsPane .listItem p {
     margin-bottom: 0;
 }
 
-#pendingTxsPane .listItem .smallDetails .amount val {
+#transactionsPane .listItem .smallDetails .amount val {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 5em;
@@ -78,7 +78,7 @@
     padding-bottom: 3px;
 }
 
-#pendingTxsPane .listItem .logo {
+#transactionsPane .listItem .logo {
     height: 32px;
     width: 32px;
     background-color: var(--mainColor);
@@ -87,38 +87,38 @@
     margin: auto;
 }
 
-#pendingTxsPane .listItem .smallDetails {
+#transactionsPane .listItem .smallDetails {
     font-size: 0.85em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#pendingTxsPane .listItem .smallDetails .recipient {
+#transactionsPane .listItem .smallDetails .recipient {
     color: var(--highlightColor1);
 }
 
-#pendingTxsPane .listItem .details {
+#transactionsPane .listItem .details {
     display: none;
 }
 
-#pendingTxsPane .listItem .detail {
+#transactionsPane .listItem .detail {
     font-size: 0.85em;
     margin: 0.5em 0;
 }
 
-#pendingTxsPane .listItem .detail .title {
+#transactionsPane .listItem .detail .title {
     font-size: 0.85em;
     font-weight: bold;
 }
 
-#pendingTxsPane .listItem .detail .body {
+#transactionsPane .listItem .detail .body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#pendingTxsPane .listItem .details .close {
+#transactionsPane .listItem .details .close {
     font-size: 1.25em;
     text-align: center;
     cursor: pointer;
@@ -127,23 +127,23 @@
     margin-top: 0.25em;
 }
 
-#pendingTxsPane .listItem .details .close:hover {
+#transactionsPane .listItem .details .close:hover {
     color: black;
 }
 
-#pendingTxsPane .listItem.opened .smallDetails, #pendingTxsPane .listItem.opened .header .amount {
+#transactionsPane .listItem.opened .smallDetails, #transactionsPane .listItem.opened .header .amount {
     visibility: hidden;
 }
 
-#pendingTxsPane .listItem.opened .details {
+#transactionsPane .listItem.opened .details {
     display: block;
 }
 
-#pendingTxsPane .listItem.opened {
+#transactionsPane .listItem.opened {
     background: rgba(90, 0, 156, 0.12);
     cursor: default;
 }
 
-#pendingTxsPane .listItem .confirmed, #pendingTxsPane .listItem .refused {
+#transactionsPane .listItem .confirmed, #transactionsPane .listItem .refused {
     margin-right: 18px;
 }

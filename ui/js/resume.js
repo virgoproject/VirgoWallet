@@ -66,7 +66,7 @@ class MainPane {
             .then(function (response) {
                 if(mainPane.oldData !== JSON.stringify(response)) {
                     mainPane.displayData(response)
-                    pendingTxsPane.updateTxs(response)
+                    transactionsPane.updateTxs(response)
                     mainPane.oldData = JSON.stringify(response)
                 }
             })

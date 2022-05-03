@@ -1,73 +1,73 @@
-class PendingTxsPane {
+class TransactionsPane {
 
     static btn = $("#mainPane .header .pendingTxs")
-    static self = $("#pendingTxsPane")
-    static back = $("#pendingTxsPane .back")
+    static self = $("#transactionsPane")
+    static back = $("#transactionsPane .back")
     static list = {
-        self: $("#pendingTxsPane .list"),
-        base: $("#pendingTxsBaseTx"),
-        loading: $("#pendingTxsPane .loading"),
-        wrapper: $("#pendingTxsPane .listWrap"),
-        empty: $("#pendingTxsPane .listEmpty")
+        self: $("#transactionsPane .list"),
+        base: $("#transactionsBaseTx"),
+        loading: $("#transactionsPane .loading"),
+        wrapper: $("#transactionsPane .listWrap"),
+        empty: $("#transactionsPane .listEmpty")
     }
 
     constructor() {
         this.txsCount = 0
         this.reachedEnd = false
 
-        PendingTxsPane.btn.click(function(){
-            PendingTxsPane.self.show()
-            pendingTxsPane.txsCount = 0
-            pendingTxsPane.reachedEnd = false
-            pendingTxsPane.loadTxs()
+        TransactionsPane.btn.click(function(){
+            TransactionsPane.self.show()
+            transactionsPane.txsCount = 0
+            transactionsPane.reachedEnd = false
+            transactionsPane.loadTxs()
         })
 
-        PendingTxsPane.back.click(function(){
-            PendingTxsPane.self.hide()
-            PendingTxsPane.list.self.html("")
+        TransactionsPane.back.click(function(){
+            TransactionsPane.self.hide()
+            TransactionsPane.list.self.html("")
         })
 
-        PendingTxsPane.list.wrapper.scroll(function(){
-            if(pendingTxsPane.reachedEnd) return;
+        TransactionsPane.list.wrapper.scroll(function(){
+            if(transactionsPane.reachedEnd) return;
 
-            const scrollPercent = ($(this).scrollTop() / (PendingTxsPane.list.self.height() - $(this).height()))
+            const scrollPercent = ($(this).scrollTop() / (TransactionsPane.list.self.height() - $(this).height()))
 
             if(scrollPercent > 0.7){
-                pendingTxsPane.loadTxs()
+                transactionsPane.loadTxs()
             }
         })
     }
 
     loadTxs() {
-        PendingTxsPane.list.loading.show()
+        TransactionsPane.list.loading.show()
         getBaseInfos().then(function(data){
             let selectedWallet = data.wallets[data.selectedWallet].wallet
             let transactions = selectedWallet.transactions
 
-            let initialCount = pendingTxsPane.txsCount
+            let initialCount = transactionsPane.txsCount
 
-            while(pendingTxsPane.txsCount < transactions.length && pendingTxsPane.txsCount-initialCount < 15){
-                pendingTxsPane.showTransaction(selectedWallet, transactions[pendingTxsPane.txsCount])
-                pendingTxsPane.txsCount++
+            while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
+                transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
+                transactionsPane.txsCount++
             }
 
-            PendingTxsPane.list.loading.hide()
+            TransactionsPane.list.loading.hide()
 
-            if(pendingTxsPane.txsCount == transactions.length)
-                pendingTxsPane.reachedEnd = true
+            if(transactionsPane.txsCount == transactions.length)
+                transactionsPane.reachedEnd = true
 
-            if(pendingTxsPane.txsCount == 0)
-                PendingTxsPane.list.empty.show()
+            if(transactionsPane.txsCount == 0)
+                TransactionsPane.list.empty.show()
             else
-                PendingTxsPane.list.empty.hide()
+                TransactionsPane.list.empty.hide()
 
-            pendingTxsPane.updateTxs(data)
+            transactionsPane.updateTxs(data)
 
         })
     }
 
     showTransaction(selectedWallet, transaction){
-        let elem = PendingTxsPane.list.base.clone()
+        let elem = TransactionsPane.list.base.clone()
         elem.attr("id", "tx"+transaction.hash)
 
         if(transaction.contractAddr == selectedWallet.ticker) {
@@ -98,6 +98,13 @@ class PendingTxsPane {
 
         elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + transaction.contractAddr + "/logo.png')")
 
+        if(selectedWallet.explorer === undefined)
+            elem.find("button").hide()
+        else
+            elem.find("button").click(function(){
+                window.open(selectedWallet.explorer + transaction.hash, "_blank")
+            })
+
         elem.click(function(){
             if(elem.hasClass("opened")) return
 
@@ -110,7 +117,7 @@ class PendingTxsPane {
             return false
         })
 
-        PendingTxsPane.list.self.append(elem)
+        TransactionsPane.list.self.append(elem)
         elem.show()
     }
 
@@ -145,4 +152,4 @@ class PendingTxsPane {
 
 }
 
-const pendingTxsPane = new PendingTxsPane()
+const transactionsPane = new TransactionsPane()
