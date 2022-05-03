@@ -38,7 +38,7 @@
 
 #pendingTxsPane .listWrap {
     overflow: auto;
-    max-height: 536px;
+    max-height: 548px;
     padding: 0 1em;
 }
 

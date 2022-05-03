@@ -102,7 +102,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                         "gasPrice": gasPrice,
                                         "gasLimit": gasLimit
                                     }
-                                    baseWallet.getCurrentWallet().transactions.push(txResume)
+                                    baseWallet.getCurrentWallet().transactions.unshift(txResume)
                                     sendResponse(hash)
                                     baseWallet.save()
                                 })
@@ -133,7 +133,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 "gasPrice": gasPrice,
                                 "gasLimit": gasLimit
                             }
-                            baseWallet.getCurrentWallet().transactions.push(txResume)
+                            baseWallet.getCurrentWallet().transactions.unshift(txResume)
                             sendResponse(hash)
                             baseWallet.save()
                         })

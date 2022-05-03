@@ -173,7 +173,7 @@ class AssetsPane {
         getBaseInfos().then(function(infos){
             let tokens = infos.wallets[infos.selectedWallet].wallet.tokens
 
-            let initialCount = assetsPane.tokensCount;
+            let initialCount = assetsPane.tokensCount
 
             while(assetsPane.tokensCount < tokens.length && assetsPane.tokensCount-initialCount < 20){
                 assetsPane.showToken(infos, tokens[assetsPane.tokensCount])
