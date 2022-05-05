@@ -119,6 +119,38 @@ newArray = [
     [
         83.8,
         0
+    ],
+    [
+        100,
+        400
+    ],
+    [
+        76.5,
+        2366.9534755534196
+    ],
+    [
+        76.6,
+        2319.4811618581325
+    ],
+    [
+        77.2,
+        2034.647279686391
+    ],
+    [
+        69.1,
+        5879.904689004858
+    ],
+    [
+        69.3,
+        5784.960061614278
+    ],
+    [
+        71.1,
+        4930.458415099063
+    ],
+    [
+        84,
+        4008.152219232035
     ]
 ]
 
@@ -127,16 +159,16 @@ const obj = Object.fromEntries(entries);
 
 var data = {
     datasets: [{
-        label: 'My First Dataset',
+        label: 'All Currencies',
         data: obj,
         pointRadius: 0,
         hoverPointRadius: 0,
         fill: {
             target: 'origin',
-            above: 'rgba(84, 84, 84,0.15)',   // Area will be red above the origin
-            below: 'rgba(84, 84, 84,0.15)'    // And blue below the origin
+            above: 'rgba(84, 84, 84,0.5)',   // Area will be red above the origin
+            below: 'rgba(84, 84, 84,0.5)'    // And blue below the origin
         },
-        borderColor: 'rgba(84, 84, 84,0.15)',
+        borderColor: 'rgba(84, 84, 84,0.5)',
         tension: 0.1,
 
     }]
