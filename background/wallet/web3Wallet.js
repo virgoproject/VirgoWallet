@@ -156,7 +156,6 @@ class Web3Wallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    console.log(transaction)
                     if(transaction.confirmations !== undefined && transaction.confirmations >= 12) continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){

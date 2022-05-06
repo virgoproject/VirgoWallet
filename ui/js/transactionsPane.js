@@ -70,7 +70,7 @@ class TransactionsPane {
         let elem = TransactionsPane.list.base.clone()
         elem.attr("id", "tx"+transaction.hash)
 
-        if(transaction.contractAddr == selectedWallet.ticker) {
+        if(transaction.contractAddr == selectedWallet.ticker || transaction.contractAddr == "WEB3_CALL") {
             elem.find(".amount val").html(Utils.formatAmount(transaction.amount, selectedWallet.decimals))
             elem.find(".amount b").html(selectedWallet.ticker)
         } else {
