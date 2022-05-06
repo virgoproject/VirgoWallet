@@ -1,22 +1,6 @@
 
 newArray = [
     [
-        68.7,
-        6069.793943786011
-    ],
-    [
-        69.1,
-        5879.904689004858
-    ],
-    [
-        69.3,
-        5784.960061614278
-    ],
-    [
-        71.1,
-        4930.458415099063
-    ],
-    [
         71.8,
         4598.152219232035
     ],
@@ -157,18 +141,26 @@ newArray = [
 const entries = new Map(newArray);
 const obj = Object.fromEntries(entries);
 
+var ctx = document.getElementById("graph").getContext("2d");
+
+
+var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+gradient.addColorStop(0, 'rgba(10,10,10,0.05)');
+gradient.addColorStop(1, 'rgba(255,255,255,0.25)');
+
 var data = {
     datasets: [{
         label: 'All Currencies',
+        fillColor: gradient,
         data: obj,
         pointRadius: 0,
         hoverPointRadius: 0,
         fill: {
             target: 'origin',
-            above: 'rgba(84, 84, 84,0.5)',   // Area will be red above the origin
-            below: 'rgba(84, 84, 84,0.5)'    // And blue below the origin
+            above: gradient,   // Area will be red above the origin
+            below: gradient    // And blue below the origin
         },
-        borderColor: 'rgba(84, 84, 84,0.5)',
+        borderColor: 'rgba(84, 84, 84,1)',
         tension: 0.1,
 
     }]
@@ -208,5 +200,4 @@ const config = {
 };
 
 
-var ctx = document.getElementById("graph");
 new Chart(ctx, config);
