@@ -143,6 +143,8 @@ const obj = Object.fromEntries(entries);
 
 var ctx = document.getElementById("graph").getContext("2d");
 
+let vert = "rgba(45, 149, 90,1)";
+
 
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
 gradient.addColorStop(0, 'rgba(10,10,10,0.05)');
@@ -160,7 +162,7 @@ var data = {
             above: gradient,   // Area will be red above the origin
             below: gradient    // And blue below the origin
         },
-        borderColor: 'rgba(84, 84, 84,1)',
+        borderColor: '#8200e2',
         tension: 0.1,
 
     }]
@@ -172,6 +174,7 @@ const config = {
     options: {
         scales: {
             x: {
+                display: false,
                 ticks: {
                     display: false,
                 },
@@ -180,6 +183,7 @@ const config = {
                 }
             },
             y: {
+                display: false,
                 ticks: {
                     display: false,
                 },
