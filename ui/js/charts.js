@@ -147,8 +147,8 @@ let vert = "rgba(45, 149, 90,1)";
 
 
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-gradient.addColorStop(0, 'rgba(10,10,10,0.05)');
-gradient.addColorStop(1, 'rgba(255,255,255,0.25)');
+gradient.addColorStop(0, 'rgba(10,10,10,0.5)');
+gradient.addColorStop(1, 'rgba(255,255,255,0.15)');
 
 var data = {
     datasets: [{
@@ -173,6 +173,7 @@ const config = {
     data: data,
     options: {
         scales: {
+
             x: {
                 display: false,
                 ticks: {
@@ -194,7 +195,7 @@ const config = {
         },
         plugins: {
             legend: {
-                display: false
+                display: false,
             },
             tooltip: {
                 enabled: false
