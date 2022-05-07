@@ -97,7 +97,9 @@ class MainPane {
             $("#settings .mainSettings [data-target=security]").click()
             $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
             $("#backupPopup .close").click()
+
         })
+
 
     }
 
@@ -138,6 +140,11 @@ class MainPane {
                 elem = $("#baseAssetRow").clone()
                 elem.attr("id", "bal"+contractAddr)
 
+                let newgraph = document.createElement("canvas")
+                let graphId = newgraph.id = contractAddr
+                newgraph.style.height = "50px"
+                elem.find(".graphCoin").append(newgraph).addClass('position-absolute p-0').css({"width": "89%", "border-radius": "0.5em"/*, "opacity": "0.2"*/})
+
                 elem.find(".title").html(balance.name)
                 elem.find(".ticker").html(balance.ticker)
                 elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
@@ -157,6 +164,8 @@ class MainPane {
                     elem.attr("data-sort", 9999999999999999)
                 else
                     elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
+                createGraph(graphId)
+
                 elem.show()
             }else{
                 if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
@@ -170,6 +179,7 @@ class MainPane {
                 }
                 elem.find(".balance").html(bal)
                 elem.find(".fiatEq").html(fiatBal)
+
             }
 
             totalBalance += balance.price*balance.balance/10**balance.decimals;
