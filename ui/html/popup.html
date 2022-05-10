@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
     <link rel="stylesheet" href="/ui/css/settings.css">
     <link rel="stylesheet" href="/ui/css/assets.css">
+    <link rel="stylesheet" href="/ui/css/transactionsPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
 </head>
 <body>
@@ -48,7 +49,9 @@
 <div id="mainPane" style="display: none">
     <div class="header">
         <div class="topbar row">
-            <div class="col-3"></div>
+            <div class="col-3 pendingTxs">
+                <p><i class="fas fa-list-ul"></i></p>
+            </div>
             <div class="col-6" id="chainSelectionHeader">
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
             </div>
@@ -265,6 +268,84 @@
         </div>
         <div class="addBottomLogo">
             <i class="fas fa-plus addLogo"></i>
+        </div>
+    </div>
+    <div id="transactionsPane" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center">Transactions</p>
+        </div>
+        <div class="content">
+            <div class="listItem mb-2" id="transactionsBaseTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                    </div>
+                    <div class="col-8">
+                        <p class="amount"><val>0.005</val> <b>ETH</b></p>
+                        <p class="smallDetails"><val class="date">April 19</val> &#183 To <val class="recipient">0x0000000000000000000000</val></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0">
+                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
+                        <i class="fas fa-check confirmed" style="display: none"></i>
+                        <i class="fas fa-times refused" style="display: none"></i>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <p class="title">Amount</p>
+                        <p class="body amount"><val>-</val> <b>ETH</b></p>
+                    </div>
+                    <div class="detail">
+                        <p class="title">Date</p>
+                        <p class="body date">-</p>
+                    </div>
+                    <div class="detail">
+                        <p class="title recipientTitle">Recipient <i class="far fa-copy copy"></i></p>
+                        <p class="title recipientCopied" style="display: none">Copied!</p>
+                        <p class="body recipient">-</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Price</p>
+                                <p class="body gasPrice"><val>-</val> <b>Gwei</b></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Limit</p>
+                                <p class="body gasLimit">-</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Used</p>
+                                <p class="body gasUsed">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <p class="title">Total fees</p>
+                        <p class="body totalFees"><val>-</val> <b>ETH</b></p>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <p class="close"><i class="fas fa-chevron-up"></i></p>
+                </div>
+            </div>
+            <div class="listWrap mt-1">
+                <div class="row list">
+                </div>
+            </div>
+            <div class="loading text-center mt-2 mb-2">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="listEmpty text-center mt-5 mb-5" style="display: none">
+                <h4>Nothing to show!</h4>
+                <p>Your wallet activity will appear here.</p>
+            </div>
         </div>
     </div>
     <div id="settings" class="pt-2">
@@ -550,7 +631,9 @@
 <script src="../js/sendPane.js"></script>
 <script src="../js/settings.js"></script>
 <script src="../js/assetsPane.js"></script>
+<script src="../js/transactionsPane.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
+<script src="../js/progressRing.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -9,6 +9,8 @@ class Web3Wallet {
         this.rpcURL = rpcURL
         this.chainID = chainID
         this.tokens = tokens
+        this.transactions = transactions
+        this.explorer = explorer
 
         this.balances = new Map()
 
@@ -37,7 +39,24 @@ class Web3Wallet {
     }
 
     static fromJSON(json){
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens)
+        if(json.transactions === undefined) json.transactions = []
+        if(json.explorer === undefined){
+            switch(json.chainID){
+                case 1:
+                    json.explorer = "https://etherscan.io/tx/"
+                    break
+                case 3:
+                    json.explorer = "https://ropsten.etherscan.io/tx/"
+                    break
+                case 56:
+                    json.explorer = "https://bscscan.com/tx/"
+                    break
+                case 137:
+                    json.explorer = "https://polygonscan.com/tx/"
+                    break
+            }
+        }
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer)
     }
 
     toJSON(){
@@ -51,7 +70,9 @@ class Web3Wallet {
                 "contract": this.contract,
                 "RPC": this.rpcURL,
                 "chainID": this.chainID,
-                "tokens": this.tokens
+                "tokens": this.tokens,
+                "transactions": this.transactions,
+                "explorer": this.explorer
             }
         }
     }
@@ -130,6 +151,22 @@ class Web3Wallet {
                     })
             }
 
+        }
+
+        if(this.transactions.length > 0){
+            web3.eth.getBlockNumber().then(function(blockNumber){
+                for(const transaction of wallet.transactions){
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12) continue
+
+                    web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
+                        if(receipt == null) return
+
+                        transaction.confirmations = blockNumber - receipt.blockNumber
+                        transaction.gasUsed = receipt.gasUsed
+                        transaction.status = receipt.status
+                    })
+                }
+            })
         }
     }
 
