@@ -104,15 +104,18 @@ input[type=range]::-ms-thumb {
 }
 
 .centerStepLabel{
-    margin-left: -0.7em;
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 .leftStepLabel{
-    margin-left: -4px;
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 .rightStepLabel{
-    margin-left: -2px;
+    transform: translateX(50%);
+    right: 50%;
 }
 
 .activeStep{
