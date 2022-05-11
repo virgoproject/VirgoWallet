@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/ui/css/assets.css">
     <link rel="stylesheet" href="/ui/css/transactionsPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
+    <link rel="stylesheet" href="/ui/css/feesManagement.css">
 </head>
 <body>
 
@@ -22,8 +23,10 @@
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
         <div>
-            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span id="unlockPanePasswordWrong">Wrong password</span></p>
-            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="Password">
+            <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span
+                    id="unlockPanePasswordWrong">Wrong password</span></p>
+            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;"
+                   placeholder="Password">
         </div>
         <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
             <val>UNLOCK</val>
@@ -36,8 +39,10 @@
     <div class="recoverBox" style="display: none">
         <p class="back text-left"><i class="fas fa-chevron-left"></i> Back</p>
         <div>
-            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
-            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
+            <p class="label text-left"><span id="recoverPaneMnemonicBase">Enter your Recovery Phrase</span><span
+                    id="recoverPaneMnemonicWrong">Invalid Phrase</span></p>
+            <textarea style="resize: none;" id="recoverPaneMnemonic" rows="3" class="input w-100"
+                      style="padding: 0.5em 2em 0.5em 0.75em;" placeholder="antenna frequent mule pill..."></textarea>
         </div>
         <button class="button w-100" id="recoverPaneMnemonicSubmit" disabled>
             <val>RECOVER</val>
@@ -53,7 +58,9 @@
                 <p><i class="fas fa-list-ul"></i></p>
             </div>
             <div class="col-6" id="chainSelectionHeader">
-                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val> <i class="fas fa-chevron-down"></i></p>
+                <p class="mb-0">
+                    <val id="mainPaneCurrentChain" data-networkname>Smart Chain</val>
+                    <i class="fas fa-chevron-down"></i></p>
             </div>
             <div class="col-3" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
@@ -62,7 +69,10 @@
         <div class="stats row">
             <p class="title">ESTIMATED VALUE</p>
             <h1 class="value" data-fiatTotal>$0</h1>
-            <p class="fluctuation"><i class="fas fa-chevron-up"></i> <val>0</val>%</p>
+            <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                <val>0</val>
+                %
+            </p>
         </div>
     </div>
     <div id="body">
@@ -100,11 +110,16 @@
                                 </div>
                                 <div class="col-6">
                                     <p class="title">Bitcoin</p>
-                                    <p class="amount"><val class="balance">0</val> <b class="ticker"></b></p>
+                                    <p class="amount">
+                                        <val class="balance">0</val>
+                                        <b class="ticker"></b></p>
                                 </div>
                                 <div class="col-4 text-right">
                                     <p class="fiatEq">$0</p>
-                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i> <val></val>%</p>
+                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                                        <val></val>
+                                        %
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +141,9 @@
                 <div class="col-12 mb-4">
                     <div class="row">
                         <p class="label col-3">Amount</p>
-                        <p class="label col-9 text-right sendBal">Balance: <val>-</val> <span></span></p>
+                        <p class="label col-9 text-right sendBal">Balance:
+                            <val>-</val>
+                            <span></span></p>
                     </div>
                     <div class="row w-100 m-0 input inputWButton">
                         <input type="number" class="col-10 amount" placeholder="0.0">
@@ -148,12 +165,35 @@
                     <p class="label">To</p>
                     <p class="detail value"></p>
                 </div>
-                <div class="col-12 mb-4 fees">
-                    <p class="label">Fees</p>
-                    <p class="detail"><span class="value"></span> <span class="ticker" data-networkticker></span></p>
+                <div class="col-12 fees">
+                    <div class="col-12 d-flex mb-2">
+                        <div class="col-3">
+                            <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
+                        </div>
+                        <div class="col-9 text-right">
+                            <span class="value"></span>
+                            <span class="ticker" data-networkticker></span>
+                        </div>
+                    </div>
+
+                    <div id="leftStep">
+                        <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                    </div>
+                    <div id="centerStep">
+                        <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                    </div>
+                    <div id="rightStep">
+                        <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                    </div>
+
+                    <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
+
                 </div>
-                <button class="button col-12 submit" disabled="disabled">
-                    <val>Insufficient <val data-networkticker=""></val> balance</val>
+                <button class="button col-12 submit mt-5" disabled="disabled">
+                    <val>Insufficient
+                        <val data-networkticker=""></val>
+                        balance
+                    </val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
@@ -364,7 +404,9 @@
                     </div>
                     <div class="col-8">
                         <p class="address">0x0000000000000000000000000000000000000000</p>
-                        <p class="amount"><val class="balance">0</val> <b class="ticker" data-networkticker></b></p>
+                        <p class="amount">
+                            <val class="balance">0</val>
+                            <b class="ticker" data-networkticker></b></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center">
                         <i class="fas fa-check isSelected"></i>
@@ -424,51 +466,77 @@
                     </div>
                 </div>
             </div>
-            <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword" data-settingsLevel="2">
+            <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword"
+                 data-settingsLevel="2">
                 <div class="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
-                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down
+                        on paper and keep it safe</b>, away from regard.</p>
                     <div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>1.</i> <val></val></p>
+                                <p class="word"><i>1.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>2.</i> <val></val></p>
+                                <p class="word"><i>2.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>3.</i> <val></val></p>
+                                <p class="word"><i>3.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>4.</i> <val></val></p>
-                            </div>
-                        </div>
-                        <div class="row g-1">
-                            <div class="col-3">
-                                <p class="word"><i>5.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>6.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>7.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>8.</i> <val></val></p>
+                                <p class="word"><i>4.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>9.</i> <val></val></p>
+                                <p class="word"><i>5.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>10.</i> <val></val></p>
+                                <p class="word"><i>6.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>11.</i> <val></val></p>
+                                <p class="word"><i>7.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>12.</i> <val></val></p>
+                                <p class="word"><i>8.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -477,7 +545,8 @@
                 <div class="mnemonicTest" style="display: none">
                     <h3>Confirm your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">Write each word in the order it was presented to you</p>
-                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <textarea style="resize: none;" class="input w-100" rows="3"
+                              placeholder="antenna frequent mule pill..."></textarea>
                     <button class="button w-100 mt-3" disabled>Next</button>
                 </div>
                 <div class="getOldPassword" style="display: none">
@@ -524,60 +593,87 @@
                 </div>
                 <div class="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
-                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down on paper and keep it safe</b>, away from regard.</p>
+                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down
+                        on paper and keep it safe</b>, away from regard.</p>
                     <div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>1.</i> <val></val></p>
+                                <p class="word"><i>1.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>2.</i> <val></val></p>
+                                <p class="word"><i>2.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>3.</i> <val></val></p>
+                                <p class="word"><i>3.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>4.</i> <val></val></p>
-                            </div>
-                        </div>
-                        <div class="row g-1">
-                            <div class="col-3">
-                                <p class="word"><i>5.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>6.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>7.</i> <val></val></p>
-                            </div>
-                            <div class="col-3">
-                                <p class="word"><i>8.</i> <val></val></p>
+                                <p class="word"><i>4.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                         <div class="row g-1">
                             <div class="col-3">
-                                <p class="word"><i>9.</i> <val></val></p>
+                                <p class="word"><i>5.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>10.</i> <val></val></p>
+                                <p class="word"><i>6.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>11.</i> <val></val></p>
+                                <p class="word"><i>7.</i>
+                                    <val></val>
+                                </p>
                             </div>
                             <div class="col-3">
-                                <p class="word"><i>12.</i> <val></val></p>
+                                <p class="word"><i>8.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <p class="word"><i>9.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>10.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>11.</i>
+                                    <val></val>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="word"><i>12.</i>
+                                    <val></val>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="settingsCat p-3 text-center importMnemonic" data-settingId="importMnemonic" data-settingsLevel="2">
+            <div class="settingsCat p-3 text-center importMnemonic" data-settingId="importMnemonic"
+                 data-settingsLevel="2">
                 <div class="mnemonicAsk">
                     <h3>Enter your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">Write each word in the right order</p>
                     <p class="label text-left normal">Secret recovery phrase</p>
                     <p class="label text-left error text-danger" style="display: none">Invalid phrase</p>
-                    <textarea style="resize: none;" class="input w-100" rows="3" placeholder="antenna frequent mule pill..."></textarea>
+                    <textarea style="resize: none;" class="input w-100" rows="3"
+                              placeholder="antenna frequent mule pill..."></textarea>
                     <button class="button w-100 mt-3" disabled="disabled">
                         <val>Next</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
@@ -585,7 +681,8 @@
                 </div>
                 <div class="mnemonicWarn" style="display: none">
                     <h3>Warning</h3>
-                    <p style="font-size: 0.9em">Restoring this wallet will erase your current wallet, be sure to have saved your secret recovery phrase!</p>
+                    <p style="font-size: 0.9em">Restoring this wallet will erase your current wallet, be sure to have
+                        saved your secret recovery phrase!</p>
                     <button class="button w-100 mt-3">
                         <val>I understand, continue</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
@@ -616,7 +713,7 @@
                 </div>
             </div>
         </div>
-    </div >
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -634,6 +731,7 @@
 <script src="../js/transactionsPane.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
+<script src="../js/rangeSlider.js"></script>
 <script src="../js/progressRing.js"></script>
 </body>
 </html>
