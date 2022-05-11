@@ -88,3 +88,7 @@ async function addAsset(name, symbol, decimals, contract){
 function closedBackupPopup(){
     browser.runtime.sendMessage({command: 'closedBackupPopup'})
 }
+
+async function changeAssetTracking(contract){
+    return await browser.runtime.sendMessage({command: 'changeTokenTracking', contract: contract})
+}

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/ui/css/send.css">
     <link rel="stylesheet" href="/ui/css/chainSelection.css">
     <link rel="stylesheet" href="/ui/css/settings.css">
+    <link rel="stylesheet" href="/ui/css/assets.css">
+    <link rel="stylesheet" href="/ui/css/transactionsPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
 </head>
@@ -52,7 +54,9 @@
 <div id="mainPane" style="display: none">
     <div class="header">
         <div class="topbar row">
-            <div class="col-3"></div>
+            <div class="col-3 pendingTxs">
+                <p><i class="fas fa-list-ul"></i></p>
+            </div>
             <div class="col-6" id="chainSelectionHeader">
                 <p class="mb-0">
                     <val id="mainPaneCurrentChain" data-networkname>Smart Chain</val>
@@ -94,7 +98,7 @@
                 <div class="title col-12 m-0">
                     <div class="row">
                         <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
-                        <p class="col-6 text-right mb-0 addAsset"><i class="fas fa-plus"></i> Add</p>
+                        <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
                     </div>
                 </div>
                 <div>
@@ -200,40 +204,6 @@
                 <h3><i>Coming soon!</i></h3>
             </div>
         </div>
-        <div class="bodyElem addAsset" style="display: none">
-            <div class="row">
-                <p class="back col-3"><i class="fas fa-chevron-left"></i> Back</p>
-                <p class="title col-6">Add a new Asset</p>
-                <div class="col-3"></div>
-            </div>
-            <div class="row assetContract">
-                <div>
-                    <p class="label text-left">Contract address</p>
-                    <input type="text" class="input col-12" placeholder="Enter the asset's contract address">
-                </div>
-                <button class="button col-12 submit mt-3" disabled="disabled">
-                    <val>Next</val>
-                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-                </button>
-            </div>
-            <div class="row assetResume" style="display: none">
-                <div>
-                    <p class="label text-left">Asset name</p>
-                    <input type="text" class="input col-12 name" placeholder="" disabled>
-                </div>
-                <div>
-                    <p class="label text-left">Symbol</p>
-                    <input type="text" class="input col-12 symbol" placeholder="" disabled>
-                </div>
-                <div>
-                    <p class="label text-left">Decimals</p>
-                    <input type="text" class="input col-12 decimals" placeholder="" disabled>
-                </div>
-                <button class="button col-12 submit mt-3">
-                    <val>Add <span class="ticker"></span></val>
-                </button>
-            </div>
-        </div>
     </div>
     <div id="footer" class="row">
         <div class="footerElem col-4" data-target="send">
@@ -263,6 +233,159 @@
                 <p>ETH</p>
             </div>
             <div class="col-3"></div>
+        </div>
+    </div>
+    <div id="assetsPane" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center" id="assetListTitle">My Assets</p>
+        </div>
+        <label class="text-center searchLabel mt-3" id="assetsListSearch">
+            <input type="text" class="inputSearch" placeholder="Search for an asset">
+            <i class="fas fa-search searchIcon"></i>
+        </label>
+        <div class="content">
+            <div class="listItem mb-2" id="assetsListBaseAsset" style="display: none !important;">
+                <div class="row">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="logo"></div>
+                    </div>
+                    <div class="col-6">
+                        <p class="name">Ethereum</p>
+                        <p class="ticker">ETH</p>
+                    </div>
+                    <div class="col-4 text-right justify-content-center align-self-center">
+                        <i class="fas fa-check stateCoin"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="listEnd text-center mt-5 mb-5" style="display: none">
+                <h4>That's it!</h4>
+                <p>Didn't see the asset you want? <br><span>Add it now!</span></p>
+            </div>
+            <div class="searchNotFound text-center mt-5 mb-5" style="display: none">
+                <h4>Not found!</h4>
+                <p>Really want this asset? <br><span>Add it now!</span></p>
+            </div>
+            <div class="listWrap mt-3">
+                <div class="row list">
+                </div>
+            </div>
+            <div class="loading text-center mt-2 mb-2">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="p-2" id="assetsListAdd" style="display: none">
+                <div class="row contract">
+                    <div>
+                        <p class="label text-left">Contract address</p>
+                        <input type="text" class="input col-12" placeholder="Enter the asset's contract address">
+                    </div>
+                    <button class="button col-12 submit mt-3" disabled="disabled">
+                        <val>Next</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                </div>
+                <div class="row resume" style="display: none">
+                    <div>
+                        <p class="label text-left">Asset name</p>
+                        <input type="text" class="input col-12 name" placeholder="" disabled>
+                    </div>
+                    <div>
+                        <p class="label text-left">Symbol</p>
+                        <input type="text" class="input col-12 symbol" placeholder="" disabled>
+                    </div>
+                    <div>
+                        <p class="label text-left">Decimals</p>
+                        <input type="text" class="input col-12 decimals" placeholder="" disabled>
+                    </div>
+                    <button class="button col-12 submit mt-3">
+                        <val>Add <span class="ticker"></span></val>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="addBottomLogo">
+            <i class="fas fa-plus addLogo"></i>
+        </div>
+    </div>
+    <div id="transactionsPane" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center">Transactions</p>
+        </div>
+        <div class="content">
+            <div class="listItem mb-2" id="transactionsBaseTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                    </div>
+                    <div class="col-8">
+                        <p class="amount"><val>0.005</val> <b>ETH</b></p>
+                        <p class="smallDetails"><val class="date">April 19</val> &#183 To <val class="recipient">0x0000000000000000000000</val></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0">
+                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
+                        <i class="fas fa-check confirmed" style="display: none"></i>
+                        <i class="fas fa-times refused" style="display: none"></i>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <p class="title">Amount</p>
+                        <p class="body amount"><val>-</val> <b>ETH</b></p>
+                    </div>
+                    <div class="detail">
+                        <p class="title">Date</p>
+                        <p class="body date">-</p>
+                    </div>
+                    <div class="detail">
+                        <p class="title recipientTitle">Recipient <i class="far fa-copy copy"></i></p>
+                        <p class="title recipientCopied" style="display: none">Copied!</p>
+                        <p class="body recipient">-</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Price</p>
+                                <p class="body gasPrice"><val>-</val> <b>Gwei</b></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Limit</p>
+                                <p class="body gasLimit">-</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="detail">
+                                <p class="title">Gas Used</p>
+                                <p class="body gasUsed">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <p class="title">Total fees</p>
+                        <p class="body totalFees"><val>-</val> <b>ETH</b></p>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <p class="close"><i class="fas fa-chevron-up"></i></p>
+                </div>
+            </div>
+            <div class="listWrap mt-1">
+                <div class="row list">
+                </div>
+            </div>
+            <div class="loading text-center mt-2 mb-2">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="listEmpty text-center mt-5 mb-5" style="display: none">
+                <h4>Nothing to show!</h4>
+                <p>Your wallet activity will appear here.</p>
+            </div>
         </div>
     </div>
     <div id="settings" class="pt-2">
@@ -604,8 +727,11 @@
 <script src="../js/resume.js"></script>
 <script src="../js/sendPane.js"></script>
 <script src="../js/settings.js"></script>
+<script src="../js/assetsPane.js"></script>
+<script src="../js/transactionsPane.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 <script src="../js/rangeSlider.js"></script>
+<script src="../js/progressRing.js"></script>
 </body>
 </html>
