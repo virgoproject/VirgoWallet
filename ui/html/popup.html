@@ -176,17 +176,26 @@
                         </div>
                     </div>
 
-                    <div id="leftStep">
-                        <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                    <div class="range">
+                        <div class="row steps">
+                            <div class="col-4">
+                                <div id="leftStep">
+                                    <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div id="centerStep">
+                                    <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div id="rightStep">
+                                    <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
                     </div>
-                    <div id="centerStep">
-                        <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                    </div>
-                    <div id="rightStep">
-                        <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                    </div>
-
-                    <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
 
                 </div>
                 <button class="button col-12 submit mt-5" disabled="disabled">

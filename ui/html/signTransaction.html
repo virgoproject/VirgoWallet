@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
     <link rel="stylesheet" href="/ui/css/main.css">
     <link rel="stylesheet" href="/ui/css/signTransaction.css">
+    <link rel="stylesheet" href="/ui/css/feesManagement.css">
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
@@ -22,21 +23,50 @@
             <p class="label">To</p>
             <p class="detail value" id="to"></p>
         </div>
-        <div class="col-12 mb-2 text-left">
-            <p class="label">Fees</p>
-            <p class="detail"><span class="value" id="fees"></span> <span class="ticker"></span></p>
-        </div>
         <div class="col-12 mb-3 text-left">
             <p class="label">Data</p>
             <p class="detail" id="data">0x0</p>
         </div>
-        <div class="col-12">
+        <div class="col-12 mt-1 mb-4 fees">
+            <div class="col-12 d-flex mb-2">
+                <div class="col-3">
+                    <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
+                </div>
+                <div class="col-9 text-right">
+                    <span class="value" id="fees"></span>
+                    <span class="ticker" data-networkticker></span>
+                </div>
+            </div>
+
+            <div class="range">
+                <div class="row steps" style="margin: 2px 5px 0;">
+                    <div class="col-4">
+                        <div id="leftStep">
+                            <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="centerStep">
+                            <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="rightStep">
+                            <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                        </div>
+                    </div>
+                </div>
+                <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
+            </div>
+
+        </div>
+        <div class="col-12 mt-2">
             <div class="row">
                 <div class="col-6 p-2">
-                    <button class="button w-100" id="allow">Allow</button>
+                    <button class="button w-100" id="refuse">Reject</button>
                 </div>
                 <div class="col-6 p-2">
-                    <button class="button w-100" id="refuse">Refuse</button>
+                    <button class="button w-100" id="allow" disabled>Approve</button>
                 </div>
             </div>
         </div>
@@ -46,6 +76,8 @@
 <script src="../js/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
+<script src="../js/backgroundMessaging.js"></script>
 <script src="../js/signTransaction.js"></script>
+<script src="../js/rangeSlider.js"></script>
 </body>
 </html>

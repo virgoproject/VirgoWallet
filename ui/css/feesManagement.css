@@ -75,32 +75,25 @@ input[type=range]::-ms-thumb {
     width: 25px;
     background: rgb(84, 84, 84);
     border-radius: 50%;
-    position: absolute;
-    bottom: 179px;
-    z-index: -1;
-    left: 29px;
+    position: relative;
 }
 
 #centerStep{
     height: 25px;
     width: 25px;
-    background: rgb(84, 84, 84) ;
+    background: rgb(84, 84, 84);
     border-radius: 50%;
-    position: absolute;
-    bottom: 179px;
-    z-index: -1;
-    left: 156px;
+    position: relative;
+    margin: auto;
 }
 
 #rightStep{
     height: 25px;
     width: 25px;
-    background: rgb(84, 84, 84) ;
+    background: rgb(84, 84, 84);
     border-radius: 50%;
-    position: absolute;
-    bottom: 179px;
-    z-index: -1;
-    right: 29px;
+    position: relative;
+    float: right;
 }
 
 .centerStepLabel{
@@ -125,3 +118,10 @@ input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 147px 3px rgba(91,0,156,1);
 }
 
+.range .steps {
+    z-index: -1;
+    position: absolute;
+    left: 1em;
+    right: 1em;
+    margin: 2px 1px 0;
+}

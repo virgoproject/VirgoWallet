@@ -36,12 +36,16 @@ async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
 
+async function getGasPrice(){
+    return await browser.runtime.sendMessage({command: 'getGasPrice'})
+}
+
 async function getBalance(asset){
     return await browser.runtime.sendMessage({command: 'getBalance', asset: asset})
 }
 
-async function sendTo(recipient, amount, asset){
-    return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset})
+async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
+    return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice})
 }
 
 async function getMnemonic(){

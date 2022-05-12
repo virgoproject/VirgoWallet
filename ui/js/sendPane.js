@@ -13,8 +13,10 @@ class SendPane {
     static confirmTicker = $("#body .send .sendConfirm .amount .ticker")
     static confirmRecipient = $("#body .send .sendConfirm .recipient .value")
     static confirmFees = $("#body .send .sendConfirm .fees .value")
+    static confirmFeesRange = $("#rangeFees")
     static sendBal = $("#body .send .sendForm .sendBal span")
     static maxBtn = $("#body .send .sendForm button.max")
+    static estimateFees = null;
 
     constructor() {
 
@@ -29,12 +31,14 @@ class SendPane {
             SendPane.btnConfirm.attr("disabled", true)
             SendPane.btnConfirm.find("val").html('Insufficient <val data-networkticker=""></val> balance')
 
-            let estimateFees = function(){
+            SendPane.estimateFees = function(){
                 getAsset(SendPane.assetSelect.val()).then(function(assetInfos){
                     estimateSendFees(SendPane.recipient.val(), Math.trunc(parseFloat(SendPane.amount.val())*10**assetInfos.decimals), SendPane.assetSelect.val()).then(function(fees){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance){
 
                             if(fees.gasLimit === undefined || isBtnDisabled(SendPane.btnConfirm)) return
+
+                            let feesModifier = 0.5 + SendPane.confirmFeesRange.val()/100
 
                             enableLoadBtn(SendPane.btnSubmit)
                             SendPane.recipient.attr("disabled", false)
@@ -45,16 +49,21 @@ class SendPane {
                             SendPane.confirmAmount.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
                             SendPane.confirmRecipient.html(SendPane.recipient.val())
-                            SendPane.confirmFees.html(Utils.formatAmount(fees.gasLimit * fees.gasPrice, fees.decimals))
+                            SendPane.confirmFees.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice * feesModifier), fees.decimals))
+                            SendPane.confirmFees.attr("gasLimit", fees.gasLimit)
+                            SendPane.confirmFees.attr("gasPrice", Math.round(fees.gasPrice * feesModifier))
                             SendPane.confirmForm.show()
 
-                            let totalForNative = fees.gasLimit * fees.gasPrice;
+                            let totalForNative = fees.gasLimit * Math.round(fees.gasPrice * feesModifier);
                             if(assetInfos.ticker == MAIN_ASSET.ticker)
                                 totalForNative += Math.trunc(parseFloat(SendPane.amount.val())*10**MAIN_ASSET.decimals)
 
                             if(totalForNative <= nativeBalance.balance){
                                 SendPane.btnConfirm.find("val").html("Send")
                                 SendPane.btnConfirm.attr("disabled", false)
+                            }else{
+                                SendPane.btnConfirm.attr("disabled", true)
+                                SendPane.btnConfirm.find("val").html('Insufficient '+MAIN_ASSET.ticker+' balance')
                             }
 
                         })
@@ -62,9 +71,9 @@ class SendPane {
                 })
             }
 
-            estimateFees()
+            SendPane.estimateFees()
             confirmInterval = setInterval(function(){
-                estimateFees()
+                SendPane.estimateFees()
             }, 2500)
 
         })
@@ -78,23 +87,33 @@ class SendPane {
             clearInterval(confirmInterval)
         })
 
+        SendPane.confirmFeesRange.on("input", function(){
+            SendPane.btnConfirm.attr("disabled", true)
+            SendPane.estimateFees()
+        })
+
         SendPane.btnConfirm.click(function(){
             disableLoadBtn($(this))
             SendPane.backBtn.attr("disabled", true)
             clearInterval(confirmInterval)
 
             getAsset(SendPane.assetSelect.val()).then(function(assetInfos){
-                sendTo(SendPane.recipient.val(), Math.trunc(parseFloat(SendPane.amount.val())*10**assetInfos.decimals), SendPane.assetSelect.val()).then(function(res){
-                    notyf.success("Transaction sent!")
-                    SendPane.recipient.val("")
-                    SendPane.amount.val("")
-                    SendPane.assetSelect.val(MAIN_ASSET.contract).trigger("change")
+                sendTo(SendPane.recipient.val(),
+                    Math.trunc(parseFloat(SendPane.amount.val())*10**assetInfos.decimals),
+                    SendPane.assetSelect.val(),
+                    SendPane.confirmFees.attr("gasLimit"),
+                    SendPane.confirmFees.attr("gasPrice"))
+                    .then(function(res){
+                        notyf.success("Transaction sent!")
+                        SendPane.recipient.val("")
+                        SendPane.amount.val("")
+                        SendPane.assetSelect.val(MAIN_ASSET.contract).trigger("change")
 
-                    SendPane.backBtn.attr("disabled", false)
-                    enableLoadBtn(SendPane.btnConfirm)
+                        SendPane.backBtn.attr("disabled", false)
+                        enableLoadBtn(SendPane.btnConfirm)
 
-                    SendPane.backBtn.click()
-                })
+                        SendPane.backBtn.click()
+                    })
             })
         })
 

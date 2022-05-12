@@ -6,8 +6,10 @@ function get(name){
 
 $("#siteName").html(get("origin"))
 
+let finalGasPrice = 0
+
 $("#allow").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: true})
+    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: finalGasPrice})
     window.close()
 })
 
@@ -21,9 +23,43 @@ $("#siteLogo img").on("error", function(){
 })
 $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
+let gas = parseInt(get("gas"))
+let ticker = get("ticker")
+let amount = parseInt(get("value"))
+let decimals = get("decimals")
+
 $("#from").html(get("from"))
 $("#to").html(get("to"))
-$("#amount").html(get("value"))
-$("#fees").html(get("fees"))
+$("#amount").html(Utils.formatAmount(amount, decimals))
 $("#data").html(get("data"))
-$(".ticker").html(get("ticker"))
+$(".ticker").html(ticker)
+
+function estimateFees() {
+    $("#allow").attr("disabled", true)
+    getBalance(ticker).then(function(balance){
+        getGasPrice().then(function(gasPrice){
+            let feesModifier = 0.5 + $("#rangeFees").val()/100
+
+            finalGasPrice = gasPrice * feesModifier
+
+            let nativeTotal = amount + gas * finalGasPrice
+
+            console.log(nativeTotal)
+
+            $("#fees").html(Utils.formatAmount(gas * finalGasPrice, decimals))
+
+            if(nativeTotal <= balance.balance)
+                $("#allow").attr("disabled", false)
+        })
+    })
+}
+
+setInterval(function(){
+    estimateFees()
+}, 2500)
+
+$("#rangeFees").on("input", function(){
+    estimateFees()
+})
+
+estimateFees()

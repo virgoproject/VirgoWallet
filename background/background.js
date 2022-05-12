@@ -52,6 +52,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
             break
 
+        case "getGasPrice":
+            web3.eth.getGasPrice().then(function(gasPrice){
+                sendResponse(gasPrice)
+            })
+            break
+
         case "estimateSendFees"://only support web3 R/N
             web3.eth.getGasPrice().then(function(gasPrice){
                 //may have a problem with sending wrapped version of the main asset
@@ -83,40 +89,35 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             //send native asset
             if (request.asset == baseWallet.getCurrentWallet().contract) {
                 web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
-                    web3.eth.getGasPrice().then(function(gasPrice){
-                        web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
-                            .then(function (gasLimit) {
-                                web3.eth.sendTransaction({
-                                    from: baseWallet.getCurrentAddress(),
-                                    to: request.recipient,
-                                    value: request.amount,
-                                    gas: gasLimit,
-                                    gasPrice: gasPrice,
-                                    nonce: nonce
-                                })
-                                    .on("transactionHash", function (hash) {
-                                        txResume = {
-                                            "hash": hash,
-                                            "contractAddr": baseWallet.getCurrentWallet().ticker,
-                                            "date": Date.now(),
-                                            "recipient": request.recipient,
-                                            "amount": request.amount,
-                                            "gasPrice": gasPrice,
-                                            "gasLimit": gasLimit,
-                                            "nonce": nonce
-                                        }
-                                        baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                                        sendResponse(hash)
-                                        baseWallet.save()
-                                    })
-                                    .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
-                                        txResume.gasUsed = receipt.gasUsed
-                                        txResume.status = receipt.status
-                                        txResume.confirmations = confirmationNumber
-                                        baseWallet.save()
-                                    })
-                            })
+                    web3.eth.sendTransaction({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
                     })
+                        .on("transactionHash", function (hash) {
+                            txResume = {
+                                "hash": hash,
+                                "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                "date": Date.now(),
+                                "recipient": request.recipient,
+                                "amount": request.amount,
+                                "gasPrice": request.gasPrice,
+                                "gasLimit": request.gasLimit,
+                                "nonce": nonce
+                            }
+                            baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                            sendResponse(hash)
+                            baseWallet.save()
+                        })
+                        .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                            txResume.gasUsed = receipt.gasUsed
+                            txResume.status = receipt.status
+                            txResume.confirmations = confirmationNumber
+                            baseWallet.save()
+                        })
                 })
                 break
             }
@@ -125,32 +126,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             const transaction = contract.methods.transfer(request.recipient, request.amount);
 
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
-                web3.eth.getGasPrice().then(function(gasPrice){
-                    transaction.estimateGas().then(function (gasLimit) {
-                        transaction.send({gas: gasLimit, gasPrice: gasPrice, nonce: nonce})
-                            .on("transactionHash", function (hash) {
-                                txResume = {
-                                    "hash": hash,
-                                    "contractAddr": request.asset,
-                                    "date": Date.now(),
-                                    "recipient": request.recipient,
-                                    "amount": request.amount,
-                                    "gasPrice": gasPrice,
-                                    "gasLimit": gasLimit,
-                                    "nonce": nonce
-                                }
-                                baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                                sendResponse(hash)
-                                baseWallet.save()
-                            })
-                            .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
-                                txResume.gasUsed = receipt.gasUsed
-                                txResume.status = receipt.status
-                                txResume.confirmations = confirmationNumber
-                                baseWallet.save()
-                            })
+                transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+                    .on("transactionHash", function (hash) {
+                        txResume = {
+                            "hash": hash,
+                            "contractAddr": request.asset,
+                            "date": Date.now(),
+                            "recipient": request.recipient,
+                            "amount": request.amount,
+                            "gasPrice": request.gasPrice,
+                            "gasLimit": request.gasLimit,
+                            "nonce": nonce
+                        }
+                        baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                        sendResponse(hash)
+                        baseWallet.save()
                     })
-                })
+                    .on("confirmation", function(confirmationNumber, receipt){
+                        txResume.gasUsed = receipt.gasUsed
+                        txResume.status = receipt.status
+                        txResume.confirmations = confirmationNumber
+                        baseWallet.save()
+                    })
             })
             break
 
@@ -331,55 +328,50 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 })
                 return
             }
-            signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas, params[0].gasPrice).then(function(result){
-                if(result)
+            signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas).then(function(result){
+                if(result !== false)
                     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
-                        web3.eth.getGasPrice().then(function(gasPrice) {
-                            if(params[0].gasPrice === undefined) params[0].gasPrice = web3.utils.toHex(gasPrice)
-                            console.log(params[0])
-                            console.log(nonce)
-                            web3.currentProvider.send({
-                                jsonrpc: "2.0",
-                                id: Date.now(),
-                                method: method,
-                                params: [{
-                                    from: params[0].from,
-                                    to: params[0].to,
-                                    value: params[0].value,
-                                    data: params[0].data,
-                                    gas: params[0].gas,
-                                    gasPrice: params[0].gasPrice,
-                                    nonce: nonce
-                                }]
-                            }, function (error, resp) {
-                                if (!resp.error) {
-                                    sendResponse({
-                                        success: true,
-                                        data: resp.result
-                                    })
-
-                                    if (method == "eth_sendTransaction") {
-                                        baseWallet.getCurrentWallet().transactions.unshift({
-                                            "hash": resp.result,
-                                            "contractAddr": "WEB3_CALL",
-                                            "date": Date.now(),
-                                            "recipient": params[0].to,
-                                            "amount": params[0].value,
-                                            "gasPrice": web3.utils.hexToNumber(params[0].gasPrice),
-                                            "gasLimit": web3.utils.hexToNumber(params[0].gas),
-                                            "nonce": nonce
-                                        })
-                                        baseWallet.save()
-                                    }
-                                    return
-                                }
+                        web3.currentProvider.send({
+                            jsonrpc: "2.0",
+                            id: Date.now(),
+                            method: method,
+                            params: [{
+                                from: params[0].from,
+                                to: params[0].to,
+                                value: params[0].value,
+                                data: params[0].data,
+                                gas: params[0].gas,
+                                gasPrice: web3.utils.numberToHex(result),
+                                nonce: nonce
+                            }]
+                        }, function (error, resp) {
+                            if (!resp.error) {
                                 sendResponse({
-                                    success: false,
-                                    error: {
-                                        message: error.message,
-                                        code: error.code
-                                    }
+                                    success: true,
+                                    data: resp.result
                                 })
+
+                                if (method == "eth_sendTransaction") {
+                                    baseWallet.getCurrentWallet().transactions.unshift({
+                                        "hash": resp.result,
+                                        "contractAddr": "WEB3_CALL",
+                                        "date": Date.now(),
+                                        "recipient": params[0].to,
+                                        "amount": params[0].value,
+                                        "gasPrice": web3.utils.hexToNumber(result),
+                                        "gasLimit": web3.utils.hexToNumber(params[0].gas),
+                                        "nonce": nonce
+                                    })
+                                    baseWallet.save()
+                                }
+                                return
+                            }
+                            sendResponse({
+                                success: false,
+                                error: {
+                                    message: error.message,
+                                    code: error.code
+                                }
                             })
                         })
                     })
@@ -502,24 +494,21 @@ async function askConnectToWebsite(origin){
     return pendingAuthorizations.get(requestID)
 }
 
-async function signTransaction(origin, from, to, value, data, gas, gasPrice){
+async function signTransaction(origin, from, to, value, data, gas){
     const requestID = Date.now() + "." + Math.random()
 
     if(value === undefined)
         value = 0x0
 
-    value = web3.utils.fromWei(web3.utils.toBN(value))
+    if(web3.utils.isHexStrict(value))
+        value = web3.utils.hexToNumberString(value)
 
-    if(gasPrice === undefined)
-        gasPrice = web3.utils.fromWei(await web3.eth.getGasPrice());
-    else
-        gasPrice = web3.utils.fromWei(web3.utils.toBN(gasPrice))
-
-    const fees = gasPrice*gas
+    if(web3.utils.isHexStrict(gas))
+        gas = web3.utils.hexToNumberString(gas)
 
     pendingTransactions.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open(`/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&fees=${fees}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
+    const wdw = window.open(`/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
     setInterval(function() {
         if(wdw.closed) {
