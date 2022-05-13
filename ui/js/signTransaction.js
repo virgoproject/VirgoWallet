@@ -40,7 +40,7 @@ function estimateFees() {
         getGasPrice().then(function(gasPrice){
             let feesModifier = 0.5 + $("#rangeFees").val()/100
 
-            finalGasPrice = gasPrice * feesModifier
+            finalGasPrice = Math.round(gasPrice * feesModifier)
 
             let nativeTotal = amount + gas * finalGasPrice
 
