@@ -44,8 +44,6 @@ function estimateFees() {
 
             let nativeTotal = amount + gas * finalGasPrice
 
-            console.log(nativeTotal)
-
             $("#fees").html(Utils.formatAmount(gas * finalGasPrice, decimals))
 
             if(nativeTotal <= balance.balance)
