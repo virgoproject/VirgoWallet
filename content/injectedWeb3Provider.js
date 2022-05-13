@@ -45,9 +45,9 @@ function providerRequestTransmitter(){
 function web3Provider(){
     console.log("virgo wallet - Injected Web3")
 
-    window.ethereum = new Proxy({
+    virgoProvider = new Proxy({
         isVirgo: true,
-        isMetamask: true,
+        isMetaMask: true,
         isEIP1193: true,
         networkVersion: '1',
         chainId: '0x1',
@@ -96,25 +96,27 @@ function web3Provider(){
         deleteProperty: () => true
     })
 
+    window.ethereum = virgoProvider
+
     window.addEventListener('virgoChainChanged', (response) => {
         const chainId = response.detail
-        window.ethereum.networkVersion = ""+chainId
-        window.ethereum.chainId = '0x'+chainId.toString(16)
+        virgoProvider.networkVersion = ""+chainId
+        virgoProvider.chainId = '0x'+chainId.toString(16)
     })
 
     window.addEventListener('virgoAccountsChanged', (response) => {
         const addresses = response.detail
-        window.ethereum.selectedAddress = addresses[0]
+        virgoProvider.selectedAddress = addresses[0]
     })
 
     window.web3 = new Proxy({
-        currentProvider: window.ethereum,
+        currentProvider: virgoProvider,
         __isMetaMaskShim__: true
     }, {
         deleteProperty: () => true
     })
 
-    web3 = window.web3
+    window.dispatchEvent(new Event('ethereum#initialized'));
 }
 
 inject(providerRequestTransmitter)

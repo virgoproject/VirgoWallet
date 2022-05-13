@@ -477,19 +477,29 @@ async function askConnectToWebsite(origin){
 
     pendingAuthorizations.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open('/ui/html/authorize.html?id='+requestID+"&origin="+origin,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
-    setInterval(function() {
-        if(wdw.closed) {
-            clearInterval(this);
-            if(pendingAuthorizations.get(requestID) == null)
-                pendingAuthorizations.set(requestID, false)
+    browser.windows.create({
+        url: '/ui/html/authorize.html?id='+requestID+"&origin="+origin,
+        type:'popup',
+        height: 600,
+        width: 370,
+        top: top,
+        left: left,
+        allowScriptsToClose: true
+    }).then(async function(wdw){
+        console.log(wdw)
+        setInterval(function() {
+            if(wdw.closed) {
+                clearInterval(this);
+                if(pendingAuthorizations.get(requestID) == null)
+                    pendingAuthorizations.set(requestID, false)
+            }
+        }, 100);
+
+        while(pendingAuthorizations.get(requestID) == null){
+            await new Promise(r => setTimeout(r, 50));
         }
-    }, 100);
-
-    while(pendingAuthorizations.get(requestID) == null){
-        await new Promise(r => setTimeout(r, 50));
-    }
+    })
 
     return pendingAuthorizations.get(requestID)
 }
