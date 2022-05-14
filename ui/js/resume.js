@@ -143,7 +143,7 @@ class MainPane {
                 let newgraph = document.createElement("canvas")
                 let graphId = newgraph.id = contractAddr
                 newgraph.style.height = "50px"
-                elem.find(".graphCoin").append(newgraph).addClass('position-absolute p-0').css({"width": "89%", "border-radius": "0.5em"/*, "opacity": "0.2"*/})
+                elem.find(".graphCoin").append(newgraph).addClass('p-0 w-100').css({"border-radius": "0.5em", "transform": "translateY(7px)","margin-top":"-50px"/*, "opacity": "0.2"*/})
 
                 elem.find(".title").html(balance.name)
                 elem.find(".ticker").html(balance.ticker)
