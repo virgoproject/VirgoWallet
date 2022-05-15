@@ -142,10 +142,6 @@ const obj = Object.fromEntries(entries);
 
 var ctx = document.getElementById("mainCurrencyChart").getContext("2d");
 
-/*
-    let vert = "rgba(45, 149, 90,1)";
-*/
-
 
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
 gradient.addColorStop(0, 'rgba(10,10,10,0.5)');
@@ -200,7 +196,10 @@ const config = {
             },
             tooltip: {
                 enabled: false
-            },
+            }
+        },
+        animation: {
+            duration: 0
         }
     }
 };
@@ -411,7 +410,10 @@ function createGraph(id) {
                 },
                 tooltip: {
                     enabled: false
-                },
+                }
+            },
+            animation: {
+                duration: 0
             }
         }
     };
