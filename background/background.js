@@ -229,7 +229,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "authorizeWebsiteConnection":
-            pendingAuthorizations.set(request.id, request.decision)
+            if(pendingAuthorizations.get(request.id) === null)
+                pendingAuthorizations.set(request.id, request.decision)
             break
 
         case "authorizeTransaction":
@@ -478,28 +479,18 @@ async function askConnectToWebsite(origin){
     pendingAuthorizations.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
-    browser.windows.create({
+    await browser.windows.create({
         url: '/ui/html/authorize.html?id='+requestID+"&origin="+origin,
         type:'popup',
         height: 600,
         width: 370,
         top: top,
-        left: left,
-        allowScriptsToClose: true
-    }).then(async function(wdw){
-        console.log(wdw)
-        setInterval(function() {
-            if(wdw.closed) {
-                clearInterval(this);
-                if(pendingAuthorizations.get(requestID) == null)
-                    pendingAuthorizations.set(requestID, false)
-            }
-        }, 100);
-
-        while(pendingAuthorizations.get(requestID) == null){
-            await new Promise(r => setTimeout(r, 50));
-        }
+        left: left
     })
+
+    while(pendingAuthorizations.get(requestID) == null){
+        await new Promise(r => setTimeout(r, 50));
+    }
 
     return pendingAuthorizations.get(requestID)
 }
@@ -518,15 +509,15 @@ async function signTransaction(origin, from, to, value, data, gas){
 
     pendingTransactions.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open(`/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
-    setInterval(function() {
-        if(wdw.closed) {
-            clearInterval(this);
-            if(pendingTransactions.get(requestID) == null)
-                pendingTransactions.set(requestID, false)
-        }
-    }, 100);
+    await browser.windows.create({
+        url: `/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+        type:'popup',
+        height: 600,
+        width: 370,
+        top: top,
+        left: left
+    })
 
     while(pendingTransactions.get(requestID) == null){
         await new Promise(r => setTimeout(r, 50));
@@ -540,15 +531,15 @@ async function signMessage(origin, data){
 
     pendingSigns.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-    const wdw = window.open(`/ui/html/signMessage.html?id=${requestID}&origin=${origin}&data=${data}`,'popup',`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=370, height=600, top=${top}, left=${left}`);
 
-    setInterval(function() {
-        if(wdw.closed) {
-            clearInterval(this);
-            if(pendingSigns.get(requestID) == null)
-                pendingSigns.set(requestID, false)
-        }
-    }, 100);
+    await browser.windows.create({
+        url: `/ui/html/signMessage.html?id=${requestID}&origin=${origin}&data=${data}`,
+        type:'popup',
+        height: 600,
+        width: 370,
+        top: top,
+        left: left
+    })
 
     while(pendingSigns.get(requestID) == null){
         await new Promise(r => setTimeout(r, 50));

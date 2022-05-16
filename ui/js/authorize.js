@@ -20,3 +20,7 @@ $("#refuse").click(function (){
     browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: false})
     window.close()
 })
+
+window.onbeforeunload = function(){
+    browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: false})
+}

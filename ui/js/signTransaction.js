@@ -18,6 +18,10 @@ $("#refuse").click(function (){
     window.close()
 })
 
+window.onbeforeunload = function(){
+    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: false})
+}
+
 $("#siteLogo img").on("error", function(){
     $("#siteLogo img").attr("src", get("origin")+"/favicon.png")
 })

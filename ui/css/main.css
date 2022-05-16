@@ -83,7 +83,32 @@ body {
 }
 
 .button:disabled {
-    background: #545454;
+    background: #545454 !important;
+}
+
+.button.success {
+    background: #28a745;
+}
+
+.button.success:hover {
+    background: #218838;
+}
+
+.button.danger {
+    background: #dc3545;
+}
+
+.button.danger:hover {
+    background: #c82333;
+}
+
+.button.light {
+    background: #f8f9fa;
+    color: black;
+}
+
+.button.light:hover {
+    background: #e2e6ea;
 }
 
 .input {
