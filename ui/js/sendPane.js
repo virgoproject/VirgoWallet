@@ -181,6 +181,8 @@ class SendPane {
     setSend(data){
         const selectedAddress = data.addresses[data.selectedAddress]
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
+            if(!balance.tracked) return
+
             let elem = $("<option></option>")
             elem.val(balance.contract)
             elem.attr("data-ticker", balance.ticker)
