@@ -69,3 +69,12 @@ const notyf = new Notyf({
         y: 'top'
     }
 })
+
+$("[data-inputTarget]").keypress(function(e){
+    if(e.which != 13) return
+
+    const target = $($(this).attr("data-inputTarget"))
+
+    if(target.attr("disabled")) return
+    target.click()
+})

@@ -68,6 +68,14 @@
     margin-bottom: 0;
 }
 
+#transactionsPane .listItem .header .amount val {
+    max-width: 130px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
 #transactionsPane .listItem .smallDetails .amount val {
     overflow: hidden;
     text-overflow: ellipsis;
