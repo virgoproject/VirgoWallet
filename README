@@ -1,0 +1,17 @@
+Third party libraries:
+Jdenticon Ver. 3.1.1: https://github.com/dmester/jdenticon/releases/tag/3.1.1
+Used the minified version at https://cdn.jsdelivr.net/npm/jdenticon@3.1.1/dist/jdenticon.min.js
+
+Notyf Ver. 3.0.0: https://github.com/caroso1222/notyf/releases/tag/3.0.0
+Used the minified version at https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js
+
+Tinysort ver. 3.2.5: https://github.com/Sjeiti/TinySort/releases/tag/v3.2.5
+Used the minified version at https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js
+
+
+Build instructions:
+
+npm i
+npm run build
+
+The extension files can then be found in the /build folder
