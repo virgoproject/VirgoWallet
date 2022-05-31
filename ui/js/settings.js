@@ -11,6 +11,7 @@ class SettingsPane {
     static settingsBackBtn = $("#settings .settingsPane .back")
     static settingsTitle = $("#settings .title")
     static openSettingsBtn = $("#settings .mainPane .openSettings")
+    static openSupportBtn = $("#settings .mainPane .openSupport")
     static setupPassword = {
         mnemonic: $("#settings .setupPassword .writeMnemonic"),
         test: $("#settings .setupPassword .mnemonicTest"),
@@ -366,6 +367,12 @@ class SettingsPane {
                     notyf.success("Wallet recovered!")
                     SettingsPane.accountSelectionHeader.click()
                 }, 2000)
+            })
+        })
+
+        SettingsPane.openSupportBtn.click(function(){
+            browser.windows.create({
+                url: "https://virgo.net/support"
             })
         })
     }

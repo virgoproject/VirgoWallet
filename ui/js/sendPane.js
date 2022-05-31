@@ -107,7 +107,7 @@ class SendPane {
                         notyf.success("Transaction sent!")
                         SendPane.recipient.val("")
                         SendPane.amount.val("")
-                        SendPane.assetSelect.val(MAIN_ASSET.contract).trigger("change")
+                        SendPane.assetSelect.val(MAIN_ASSET.ticker).trigger("change")
 
                         SendPane.backBtn.attr("disabled", false)
                         enableLoadBtn(SendPane.btnConfirm)
@@ -184,7 +184,7 @@ class SendPane {
             if(!balance.tracked) return
 
             let elem = $("<option></option>")
-            elem.val(balance.contract)
+            elem.val(contractAddr)
             elem.attr("data-ticker", balance.ticker)
             elem.html(balance.name + " - " + balance.ticker)
             SendPane.assetSelect.append(elem)

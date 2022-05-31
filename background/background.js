@@ -61,7 +61,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "estimateSendFees"://only support web3 R/N
             web3.eth.getGasPrice().then(function(gasPrice){
                 //may have a problem with sending wrapped version of the main asset
-                if(request.asset == baseWallet.getCurrentWallet().contract){
+                if(request.asset == baseWallet.getCurrentWallet().ticker){
                     //sending chain's native asset
                     web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient, gasPrice: gasPrice})
                         .then(function(gasLimit){
@@ -87,45 +87,44 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "sendTo":
             let txResume = null;
             //send native asset
-            if (request.asset == baseWallet.getCurrentWallet().contract) {
-                web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
-                    web3.eth.sendTransaction({
-                        from: baseWallet.getCurrentAddress(),
-                        to: request.recipient,
-                        value: request.amount,
-                        gas: request.gasLimit,
-                        gasPrice: request.gasPrice,
-                        nonce: nonce
-                    })
-                        .on("transactionHash", function (hash) {
-                            txResume = {
-                                "hash": hash,
-                                "contractAddr": baseWallet.getCurrentWallet().ticker,
-                                "date": Date.now(),
-                                "recipient": request.recipient,
-                                "amount": request.amount,
-                                "gasPrice": request.gasPrice,
-                                "gasLimit": request.gasLimit,
-                                "nonce": nonce
-                            }
-                            baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                            sendResponse(hash)
-                            baseWallet.save()
-                        })
-                        .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
-                            txResume.gasUsed = receipt.gasUsed
-                            txResume.status = receipt.status
-                            txResume.confirmations = confirmationNumber
-                            baseWallet.save()
-                        })
-                })
-                break
-            }
-
-            const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
-            const transaction = contract.methods.transfer(request.recipient, request.amount);
-
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
+                if (request.asset == baseWallet.getCurrentWallet().ticker) {
+
+                        web3.eth.sendTransaction({
+                            from: baseWallet.getCurrentAddress(),
+                            to: request.recipient,
+                            value: request.amount,
+                            gas: request.gasLimit,
+                            gasPrice: request.gasPrice,
+                            nonce: nonce
+                        })
+                            .on("transactionHash", function (hash) {
+                                txResume = {
+                                    "hash": hash,
+                                    "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                    "date": Date.now(),
+                                    "recipient": request.recipient,
+                                    "amount": request.amount,
+                                    "gasPrice": request.gasPrice,
+                                    "gasLimit": request.gasLimit,
+                                    "nonce": nonce
+                                }
+                                baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                                sendResponse(hash)
+                                baseWallet.save()
+                            })
+                            .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                                txResume.gasUsed = receipt.gasUsed
+                                txResume.status = receipt.status
+                                txResume.confirmations = confirmationNumber
+                                baseWallet.save()
+                            })
+                    return
+                }
+
+                const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
+                const transaction = contract.methods.transfer(request.recipient, request.amount);
+
                 transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                     .on("transactionHash", function (hash) {
                         txResume = {
@@ -229,16 +228,18 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "authorizeWebsiteConnection":
-            if(pendingAuthorizations.get(request.id) === null)
+            if(pendingAuthorizations.get(request.id) == null)
                 pendingAuthorizations.set(request.id, request.decision)
             break
 
         case "authorizeTransaction":
-            pendingTransactions.set(request.id, request.decision)
+            if(pendingTransactions.get(request.id) == null)
+                pendingTransactions.set(request.id, request.decision)
             break
 
         case "authorizeSign":
-            pendingSigns.set(request.id, request.decision)
+            if(pendingSigns.get(request.id) == null)
+                pendingSigns.set(request.id, request.decision)
             break
 
         case "closedBackupPopup":
@@ -522,6 +523,8 @@ async function signTransaction(origin, from, to, value, data, gas){
     while(pendingTransactions.get(requestID) == null){
         await new Promise(r => setTimeout(r, 50));
     }
+
+    console.log(pendingTransactions.get(requestID))
 
     return pendingTransactions.get(requestID)
 }

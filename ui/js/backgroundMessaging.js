@@ -7,7 +7,7 @@ async function getAsset(contract){
 
     const selectedWallet = res.wallets[res.selectedWallet].wallet;
 
-    if(selectedWallet.contract == contract)
+    if(selectedWallet.ticker == contract)
         return {
             "name": selectedWallet.name,
             "ticker": selectedWallet.ticker,
