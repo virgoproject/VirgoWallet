@@ -2,6 +2,7 @@ class SelectChains {
 
     static header = $("#chainSelectionHeader")
     static selector = $("#chainSelector")
+    static container = $("#chainsContainer")
     static baseChainRow = $("#baseChainRow")
 
     constructor() {
@@ -29,15 +30,16 @@ class SelectChains {
             if(walletObj === data.wallets[data.selectedWallet])
                 elem.addClass("selected")
 
-            elem.find("h3").html(wallet.name)
-            elem.find("p").html(wallet.ticker)
+            elem.find("name").html(wallet.name)
+            elem.find("ticker").html(wallet.ticker)
+            elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + wallet.ticker + "/" + wallet.ticker + "/logo.png')");
 
             elem.click(function(){
                 if(elem.hasClass("selected")) return
 
                 browser.runtime.sendMessage({command: 'changeWallet', walletId: elem.attr("data-walletid")})
                     .then(function () {
-                        $("#chainSelector .chain.selected").removeClass("selected")
+                        $("#chainsContainer .chain.selected").removeClass("selected")
                         elem.addClass("selected")
 
                         //reset assets
@@ -66,7 +68,7 @@ class SelectChains {
 
             })
 
-            SelectChains.selector.append(elem)
+            SelectChains.container.append(elem)
             elem.show()
 
             i++

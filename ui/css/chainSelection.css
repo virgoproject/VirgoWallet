@@ -15,17 +15,29 @@
 }
 
 #chainSelector .chain {
-    padding: 1em 0;
+    background: #ede3f4;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
     cursor: pointer;
+    transition: background ease 0.25s;
+}
+
+#chainSelector .chain .logo {
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
 }
 
 #chainSelector .chain.selected {
-    background: rgba(0, 0, 0, 0.2);
+    background: #e2d2ed;
     cursor: default;
 }
 
 #chainSelector .chain:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: #e2d2ed;
 }
 
 #chainSelector .chain h3, #chainSelector .chain p {
@@ -44,4 +56,16 @@
 
 #chainSelectionHeader.opened i {
     transform: rotate(180deg);
+}
+
+#chainSelector .chain .selectedIcon {
+    display: none;
+}
+
+#chainSelector .chain.selected .selectedIcon {
+    display: inline-block;
+}
+
+#chainSelector .chain.selected .selectIcon {
+    display: none;
 }

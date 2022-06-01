@@ -197,7 +197,55 @@ class BaseWallet {
             }
         }
 
-        return wallets
+        wallets[6] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Heco Chain",
+                "asset": "Huobi Token",
+                "ticker": "HT",
+                "decimals": 18,
+                "contract": "0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f",
+                "RPC": "https://http-mainnet-node.huobichain.com/",
+                "chainID": 128,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://hecoinfo.com/tx/"
+            }
+        }
+
+        wallets[7] = {
+            "type": "web3",
+            "wallet": {
+                "name": "KuCoin Chain",
+                "asset": "KuCoin Token",
+                "ticker": "KCS",
+                "decimals": 18,
+                "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521",
+                "RPC": "https://rpc-mainnet.kcc.network/",
+                "chainID": 321,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://explorer.kcc.io/en/tx/"
+            }
+        }
+
+        wallets[7] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Cronos Chain",
+                "asset": "Cronos",
+                "ticker": "CRO",
+                "decimals": 18,
+                "contract": "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
+                "RPC": "https://evm-cronos.crypto.org/",
+                "chainID": 25,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://cronoscan.com/tx/"
+            }
+        }
+
+            return wallets
     }
 
     //check current wallets against reference list, if some networks are missing add them
