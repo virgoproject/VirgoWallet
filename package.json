@@ -1,10 +1,10 @@
 {
   "name": "virgoWallet",
-  "version": "0.6.0",
+  "version": "0.6.4",
   "description": "",
   "scripts": {
     "build": "webpack",
-    "postbuild": "postbuild.sh"
+    "postbuild": "sh postbuild.sh"
   },
   "keywords": [],
   "author": "Virgo SAS",

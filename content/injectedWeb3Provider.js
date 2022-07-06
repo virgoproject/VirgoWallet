@@ -72,10 +72,10 @@ function web3Provider(){
             const params = req.params || []
             window.providerRequestTransmitter.transmit(req.method, params)
                 .then((result) => callback(null, {
-                id: req.id,
-                jsonrpc: '2.0',
-                result
-            }))
+                    id: req.id,
+                    jsonrpc: '2.0',
+                    result
+                }))
         },
         on: (method, callback) => {
             if (method === 'chainChanged') {
@@ -122,6 +122,15 @@ function web3Provider(){
 inject(providerRequestTransmitter)
 inject(web3Provider)
 
+function sendEvent(name, detail){
+    const varName = Date.now() + "." + Math.random()
+
+    window[varName] = detail
+    if(typeof cloneInto === 'function')
+        window[varName] = cloneInto(detail, window)
+
+    window.dispatchEvent(new CustomEvent(name, {detail: window[varName]}))
+}
 
 window.addEventListener("message", function(e) {
     const method = e.data.method
@@ -131,24 +140,24 @@ window.addEventListener("message", function(e) {
 
     browser.runtime.sendMessage({command: 'web3Request', origin: origin, method: method, params: params})
         .then(function(response){
-            window.dispatchEvent(new CustomEvent(reqId, {detail: response}))
+            sendEvent(reqId, response)
         })
 });
 
 browser.runtime.sendMessage({command: 'getBaseInfos'})
     .then(function(response){
-        if(response.locked) return
-        window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: response.wallets[response.selectedWallet].wallet.chainID}))
-        window.dispatchEvent(new CustomEvent("virgoAccountsChanged", {detail: [response.addresses[response.selectedAddress].address]}))
+        if(response.locked || !response.connectedSites.includes(window.location.origin)) return
+        sendEvent("virgoChainChanged", response.wallets[response.selectedWallet].wallet.chainID)
+        sendEvent("virgoAccountsChanged", [response.addresses[response.selectedAddress].address])
     })
 
 browser.runtime.onMessage.addListener(request => {
     switch(request.command){
         case "chainChanged":
-            window.dispatchEvent(new CustomEvent("virgoChainChanged", {detail: request.data}))
+            sendEvent("virgoChainChanged", request.data)
             break
         case "accountsChanged":
-            window.dispatchEvent(new CustomEvent("virgoAccountsChanged", {detail: request.data}))
+            sendEvent("virgoAccountsChanged", request.data)
             break
     }
 })

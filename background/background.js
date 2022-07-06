@@ -90,35 +90,35 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
                 if (request.asset == baseWallet.getCurrentWallet().ticker) {
 
-                        web3.eth.sendTransaction({
-                            from: baseWallet.getCurrentAddress(),
-                            to: request.recipient,
-                            value: request.amount,
-                            gas: request.gasLimit,
-                            gasPrice: request.gasPrice,
-                            nonce: nonce
+                    web3.eth.sendTransaction({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
+                    })
+                        .on("transactionHash", function (hash) {
+                            txResume = {
+                                "hash": hash,
+                                "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                "date": Date.now(),
+                                "recipient": request.recipient,
+                                "amount": request.amount,
+                                "gasPrice": request.gasPrice,
+                                "gasLimit": request.gasLimit,
+                                "nonce": nonce
+                            }
+                            baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                            sendResponse(hash)
+                            baseWallet.save()
                         })
-                            .on("transactionHash", function (hash) {
-                                txResume = {
-                                    "hash": hash,
-                                    "contractAddr": baseWallet.getCurrentWallet().ticker,
-                                    "date": Date.now(),
-                                    "recipient": request.recipient,
-                                    "amount": request.amount,
-                                    "gasPrice": request.gasPrice,
-                                    "gasLimit": request.gasLimit,
-                                    "nonce": nonce
-                                }
-                                baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                                sendResponse(hash)
-                                baseWallet.save()
-                            })
-                            .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
-                                txResume.gasUsed = receipt.gasUsed
-                                txResume.status = receipt.status
-                                txResume.confirmations = confirmationNumber
-                                baseWallet.save()
-                            })
+                        .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                            txResume.gasUsed = receipt.gasUsed
+                            txResume.status = receipt.status
+                            txResume.confirmations = confirmationNumber
+                            baseWallet.save()
+                        })
                     return
                 }
 
@@ -263,7 +263,8 @@ function getBaseInfos(){
         "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
         "selectedAddress": baseWallet.selectedAddress,
         "encrypted": baseWallet.isEncrypted(),
-        "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now()
+        "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
+        "connectedSites": connectedWebsites
     }
 }
 
@@ -274,8 +275,30 @@ function forgetWallet() {
 }
 
 function handleWeb3Request(sendResponse, origin, method, params){
-    console.log("method:" + method)
     switch(method){
+        case "eth_chainId":
+            web3.currentProvider.send({
+                jsonrpc: "2.0",
+                id: Date.now() + "." + Math.random(),
+                method: method,
+                params: params
+            }, function(error, resp){
+                if(!resp.error){
+                    sendResponse({
+                        success: true,
+                        data: resp.result
+                    })
+                    return
+                }
+                sendResponse({
+                    success: false,
+                    error: {
+                        message: error.message,
+                        code: error.code
+                    }
+                })
+            })
+            return
         case "eth_requestAccounts":
             if(connectedWebsites.includes(origin)){
                 sendResponse({
@@ -335,7 +358,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
                     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
                         web3.currentProvider.send({
                             jsonrpc: "2.0",
-                            id: Date.now(),
+                            id: Date.now() + "." + Math.random(),
                             method: method,
                             params: [{
                                 from: params[0].from,
@@ -402,7 +425,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
                 if(result)
                     web3.currentProvider.send({
                         jsonrpc: "2.0",
-                        id: Date.now(),
+                        id: Date.now() + "." + Math.random(),
                         method: method,
                         params: params
                     }, function(error, resp){
@@ -422,13 +445,13 @@ function handleWeb3Request(sendResponse, origin, method, params){
                         })
                     })
                 else
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: "The user rejected the request.",
-                        code: 4001
-                    }
-                })
+                    sendResponse({
+                        success: false,
+                        error: {
+                            message: "The user rejected the request.",
+                            code: 4001
+                        }
+                    })
             })
             break
         default:
@@ -444,7 +467,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             }
             web3.currentProvider.send({
                 jsonrpc: "2.0",
-                id: Date.now(),
+                id: Date.now() + "." + Math.random(),
                 method: method,
                 params: params
             }, function(error, resp){

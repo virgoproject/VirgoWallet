@@ -5,6 +5,7 @@ input[type=range] {
     width: 100%;
     background: transparent;
     border-radius: 25px;
+    height: 12px;
 }
 input[type=range]:focus {
     outline: none;
