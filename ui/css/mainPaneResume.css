@@ -39,6 +39,12 @@
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+#mainPane .resume .assets .asset:hover {
+    background: #5a009c20;
 }
 
 #mainPane .resume .assets .asset p {

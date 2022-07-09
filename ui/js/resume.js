@@ -119,6 +119,11 @@ class MainPane {
                     elem.attr("data-sort", 9999999999999999)
                 else
                     elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
+
+                elem.click(function(){
+                    tokenDetailPane.displayToken(balance)
+                })
+
                 elem.show()
             }else{
                 if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
