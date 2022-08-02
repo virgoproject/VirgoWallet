@@ -10,6 +10,7 @@
     transition: transform 0.25s ease;
     background: linear-gradient(0deg, rgba(90, 0, 156, 0.08), transparent);
     background-color: white;
+    z-index: 10;
 }
 
 #tokenDetailPane .content {
@@ -34,4 +35,74 @@
 
 #tokenDetailPane .back i {
     font-size: 1.5em;
+}
+
+#tokenDetailPane .chart {
+    height: 120px;
+}
+
+#tokenDetailPane .chartLoading {
+    text-align: center;
+    font-size: 2em;
+    position: absolute;
+    width: 100%;
+    top: 86px;
+}
+
+#tokenDetailPane .chart canvas {
+    height: 112px !important;
+    width: 338px !important;
+}
+
+#tokenDetailPane .menu div {
+    text-align: center;
+    border-bottom: 1px solid #00000015;
+    cursor: pointer;
+}
+
+#tokenDetailPane .menu div.selected {
+    border-bottom: 2px solid var(--mainColor);
+}
+
+#tokenDetailPane .menu p {
+    margin-bottom: 0.5em;
+}
+
+#tokenDetailPane .infos {
+    padding: 0 1.25em;
+    margin-bottom: 0.5em;
+    margin-left: 19px;
+    margin-top: 4px;
+}
+
+#tokenDetailPane .infos .name, #tokenDetailPane .infos .price {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+#tokenDetailPane .infos .ticker, #tokenDetailPane .infos .change {
+    margin: 0;
+    font-size: 0.75em;
+    color: #666;
+}
+
+#tokenDetailPane .infos .change {
+    color: #2d955a;
+}
+
+#tokenDetailPane .infos .change.negative {
+    color: #952d2d;
+}
+
+#tokenDetailPane .infos .change.negative i {
+    transform: rotate(180deg);
+    vertical-align: text-top;
+}
+
+#tokenDetailPane .infos .logo {
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
 }
