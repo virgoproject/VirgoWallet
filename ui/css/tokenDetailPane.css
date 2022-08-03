@@ -106,3 +106,29 @@
     border-radius: 50%;
     background-size: cover;
 }
+
+#tokenDetailPane .periodBtns {
+    padding: 0 1em;
+    margin-bottom: 1.5em;
+}
+
+#tokenDetailPane .periodBtns div {
+    padding: 0;
+    text-align: center;
+}
+
+#tokenDetailPane .periodBtn {
+    border: 2px solid var(--mainColor);
+    border-radius: 1em;
+    font-size: 0.75em;
+    width: 42px;
+    color: var(--mainColor);
+    background: transparent;
+    padding: 0;
+}
+
+#tokenDetailPane .periodBtn.active {
+    color: white;
+    background: var(--mainColor);
+    cursor: pointer;
+}
