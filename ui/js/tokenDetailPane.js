@@ -19,6 +19,9 @@ class TokenDetailPane {
         changeVal: $("#tokenDetailPane .infos .change val")
     }
     static periodBtns = $("#tokenDetailPane .periodBtns .periodBtn")
+    static newsContainer = $("#tokenNews .newsContainer")
+    static newsLoading = $("#tokenNewsLoading")
+    static sampleNews = $("#sampleTokenNews")
 
     constructor() {
         const _this = this
@@ -79,6 +82,7 @@ class TokenDetailPane {
 
         this.data = data
         this.initChart(1);
+        this.initNews()
 
         TokenDetailPane.self.show()
     }
@@ -120,7 +124,7 @@ class TokenDetailPane {
                 const gradient = ctxs.createLinearGradient(0, 0, 0, 150)
                 let lineColor = 'rgba(22,199,132,1)'
 
-                if(data.change >= 0){
+                if(chartData[chartData.length-1][1]-chartData[0][1] >= 0){
                     gradient.addColorStop(0, 'rgba(22,199,132,0.5)')
                     gradient.addColorStop(1, 'rgba(22,199,132,0.0)')
                 }else{
@@ -217,6 +221,36 @@ class TokenDetailPane {
         }
 
         return line
+    }
+
+    initNews(){
+        TokenDetailPane.newsContainer.html()
+        TokenDetailPane.newsLoading.show()
+
+        fetch("http://virgo.net/fakenewsapi/").then(function(resp){
+            resp.json().then(function(json){
+
+                TokenDetailPane.newsLoading.hide()
+
+                for(let news of json){
+                    const elem = TokenDetailPane.sampleNews.clone()
+                    elem.css("background", "url('"+news.image+"')")
+                    elem.find(".title").html(news.name)
+
+                    const date = new Date(news.date)
+                    let options = {month: "short", day: "numeric"};
+                    elem.find(".subtitle").html(news.sitename + " - " + date.toLocaleDateString("en-US", options))
+
+                    elem.click(function(){
+                        window.open(news.link, "_blank")
+                    })
+
+                    TokenDetailPane.newsContainer.append(elem)
+                    elem.show()
+                }
+
+            })
+        })
     }
 
 }

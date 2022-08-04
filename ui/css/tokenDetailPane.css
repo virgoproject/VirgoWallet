@@ -109,7 +109,7 @@
 
 #tokenDetailPane .periodBtns {
     padding: 0 1em;
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
 }
 
 #tokenDetailPane .periodBtns div {
@@ -131,4 +131,49 @@
     color: white;
     background: var(--mainColor);
     cursor: pointer;
+}
+
+#tokenNews .news {
+    background: url("https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDgvNWRiYTMzZDAtYjFmNy00OGNmLWJmZWYtYzM1ZjEwMmE3MjE3LmpwZw==.jpg");
+    height: 140px;
+    margin: 1em 0;
+    border-radius: 1em;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+#tokenNews .news .wrapper {
+    background-color: #000000a1;
+    border-radius: 1em;
+    box-shadow: inset 0px 0px 30px 4px rgba(0,0,0,0.6);
+    position: relative;
+}
+
+#tokenNews .news .content {
+    position: absolute;
+    bottom: 1em;
+}
+
+#tokenNews .news .title {
+    color: white;
+    font-size: 1.1em;
+    margin-bottom: 0;
+}
+
+#tokenNews .news .subtitle {
+    margin-bottom: 0;
+    font-size: 0.75em;
+    color: #dfdfdf;
+}
+
+#tokenNews {
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+#tokenNewsLoading {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 4.1em;
 }
