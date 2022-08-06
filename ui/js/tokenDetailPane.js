@@ -22,6 +22,9 @@ class TokenDetailPane {
     static newsContainer = $("#tokenNews .newsContainer")
     static newsLoading = $("#tokenNewsLoading")
     static sampleNews = $("#sampleTokenNews")
+    static infosAdditional = $("#tokenInfos .additional")
+    static infosAdditionalBtn = $("#tokenInfos .additionalBtn")
+
 
     constructor() {
         const _this = this
@@ -61,6 +64,16 @@ class TokenDetailPane {
                 else
                     TokenDetailPane.chartInfos.change.addClass("negative")
             }, 10)
+        })
+
+        TokenDetailPane.infosAdditionalBtn.click(function(){
+            if(TokenDetailPane.infosAdditionalBtn.hasClass("active")){
+                TokenDetailPane.infosAdditionalBtn.removeClass("active")
+                TokenDetailPane.infosAdditional.css("display", "none")
+            }else{
+                TokenDetailPane.infosAdditionalBtn.addClass("active")
+                TokenDetailPane.infosAdditional.css("display", "contents")
+            }
         })
 
     }
@@ -103,9 +116,13 @@ class TokenDetailPane {
                     resp.json().then(function(tokenInfos){
                         _this.tokenInfos = tokenInfos
                         _this.fetchAndDisplayChart(_this.data, tokenInfos, period)
+                        _this.initInfos()
                     })
                 })
-        else this.fetchAndDisplayChart(this.data, this.tokenInfos, period)
+        else {
+            this.fetchAndDisplayChart(this.data, this.tokenInfos, period)
+            _this.initInfos()
+        }
     }
 
     fetchAndDisplayChart(data, tokenInfos, period){
@@ -251,6 +268,29 @@ class TokenDetailPane {
 
             })
         })
+    }
+
+    initInfos(){
+        const _this = this
+
+        fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids="+this.tokenInfos.CG_ID+"&order=market_cap_desc&per_page=100&page=1&sparkline=false")
+            .then(function(resp){
+                resp.json().then(function(cgInfos){
+                    cgInfos = cgInfos[0]
+                    console.log(cgInfos)
+                    TokenDetailPane.infos.find(".cgRank").html("#" + cgInfos.market_cap_rank)
+                    TokenDetailPane.infos.find(".marketcap").html("$" + Utils.beautifyAmount(cgInfos.market_cap))
+                    TokenDetailPane.infos.find(".volume").html("$" + Utils.beautifyAmount(cgInfos.total_volume))
+                    TokenDetailPane.infos.find(".circulating").html(Utils.beautifyAmount(cgInfos.circulating_supply) + " " + _this.data.ticker)
+                    TokenDetailPane.infos.find(".totalSupply").html(Utils.beautifyAmount(cgInfos.total_supply) + " " + _this.data.ticker)
+
+                    if(cgInfos.max_supply != null)
+                        TokenDetailPane.infos.find(".maxSupply").html(Utils.beautifyAmount(cgInfos.max_supply) + " " + _this.data.ticker)
+
+                    TokenDetailPane.infos.find(".ath").html("$" + Utils.beautifyAmount(cgInfos.ath))
+                    TokenDetailPane.infos.find(".atl").html("$" + Utils.beautifyAmount(cgInfos.atl))
+                })
+            })
     }
 
 }

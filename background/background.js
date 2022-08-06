@@ -522,6 +522,14 @@ async function askConnectToWebsite(origin){
 async function signTransaction(origin, from, to, value, data, gas){
     const requestID = Date.now() + "." + Math.random()
 
+    if(gas === undefined)
+        gas = await web3.eth.estimateGas({
+            from: from,
+            to: to,
+            value: value,
+            data: data
+        })
+
     if(value === undefined)
         value = 0x0
 
@@ -530,6 +538,8 @@ async function signTransaction(origin, from, to, value, data, gas){
 
     if(web3.utils.isHexStrict(gas))
         gas = web3.utils.hexToNumberString(gas)
+
+    console.log("beeee " + gas)
 
     pendingTransactions.set(requestID, null)
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
