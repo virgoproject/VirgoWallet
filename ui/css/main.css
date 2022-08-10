@@ -1,11 +1,11 @@
 body {
     height: 600px;
     width: 56.25vh;
-    --mainColor: #5a009c;
-    --mainColorDark10: #50008c; /* Darken by 10% */
-    --mainColorLight: #6e00bf; /* Lighten by 10% */
-    --mainColorLight20: #8200e2;
-    --mainColorLight30: #9607ff;
+    --mainColor: #B71C8E;
+    --mainColorDark10: #a4197f; /* Darken by 10% */
+    --mainColorLight: #d01fa2; /* Lighten by 10% */
+    --mainColorLight20: #df2fb0;
+    --mainColorLight30: #e349ba;
     --highlightColor1: #c977ff;
     --highlightColor2: #ffb4f8;
     --whiteBackground: #f2ebf7;
@@ -71,7 +71,7 @@ body {
 
 .button {
     color: white;
-    background: var(--bs-purple);
+    background: var(--mainColor);
     border: none;
     border-radius: .5em;
     padding: .375em .75em;

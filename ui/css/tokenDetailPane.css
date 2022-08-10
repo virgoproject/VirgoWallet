@@ -62,6 +62,7 @@
 
 #tokenDetailPane .menu div.selected {
     border-bottom: 2px solid var(--mainColor);
+    color: var(--mainColor);
 }
 
 #tokenDetailPane .menu p {
@@ -260,4 +261,22 @@
     text-align: center;
     font-size: 2em;
     margin-top: 4.1em;
+}
+
+#tokenDetailsPaneLoading {
+    font-size: 2em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 8.5em;
+}
+
+#tokenDetailsSimple .resume {
+    padding: 0 1em;
+}
+
+#tokenDetailsSimple .address {
+    font-size: 0.75em;
+    padding: 0.75em 2em 0.75em 0.75em!important;
+    border-radius: 0.65em!important;
 }

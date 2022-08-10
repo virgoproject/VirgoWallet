@@ -4,7 +4,11 @@ class TokenDetailPane {
     static back = $("#tokenDetailPane .back")
     static loading = $("#tokenDetailsPaneLoading")
     static simplePane = {
-        self: $("#tokenDetailsSimple")
+        self: $("#tokenDetailsSimple"),
+        name: $("#tokenDetailsSimple .name"),
+        symbol: $("#tokenDetailsSimple .symbol"),
+        decimals: $("#tokenDetailsSimple .decimals"),
+        address: $("#tokenDetailsSimple .address")
     }
     static detailedPane = {
         self: $("#tokenDetailsDetailed"),
@@ -130,6 +134,12 @@ class TokenDetailPane {
             fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+MAIN_ASSET.ticker+"/"+contractAddr+"/infos.json")
                 .then(function(resp){
                     if(!resp.ok){
+
+                        TokenDetailPane.simplePane.name.val(_this.data.name)
+                        TokenDetailPane.simplePane.symbol.val(_this.data.ticker)
+                        TokenDetailPane.simplePane.decimals.val(_this.data.decimals)
+                        TokenDetailPane.simplePane.address.val(_this.data.contract)
+
                         TokenDetailPane.simplePane.self.show()
                         TokenDetailPane.loading.hide()
                         return
