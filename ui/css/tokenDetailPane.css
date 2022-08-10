@@ -182,6 +182,7 @@
     max-height: 360px;
     overflow: hidden;
     overflow-y: auto;
+    padding-bottom: 2em;
 }
 
 #tokenInfos .stats {
@@ -240,6 +241,23 @@
 #tokenInfos .description .desc {
     font-size: 0.9em;
     margin-bottom: 0;
-    max-height: 90px;
     overflow: hidden;
+}
+
+#tokenInfos .readmore {
+    display: none;
+    color: var(--mainColor);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: all 0.25s ease-in;
+}
+
+#tokenInfos .readmore:hover {
+    color: var(--mainColorLight20)
+}
+
+#tokenInfosLoading {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 4.1em;
 }
