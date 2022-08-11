@@ -11,7 +11,7 @@ body {
     --whiteBackground: #F2EBF7;
     font-family: Ubuntu;
     overflow: hidden;
-    background: white;
+    background: linear-gradient(0deg, #5a009c14, transparent);
 }
 
 /* cyrillic-ext */

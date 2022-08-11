@@ -4,7 +4,7 @@
 }
 
 #mainPane>.header {
-    background: #ECECEC;
+    background: #faf6fc;
     text-align: center;
     height: 110px;
     padding: 0.5em;
@@ -54,7 +54,7 @@
 #mainPane .header .pendingTxs {
     height: 36px;
     width: 36px;
-    background: #FAF7FD;
+    background: white;
     border-radius: 50%;
     line-height: 36px;
     margin: auto;
