@@ -35,7 +35,7 @@
 }
 
 #mainPane .resume .assets .asset {
-    background: #5a009c14;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -44,7 +44,7 @@
 }
 
 #mainPane .resume .assets .asset:hover {
-    background: #5a009c20;
+    background: #ece2f3;
 }
 
 #mainPane .resume .assets .asset p {

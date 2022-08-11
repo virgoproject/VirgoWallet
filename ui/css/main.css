@@ -1,17 +1,17 @@
 body {
     height: 600px;
     width: 56.25vh;
-    --mainColor: #B71C8E;
-    --mainColorDark10: #a4197f; /* Darken by 10% */
-    --mainColorLight: #d01fa2; /* Lighten by 10% */
-    --mainColorLight20: #df2fb0;
-    --mainColorLight30: #e349ba;
-    --highlightColor1: #c977ff;
+    --mainColor: #aa3180;
+    --mainColorDark10: #912a6e; /* Darken by 10% */
+    --mainColorLight: #c03791; /* Lighten by 10% */
+    --mainColorLight20: #ca4a9e;
+    --mainColorLight30: #d160aa;
+    --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
-    --whiteBackground: #f2ebf7;
+    --whiteBackground: #F2EBF7;
     font-family: Ubuntu;
     overflow: hidden;
-    background: linear-gradient(0deg, #5a009c14, transparent);
+    background: white;
 }
 
 /* cyrillic-ext */
