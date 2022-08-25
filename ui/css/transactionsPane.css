@@ -162,6 +162,24 @@
     transition: color ease 0.25s;
 }
 
-#transactionsPane .listItem .recipient:hover {
+#transactionsPane .listItem.opened .recipient:hover {
     color: var(--mainColorLight30);
+}
+
+#transactionsPane .listItem .speed-up, #transactionsPane .listItem .cancel {
+    font-size: 0.85em;
+    color: var(--highlightColor1);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color ease 0.25s;
+}
+
+#transactionsPane .listItem .speed-up:hover, #transactionsPane .listItem .cancel:hover {
+    color: var(--mainColorLight30);
+}
+
+#speedupPopup .loading {
+    text-align: center;
+    margin: 2em;
+    font-size: 1.5em;
 }

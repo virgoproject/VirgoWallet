@@ -96,3 +96,11 @@ function closedBackupPopup(){
 async function changeAssetTracking(contract){
     return await browser.runtime.sendMessage({command: 'changeTokenTracking', contract: contract})
 }
+
+async function getSpeedupGasPrice(){
+    return await browser.runtime.sendMessage({command: 'getSpeedupGasPrice'})
+}
+
+async function speedUpTransaction(hash, gasPrice){
+    return await browser.runtime.sendMessage({command: 'speedUpTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
+}

@@ -112,6 +112,43 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                             baseWallet.getCurrentWallet().transactions.unshift(txResume)
                             sendResponse(hash)
                             baseWallet.save()
+
+                            //resend if not propagated after 60s
+                            setTimeout(function (){
+                                web3.eth.getTransaction(hash)
+                                    .then(function(res){
+                                        if(res == null) {
+                                            console.log("transaction not propagated after 60s, resending")
+                                            web3.eth.sendTransaction({
+                                                from: baseWallet.getCurrentAddress(),
+                                                to: request.recipient,
+                                                value: request.amount,
+                                                gas: request.gasLimit,
+                                                gasPrice: request.gasPrice,
+                                                nonce: nonce
+                                            })
+
+                                            //still not propagated, reset web3 and resend
+                                            setTimeout(function(){
+                                                web3.eth.getTransaction(hash)
+                                                    .then(function(res) {
+                                                        if (res == null) {
+                                                            web3 = new Web3(provider)
+                                                            console.log("still not propagated, reset web3 and resend")
+                                                            web3.eth.sendTransaction({
+                                                                from: baseWallet.getCurrentAddress(),
+                                                                to: request.recipient,
+                                                                value: request.amount,
+                                                                gas: request.gasLimit,
+                                                                gasPrice: request.gasPrice,
+                                                                nonce: nonce
+                                                            })
+                                                        }
+                                                    })
+                                            }, 60000)
+                                        }
+                                    })
+                            }, 60000)
                         })
                         .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
                             txResume.gasUsed = receipt.gasUsed
@@ -140,6 +177,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         baseWallet.getCurrentWallet().transactions.unshift(txResume)
                         sendResponse(hash)
                         baseWallet.save()
+
+                        setTimeout(function (){
+                            web3.eth.getTransaction(hash)
+                                .then(function(res){
+                                    if(res == null) {
+                                        console.log("transaction not propagated after 60s, resending")
+                                        transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+
+                                        //still not propagated, reset web3 and resend
+                                        setTimeout(function(){
+                                            web3.eth.getTransaction(hash)
+                                                .then(function(res) {
+                                                    if (res == null) {
+                                                        web3 = new Web3(provider)
+                                                        console.log("still not propagated, reset web3 and resend")
+                                                        transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+                                                    }
+                                                })
+                                        }, 60000)
+                                    }
+                                })
+                        }, 60000)
                     })
                     .on("confirmation", function(confirmationNumber, receipt){
                         txResume.gasUsed = receipt.gasUsed
@@ -251,6 +310,32 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.getCurrentWallet().changeTracking(request.contract)
             sendResponse(true)
             break
+
+        case "getSpeedupGasPrice":
+            web3.eth.getGasPrice().then(res => {
+                sendResponse(parseInt(res)*1.1)
+            })
+            break
+
+        case "speedUpTransaction":
+            web3.eth.getTransaction(request.hash).then(transaction => {
+                web3.eth.sendTransaction({
+                    from: transaction.from,
+                    to: transaction.to,
+                    value: transaction.value,
+                    gas: transaction.gas,
+                    gasPrice: request.gasPrice,
+                    data: transaction.input,
+                    nonce: transaction.nonce
+                }).on('transactionHash', function(hash){
+                    const changedTx = baseWallet.getCurrentWallet().getTransaction(request.hash)
+                    changedTx.hash = hash
+                    changedTx.gasPrice = request.gasPrice
+                    baseWallet.save()
+                    sendResponse(hash)
+                })
+            })
+            break;
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

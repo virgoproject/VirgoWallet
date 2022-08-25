@@ -10,6 +10,16 @@ class TransactionsPane {
         wrapper: $("#transactionsPane .listWrap"),
         empty: $("#transactionsPane .listEmpty")
     }
+    static speedUp = {
+        self: $("#speedupPopup"),
+        body: $("#speedupPopup .body"),
+        loading: $("#speedupPopup .loading"),
+        amount: $("#speedupPopup .amount"),
+        button: {
+            self: $("#speedupPopup .button"),
+            text: $("#speedupPopup .button val")
+        }
+    }
 
     constructor() {
         this.txsCount = 0
@@ -126,6 +136,15 @@ class TransactionsPane {
             return false
         })
 
+        if(transaction.status !== undefined){
+            elem.find(".tweakBtns").hide()
+        }else{
+            elem.find(".speed-up").click(function(){
+                transactionsPane.confirmSpeedup(transaction, elem)
+            })
+        }
+
+
         TransactionsPane.list.self.append(elem)
         elem.show()
     }
@@ -149,6 +168,7 @@ class TransactionsPane {
                         }else
                             elem.find("progress-ring").attr("progress", Math.min(100, (transaction.confirmations+1)/13*100))
                     }
+                    elem.find(".tweakBtns").hide()
                 }
 
                 if(transaction.gasUsed !== undefined){
@@ -157,6 +177,49 @@ class TransactionsPane {
                 }
             }
         }
+    }
+
+    confirmSpeedup(transaction, elem){
+        TransactionsPane.speedUp.body.hide()
+        TransactionsPane.speedUp.loading.show()
+        TransactionsPane.speedUp.self.show()
+
+        enableLoadBtn(TransactionsPane.speedUp.button.self)
+        TransactionsPane.speedUp.button.self.attr("disabled", true)
+
+        getSpeedupGasPrice().then(gasPrice => {
+            getBalance(MAIN_ASSET.ticker).then(bal => {
+
+                const newFee = gasPrice * transaction.gasLimit
+
+                TransactionsPane.speedUp.amount.html(Utils.formatAmount(newFee, MAIN_ASSET.decimals))
+                TransactionsPane.speedUp.body.show()
+                TransactionsPane.speedUp.loading.hide()
+
+                if(bal.balance >= transaction.amount + newFee){
+                    TransactionsPane.speedUp.button.self.attr("disabled", false)
+                    TransactionsPane.speedUp.button.text.html("Speed up")
+                }else{
+                    TransactionsPane.speedUp.button.self.attr("disabled", true)
+                    TransactionsPane.speedUp.button.text.html("Insufficient " + MAIN_ASSET.ticker + " balance")
+                }
+
+                TransactionsPane.speedUp.button.self.unbind("click").click(function(){
+                    disableLoadBtn(TransactionsPane.speedUp.button.self)
+                    speedUpTransaction(transaction.hash, gasPrice).then(hash => {
+                        elem.attr("id", "tx"+hash)
+                        elem.find("button").unbind("click").click(function(){
+                            window.open(MAIN_ASSET.explorer + hash, "_blank")
+                        })
+                        elem.find(".gasPrice val").html(Math.round((gasPrice/1000000000)))
+                        TransactionsPane.speedUp.self.hide()
+                        notyf.success("Transaction speeded up!")
+                    })
+                })
+
+            })
+        })
+
     }
 
 }

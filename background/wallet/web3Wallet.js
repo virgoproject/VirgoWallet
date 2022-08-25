@@ -256,4 +256,8 @@ class Web3Wallet {
         }
     }
 
+    getTransaction(hash){
+        return this.transactions.find(tx => tx.hash === hash)
+    }
+
 }
