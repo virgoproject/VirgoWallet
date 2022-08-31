@@ -26,6 +26,10 @@ class MainPane {
         close: $("#backupPopup .close"),
         button: $("#backupPopup .button")
     }
+    static updatePopup = {
+        self: $("#updatePopup"),
+        close: $("#updatePopup .close")
+    }
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -49,6 +53,14 @@ class MainPane {
 
         MainPane.backupPopup.close.click(function(){
             closedBackupPopup()
+        })
+
+        MainPane.updatePopup.self.click(function(){
+            closedUpdatePopup()
+        })
+
+        MainPane.updatePopup.close.click(function(){
+            closedUpdatePopup()
         })
 
         MainPane.backupPopup.button.click(function(){
@@ -176,6 +188,9 @@ class MainPane {
 
         if(data.backupPopup)
             MainPane.backupPopup.self.show()
+
+        if(data.updatePopup)
+            MainPane.updatePopup.self.show()
 
         setInterval(function(){
             mainPane.updateData()

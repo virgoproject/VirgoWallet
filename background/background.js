@@ -1,11 +1,13 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const connectedWebsites = [];
+const VERSION = "0.7"
 
-const pendingAuthorizations = new Map();
-const pendingTransactions = new Map();
-const pendingSigns = new Map();
+const connectedWebsites = []
+
+const pendingAuthorizations = new Map()
+const pendingTransactions = new Map()
+const pendingSigns = new Map()
 
 let backupPopupDate = 0;
 browser.storage.local.get("backupPopupDate").then(function(res){
@@ -63,7 +65,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 //may have a problem with sending wrapped version of the main asset
                 if(request.asset == baseWallet.getCurrentWallet().ticker){
                     //sending chain's native asset
-                    web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient, gasPrice: gasPrice})
+                    web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
                         .then(function(gasLimit){
                             sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
                         })
@@ -383,6 +385,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
+        case "closedUpdatePopup":
+            baseWallet.version = VERSION
+            baseWallet.save()
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -396,6 +402,7 @@ function getBaseInfos(){
         "selectedAddress": baseWallet.selectedAddress,
         "encrypted": baseWallet.isEncrypted(),
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
+        "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites
     }
 }

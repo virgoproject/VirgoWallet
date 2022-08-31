@@ -239,8 +239,8 @@ input[type=number] {
 .popup .box {
     background: white;
     position: absolute;
-    left: 10%;
-    right: 10%;
+    left: 6%;
+    right: 6%;
     transform: translateY(50%);
     bottom: 50%;
     border-radius: 0.5em;
@@ -278,4 +278,32 @@ input[type=number] {
 .badge-warning {
     color: #212529 !important;
     background-color: #ffc107 !important;
+}
+
+.c-green {
+    color: var(--bs-green) !important;
+}
+
+.leftLine {
+    text-align: left;
+    overflow: hidden;
+}
+
+.leftLine>span {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.leftLine>span:before, .leftLine>span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    border-bottom: 2px solid;
+    width: 200px;
+    margin: 0 10px;
+}
+
+.leftLine>span:before {
+    right: 100%;
 }

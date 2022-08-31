@@ -112,3 +112,7 @@ async function getCancelGasPrice(hash){
 async function cancelTransaction(hash, gasPrice){
     return await browser.runtime.sendMessage({command: 'cancelTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
 }
+
+function closedUpdatePopup(){
+    browser.runtime.sendMessage({command: 'closedUpdatePopup'})
+}
