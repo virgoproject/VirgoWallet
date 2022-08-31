@@ -156,14 +156,23 @@ class Web3Wallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12) continue
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false) continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
-                        if(receipt == null) return
+                        if(receipt == null){
+                            if(transaction.canceling){
+                                transaction.status = false
+                                transaction.gasUsed = 21000
+                                transaction.gasPrice = transaction.cancelingPrice
+                                baseWallet.save()
+                            }
+                            return
+                        }
 
                         transaction.confirmations = blockNumber - receipt.blockNumber
                         transaction.gasUsed = receipt.gasUsed
                         transaction.status = receipt.status
+                        baseWallet.save()
                     })
                 }
             })

@@ -312,8 +312,13 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "getSpeedupGasPrice":
-            web3.eth.getGasPrice().then(res => {
-                sendResponse(parseInt(res)*1.1)
+            web3.eth.getTransaction(request.hash).then(transaction => {
+                web3.eth.getGasPrice().then(res => {
+                    if(parseInt(transaction.gasPrice) > parseInt(res))
+                        sendResponse(parseInt(transaction.gasPrice)*1.1)
+                    else
+                        sendResponse(parseInt(res)*1.1)
+                })
             })
             break
 
@@ -335,7 +340,49 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     sendResponse(hash)
                 })
             })
-            break;
+            break
+        case "getCancelGasPrice":
+            web3.eth.getTransaction(request.hash).then(transaction => {
+                if(transaction == null)
+                    sendResponse(0)
+                else {
+                    web3.eth.getGasPrice().then(res => {
+                        if(parseInt(transaction.gasPrice) > parseInt(res)){
+                            sendResponse(parseInt(transaction.gasPrice)*1.1)
+                        }else{
+                            sendResponse(parseInt(res)*1.1)
+                        }
+                    })
+                }
+            })
+            break
+        case "cancelTransaction":
+            web3.eth.getTransaction(request.hash).then(transaction => {
+                if (transaction == null) {
+                    const changedTx = baseWallet.getCurrentWallet().getTransaction(request.hash)
+                    changedTx.status = false
+                    changedTx.gasUsed = 0
+                    changedTx.gasPrice = 0
+                    baseWallet.save()
+                    sendResponse(true)
+                }else{
+                    web3.eth.sendTransaction({
+                        from: transaction.from,
+                        to: transaction.from,
+                        value: 0,
+                        gas: 21000,
+                        gasPrice: request.gasPrice,
+                        nonce: transaction.nonce
+                    }).on("transactionHash", function(hash){
+                        const changedTx = baseWallet.getCurrentWallet().getTransaction(request.hash)
+                        changedTx.canceling = true
+                        changedTx.cancelingPrice = request.gasPrice
+                        baseWallet.save()
+                        sendResponse(true)
+                    })
+                }
+            })
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

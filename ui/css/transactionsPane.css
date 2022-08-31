@@ -178,7 +178,7 @@
     color: var(--mainColorLight30);
 }
 
-#speedupPopup .loading {
+#speedupPopup .loading, #txCancelPopup .loading {
     text-align: center;
     margin: 2em;
     font-size: 1.5em;

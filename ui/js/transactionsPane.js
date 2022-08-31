@@ -20,6 +20,16 @@ class TransactionsPane {
             text: $("#speedupPopup .button val")
         }
     }
+    static cancel = {
+        self: $("#txCancelPopup"),
+        body: $("#txCancelPopup .body"),
+        loading: $("#txCancelPopup .loading"),
+        amount: $("#txCancelPopup .amount"),
+        button: {
+            self: $("#txCancelPopup .button"),
+            text: $("#txCancelPopup .button val")
+        }
+    }
 
     constructor() {
         this.txsCount = 0
@@ -138,10 +148,23 @@ class TransactionsPane {
 
         if(transaction.status !== undefined){
             elem.find(".tweakBtns").hide()
+            elem.find(".badge-warning").hide()
+            if(!transaction.status && transaction.canceling)
+                elem.find(".badge-secondary").show()
+            else
+                elem.find(".badge-secondary").hide()
+
         }else{
             elem.find(".speed-up").click(function(){
                 transactionsPane.confirmSpeedup(transaction, elem)
             })
+            if(transaction.canceling){
+                elem.find(".cancel").hide()
+                elem.find(".badge-warning").show()
+            } else
+                elem.find(".cancel").click(function(){
+                    transactionsPane.confirmCancel(transaction, elem)
+                })
         }
 
 
@@ -158,9 +181,16 @@ class TransactionsPane {
 
             if(elem.length){
                 if(transaction.status !== undefined){
+                    elem.find(".badge-warning").hide()
                     if(!transaction.status){
                         elem.find("progress-ring").hide()
                         elem.find(".refused").show()
+
+                        if(transaction.canceling)
+                            elem.find(".badge-secondary").show()
+                        else
+                            elem.find(".badge-secondary").hide()
+
                     }else {
                         if(transaction.confirmations >= 12){
                             elem.find("progress-ring").hide()
@@ -169,6 +199,9 @@ class TransactionsPane {
                             elem.find("progress-ring").attr("progress", Math.min(100, (transaction.confirmations+1)/13*100))
                     }
                     elem.find(".tweakBtns").hide()
+                }else if(transaction.canceling){
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
                 }
 
                 if(transaction.gasUsed !== undefined){
@@ -179,6 +212,41 @@ class TransactionsPane {
         }
     }
 
+    confirmCancel(transaction, elem){
+        TransactionsPane.cancel.body.hide()
+        TransactionsPane.cancel.loading.show()
+        TransactionsPane.cancel.self.show()
+
+        enableLoadBtn(TransactionsPane.cancel.button.self)
+        TransactionsPane.cancel.button.self.attr("disabled", true)
+
+        getCancelGasPrice(transaction.hash).then(cancelPrice => {
+            getBalance(MAIN_ASSET.ticker).then(bal => {
+                const newFee = cancelPrice * transaction.gasLimit
+                TransactionsPane.cancel.amount.html(Utils.formatAmount(newFee, MAIN_ASSET.decimals))
+                TransactionsPane.cancel.body.show()
+                TransactionsPane.cancel.loading.hide()
+
+                if(bal.balance >= newFee) {
+                    TransactionsPane.cancel.button.self.attr("disabled", false)
+                    TransactionsPane.cancel.button.text.html("Cancel")
+                }else{
+                    TransactionsPane.cancel.button.self.attr("disabled", true)
+                    TransactionsPane.cancel.button.text.html("Insufficient " + MAIN_ASSET.ticker + " balance")
+                }
+
+                TransactionsPane.cancel.button.self.unbind("click").click(function(){
+                    disableLoadBtn(TransactionsPane.cancel.button.self)
+                    cancelTransaction(transaction.hash, cancelPrice).then(function(){
+                        TransactionsPane.cancel.self.hide()
+                        notyf.success("Cancel trial sent!")
+                    })
+                })
+
+            })
+        })
+    }
+
     confirmSpeedup(transaction, elem){
         TransactionsPane.speedUp.body.hide()
         TransactionsPane.speedUp.loading.show()
@@ -187,7 +255,7 @@ class TransactionsPane {
         enableLoadBtn(TransactionsPane.speedUp.button.self)
         TransactionsPane.speedUp.button.self.attr("disabled", true)
 
-        getSpeedupGasPrice().then(gasPrice => {
+        getSpeedupGasPrice(transaction.hash).then(gasPrice => {
             getBalance(MAIN_ASSET.ticker).then(bal => {
 
                 const newFee = gasPrice * transaction.gasLimit

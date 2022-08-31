@@ -264,3 +264,18 @@ input[type=number] {
     color: #babdbf;
     cursor: pointer;
 }
+
+.badge {
+    vertical-align: text-bottom !important;
+    font-weight: normal !important;
+}
+
+.badge-secondary {
+    color: #fff !important;
+    background-color: #6c757d !important;
+}
+
+.badge-warning {
+    color: #212529 !important;
+    background-color: #ffc107 !important;
+}

@@ -348,7 +348,15 @@
                 </div>
                 <div class="details">
                     <div class="detail">
-                        <p class="title">Amount</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title">Amount</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
+                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                            </div>
+                        </div>
                         <p class="body amount"><val>-</val> <b>ETH</b></p>
                     </div>
                     <div class="detail">
@@ -915,10 +923,35 @@
             <div class="body row text-center p-4 pt-0" style="display: none">
                 <h6>Speed up this transaction?</h6>
                 <b>New fees:</b>
-                <p><span class="amount">0.005353</span> <span data-networkticker="">ETH</span></p>
+                <p><span class="amount">-</span> <span data-networkticker="">ETH</span></p>
                 <div class="col-12">
                     <button class="button w-100" disabled="disabled">
                         <val>Speed up</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="loading">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+        </div>
+    </div>
+    <div id="txCancelPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row text-center p-4 pt-0" style="display: none">
+                <h6>Cancel this transaction?</h6>
+                <b>Cost:</b>
+                <p><span class="amount">-</span> <span data-networkticker="">ETH</span></p>
+                <div class="col-12">
+                    <button class="button w-100" disabled="disabled">
+                        <val>Cancel</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                     </button>
                 </div>

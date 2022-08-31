@@ -97,10 +97,18 @@ async function changeAssetTracking(contract){
     return await browser.runtime.sendMessage({command: 'changeTokenTracking', contract: contract})
 }
 
-async function getSpeedupGasPrice(){
-    return await browser.runtime.sendMessage({command: 'getSpeedupGasPrice'})
+async function getSpeedupGasPrice(hash){
+    return await browser.runtime.sendMessage({command: 'getSpeedupGasPrice', hash: hash})
 }
 
 async function speedUpTransaction(hash, gasPrice){
     return await browser.runtime.sendMessage({command: 'speedUpTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
+}
+
+async function getCancelGasPrice(hash){
+    return await browser.runtime.sendMessage({command: 'getCancelGasPrice', hash: hash})
+}
+
+async function cancelTransaction(hash, gasPrice){
+    return await browser.runtime.sendMessage({command: 'cancelTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
 }
