@@ -149,6 +149,9 @@ class MainPane {
                 }
                 elem.find(".balance").html(bal)
                 elem.find(".fiatEq").html(fiatBal)
+                elem.unbind("click").click(function(){
+                    tokenDetailPane.displayToken(balance)
+                })
             }
 
             totalBalance += balance.price*balance.balance/10**balance.decimals;

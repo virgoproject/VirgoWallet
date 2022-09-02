@@ -48,17 +48,22 @@ class BaseWallet {
     }
 
     startLoop(){
-        baseWallet.getCurrentWallet().update()
-        setInterval(function(){
+        baseWallet.getCurrentWallet().update(true)
+        const timer = setInterval(function(){
+            if(baseWallet === undefined){
+                clearInterval(timer)
+                return
+            }
             baseWallet.getCurrentWallet().update()
         }, 2500)
 
-        setTimeout(function(){
+        const priceTimer = setInterval(function(){
+            if(baseWallet === undefined){
+                clearInterval(priceTimer)
+                return
+            }
             baseWallet.getCurrentWallet().updatePrices()
-            setInterval(function(){
-                baseWallet.getCurrentWallet().updatePrices()
-            }, 30000)
-        }, 3000)
+        }, 30000)
     }
 
     static generateWallet(mnemonic){

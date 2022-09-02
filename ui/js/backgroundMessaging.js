@@ -116,3 +116,11 @@ async function cancelTransaction(hash, gasPrice){
 function closedUpdatePopup(){
     browser.runtime.sendMessage({command: 'closedUpdatePopup'})
 }
+
+async function getAutolock(){
+    return await browser.runtime.sendMessage({command: 'getAutolock'})
+}
+
+async function setAutolock(enabled, delay){
+    browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
+}

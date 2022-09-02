@@ -15,17 +15,42 @@ browser.storage.local.get("backupPopupDate").then(function(res){
         backupPopupDate = res.backupPopupDate
 })
 
+let lockDelay = 60;
+let autolockEnabled = false;
+let lastActivity = Date.now();
+
+browser.storage.local.get("autolockEnabled").then(function(res){
+    if(res.autolockEnabled !== undefined)
+        autolockEnabled = res.autolockEnabled
+})
+
+browser.storage.local.get("lockDelay").then(function(res){
+    if(res.lockDelay !== undefined)
+        lockDelay = res.lockDelay
+})
+
+setInterval(function(){
+    if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+    if(Date.now()-lastActivity >= lockDelay*60000)
+        baseWallet = undefined
+
+}, 1000)
+
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.command) {
         case "getBaseInfos":
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
-            else
+            else {
                 sendResponse(getBaseInfos())
-            break;
+                lastActivity = Date.now()
+            }
+            break
 
         case "unlockWallet":
+            lastActivity = Date.now()
             BaseWallet.loadFromJSON(request.password).then(function(res){
                 if(res)
                     sendResponse(getBaseInfos())
@@ -389,6 +414,17 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.version = VERSION
             baseWallet.save()
             break
+        case "getAutolock":
+            sendResponse({
+                enabled: autolockEnabled,
+                delay: lockDelay
+            })
+            break
+        case "setAutolock":
+            autolockEnabled = request.enabled
+            lockDelay = request.delay
+            browser.storage.local.set({"autolockEnabled": autolockEnabled})
+            browser.storage.local.set({"lockDelay": lockDelay})
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -637,10 +673,23 @@ function sendMessageToTabs(command, data){
 }
 
 async function askConnectToWebsite(origin){
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+
+    if(baseWallet === undefined){
+        browser.windows.create({
+            url: '/ui/html/notLogged.html',
+            type:'popup',
+            height: 600,
+            width: 370,
+            top: top,
+            left: left
+        })
+        return false
+    }
+
     const requestID = Date.now() + "." + Math.random()
 
     pendingAuthorizations.set(requestID, null)
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
     await browser.windows.create({
         url: '/ui/html/authorize.html?id='+requestID+"&origin="+origin,
@@ -659,6 +708,20 @@ async function askConnectToWebsite(origin){
 }
 
 async function signTransaction(origin, from, to, value, data, gas){
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+
+    if(baseWallet === undefined){
+        browser.windows.create({
+            url: '/ui/html/notLogged.html',
+            type:'popup',
+            height: 600,
+            width: 370,
+            top: top,
+            left: left
+        })
+        return false
+    }
+
     const requestID = Date.now() + "." + Math.random()
 
     if(gas === undefined)
@@ -681,7 +744,6 @@ async function signTransaction(origin, from, to, value, data, gas){
     console.log("beeee " + gas)
 
     pendingTransactions.set(requestID, null)
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
     await browser.windows.create({
         url: `/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
@@ -702,10 +764,23 @@ async function signTransaction(origin, from, to, value, data, gas){
 }
 
 async function signMessage(origin, data){
+    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+
+    if(baseWallet === undefined){
+        browser.windows.create({
+            url: '/ui/html/notLogged.html',
+            type:'popup',
+            height: 600,
+            width: 370,
+            top: top,
+            left: left
+        })
+        return false
+    }
+
     const requestID = Date.now() + "." + Math.random()
 
     pendingSigns.set(requestID, null)
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
     await browser.windows.create({
         url: `/ui/html/signMessage.html?id=${requestID}&origin=${origin}&data=${data}`,

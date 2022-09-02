@@ -126,9 +126,12 @@ class Web3Wallet {
         return balances
     }
 
-    update(){
+    update(first = false){
         console.log("updating " + this.name + " wallet")
         const wallet = this
+
+        let updateCount = 0
+        const updateTarget = (this.tokens.length+1)*baseWallet.getAddresses().length
 
         //update balances
         for(const address of baseWallet.getAddresses()){
@@ -138,16 +141,32 @@ class Web3Wallet {
             //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
                 balances[wallet.ticker].balance = res;
+                if(first){
+                    updateCount++
+                    console.log(updateCount + "/" + updateTarget)
+                    if (updateCount >= updateTarget)
+                        wallet.updatePrices()
+                }
             })
 
             //update tokens balances
             for(const token of this.tokens){
-                if(!token.tracked) continue
+                if(!token.tracked){
+                    if(first)
+                        updateCount++
+                    continue
+                }
 
                 const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
                 contract.methods.balanceOf(address).call()
                     .then(function(res){
                         balances[token.contract].balance = res
+                        if(first) {
+                            updateCount++
+                            console.log(updateCount + "/" + updateTarget)
+                            if (updateCount >= updateTarget)
+                                wallet.updatePrices()
+                        }
                     })
             }
 

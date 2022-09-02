@@ -658,6 +658,15 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
+                <div class="row tab" data-target="autolock">
+                    <div class="col-10">
+                        <h4 class="m-0">Autolock settings</h4>
+                        <p class="m-0">Set your wallet to lock itself after certain inactivity</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
             </div>
             <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword"
                  data-settingsLevel="2">
@@ -884,6 +893,26 @@
                         <val>I understand, continue</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                     </button>
+                </div>
+            </div>
+            <div class="settingsCat p-3 text-center autolock" data-settingid="autolock" data-settingslevel="2">
+                <h3>Autolock settings</h3>
+                <div class="text-left p-1 mt-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autolockEnabledSetting">
+                        <label class="form-check-label" for="autolockEnabledSetting">Enable autolock</label>
+                    </div>
+                    <p class="mt-3 mb-1">Lock delay</p>
+                    <select class="form-select" id="autolockDelaySetting">
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="60" selected="">1 hour</option>
+                        <option value="120">2 hours</option>
+                        <option value="360">6 hours</option>
+                        <option value="720">12 hours</option>
+                        <option value="1440">1 day</option>
+                    </select>
                 </div>
             </div>
         </div>
