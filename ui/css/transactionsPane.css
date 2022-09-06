@@ -183,3 +183,19 @@
     margin: 2em;
     font-size: 1.5em;
 }
+
+#speedupPopup .amount, #txCancelPopup .amount {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#speedupPopup b, #txCancelPopup b {
+    font-size: 0.75em;
+}
+
+#speedupPopup .ticker, #txCancelPopup .ticker {
+    color: var(--mainColor);
+}

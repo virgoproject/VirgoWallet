@@ -109,7 +109,7 @@
     color: var(--bs-body-color);
 }
 
-#walletAssets {
-    max-height: 250px;
+#body .resume {
+    max-height: 350px;
     overflow-y: auto;
 }

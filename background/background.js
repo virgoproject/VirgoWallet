@@ -183,14 +183,14 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction confirmed!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + txResume.hash + " confirmed"
                                     });
                                 }else if(receipt.status == false){
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + txResume.hash + " failed"
                                     });
                                 }
@@ -250,14 +250,14 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 browser.notifications.create("txNotification", {
                                     "type": "basic",
                                     "title": "Transaction confirmed!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
                                     "message": "Transaction " + txResume.hash + " confirmed"
                                 });
                             }else if(receipt.status == false){
                                 browser.notifications.create("txNotification", {
                                     "type": "basic",
                                     "title": "Transaction failed.",
-                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
                                     "message": "Transaction " + txResume.hash + " failed"
                                 });
                             }
