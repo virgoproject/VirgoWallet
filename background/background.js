@@ -178,6 +178,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                             }, 60000)
                         })
                         .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                            if(txResume.status === undefined){
+                                if(receipt.status){
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction confirmed!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                        "message": "Transaction " + txResume.hash + " confirmed"
+                                    });
+                                }else if(receipt.status == false){
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction failed.",
+                                        "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                        "message": "Transaction " + txResume.hash + " failed"
+                                    });
+                                }
+                            }
                             txResume.gasUsed = receipt.gasUsed
                             txResume.status = receipt.status
                             txResume.confirmations = confirmationNumber
@@ -228,6 +245,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         }, 60000)
                     })
                     .on("confirmation", function(confirmationNumber, receipt){
+                        if(txResume.status === undefined){
+                            if(receipt.status){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction confirmed!",
+                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "message": "Transaction " + txResume.hash + " confirmed"
+                                });
+                            }else if(receipt.status == false){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction failed.",
+                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "message": "Transaction " + txResume.hash + " failed"
+                                });
+                            }
+                        }
                         txResume.gasUsed = receipt.gasUsed
                         txResume.status = receipt.status
                         txResume.confirmations = confirmationNumber

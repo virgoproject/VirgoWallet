@@ -140,6 +140,15 @@ class Web3Wallet {
 
             //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
+                if(balances[wallet.ticker].balance < res && !first){
+                    browser.notifications.create("txNotification", {
+                        "type": "basic",
+                        "title": "Money in!",
+                        "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                        "message": "Received " + (res-balances[wallet.ticker].balance)/10**wallet.decimals + " " + wallet.ticker + " on " + address
+                    });
+                }
+
                 balances[wallet.ticker].balance = res;
                 if(first){
                     updateCount++
@@ -160,6 +169,14 @@ class Web3Wallet {
                 const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
                 contract.methods.balanceOf(address).call()
                     .then(function(res){
+                        if(balances[token.contract].balance < res && !first){
+                            browser.notifications.create("txNotification", {
+                                "type": "basic",
+                                "title": "Money in!",
+                                "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                "message": "Received " + (res-balances[token.contract].balance)/10**token.decimals + " " + token.ticker + " on " + address
+                            });
+                        }
                         balances[token.contract].balance = res
                         if(first) {
                             updateCount++
@@ -184,8 +201,35 @@ class Web3Wallet {
                                 transaction.gasUsed = 21000
                                 transaction.gasPrice = transaction.cancelingPrice
                                 baseWallet.save()
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction canceled!",
+                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "message": "Transaction " + transaction.hash + " successfully canceled"
+                                });
                             }
                             return
+                        }
+
+                        console.log(transaction.hash)
+                        console.log(transaction.status)
+
+                        if(transaction.status === undefined){
+                            if(receipt.status){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction confirmed!",
+                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "message": "Transaction " + transaction.hash + " confirmed"
+                                });
+                            }else if(receipt.status == false){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction failed.",
+                                    "iconUrl": browser.extension.getURL("/ui/images/logoIndigo.png"),
+                                    "message": "Transaction " + transaction.hash + " failed"
+                                });
+                            }
                         }
 
                         transaction.confirmations = blockNumber - receipt.blockNumber
