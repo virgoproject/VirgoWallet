@@ -4,11 +4,11 @@
 }
 
 #mainPane>.header {
-    background: linear-gradient(0deg, #5a009c14, transparent);
+    background: #faf6fc;
     text-align: center;
     height: 110px;
     padding: 0.5em;
-    border-bottom: 1px solid #5a009c14;
+    border-bottom: 1px solid #F6F5F6;
     margin-bottom: 3.5em;
 }
 
@@ -33,7 +33,7 @@
 }
 
 #mainPane .header .stats .fluctuation.negative {
-    color: #C92020;
+    color: #ff2020;
 }
 
 #mainPane .header .stats .fluctuation.negative i {
@@ -43,7 +43,7 @@
 
 #mainPane .header .stats .title {
     font-size: 0.65em;
-    color: var(--highlightColor1);
+    color: var(--whiteBackground);
     margin: 0 0 0.25rem;
 }
 
@@ -54,7 +54,7 @@
 #mainPane .header .pendingTxs {
     height: 36px;
     width: 36px;
-    background: #5a009c14;
+    background: white;
     border-radius: 50%;
     line-height: 36px;
     margin: auto;
@@ -68,30 +68,27 @@
 
 #mainPane #footer {
     position: absolute;
-    background: linear-gradient(0deg, #5a009c14, transparent);
+    background: linear-gradient(0deg, #E6D9F0, #f3edf8);
     bottom: 0;
     left: 0;
     right: 0;
     text-align: center;
-    padding: 0.5em;
+    padding: 0.75em 0.5em;
 }
 
-#mainPane #footer div {
-    color: var(--mainColorLight);
+#mainPane #footer .footerElem {
+    color: #9C9C9C;
     cursor: pointer;
+    transition: all 0.25s ease-in;
 }
 
-#mainPane #footer .selected p {
-    display: none;
+#mainPane #footer .footerElem:hover {
+    color: #676767;
 }
 
-#mainPane #footer .selected div {
-    width: 56px;
-    height: 56px;
-    margin: auto;
-    border-radius: 50%;
-    background: var(--whiteBackground);
-    line-height: 56px;
+#mainPane #footer .footerElem.selected {
+    color: var(--highlightColor1);
+    cursor: default;
 }
 
 #mainPane #footer i {

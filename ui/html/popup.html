@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="/ui/css/settings.css">
     <link rel="stylesheet" href="/ui/css/assets.css">
     <link rel="stylesheet" href="/ui/css/transactionsPane.css">
+    <link rel="stylesheet" href="/ui/css/tokenDetailPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
 </head>
 <body>
 
 <div id="unlockPane">
-    <img src="/ui/images/logoIndigo.png">
+    <img src="/ui/images/logoPurple.png">
     <h1 class="mt-2">Nice to see you!</h1>
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
@@ -76,50 +77,52 @@
         </div>
     </div>
     <div id="body">
-        <div class="bodyElem resume">
-            <div class="address row">
-                <div class="col-10">
-                    <p class="title">Wallet Address</p>
-                    <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>
-                </div>
-                <div class="col-2 justify-content-center align-self-center">
-                    <i class="far fa-copy copy"></i>
-                </div>
-            </div>
-            <div class="row mt-3 actions" style="display: none">
-                <div class="col-6 pl-0 pr-1">
-                    <button class="button"><i class="fas fa-plus"></i> Add funds</button>
-                </div>
-                <div class="col-6 pr-0 pl-1">
-                    <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
-                </div>
-            </div>
-            <div class="assets row mt-3">
-                <div class="title col-12 m-0">
-                    <div class="row">
-                        <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
-                        <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
+        <div class="bodyElem resume row">
+            <div>
+                <div class="address row">
+                    <div class="col-10">
+                        <p class="title">Wallet Address</p>
+                        <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center">
+                        <i class="far fa-copy copy"></i>
                     </div>
                 </div>
-                <div>
-                    <div id="walletAssets" class="row">
-                        <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
-                            <div class="row">
-                                <div class="col-2 justify-content-center align-self-center">
-                                    <div class="logo"></div>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">Bitcoin</p>
-                                    <p class="amount">
-                                        <val class="balance">0</val>
-                                        <b class="ticker"></b></p>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <p class="fiatEq">$0</p>
-                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                                        <val></val>
-                                        %
-                                    </p>
+                <div class="row mt-3 actions" style="display: none">
+                    <div class="col-6 pl-0 pr-1">
+                        <button class="button"><i class="fas fa-plus"></i> Add funds</button>
+                    </div>
+                    <div class="col-6 pr-0 pl-1">
+                        <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
+                    </div>
+                </div>
+                <div class="assets row mt-2">
+                    <div class="title col-12 m-0">
+                        <div class="row">
+                            <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
+                            <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="walletAssets" class="row">
+                            <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
+                                <div class="row">
+                                    <div class="col-2 justify-content-center align-self-center">
+                                        <div class="logo"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="title">Bitcoin</p>
+                                        <p class="amount">
+                                            <val class="balance">0</val>
+                                            <b class="ticker"></b></p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <p class="fiatEq">$0</p>
+                                        <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                                            <val></val>
+                                            %
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -347,7 +350,15 @@
                 </div>
                 <div class="details">
                     <div class="detail">
-                        <p class="title">Amount</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title">Amount</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
+                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                            </div>
+                        </div>
                         <p class="body amount"><val>-</val> <b>ETH</b></p>
                     </div>
                     <div class="detail">
@@ -384,6 +395,10 @@
                         <p class="body totalFees"><val>-</val> <b>ETH</b></p>
                     </div>
                     <button class="button w-100 mt-1">Open in explorer</button>
+                    <div class="row mt-2 tweakBtns">
+                        <div class="col-6 text-center"><a class="speed-up">Speed up <i class="fas fa-arrow-up" style="transform: rotate(45deg)"></i></a></div>
+                        <div class="col-6 text-center"><a class="cancel">Cancel <i class="fas fa-ban"></i></a></div>
+                    </div>
                     <p class="close"><i class="fas fa-chevron-up"></i></p>
                 </div>
             </div>
@@ -397,6 +412,174 @@
             <div class="listEmpty text-center mt-5 mb-5" style="display: none">
                 <h4>Nothing to show!</h4>
                 <p>Your wallet activity will appear here.</p>
+            </div>
+        </div>
+    </div>
+    <div id="tokenDetailPane" style="display: none">
+        <div class="row">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+        <div id="tokenDetailsPaneLoading">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div>
+        <div id="tokenDetailsSimple" style="display: none">
+            <div class="row infos">
+                <div class="col-2 justify-content-center align-self-center">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-6 pl-1 justify-content-center align-self-center pr-0">
+                    <p class="name" style="padding: 8px 0;"></p>
+                </div>
+            </div>
+            <div class="row resume">
+                <div class="pt-2">
+                    <p class="label text-left">Asset name</p>
+                    <input type="text" class="input col-12 name" placeholder="" disabled="">
+                </div>
+                <div class="pt-2">
+                    <p class="label text-left">Symbol</p>
+                    <input type="text" class="input col-12 symbol" placeholder="" disabled="">
+                </div>
+                <div class="pt-2">
+                    <p class="label text-left">Decimals</p>
+                    <input type="text" class="input col-12 decimals" placeholder="" disabled="">
+                </div>
+                <div class="pt-2">
+                    <p class="label text-left">Contract address</p>
+                    <input type="text" class="input col-12 address" placeholder="" disabled="">
+                </div>
+            </div>
+        </div>
+        <div id="tokenDetailsDetailed" style="display: none">
+            <div class="row infos">
+                <div class="col-2 justify-content-center align-self-center">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-6 pl-1 justify-content-center align-self-center pr-0">
+                    <p class="name"></p>
+                </div>
+                <div class="col-4 text-right pl-0">
+                    <p class="price"></p>
+                    <p class="change"><i class="fas fa-chevron-up"></i> <val></val>%</p>
+                </div>
+            </div>
+            <div class="chart">
+            </div>
+            <div class="chartLoading">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="row periodBtns pb-1">
+                <div class="col-2">
+                    <button class="periodBtn active" data-period="1">1D</button>
+                </div>
+                <div class="col-2">
+                    <button class="periodBtn" data-period="7">1W</button>
+                </div>
+                <div class="col-2">
+                    <button class="periodBtn" data-period="30">1M</button>
+                </div>
+                <div class="col-2">
+                    <button class="periodBtn" data-period="90">3M</button>
+                </div>
+                <div class="col-2">
+                    <button class="periodBtn" data-period="365">1Y</button>
+                </div>
+                <div class="col-2">
+                    <button class="periodBtn" data-period="max">MAX</button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="row menu">
+                    <div class="col-6 selected" id="tokenNewsBtn">
+                        <p>News</p>
+                    </div>
+                    <div class="col-6" id="tokenInfosBtn">
+                        <p>Infos</p>
+                    </div>
+                </div>
+                <div id="tokenNews">
+                    <div class="newsContainer">
+
+                    </div>
+                    <div id="tokenNewsLoading">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                    <div class="row news" id="sampleTokenNews" style="display: none">
+                        <div class="wrapper">
+                            <div class="content">
+                                <p class="title">Bitcoin bulls aim for $25K price on Friday's $510M options expiry</p>
+                                <p class="subtitle">Cointelegraph.com News - 2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tokenInfos" style="display: none">
+                    <div id="tokenInfosLoading">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                    <div id="tokenInfosWrapper" style="display: none">
+                        <div class="text-center rank mt-2 mb-1">
+                            <b>RANK</b>
+                            <p class="cgRank">#-</p>
+                        </div>
+                        <div class="row stats">
+                            <div class="col-6">
+                                <p class="title">Market Cap</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <p class="value marketcap">-</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="title">Volume (24h)</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <p class="value volume">-</p>
+                            </div>
+                            <div style="display: none" class="additional">
+                                <div class="col-6">
+                                    <p class="title">Circulating supply</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="value circulating">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">Total supply</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="value totalSupply">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">Max Supply</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="value maxSupply">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">All Time High</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="value ath">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">All Time Low</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="value atl">-</p>
+                                </div>
+                            </div>
+                            <div class="additionalBtn col-12">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p class="title">About</p>
+                            <p class="desc"></p>
+                            <a href="" class="readmore">Read more</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -472,6 +655,15 @@
                     <div class="col-10">
                         <h4 class="m-0">Restore a wallet</h4>
                         <p class="m-0">Import or restore a wallet from a recovery phrase</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="row tab" data-target="autolock">
+                    <div class="col-10">
+                        <h4 class="m-0">Autolock settings</h4>
+                        <p class="m-0">Set your wallet to lock itself after certain inactivity</p>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
@@ -705,6 +897,26 @@
                     </button>
                 </div>
             </div>
+            <div class="settingsCat p-3 text-center autolock" data-settingid="autolock" data-settingslevel="2">
+                <h3>Autolock settings</h3>
+                <div class="text-left p-1 mt-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autolockEnabledSetting">
+                        <label class="form-check-label" for="autolockEnabledSetting">Enable autolock</label>
+                    </div>
+                    <p class="mt-3 mb-1">Lock delay</p>
+                    <select class="form-select" id="autolockDelaySetting">
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="60" selected="">1 hour</option>
+                        <option value="120">2 hours</option>
+                        <option value="360">6 hours</option>
+                        <option value="720">12 hours</option>
+                        <option value="1440">1 day</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <div id="backupPopup" class="popup">
@@ -730,6 +942,91 @@
             </div>
         </div>
     </div>
+    <div id="updatePopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row text-center p-4 pt-0">
+                <div class="col-12">
+                    <h3 class="m-0">What's new?</h3>
+                    <p style="font-size: 0.75em;margin-bottom: 0.25em;">Version 0.7</p>
+                </div>
+                <div class="col-12 text-left">
+                    <p class="leftLine c-green mb-1">
+                        <span>New features</span>
+                    </p>
+                    <p style="font-size: 0.8em">
+                        <b>You can now stay informed</b> about your favorite token, whether it is Virgo or Rocket Shiba Elon.<br>
+                        Simply click on any token and get access to its charts, info, and latest news!
+                    </p>
+                    <p style="font-size: 0.8em">
+                        <b>You can now speed up or cancel pending transactions.</b> We know this gas price thing can sometimes be wild, so we made tools to control it better.
+                    </p>
+                    <p style="font-size: 0.8em">
+                        <b>We made the UI prettier</b> so it won't hurt your beautiful eyes.
+                    </p>
+                    <p style="font-size: 0.8em">
+                        <b>Your wallet can now lock itself if you're inactive.</b> Your funds are now SAFU, even if you're away. Just set up an auto-lock countdown in your security parameters!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="speedupPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row p-4 pt-0" style="display: none">
+                <h6 class="text-center">Speed up this transaction?</h6>
+                <b>New fees:</b>
+                <p><span class="amount">-</span> <span data-networkticker="" class="ticker">ETH</span></p>
+                <div class="col-12">
+                    <button class="button w-100" disabled="disabled">
+                        <val>Speed up</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="loading">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+        </div>
+    </div>
+    <div id="txCancelPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row p-4 pt-0" style="display: none">
+                <h6 class="text-center">Cancel this transaction?</h6>
+                <b>Cost</b>
+                <p><span class="amount">-</span> <span data-networkticker="" class="ticker">ETH</span></p>
+                <div class="col-12">
+                    <button class="button w-100" disabled="disabled">
+                        <val>Cancel</val>
+                        <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="loading">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -745,9 +1042,11 @@
 <script src="../js/settings.js"></script>
 <script src="../js/assetsPane.js"></script>
 <script src="../js/transactionsPane.js"></script>
+<script src="../js/tokenDetailPane.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 <script src="../js/rangeSlider.js"></script>
 <script src="../js/progressRing.js"></script>
+<script src="../js/chart.min.js"></script>
 </body>
 </html>

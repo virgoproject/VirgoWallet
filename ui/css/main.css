@@ -1,14 +1,14 @@
 body {
     height: 600px;
     width: 56.25vh;
-    --mainColor: #5a009c;
-    --mainColorDark10: #50008c; /* Darken by 10% */
-    --mainColorLight: #6e00bf; /* Lighten by 10% */
-    --mainColorLight20: #8200e2;
-    --mainColorLight30: #9607ff;
-    --highlightColor1: #c977ff;
+    --mainColor: #aa3180;
+    --mainColorDark10: #912a6e; /* Darken by 10% */
+    --mainColorLight: #c03791; /* Lighten by 10% */
+    --mainColorLight20: #ca4a9e;
+    --mainColorLight30: #d160aa;
+    --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
-    --whiteBackground: #f2ebf7;
+    --whiteBackground: #F2EBF7;
     font-family: Ubuntu;
     overflow: hidden;
     background: linear-gradient(0deg, #5a009c14, transparent);
@@ -71,7 +71,7 @@ body {
 
 .button {
     color: white;
-    background: var(--bs-purple);
+    background: var(--mainColor);
     border: none;
     border-radius: .5em;
     padding: .375em .75em;
@@ -239,8 +239,8 @@ input[type=number] {
 .popup .box {
     background: white;
     position: absolute;
-    left: 10%;
-    right: 10%;
+    left: 6%;
+    right: 6%;
     transform: translateY(50%);
     bottom: 50%;
     border-radius: 0.5em;
@@ -263,4 +263,73 @@ input[type=number] {
 .questionSection{
     color: #babdbf;
     cursor: pointer;
+}
+
+.badge {
+    vertical-align: text-bottom !important;
+    font-weight: normal !important;
+}
+
+.badge-secondary {
+    color: #fff !important;
+    background-color: #6c757d !important;
+}
+
+.badge-warning {
+    color: #212529 !important;
+    background-color: #ffc107 !important;
+}
+
+.c-green {
+    color: var(--bs-green) !important;
+}
+
+.leftLine {
+    text-align: left;
+    overflow: hidden;
+}
+
+.leftLine>span {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.leftLine>span:before, .leftLine>span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    border-bottom: 2px solid;
+    width: 200px;
+    margin: 0 10px;
+}
+
+.leftLine>span:before {
+    right: 100%;
+}
+
+.form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e") !important;
+}
+
+.form-switch .form-check-input:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+}
+
+.form-check-input:focus {
+    border-color: var(--mainColor) !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.25rem rgb(170 49 128 / 25%) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--mainColor) !important;
+    border-color: var(--mainColorLight) !important;
+    outline-color: var(--mainColorLight20) !important;
+}
+
+.form-select:focus {
+    border-color: var(--mainColor) !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.25rem rgb(170 49 128 / 25%) !important;
 }

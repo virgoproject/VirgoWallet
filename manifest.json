@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Virgo Wallet",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "short_name": "Virgo Wallet",
   "description": "An easy-to-use, cross-chain wallet in your browser!",
-  "permissions": ["storage"],
+  "permissions": ["storage", "notifications"],
 
   "browser_action": {
     "default_icon": "ui/images/walletLogo.png",

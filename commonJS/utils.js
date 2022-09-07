@@ -5,9 +5,23 @@ class Utils {
     }
 
     static beautifyAmount(amount){
+        if(amount > 1000000000)
+            return Utils.reduceDecimals(amount/1000000000).toLocaleString('en-US') + " Bn"
+
+        if(amount > 1000000)
+            return Utils.reduceDecimals(amount/1000000).toLocaleString('en-US') + "M"
+
+        return Utils.reduceDecimals(amount).toLocaleString('en-US')
+    }
+
+    static reduceDecimals(amount){
         if(amount == 0 || amount % 1 == 0) return amount;
 
-        return amount.toFixed(Math.floor(Math.abs(Math.log10(amount % 1)))+1)
+        let precision = 2;
+        if(amount < 1)
+            precision = 4;
+
+        return parseFloat(amount.toFixed(Math.floor(Math.abs(Math.log10(amount % 1)))+precision))
     }
 
     static hexToUtf8(hex) {

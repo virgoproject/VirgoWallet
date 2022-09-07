@@ -113,10 +113,10 @@ input[type=range]::-ms-thumb {
 }
 
 .activeStep{
-    background: #5a009c !important;
-    -webkit-box-shadow:0px 0px 147px 3px rgba(91,0,156,1);
-    -moz-box-shadow: 0px 0px 147px 3px rgba(91,0,156,1);
-    box-shadow: 0px 0px 147px 3px rgba(91,0,156,1);
+    background: var(--mainColorDark10) !important;
+    -webkit-box-shadow:0px 0px 147px 3px var(--mainColorDark10);
+    -moz-box-shadow: 0px 0px 147px 3px var(--mainColorDark10);
+    box-shadow: 0px 0px 147px 3px var(--mainColorDark10);
 }
 
 .range .steps {

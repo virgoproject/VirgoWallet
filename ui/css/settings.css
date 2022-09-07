@@ -45,7 +45,7 @@
 }
 
 #settings .accounts .account {
-    background: #ede3f4;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -54,11 +54,11 @@
 }
 
 #settings .accounts .account:hover {
-    background: #e2d2ed;
+    background: #ece2f3;
 }
 
 #settings .accounts .account.selected {
-    background: #e2d2ed;
+    background: #ece2f3;
     cursor: default;
 }
 

@@ -51,6 +51,10 @@ class SettingsPane {
             normal: $("#settings .importMnemonic .mnemonicAsk .label.normal")
         }
     }
+    static autolock = {
+        enabled: $("#autolockEnabledSetting"),
+        delay: $("#autolockDelaySetting")
+    }
 
     constructor() {
         SettingsPane.addAccountBtn.click(function(){
@@ -374,6 +378,19 @@ class SettingsPane {
             browser.windows.create({
                 url: "https://virgo.net/support"
             })
+        })
+
+        getAutolock().then(function(res){
+            SettingsPane.autolock.enabled.prop("checked", res.enabled)
+            SettingsPane.autolock.delay.val(res.delay)
+        })
+
+        SettingsPane.autolock.enabled.change(function() {
+            setAutolock($(this).is(':checked'), parseInt(SettingsPane.autolock.delay.val()))
+        })
+
+        SettingsPane.autolock.delay.change(function(){
+            setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
         })
     }
 

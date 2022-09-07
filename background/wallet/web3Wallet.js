@@ -126,9 +126,12 @@ class Web3Wallet {
         return balances
     }
 
-    update(){
+    update(first = false){
         console.log("updating " + this.name + " wallet")
         const wallet = this
+
+        let updateCount = 0
+        const updateTarget = (this.tokens.length+1)*baseWallet.getAddresses().length
 
         //update balances
         for(const address of baseWallet.getAddresses()){
@@ -137,17 +140,50 @@ class Web3Wallet {
 
             //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
+                if(balances[wallet.ticker].balance < res && !first){
+                    browser.notifications.create("txNotification", {
+                        "type": "basic",
+                        "title": "Money in!",
+                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                        "message": "Received " + (res-balances[wallet.ticker].balance)/10**wallet.decimals + " " + wallet.ticker + " on " + address
+                    });
+                }
+
                 balances[wallet.ticker].balance = res;
+                if(first){
+                    updateCount++
+                    console.log(updateCount + "/" + updateTarget)
+                    if (updateCount >= updateTarget)
+                        wallet.updatePrices()
+                }
             })
 
             //update tokens balances
             for(const token of this.tokens){
-                if(!token.tracked) continue
+                if(!token.tracked){
+                    if(first)
+                        updateCount++
+                    continue
+                }
 
                 const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
                 contract.methods.balanceOf(address).call()
                     .then(function(res){
+                        if(balances[token.contract].balance < res && !first){
+                            browser.notifications.create("txNotification", {
+                                "type": "basic",
+                                "title": "Money in!",
+                                "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                "message": "Received " + (res-balances[token.contract].balance)/10**token.decimals + " " + token.ticker + " on " + address
+                            });
+                        }
                         balances[token.contract].balance = res
+                        if(first) {
+                            updateCount++
+                            console.log(updateCount + "/" + updateTarget)
+                            if (updateCount >= updateTarget)
+                                wallet.updatePrices()
+                        }
                     })
             }
 
@@ -156,14 +192,50 @@ class Web3Wallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12) continue
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false) continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
-                        if(receipt == null) return
+                        if(receipt == null){
+                            if(transaction.canceling){
+                                transaction.status = false
+                                transaction.gasUsed = 21000
+                                transaction.gasPrice = transaction.cancelingPrice
+                                baseWallet.save()
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction canceled!",
+                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                    "message": "Transaction " + transaction.hash + " successfully canceled"
+                                });
+                            }
+                            return
+                        }
+
+                        console.log(transaction.hash)
+                        console.log(transaction.status)
+
+                        if(transaction.status === undefined){
+                            if(receipt.status){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction confirmed!",
+                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                    "message": "Transaction " + transaction.hash + " confirmed"
+                                });
+                            }else if(receipt.status == false){
+                                browser.notifications.create("txNotification", {
+                                    "type": "basic",
+                                    "title": "Transaction failed.",
+                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                    "message": "Transaction " + transaction.hash + " failed"
+                                });
+                            }
+                        }
 
                         transaction.confirmations = blockNumber - receipt.blockNumber
                         transaction.gasUsed = receipt.gasUsed
                         transaction.status = receipt.status
+                        baseWallet.save()
                     })
                 }
             })
@@ -254,6 +326,10 @@ class Web3Wallet {
                 return;
             }
         }
+    }
+
+    getTransaction(hash){
+        return this.transactions.find(tx => tx.hash === hash)
     }
 
 }

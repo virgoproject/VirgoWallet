@@ -26,6 +26,10 @@ class MainPane {
         close: $("#backupPopup .close"),
         button: $("#backupPopup .button")
     }
+    static updatePopup = {
+        self: $("#updatePopup"),
+        close: $("#updatePopup .close")
+    }
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -49,6 +53,14 @@ class MainPane {
 
         MainPane.backupPopup.close.click(function(){
             closedBackupPopup()
+        })
+
+        MainPane.updatePopup.self.click(function(){
+            closedUpdatePopup()
+        })
+
+        MainPane.updatePopup.close.click(function(){
+            closedUpdatePopup()
         })
 
         MainPane.backupPopup.button.click(function(){
@@ -119,6 +131,11 @@ class MainPane {
                     elem.attr("data-sort", 9999999999999999)
                 else
                     elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
+
+                elem.click(function(){
+                    tokenDetailPane.displayToken(balance)
+                })
+
                 elem.show()
             }else{
                 if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
@@ -132,6 +149,9 @@ class MainPane {
                 }
                 elem.find(".balance").html(bal)
                 elem.find(".fiatEq").html(fiatBal)
+                elem.unbind("click").click(function(){
+                    tokenDetailPane.displayToken(balance)
+                })
             }
 
             totalBalance += balance.price*balance.balance/10**balance.decimals;
@@ -171,6 +191,9 @@ class MainPane {
 
         if(data.backupPopup)
             MainPane.backupPopup.self.show()
+
+        if(data.updatePopup)
+            MainPane.updatePopup.self.show()
 
         setInterval(function(){
             mainPane.updateData()

@@ -35,10 +35,16 @@
 }
 
 #mainPane .resume .assets .asset {
-    background: #5a009c14;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+#mainPane .resume .assets .asset:hover {
+    background: #ece2f3;
 }
 
 #mainPane .resume .assets .asset p {
@@ -103,7 +109,7 @@
     color: var(--bs-body-color);
 }
 
-#walletAssets {
-    max-height: 250px;
+#body .resume {
+    max-height: 350px;
     overflow-y: auto;
 }
