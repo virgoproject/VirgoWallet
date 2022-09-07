@@ -278,7 +278,7 @@ class TokenDetailPane {
     }
 
     initNews(){
-        TokenDetailPane.detailedPane.newsContainer.html()
+        TokenDetailPane.detailedPane.newsContainer.html("")
         TokenDetailPane.detailedPane.newsLoading.show()
 
         fetch("http://virgo.net/fakenewsapi/").then(function(resp){
