@@ -78,3 +78,7 @@ $("[data-inputTarget]").keypress(function(e){
     if(target.attr("disabled")) return
     target.click()
 })
+
+$(".resizeOnInput").on("input", function(){
+    $(this).css("width", ($(this).val().length+2) + "ch")
+})

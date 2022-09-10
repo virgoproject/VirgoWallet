@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/ui/css/tokenDetailPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
+    <link rel="stylesheet" href="/ui/css/swapPane.css">
+    <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
 </head>
 <body>
 
@@ -210,10 +212,56 @@
                 </button>
             </div>
         </div>
-        <div class="bodyElem store" style="display: none">
-            <div class="text-center justify-content-center align-self-center pt-5">
-                <img src="/ui/images/comingSoon.png" style="height: 175px">
-                <h3><i>Coming soon!</i></h3>
+        <div class="bodyElem swap" style="display: none" id="swapPane">
+            <div class="row inputHeader">
+                <div class="col-3 pl-0">
+                    <p class="m-0">You send</p>
+                </div>
+                <div class="col-9 pr-0 text-right">
+                    <p class="m-0">Available: <span class="amount">-</span> <span class="ticker">BTC</span></p>
+                </div>
+            </div>
+            <div class="row swapInput pt-1 pb-1">
+                <div class="col-7 p-0">
+                    <input type="text" class="resizeOnInput" placeholder="0.0">
+                    <span class="maxBtn">Max</span>
+                </div>
+                <div class="col-5 p-0 selectCoin">
+                    <select class="selectpicker w-100">
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div><span class="selectText">ETH</span>'>ETH</option>
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div><span class="selectText">WBTC</span>'>WBTC</option>
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png);"></div><span class="selectText">USDT</span>'>USDT</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <button id="swapSwitchBtn"><i class="fas fa-sync"></i></button>
+            </div>
+            <div class="row inputHeader">
+                <div class="col-3 pl-0">
+                    <p class="m-0">You get</p>
+                </div>
+                <div class="col-9 pr-0 text-right">
+                    <p class="m-0">Available: <span class="amount">-</span> <span class="ticker">BTC</span></p>
+                </div>
+            </div>
+            <div class="row swapInput pt-1 pb-1">
+                <div class="col-7 p-0">
+                    <input type="text" class="resizeOnInput" placeholder="0.0">
+                    <span class="maxBtn">Max</span>
+                </div>
+                <div class="col-5 p-0 selectCoin">
+                    <select class="selectpicker w-100">
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div><span class="selectText">ETH</span>'>ETH</option>
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div><span class="selectText">WBTC</span>'>WBTC</option>
+                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png);"></div><span class="selectText">USDT</span>'>USDT</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                </div>
             </div>
         </div>
     </div>
@@ -230,10 +278,10 @@
                 <p>Home</p>
             </div>
         </div>
-        <div class="footerElem col-4" data-target="store">
+        <div class="footerElem col-4" data-target="swap">
             <div>
-                <i class="fas fa-store"></i>
-                <p>Apps</p>
+                <i class="fas fa-retweet"></i>
+                <p>Swap</p>
             </div>
         </div>
     </div>
@@ -1032,7 +1080,14 @@
 <script src="../js/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/notyf.min.js"></script>
+<script src="../js/jdenticon.min.js"></script>
+<script src="../js/tinysort.min.js"></script>
+<script src="../js/rangeSlider.js"></script>
+<script src="../js/progressRing.js"></script>
+<script src="../js/chart.min.js"></script>
+<script src="../js/bootstrap-select.min.js"></script>
 <script src="../js/backgroundMessaging.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/unlockPane.js"></script>
@@ -1043,10 +1098,5 @@
 <script src="../js/assetsPane.js"></script>
 <script src="../js/transactionsPane.js"></script>
 <script src="../js/tokenDetailPane.js"></script>
-<script src="../js/jdenticon.min.js"></script>
-<script src="../js/tinysort.min.js"></script>
-<script src="../js/rangeSlider.js"></script>
-<script src="../js/progressRing.js"></script>
-<script src="../js/chart.min.js"></script>
 </body>
 </html>
