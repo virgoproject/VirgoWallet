@@ -95,7 +95,7 @@
     font-size: 1.5em;
 }
 
-.footer p {
+#footer p {
     font-size: 0.8em;
     margin: 0;
     max-height: 0;
@@ -105,7 +105,7 @@
     transition: transform 0.4s ease;
 }
 
-.footer:hover p{
+#footer:hover p{
     max-height: 100px;
     transform: scaleY(1);
     visibility: visible;
