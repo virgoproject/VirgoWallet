@@ -74,6 +74,12 @@
     right: 0;
     text-align: center;
     padding: 0.75em 0.5em;
+    transition: max-height 0.25s ease-in;
+    max-height: 48px;
+}
+
+#mainPane #footer:hover {
+    max-height: 64px;
 }
 
 #mainPane #footer .footerElem {
@@ -98,18 +104,12 @@
 #footer p {
     font-size: 0.8em;
     margin: 0;
-    max-height: 0;
     visibility: hidden;
-    transform: scaleY(0);
     transform-origin: top;
-    transition: transform 0.4s ease;
 }
 
 #footer:hover p{
-    max-height: 100px;
-    transform: scaleY(1);
     visibility: visible;
-    transition: max-height 0.5s ease-in;
 }
 
 #backupPopup span {
