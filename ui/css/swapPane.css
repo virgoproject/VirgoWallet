@@ -90,3 +90,58 @@
 #swapSwitchBtn:hover {
     background: #ece2f3;
 }
+
+#swapPane .route {
+    border-bottom: 2px dashed black;
+    margin: 1em 0.25em 0;
+}
+
+#swapPane .route .step {
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    position: absolute;
+    margin-top: -16px;
+}
+
+#swapPane .route .step:first-child {
+    margin-left: -16px;
+}
+
+#swapPane .route .step:last-child {
+    right: 16px;
+}
+
+#swapPane .route.steps3 .step:nth-child(2){
+    left: calc(50% - 16px);
+}
+
+#swapPane .route.steps4 .step:nth-child(2){
+    left: calc(33.3% - 8px);
+}
+
+#swapPane .route.steps4 .step:nth-child(3){
+    left: calc(66.6% - 24px);
+}
+
+#swapPane .route.steps5 .step:nth-child(2){
+    left: calc(25%);
+}
+
+#swapPane .route.steps5 .step:nth-child(3){
+    left: calc(50% - 16px);
+}
+
+#swapPane .route.steps5 .step:nth-child(4){
+    left: calc(75% - 32px);
+}
+
+#swapPane .rate {
+    font-size: 0.8em;
+}
+
+#swapPane .rate .ticker {
+    color: var(--mainColor);
+}
