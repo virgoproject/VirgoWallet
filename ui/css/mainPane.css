@@ -9,9 +9,12 @@
     height: 110px;
     padding: 0.5em;
     border-bottom: 1px solid #F6F5F6;
-    margin-bottom: 3.5em;
+    margin-bottom: 1.5em;
 }
-
+.hr{
+    width: 90%;
+    margin-left: 1em;
+}
 #mainPane>.header>.stats {
     background: radial-gradient(ellipse at 50% 0%, #7700cf36 0%, transparent 120%),
             linear-gradient(133deg, rgba(0, 0, 0, 0) 0%, rgb(205 69 180 / 10%) 20%, rgba(0, 0, 0, 0) 40%),
@@ -22,11 +25,8 @@
     position: absolute;
     left: 2em;
     right: 2em;
-    padding: 0.5em;
     top: 50px;
     border-radius: 0.5em;
-    text-align: left;
-
 }
 
 #mainPane .header .stats .fluctuation {
@@ -69,7 +69,7 @@
 #mainPane .header .stats .values {
     margin-bottom: 0.25rem;
     font-size: 25px;
-    margin-top: -15px;
+    margin-top: -5px;
 }
 
 #mainPane .header .pendingTxs {
@@ -141,4 +141,5 @@
     font-size: 0.9em;
     line-height: 1.3em;
 }
+
 

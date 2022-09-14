@@ -70,6 +70,12 @@
             </div>
         </div>
         <div class="stats row">
+            <h1 class="values" data-fiatTotal>$0</h1>
+            <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                <val>0</val>
+                %
+            </p>
+            <hr class="hr">
             <div class="address wallet-address">
                 <div class="d-inline-flex">
                     <p class="title">Wallet Address (</p>
@@ -80,68 +86,69 @@
                     <i class="far fa-copy"></i>
                 </div>
             </div>
-
-            <hr>
-            <h1 class="values" data-fiatTotal>$0</h1>
-            <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                <val>0</val>
-                %
-            </p>
         </div>
     </div>
     <div id="body">
         <div class="bodyElem resume row">
-            <div>
-<!--                <div class="address row">-->
-<!--                    <div class="col-10">-->
-<!--                        <p class="title">Wallet Address</p>-->
-<!--                        <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>-->
-<!--                    </div>-->
-<!--                    <div class="col-2 justify-content-center align-self-center">-->
-<!--                        <i class="far fa-copy copy"></i>-->
-<!--                    </div>-->
-<!--                </div>-->
-                <div class="row mt-3 actions" style="display: none">
-                    <div class="col-6 pl-0 pr-1">
-                        <button class="button"><i class="fas fa-plus"></i> Add funds</button>
+            <div id="carouselExampleControls" class="carousel slide carousel-wallet" data-bs-ride="carousel">
+                <div class="carousel-inner carousel-wallet-inner">
+                    <div class="carousel-item active">
+                        <img src="../images/wallet.png" class="d-block w-100" alt="...">
                     </div>
-                    <div class="col-6 pr-0 pl-1">
-                        <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
+                    <div class="carousel-item">
+                        <img src="../images/Earn.png" class="d-block w-100" alt="...">
                     </div>
                 </div>
-                <div class="assets row mt-2">
-                    <div class="title col-12 m-0">
-                        <div class="row">
-                            <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
-                            <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
-                        </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div class="row mt-3 actions" style="display: none">
+                <div class="col-6 pl-0 pr-1">
+                    <button class="button"><i class="fas fa-plus"></i> Add funds</button>
+                </div>
+                <div class="col-6 pr-0 pl-1">
+                    <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
+                </div>
+            </div>
+            <div class="assets row mt-2 p-2">
+                <div class="title col-12 m-0">
+                    <div class="row">
+                        <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
+                        <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
                     </div>
-                    <div>
-                        <div id="walletAssets" class="row">
-                            <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
-                                <div class="row">
-                                    <div class="col-2 justify-content-center align-self-center">
-                                        <div class="logo"></div>
-                                    </div>
-                                    <div class="col-6">
-                                        <p class="title">Bitcoin</p>
-                                        <p class="amount">
-                                            <val class="balance">0</val>
-                                            <b class="ticker"></b></p>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <p class="fiatEq">$0</p>
-                                        <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                                            <val></val>
-                                            %
-                                        </p>
-                                    </div>
+                </div>
+                <div>
+                    <div id="walletAssets" class="row">
+                        <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
+                            <div class="row">
+                                <div class="col-2 justify-content-center align-self-center">
+                                    <div class="logo"></div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">Bitcoin</p>
+                                    <p class="amount">
+                                        <val class="balance">0</val>
+                                        <b class="ticker"></b></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <p class="fiatEq">$0</p>
+                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                                        <val></val>
+                                        %
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
