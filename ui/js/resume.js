@@ -3,8 +3,8 @@ MAIN_ASSET = undefined
 class MainPane {
 
     static resume = $("#body .bodyElem.resume")
-    static address = $("#mainPane .resume .address")
-    static addressTitle = $("#mainPane .resume .address .title")
+    static address = $("#mainPane .header .address")
+    static addressTitle = $("#mainPane .header .address .title")
     static addAsset = {
         pane: $("#body .bodyElem.addAsset"),
         contract: $("#body .bodyElem.addAsset .assetContract"),
@@ -40,10 +40,10 @@ class MainPane {
 
         MainPane.address.click(function(){
             copyToClipboard(document.querySelector("[data-mainAddress]"));
-            MainPane.addressTitle.html("Copied!")
+            MainPane.addressTitle.html("Copied! (")
 
             setTimeout(function(){
-                MainPane.addressTitle.html("Wallet Address")
+                MainPane.addressTitle.html("Wallet Address (")
             }, 2500)
         })
 

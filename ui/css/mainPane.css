@@ -22,14 +22,17 @@
     position: absolute;
     left: 2em;
     right: 2em;
-    padding: 1em;
-    top: 54px;
+    padding: 0.5em;
+    top: 50px;
     border-radius: 0.5em;
+    text-align: left;
+
 }
 
 #mainPane .header .stats .fluctuation {
     color: var(--bs-teal);
     margin-bottom: 0;
+    font-size: 10px;
 }
 
 #mainPane .header .stats .fluctuation.negative {
@@ -47,8 +50,26 @@
     margin: 0 0 0.25rem;
 }
 
-#mainPane .header .stats .value {
+#mainPane .header .stats .adress {
+    font-size: 0.65em;
+    color: var(--whiteBackground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 15ch;
+    margin: 0 0 0.25rem;
+    white-space: nowrap;
+}
+
+#mainPane .header .stats .wallet-address {
+ display: flex;
+    justify-content: space-between;
+}
+
+#mainPane .header .stats .values {
     margin-bottom: 0.25rem;
+    font-size: 25px;
+    margin-top: -15px;
 }
 
 #mainPane .header .pendingTxs {

@@ -70,8 +70,19 @@
             </div>
         </div>
         <div class="stats row">
-            <p class="title">ESTIMATED VALUE</p>
-            <h1 class="value" data-fiatTotal>$0</h1>
+            <div class="address wallet-address">
+                <div class="d-inline-flex">
+                    <p class="title">Wallet Address (</p>
+                    <p id="walletAddress" class="value adress" data-mainAddress>0x0000000000000000000000000000000000000000</p>
+                    <p class="adress">)</p>
+                </div>
+                <div class="d-inline-flex">
+                    <i class="far fa-copy"></i>
+                </div>
+            </div>
+
+            <hr>
+            <h1 class="values" data-fiatTotal>$0</h1>
             <p class="fluctuation"><i class="fas fa-chevron-up"></i>
                 <val>0</val>
                 %
@@ -81,15 +92,15 @@
     <div id="body">
         <div class="bodyElem resume row">
             <div>
-                <div class="address row">
-                    <div class="col-10">
-                        <p class="title">Wallet Address</p>
-                        <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>
-                    </div>
-                    <div class="col-2 justify-content-center align-self-center">
-                        <i class="far fa-copy copy"></i>
-                    </div>
-                </div>
+<!--                <div class="address row">-->
+<!--                    <div class="col-10">-->
+<!--                        <p class="title">Wallet Address</p>-->
+<!--                        <p id="walletAddress" class="value" data-mainAddress>0x0000000000000000000000000000000000000000</p>-->
+<!--                    </div>-->
+<!--                    <div class="col-2 justify-content-center align-self-center">-->
+<!--                        <i class="far fa-copy copy"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="row mt-3 actions" style="display: none">
                     <div class="col-6 pl-0 pr-1">
                         <button class="button"><i class="fas fa-plus"></i> Add funds</button>
