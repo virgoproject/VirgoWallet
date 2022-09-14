@@ -223,15 +223,11 @@
             </div>
             <div class="row swapInput pt-1 pb-1">
                 <div class="col-7 p-0">
-                    <input type="text" class="resizeOnInput" placeholder="0.0">
+                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0">
                     <span class="maxBtn">Max</span>
                 </div>
-                <div class="col-5 p-0 selectCoin">
-                    <select class="selectpicker w-100">
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div><span class="selectText">ETH</span>'>ETH</option>
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div><span class="selectText">WBTC</span>'>WBTC</option>
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png);"></div><span class="selectText">USDT</span>'>USDT</option>
-                    </select>
+                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
                 </div>
             </div>
             <div class="row mt-3">
@@ -247,33 +243,25 @@
             </div>
             <div class="row swapInput pt-1 pb-1">
                 <div class="col-7 p-0">
-                    <input type="text" class="resizeOnInput" placeholder="0.0">
+                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0">
                     <span class="maxBtn">Max</span>
                 </div>
-                <div class="col-5 p-0 selectCoin">
-                    <select class="selectpicker w-100">
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div><span class="selectText">ETH</span>'>ETH</option>
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div><span class="selectText">WBTC</span>'>WBTC</option>
-                        <option data-content='<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png);"></div><span class="selectText">USDT</span>'>USDT</option>
-                    </select>
+                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-12 p-0">
-                    <p class="rate">Rate: <span class="amount">12.634</span> <span class="ticker">ETH</span>/<span class="ticker">WBTC</span></p>
+                <div class="col-12 p-0" id="swapRate" style="display: none">
+                    <p class="rate">Rate: <span class="amount" id="swapRateAmount">12.634</span> <span class="ticker" id="swapRateTicker1">ETH</span>/<span class="ticker" id="swapRateTicker2">WBTC</span></p>
                 </div>
-                <div class="col-12 text-center d-none">
+                <div class="col-12 text-center" id="swapRateLoading" style="display: none">
                     <i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
                 </div>
-                <div class="route steps5">
-                    <div class="step" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div>
-                    <div class="step" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div>
-                    <div class="step" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png);"></div>
-                    <div class="step" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div>
-                    <div class="step" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.png);"></div>
+                <div class="route steps5" id="swapRoute" style="display: none">
                 </div>
+                <div class="step" id="baseStep" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png); display: none"></div>
                 <div class="col-12 p-0" style="margin-top: 2.25em;">
-                    <button class="button w-100">Swap ETH for WBTC</button>
+                    <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker2">-</span> for <span id="swapBtnTicker1">-</span></button>
                 </div>
             </div>
         </div>
@@ -1109,6 +1097,7 @@
 <script src="../js/sendPane.js"></script>
 <script src="../js/settings.js"></script>
 <script src="../js/assetsPane.js"></script>
+<script src="../js/swapPane.js"></script>
 <script src="../js/transactionsPane.js"></script>
 <script src="../js/tokenDetailPane.js"></script>
 </body>

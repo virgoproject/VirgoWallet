@@ -104,6 +104,7 @@ class UnlockPane {
         selectChains.setChains(data)
         mainPane.setResume(data)
         sendPane.setSend(data)
+        swapPane.setSwap(data)
         settingsPane.setSettings(data)
         $("#mainPane").show()
     }

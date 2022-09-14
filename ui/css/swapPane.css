@@ -17,9 +17,10 @@
 #swapPane .swapInput {
     background: var(--whiteBackground);
     border-radius: 0.5em;
+    height: 50px;
 }
 
-#swapPane .swapInput input {
+#swapPane .swapInput .amountInput {
     width: 3ch;
     min-width: 4.5ch;
     max-width: 12ch;

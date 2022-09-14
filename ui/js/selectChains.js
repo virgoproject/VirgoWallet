@@ -47,7 +47,7 @@ class SelectChains {
                         MainPane.walletAssets.html("")
                         MainPane.walletAssets.append(baseAssetRow)
 
-                        //reset send form
+                        //reset send and swap form
                         getBaseInfos().then(function(res){
                             SendPane.recipient.val("")
                             SendPane.amount.val("")
@@ -56,6 +56,7 @@ class SelectChains {
                             SendPane.backBtn.click()
                             SendPane.assetSelect.html("")
                             sendPane.setSend(res)
+                            swapPane.setSwap(res)
                         })
 
                         $("[data-networkname]").html(wallet.name)
