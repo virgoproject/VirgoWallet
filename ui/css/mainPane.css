@@ -25,13 +25,13 @@
     position: absolute;
     left: 2em;
     right: 2em;
-    top: 50px;
+    top: 59px;
     border-radius: 0.5em;
 }
 
 #mainPane .header .stats .fluctuation {
     color: var(--bs-teal);
-    margin-bottom: 0;
+    margin-bottom: 6px;
     font-size: 10px;
 }
 
@@ -67,9 +67,8 @@
 }
 
 #mainPane .header .stats .values {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.1rem;
     font-size: 25px;
-    margin-top: -5px;
 }
 
 #mainPane .header .pendingTxs {

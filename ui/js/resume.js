@@ -30,6 +30,9 @@ class MainPane {
         self: $("#updatePopup"),
         close: $("#updatePopup .close")
     }
+    static carouselImage = $("#carousel-image")
+    static carousel = $("#carousel-wallet-inner")
+    static carouselLoading = $("#carousel-wallet-inner .loading")
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -70,6 +73,32 @@ class MainPane {
             $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
             MainPane.backupPopup.close.click()
         })
+
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("https://raw.githubusercontent.com/virgoproject/walletBanners/main/data.json", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+
+                Object.keys(result).forEach(key => {
+                    MainPane.carouselLoading.hide()
+                    const img = MainPane.carouselImage.clone()
+                    img.attr("id", "bal"+result[key].img)
+
+                    img.find(".image").attr("src","https://raw.githubusercontent.com/virgoproject/walletBanners/main/"+result[key].img);
+                    img.find(".image").click(function (){
+                        window.open(result[key].href, "_blank")
+                    })
+
+                    MainPane.carousel.append(img)
+                    img.show()
+                });
+
+            })
+            .catch(error => console.log('error', error));
 
     }
 

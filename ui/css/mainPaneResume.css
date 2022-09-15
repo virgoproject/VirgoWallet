@@ -1,5 +1,6 @@
 #mainPane .resume .carousel-wallet {
     padding: 0.5em 0em;
+    top: 15px;
     border-radius: 0.5em;
 }
 
@@ -21,6 +22,21 @@
     padding-bottom: 0.375em;
     cursor: pointer;
     transition: all ease-in 0.1s;
+}
+
+#mainPane .resume .selecteur {
+   display: none;
+}
+
+#mainPane .resume .carousel-wallet:hover .selecteur {
+display: block;
+}
+
+#mainPane .resume .assets  {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #mainPane .resume .assets .asset:hover {
