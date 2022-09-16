@@ -108,7 +108,17 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "getBalance":
-            sendResponse(baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset])
+            const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset]
+
+            if(!bal.tracked){
+                const contract = new web3.eth.Contract(ERC20_ABI, request.asset);
+                contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
+                    .then(function(res){
+                        bal.balance = res
+                        sendResponse(bal)
+                    })
+            }else sendResponse(bal)
+
             break
 
         case "sendTo":
@@ -116,6 +126,16 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             //send native asset
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
                 if (request.asset == baseWallet.getCurrentWallet().ticker) {
+
+                    console.log("base asset")
+                    console.log({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
+                    })
 
                     web3.eth.sendTransaction({
                         from: baseWallet.getCurrentAddress(),
@@ -136,6 +156,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 "gasLimit": request.gasLimit,
                                 "nonce": nonce
                             }
+                            console.log("Got hash: " + hash)
                             baseWallet.getCurrentWallet().transactions.unshift(txResume)
                             sendResponse(hash)
                             baseWallet.save()
@@ -203,11 +224,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     return
                 }
 
+                console.log("contract asset")
+                console.log({
+                    asset: request.asset,
+                    from: baseWallet.getCurrentWallet(),
+                    to: request.recipient,
+                    amount: request.amount,
+                    nonce: nonce,
+                    gas: request.gasLimit,
+                    gasPrice: request.gasPrice
+                })
+
                 const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
                 const transaction = contract.methods.transfer(request.recipient, request.amount);
 
                 transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                     .on("transactionHash", function (hash) {
+                        console.log("got hash: " + hash)
                         txResume = {
                             "hash": hash,
                             "contractAddr": request.asset,

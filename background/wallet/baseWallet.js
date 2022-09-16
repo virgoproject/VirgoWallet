@@ -257,7 +257,23 @@ class BaseWallet {
             }
         }
 
-            return wallets
+        wallets[9] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Ethereum PoW",
+                "asset": "EthereumPoW",
+                "ticker": "ETHW",
+                "decimals": 18,
+                "contract": "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
+                "RPC": "https://mainnet.ethereumpow.org/",
+                "chainID": 10001,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://www.oklink.com/en/ethw/tx/"
+            }
+        }
+
+        return wallets
     }
 
     //check current wallets against reference list, if some networks are missing add them

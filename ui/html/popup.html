@@ -218,13 +218,13 @@
                     <p class="m-0">You send</p>
                 </div>
                 <div class="col-9 pr-0 text-right">
-                    <p class="m-0">Available: <span class="amount">-</span> <span class="ticker">BTC</span></p>
+                    <p class="m-0">Available: <span class="amount" id="swapBalance1">-</span> <span class="ticker" id="swapTicker1"></span></p>
                 </div>
             </div>
             <div class="row swapInput pt-1 pb-1">
                 <div class="col-7 p-0">
-                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0">
-                    <span class="maxBtn">Max</span>
+                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
+                    <span class="maxBtn" id="swapMaxBtn1">Max</span>
                 </div>
                 <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
                     <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
@@ -238,13 +238,12 @@
                     <p class="m-0">You get</p>
                 </div>
                 <div class="col-9 pr-0 text-right">
-                    <p class="m-0">Available: <span class="amount">-</span> <span class="ticker">BTC</span></p>
+                    <p class="m-0">Available: <span class="amount" id="swapBalance2">-</span> <span class="ticker" id="swapTicker2"></span></p>
                 </div>
             </div>
             <div class="row swapInput pt-1 pb-1">
                 <div class="col-7 p-0">
-                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0">
-                    <span class="maxBtn">Max</span>
+                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput2">
                 </div>
                 <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
                     <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
@@ -261,7 +260,7 @@
                 </div>
                 <div class="step" id="baseStep" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png); display: none"></div>
                 <div class="col-12 p-0" style="margin-top: 2.25em;">
-                    <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker2">-</span> for <span id="swapBtnTicker1">-</span></button>
+                    <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
                 </div>
             </div>
         </div>

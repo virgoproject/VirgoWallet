@@ -211,9 +211,6 @@ class Web3Wallet {
                             return
                         }
 
-                        console.log(transaction.hash)
-                        console.log(transaction.status)
-
                         if(transaction.status === undefined){
                             if(receipt.status){
                                 browser.notifications.create("txNotification", {

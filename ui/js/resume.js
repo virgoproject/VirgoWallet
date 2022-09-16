@@ -126,6 +126,7 @@ class MainPane {
                     elem.find(".fluctuation").addClass("negative")
 
                 MainPane.walletAssets.append(elem)
+
                 hasChanged = true
                 if(contractAddr == MAIN_ASSET.ticker)
                     elem.attr("data-sort", 9999999999999999)
