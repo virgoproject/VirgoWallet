@@ -124,3 +124,7 @@ async function getAutolock(){
 async function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
 }
+
+async function getSwapRoute(token1, token2){
+    browser.runtime.sendMessage({command: 'getSwapRoute', token1: token1, token2: token2})
+}

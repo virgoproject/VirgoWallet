@@ -20,6 +20,7 @@ class SwapPane {
     static rate = {
         loading: $("#swapRateLoading")
     }
+    static switchBtn = $("#swapSwitchBtn")
 
     constructor() {
         this.select1OldElem = ""
@@ -37,17 +38,43 @@ class SwapPane {
         SwapPane.inputs.one.select.change(function(){
             swapPane.updateSelects(1)
             _this.updateBalance(SwapPane.inputs.one)
+            _this.checkAmount()
         })
 
         SwapPane.inputs.two.select.change(function(){
             swapPane.updateSelects(2)
             _this.updateBalance(SwapPane.inputs.two)
+            _this.checkAmount()
         })
 
         SwapPane.inputs.one.btnMax.click(function(){
             if(SwapPane.inputs.one.select.val() == "") return
             SwapPane.inputs.one.input.val(SwapPane.inputs.one.balance.html())
             SwapPane.inputs.one.input.trigger("input")
+        })
+
+        SwapPane.switchBtn.click(function(){
+            const oneVal = SwapPane.inputs.one.select.val()
+            const twoVal = SwapPane.inputs.two.select.val()
+            console.log(oneVal)
+            console.log(twoVal)
+
+            SwapPane.inputs.one.select.val("")
+            SwapPane.inputs.two.select.val("")
+
+            SwapPane.inputs.one.select.trigger("change")
+            SwapPane.inputs.two.select.trigger("change")
+
+            SwapPane.inputs.one.select.val(twoVal)
+            SwapPane.inputs.two.select.val(oneVal)
+
+            console.log("vvv")
+            console.log(SwapPane.inputs.one.select.val())
+            console.log(SwapPane.inputs.two.select.val())
+
+            SwapPane.inputs.one.select.trigger("change")
+            SwapPane.inputs.two.select.trigger("change")
+
         })
 
     }
@@ -81,6 +108,11 @@ class SwapPane {
                 SwapPane.inputs.two.select.append(this.select2OldElem.elem)
                 this.select2OldElem.elem.insertIndex(this.select2OldElem.index)
             }
+            if(SwapPane.inputs.one.select.val() == ""){
+                this.select2OldElem = ""
+                SwapPane.inputs.two.select.selectpicker('refresh')
+                return
+            }
             const oldElem = SwapPane.inputs.two.select.find('[value='+SwapPane.inputs.one.select.val()+']')
             this.select2OldElem = {
                 elem: oldElem,
@@ -92,6 +124,11 @@ class SwapPane {
             if(this.select1OldElem != ""){
                 SwapPane.inputs.one.select.append(this.select1OldElem.elem)
                 this.select1OldElem.elem.insertIndex(this.select1OldElem.index)
+            }
+            if(SwapPane.inputs.two.select.val() == ""){
+                this.select1OldElem = ""
+                SwapPane.inputs.one.select.selectpicker('refresh')
+                return
             }
             const oldElem = SwapPane.inputs.one.select.find('[value='+SwapPane.inputs.two.select.val()+']')
             this.select1OldElem = {
@@ -105,9 +142,14 @@ class SwapPane {
     }
 
     updateBalance(elem){
-        if(elem.select.val() == "") return
-
         elem.ticker.html("")
+
+        if(elem.select.val() == "") {
+            elem.balance.html("-")
+            elem.btnTicker.html("-")
+            return
+        }
+
         elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
 
         getBalance(elem.select.val()).then(function(res){
@@ -118,7 +160,11 @@ class SwapPane {
     }
 
     checkAmount(){
+        if(SwapPane.inputs.one.select.val() == "" || SwapPane.inputs.two.select.val() == "") return
         SwapPane.rate.loading.show()
+        getRoute(SwapPane.inputs.one.select.val(), SwapPane.inputs.two.select.val()).then(function(res){
+
+        })
     }
 
 }
