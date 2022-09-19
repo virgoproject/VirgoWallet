@@ -1,3 +1,7 @@
+#body .send  {
+    padding-top: 2em;
+}
+
 #body .send .sendForm .sendBal {
     font-size: 0.9em;
     place-self: flex-end;

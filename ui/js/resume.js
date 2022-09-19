@@ -3,8 +3,8 @@ MAIN_ASSET = undefined
 class MainPane {
 
     static resume = $("#body .bodyElem.resume")
-    static address = $("#mainPane .resume .address")
-    static addressTitle = $("#mainPane .resume .address .title")
+    static address = $("#mainPane .header .address")
+    static addressTitle = $("#mainPane .header .address .title")
     static addAsset = {
         pane: $("#body .bodyElem.addAsset"),
         contract: $("#body .bodyElem.addAsset .assetContract"),
@@ -30,6 +30,9 @@ class MainPane {
         self: $("#updatePopup"),
         close: $("#updatePopup .close")
     }
+    static carouselImage = $("#carousel-image")
+    static carousel = $("#carousel-wallet-inner")
+    static carouselLoading = $(".loading")
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -40,10 +43,10 @@ class MainPane {
 
         MainPane.address.click(function(){
             copyToClipboard(document.querySelector("[data-mainAddress]"));
-            MainPane.addressTitle.html("Copied!")
+            MainPane.addressTitle.html("Copied! (")
 
             setTimeout(function(){
-                MainPane.addressTitle.html("Wallet Address")
+                MainPane.addressTitle.html("Wallet Address (")
             }, 2500)
         })
 
@@ -70,6 +73,35 @@ class MainPane {
             $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
             MainPane.backupPopup.close.click()
         })
+
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("https://raw.githubusercontent.com/virgoproject/walletBanners/main/data.json", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+
+                Object.keys(result).forEach(key => {
+                    MainPane.carouselLoading.hide()
+                    const img = MainPane.carouselImage.clone()
+                    img.attr("id", "bal"+result[key].img)
+
+                    img.find(".image").attr("src","https://raw.githubusercontent.com/virgoproject/walletBanners/main/"+result[key].img);
+                    img.find(".image").click(function (){
+                        window.open(result[key].href, "_blank")
+                    })
+                    img.removeClass("d-none")
+                    MainPane.carousel.append(img)
+                    if (key == 0){
+                        img.addClass("active")
+                        img.show()
+                    }
+                });
+
+            })
+            .catch(error => console.log('error', error));
 
     }
 
