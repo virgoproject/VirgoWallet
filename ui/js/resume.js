@@ -32,7 +32,7 @@ class MainPane {
     }
     static carouselImage = $("#carousel-image")
     static carousel = $("#carousel-wallet-inner")
-    static carouselLoading = $("#carousel-wallet-inner .loading")
+    static carouselLoading = $(".loading")
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -92,9 +92,12 @@ class MainPane {
                     img.find(".image").click(function (){
                         window.open(result[key].href, "_blank")
                     })
-
+                    img.removeClass("d-none")
                     MainPane.carousel.append(img)
-                    img.show()
+                    if (key == 0){
+                        img.addClass("active")
+                        img.show()
+                    }
                 });
 
             })

@@ -70,25 +70,31 @@
             </div>
         </div>
         <div class="stats row">
-            <h1 class="values" data-fiatTotal>$0</h1>
-            <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                <val>0</val>
-                %
-            </p>
-            <hr class="hr">
-            <div class="address wallet-address">
-                <div class="d-inline-flex">
-                    <p class="title">Wallet Address (</p>
-                    <p id="walletAddress" class="value adress" data-mainAddress>0x0000000000000000000000000000000000000000</p>
-                    <p class="adress">)</p>
-                </div>
-                <div class="d-inline-flex">
-                    <i class="far fa-copy"></i>
+            <div class="d-inline-flex balanceTitle">
+                <h1 class="title">Current Wallet Balance</h1>
+            </div>
+            <div class="d-inline-flex balance-header">
+                <h1 class="values" data-fiatTotal>$0</h1>
+                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                    <val>0</val>
+                    %
+                </p>
+            </div>
+            <div class="address-div">
+                <div class="address wallet-address">
+                    <div class="d-inline-flex address-bloc">
+                        <p class="title m-0">Wallet Address (</p>
+                        <p id="walletAddress" class="value adress m-0" data-mainAddress>0x0000000000000000000000000000000000000000</p>
+                        <p class="adress m-0">)</p>
+                    </div>
+                    <div class="d-inline-flex copy">
+                        <i class="fal fa-copy "></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="carousel-item active" id="carousel-image" style="display: none">
+    <div class="carousel-item d-none" id="carousel-image">
             <img src="" class="d-block w-100 image" alt="...">
     </div>
     <div id="body">
@@ -116,10 +122,10 @@
                     <button class="button"><i class="fas fa-exchange-alt"></i> Exchange</button>
                 </div>
             </div>
-            <div class="assets row mt-2 p-2">
+            <div class="assets row p-2">
                 <div class="title col-12 m-0">
                     <div class="row">
-                        <p class="col-6 mb-0">Assets <i class="fas fa-chevron-right"></i></p>
+                        <p class="col-6 mb-0">Assets</p>
                         <p class="col-6 text-right mb-0 addAsset">More <i class="fas fa-plus"></i></p>
                     </div>
                 </div>

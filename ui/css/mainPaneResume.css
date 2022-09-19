@@ -1,6 +1,6 @@
 #mainPane .resume .carousel-wallet {
-    padding: 0.5em 0em;
-    top: 15px;
+    padding: 0.8em 0em;
+    top: 5px;
     border-radius: 0.5em;
 }
 
@@ -16,7 +16,7 @@
 }
 
 #mainPane .resume .assets .asset {
-    background: var(--whiteBackground);
+    background: #f8f4fb;
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -40,7 +40,7 @@ display: block;
 }
 
 #mainPane .resume .assets .asset:hover {
-    background: #ece2f3;
+    background: var(--whiteBackground);
 }
 
 #mainPane .resume .assets .asset p {
@@ -89,7 +89,7 @@ display: block;
 
 #mainPane .resume .assets .addAsset {
     cursor: pointer;
-    color: #545454;
+    color: var(--highlightColor1);
 }
 
 #mainPane .resume .assets .addAsset:hover {
@@ -106,6 +106,6 @@ display: block;
 }
 
 #body .resume {
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
 }
