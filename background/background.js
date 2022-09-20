@@ -478,24 +478,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     favorite : request.favorite
                 }
 
-                console.log(Object.values(res.contactList))
 
                 if(res.contactList === undefined) {
                     browser.storage.local.set({"contactList": [newContact]})
                     sendResponse(true)
                 } else {
 
-                    if (Object.values(res.contactList).includes(request.address)){
-                        console.log('Deja dedans')
-                        sendResponse(false)
+                        const result = res.contactList.filter(record =>
+                            record.address === request.address)
 
-                    } else {
-                        res.contactList.push(newContact)
-                        browser.storage.local.set({"contactList": res.contactList})
-                        sendResponse(true)
+
+                        if (result.length <= 0){
+                            console.log('Existe pas ')
+                            res.contactList.push(newContact)
+                            browser.storage.local.set({"contactList": res.contactList})
+                            sendResponse(true)
+                        } else {
+                            console.log('Existe ')
+                            sendResponse("already")
+                        }
+
                     }
 
-                }
 
             })
            break

@@ -74,14 +74,21 @@ class ContactsPane {
                     ContactsPane.input.setContactAddressInput.removeClass("is-invalid")
                     ContactsPane.text.addressText.text('Add the address of the contact here for fastest transactions.')
 
-                    addingContact(ContactsPane.input.setContactAddressInput.val(), ContactsPane.input.setContactNameInput.val(), ContactsPane.input.setContactNoteInput.val(), ContactsPane.input.setContactFavoriteInput.is(':checked')).then(function () {
-                            notyf.success(ContactsPane.input.setContactNameInput.val() + " added to contact !")
-                            ContactsPane.text.title.html('Contacts')
-                            ContactsPane.loadContacts()
-                            ContactsPane.div.formContact.hide()
-                            ContactsPane.buttons.addContact.show()
-                            ContactsPane.div.bodyContacts.show()
-                            enableLoadBtn(ContactsPane.buttons.addContactButtonForm)
+                    addingContact(ContactsPane.input.setContactAddressInput.val(), ContactsPane.input.setContactNameInput.val(), ContactsPane.input.setContactNoteInput.val(), ContactsPane.input.setContactFavoriteInput.is(':checked')).then(function (result) {
+                            if (result !== "already") {
+                                notyf.success(ContactsPane.input.setContactNameInput.val() + " added to contact !")
+                                ContactsPane.text.title.html('Contacts')
+                                ContactsPane.loadContacts()
+                                ContactsPane.div.formContact.hide()
+                                ContactsPane.buttons.addContact.show()
+                                ContactsPane.div.bodyContacts.show()
+                                enableLoadBtn(ContactsPane.buttons.addContactButtonForm)
+                            } else {
+                                notyf.error("Error already existing address")
+                                enableLoadBtn(ContactsPane.buttons.addContactButtonForm)
+
+                            }
+
 
                         }
                     )
@@ -174,12 +181,20 @@ class ContactsPane {
         checkRes.then(res => {
             SendPane.divContactList.html("")
 
+            if (res === false) {
+                ContactsPane.div.noContactFound.show()
+                ContactsPane.loading.loader.hide()
+                return;
+
+            }
+
             if (res.length <= 0) {
                 ContactsPane.div.noContactFound.show()
                 ContactsPane.loading.loader.hide()
 
                 return
             }
+
 
             res.sort(function (x, y) {
                 if (x.favorite && y.favorite) return 0
@@ -203,9 +218,9 @@ class ContactsPane {
                 element.find('.fa-star').click(function () {
 
                     if ($(this).hasClass('fa-solid')) {
-                        $(this).removeClass('fa-solid').addClass('fa-thin').css('color','unset')
-                    }else {
-                        $(this).removeClass('fa-thin').addClass('fa-solid').css('color','rgb(247, 208, 108)')
+                        $(this).removeClass('fa-solid').addClass('fa-thin').css('color', 'unset')
+                    } else {
+                        $(this).removeClass('fa-thin').addClass('fa-solid').css('color', 'rgb(247, 208, 108)')
 
                     }
                     let idFavorite = element.find('.bg-danger').attr('id')
@@ -226,6 +241,7 @@ class ContactsPane {
                 element.find('.deleteContact').attr('id', l).click(function () {
                     deleteContact($(this).attr('id'))
                     element.remove()
+                    console.log(ContactsPane.div.contactList.length)
                     if (ContactsPane.div.contactList.length <= 0) {
                         ContactsPane.div.noContactFound.show()
 
