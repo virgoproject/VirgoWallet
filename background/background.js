@@ -478,13 +478,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     favorite : request.favorite
                 }
 
+                console.log(Object.values(res.contactList))
+
                 if(res.contactList === undefined) {
                     browser.storage.local.set({"contactList": [newContact]})
                     sendResponse(true)
                 } else {
-                    res.contactList.push(newContact)
-                    browser.storage.local.set({"contactList": res.contactList})
-                    sendResponse(true)
+
+                    if (Object.values(res.contactList).includes(request.address)){
+                        console.log('Deja dedans')
+                        sendResponse(false)
+
+                    } else {
+                        res.contactList.push(newContact)
+                        browser.storage.local.set({"contactList": res.contactList})
+                        sendResponse(true)
+                    }
+
                 }
 
             })
