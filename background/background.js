@@ -49,6 +49,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
             break
 
+
         case "unlockWallet":
             lastActivity = Date.now()
             BaseWallet.loadFromJSON(request.password).then(function(res){
@@ -345,27 +346,32 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
         case "web3Request":
             handleWeb3Request(sendResponse, request.origin, request.method, request.params)
-            break
+            return false
+
 
         case "authorizeWebsiteConnection":
             if(pendingAuthorizations.get(request.id) == null)
                 pendingAuthorizations.set(request.id, request.decision)
-            break
+            return false
+
 
         case "authorizeTransaction":
             if(pendingTransactions.get(request.id) == null)
                 pendingTransactions.set(request.id, request.decision)
-            break
+            return false
+
 
         case "authorizeSign":
             if(pendingSigns.get(request.id) == null)
                 pendingSigns.set(request.id, request.decision)
-            break
+            return false
+
 
         case "closedBackupPopup":
             backupPopupDate = Date.now() + 604800000
             browser.storage.local.set({"backupPopupDate": backupPopupDate});
-            break
+            return false
+
 
         case "changeTokenTracking":
             baseWallet.getCurrentWallet().changeTracking(request.contract)
@@ -447,7 +453,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "closedUpdatePopup":
             baseWallet.version = VERSION
             baseWallet.save()
-            break
+            return false
+
         case "getAutolock":
             sendResponse({
                 enabled: autolockEnabled,
@@ -459,6 +466,109 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             lockDelay = request.delay
             browser.storage.local.set({"autolockEnabled": autolockEnabled})
             browser.storage.local.set({"lockDelay": lockDelay})
+            return false
+
+        case "addContact":
+            browser.storage.local.get('contactList').then(function(res){
+
+                const newContact = {
+                    name : request.name,
+                    address : request.address,
+                    note : request.note,
+                    favorite : request.favorite
+                }
+
+                if(res.contactList === undefined) {
+                    browser.storage.local.set({"contactList": [newContact]})
+                    sendResponse(true)
+                } else {
+                    res.contactList.push(newContact)
+                    browser.storage.local.set({"contactList": res.contactList})
+                    sendResponse(true)
+                }
+
+            })
+           break
+
+        case "deleteContact":
+            browser.storage.local.get('contactList').then(function(res) {
+                res.contactList.splice(request.contactIndex, 1)
+                browser.storage.local.set({"contactList": res.contactList})
+
+            })
+            return false
+
+        case "deleteFavorite":
+            browser.storage.local.get('contactList').then(function(res) {
+
+                console.log(res.contactList)
+
+                if (res.contactList[request.contactIndex].favorite !== false){
+                    res.contactList[request.contactIndex].favorite = false
+                } else {
+                    res.contactList[request.contactIndex].favorite = true
+
+                }
+                browser.storage.local.set({"contactList": res.contactList})
+                console.log(res.contactList)
+
+
+            })
+
+
+            return false
+
+        case "updateContact":
+            browser.storage.local.get('contactList').then(function(res) {
+
+                let nameSetter = ''
+                let noteSetter = ''
+
+                if (request.name === ''){
+                    nameSetter = res.contactList[request.contactIndex].name
+                } else {
+                    nameSetter = request.name
+
+                }
+
+                if (request.note === ''){
+                    noteSetter = res.contactList[request.contactIndex].note
+                } else {
+                    noteSetter = request.note
+
+                }
+
+
+                const updateContact = {
+                    name : nameSetter,
+                    address : res.contactList[request.contactIndex].address,
+                    note : noteSetter,
+                    favorite : res.contactList[request.contactIndex].favorite
+                }
+
+                res.contactList.splice(request.contactIndex, 1)
+                res.contactList.splice(request.contactIndex, 0,updateContact)
+                browser.storage.local.set({"contactList": res.contactList})
+
+
+            })
+            return false
+
+
+        case "getContacts":
+            browser.storage.local.get('contactList').then(function(res) {
+                if(res.contactList !== undefined){
+                    sendResponse(res.contactList)
+                }else {
+                    sendResponse(false)
+                }
+
+            })
+
+
+
+
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

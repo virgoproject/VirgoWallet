@@ -16,13 +16,37 @@ class SendPane {
     static confirmFeesRange = $("#rangeFees")
     static sendBal = $("#body .send .sendForm .sendBal span")
     static maxBtn = $("#body .send .sendForm button.max")
+
+
+    static btnContacts = $("#body .send .sendForm .contactButton")
+    static headerValues = $(".header .stats")
+    static topbarValues = $(".header .topbar")
+    static contactsList = $("#contacts ")
+    static bodyContacts = $('#contacts #contactDiv')
+    static buttonContacts = $('#contacts .addContact')
+    static divContactClone = $('#contacts .contactUser')
+    static divContactList = $('#contacts .contactsList')
+    static contactExemple = $('#contactEx')
+
+
     static estimateFees = null;
 
     constructor() {
 
         let confirmInterval;
+        SendPane.divContactList.html("")
 
-        SendPane.btnSubmit.click(function(){
+        SendPane.btnContacts.click(function() {
+            SendPane.sendForm.hide()
+            SendPane.contactsList.show()
+            SendPane.bodyContacts.show()
+            SendPane.buttonContacts.show()
+
+            ContactsPane.loadContacts()
+        })
+
+
+            SendPane.btnSubmit.click(function(){
             disableLoadBtn($(this))
 
             SendPane.recipient.attr("disabled", true)
@@ -205,7 +229,6 @@ class SendPane {
 
         SendPane.btnSubmit.attr("disabled", false)
     }
-
 }
 
 const sendPane = new SendPane()

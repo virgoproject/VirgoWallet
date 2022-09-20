@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/ui/css/tokenDetailPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
+    <link rel="stylesheet" href="/ui/css/contacts.css">
 </head>
 <body>
 
@@ -134,7 +135,11 @@
             <div class="row sendForm">
                 <div class="col-12 mb-3">
                     <p class="label">Send to</p>
-                    <input type="text" class="input col-12 recipient" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
+                    <div class="input-group ">
+                        <i class="fas fa-address-book d-flex align-items-center contactButton"></i>
+                        <input type="text" class="input col-10 recipient" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
+
+                    </div>
                 </div>
                 <div class="col-12 mb-3">
                     <p class="label">Asset</p>
@@ -216,6 +221,7 @@
                 <h3><i>Coming soon!</i></h3>
             </div>
         </div>
+
     </div>
     <div id="footer" class="row">
         <div class="footerElem col-4" data-target="send">
@@ -1027,6 +1033,90 @@
             </div>
         </div>
     </div>
+    <div id="contacts" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center title">Contacts</p>
+        </div>
+        <div id="contactDiv">
+        <div class="row text-center justify-content-center contactList mb-2">
+            <label class="text-center searchLabel mt-3" id="d">
+                <input type="text" class="inputSearch" placeholder="Search for contact or adress">
+                <i class="fas fa-search searchIcon"></i>
+            </label>
+        </div>
+            <div class="loading text-center mt-2 mb-2" style="display: none">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="text-center mt-5 mb-5 noContactFound" style="display: none">
+                <h4>No contacts ?</h4>
+                <p>Contact will simplify your transactions! <br><span>Add it now!</span></p>
+            </div>
+            <div class="row text-center m-0 p-0 contactUser" id="contactEx" style="display: none">
+                <div class="row  p-0 m-0 ">
+                    <div class="col-2 align-self-center pe-0">
+                        <svg data-jdenticon-value="" width="36" height="36"></svg>
+
+                    </div>
+                    <div class="col-7 text-left adressContact">
+                        <input type="text" placeholder="Name" class="inputNameContact" style="font-size: 15px !important;" maxlength="24">
+                        <span class="fw-bold textAddress" >0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+
+                    </div>
+                    <div class="col-1 align-self-center p-1">
+                        <i class="fa-thin fa-star" style="font-size: 20px"></i>
+                    </div>
+                    <div class="col-2 align-self-center showElements">
+                        <i class="fas fa-chevron-right" style="font-size: 20px"></i>
+                    </div>
+
+                    <div class="col-12 mt-2 notesPart">
+                        <textarea  class="w-100 noteContact changeNote"></textarea>
+                        <button class="button mb-2 changeContact col-7" data-index=""><i class="fas fa-check"></i> Apply changes</button>
+                        <button class="button mb-2 bg-danger deleteContact col-2" id=""><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+        <div class="row contactsList m-0 p-0 overflow-scroll">
+
+        </div>
+        <div class="addBottomLogo">
+            <i class="fas fa-plus addLogo"></i>
+        </div>
+        </div>
+        <div id="contactForm" style="display: none">
+            <div class="contactFormContent">
+                <div class="col-12 mt-2 mb-2">
+                    <p class="label text-left">Address</p>
+                    <input type="text" class="input col-12 addressInput" placeholder="Enter the asset's contract address">
+                    <div class="form-text addressText">Add the address of the contact here for fastest transactions.</div>
+                </div>
+                <div class="col-12 mt-2 mb-2">
+                    <p class="label text-left">Name</p>
+                    <input type="text" class="input col-12 nameInput" placeholder="Enter the address name you want" maxlength="24">
+                    <div class="form-text">Name an address will help you to differ from other address.</div>
+                </div>
+                <div class="col-12 mt-2 mb-2">
+                    <p class="label text-left">Contact note</p>
+                    <input type="text" class="input col-12 noteInput" placeholder="Note" maxlength="144">
+                    <div class="form-text">Add a note help you to remember differents things about this contact.</div>
+                </div>
+                <div class="text-left p-1 mt-4">
+                    <div class="form-check form-switch align-self-center">
+                        <input class="form-check-input contactFavoriteInput" type="checkbox">
+                        <label class="form-check-label" for="autolockEnabledSetting">Favorite contact</label>
+                        <div class="form-text">Adding contact to your favorite will make them appear on top of contact list.</div>
+                    </div>
+                </div>
+                <button class="button col-12 submit mt-3 addContactButton" disabled="disabled">
+                    <val>Add contact</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -1048,5 +1138,6 @@
 <script src="../js/rangeSlider.js"></script>
 <script src="../js/progressRing.js"></script>
 <script src="../js/chart.min.js"></script>
+<script src="../js/contactsPane.js"></script>
 </body>
 </html>
