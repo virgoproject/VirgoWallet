@@ -1,5 +1,5 @@
 #body .swap  {
-    padding-top: 2em;
+    padding-top: 1em;
 }
 
 #swapPane .inputHeader {
@@ -8,7 +8,7 @@
 
 #swapPane .inputHeader .amount {
     display: inline-block;
-    max-width: 124px;
+    max-width: 96px;
     overflow: hidden;
     vertical-align: top;
     text-overflow: ellipsis;
@@ -161,4 +161,64 @@
     text-align: center;
     margin-top: 4em;
     font-size: 2em;
+}
+
+#swapParams {
+    margin-top: 1em;
+}
+
+#swapReview .confirmRoute {
+    border-bottom: 2px dashed black;
+    margin: 1em 0.25em 2em;
+}
+
+#swapReview .confirmRoute .step {
+    height: 56px;
+    width: 56px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    position: absolute;
+    margin-top: -28px;
+    border: 4px solid white;
+}
+
+#swapReview .confirmRoute .step:last-child {
+    right: 32px;
+}
+
+#swapReview .receiveAmount {
+    background: #fbf4f8;
+    background: #fbf4f8;
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#swapReview .receiveAmount .amount {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+#swapReview .details p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+#swapReview .details .value {
+    text-align: right;
+    font-weight: bold;
+}
+
+#swapReview .details .title, #swapReview .details .value {
+    margin: 0.25em 0;
+}
+
+#swapReview .ticker {
+    color: var(--mainColor);
+}
+
+#swapReview .range {
+    margin-top: 1em;
+    margin-bottom: 2.5em;
 }

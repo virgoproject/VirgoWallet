@@ -46,7 +46,7 @@ class SendPane {
         })
 
 
-            SendPane.btnSubmit.click(function(){
+        SendPane.btnSubmit.click(function(){
             disableLoadBtn($(this))
 
             SendPane.recipient.attr("disabled", true)

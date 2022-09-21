@@ -30,6 +30,15 @@ class SwapPane {
     static switchBtn = $("#swapSwitchBtn")
     static initBtn = $("#initSwapBtn")
     static loading = $("#swapLoading")
+    static review = {
+        self: $("#swapReview"),
+        amountIn: $("#swapReviewAmountIn"),
+        inTicker: $("#swapReviewTickerIn"),
+        amountOut: $("#swapReviewAmountOut"),
+        outTicker: $("#swapReviewTickerOut"),
+        swapFees: $("#swapReviewSwapFees"),
+        swapFeesTicker: $("#swapReviewSwapFeesTicker")
+    }
 
     constructor() {
         this.select1OldElem = ""
@@ -79,6 +88,18 @@ class SwapPane {
         SwapPane.initBtn.click(function(){
             SwapPane.params.hide()
             SwapPane.loading.show()
+
+            SwapPane.review.amountIn.html(SwapPane.inputs.one.input.val())
+            SwapPane.review.inTicker.html(SwapPane.inputs.one.ticker.html())
+
+            SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
+            SwapPane.review.outTicker.html(SwapPane.inputs.two.ticker.html())
+
+            SwapPane.review.swapFees.html(parseFloat(SwapPane.inputs.one.input.val())*0.013)
+            SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
+
+            SwapPane.loading.hide()
+            SwapPane.review.self.show()
         })
     }
 

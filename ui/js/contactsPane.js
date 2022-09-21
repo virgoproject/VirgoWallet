@@ -73,11 +73,11 @@ class ContactsPane {
                     }
 
                     ContactsPane.input.setContactAddressInput.removeClass("is-invalid")
-                    ContactsPane.text.addressText.text('Add the address of the contact here for fastest transactions.')
+                    ContactsPane.text.addressText.text('Add the address of the contact here for faster transactions.')
 
                     addingContact(ContactsPane.input.setContactAddressInput.val(), ContactsPane.input.setContactNameInput.val(), ContactsPane.input.setContactNoteInput.val(), ContactsPane.input.setContactFavoriteInput.is(':checked')).then(function (result) {
                             if (result !== "already") {
-                                notyf.success(ContactsPane.input.setContactNameInput.val() + " added to contact !")
+                                notyf.success(ContactsPane.input.setContactNameInput.val() + " added to contacts!")
                                 ContactsPane.text.title.html('Contacts')
                                 ContactsPane.loadContacts()
                                 ContactsPane.div.formContact.hide()
@@ -85,12 +85,9 @@ class ContactsPane {
                                 ContactsPane.div.bodyContacts.show()
                                 enableLoadBtn(ContactsPane.buttons.addContactButtonForm)
                             } else {
-                                notyf.error("Error already existing address")
+                                notyf.error("This contact already exists")
                                 enableLoadBtn(ContactsPane.buttons.addContactButtonForm)
-
                             }
-
-
                         }
                     )
 
@@ -107,7 +104,6 @@ class ContactsPane {
             if (searchValue === "") {
                 ContactsPane.loadContacts()
                 return
-
             }
 
             getContacts().then(function (contacts) {
@@ -115,15 +111,12 @@ class ContactsPane {
                     record.name.toLowerCase().includes(searchValue.toLowerCase())
                 )
 
-
                 if (result.length <= 0) {
                     ContactsPane.loading.loader.hide()
                     ContactsPane.div.noContactFound.show()
-
                 }
 
                 ContactsPane.loadContacts(result)
-
             })
 
 
@@ -135,7 +128,6 @@ class ContactsPane {
                 ContactsPane.buttons.addContactButtonForm.prop("disabled", false)
             } else {
                 ContactsPane.buttons.addContactButtonForm.prop("disabled", true)
-
             }
         })
 
@@ -144,7 +136,6 @@ class ContactsPane {
                 ContactsPane.buttons.addContactButtonForm.prop("disabled", false)
             } else {
                 ContactsPane.buttons.addContactButtonForm.prop("disabled", true)
-
             }
         })
 
@@ -155,15 +146,12 @@ class ContactsPane {
                 ContactsPane.div.formContact.hide()
                 ContactsPane.div.contacts.hide()
                 ContactsPane.extern.payForm.show()
-
             } else {
                 ContactsPane.div.bodyContacts.show()
                 ContactsPane.extern.payForm.show()
                 ContactsPane.buttons.addContact.show()
                 ContactsPane.div.formContact.hide()
                 ContactsPane.text.title.html('Contacts')
-
-
             }
         })
 
@@ -172,13 +160,12 @@ class ContactsPane {
 
     static loadContacts(res) {
         ContactsPane.loading.loader.show()
-        let checkRes = ""
-        if (res === undefined || res === []) {
-            checkRes = getContacts()
-        } else {
-            checkRes = Promise.resolve(res)
-        }
 
+        let checkRes = ""
+        if (res === undefined || res === [])
+            checkRes = getContacts()
+        else
+            checkRes = Promise.resolve(res)
 
         checkRes.then(res => {
             SendPane.divContactList.html("")
@@ -202,26 +189,24 @@ class ContactsPane {
                 if (x.favorite && y.favorite) return 0
                 if (x.favorite) return -1
                 if (y.favorite) return 1
-            });
+            })
 
+            ContactsPane.div.noContactFound.hide()
 
             for (let l = 0; l < res.length; l++) {
-                ContactsPane.div.noContactFound.hide()
-
                 const element = SendPane.divContactClone.clone()
                 element.css('cursor','pointer')
                 element.find('.inputNameContact').val(res[l].name)
+                element.find('.textAddress').html(res[l].address)
 
                 element.click(function (e) {
-                    e.stopPropagation();
+                    e.stopPropagation()
                     const checkForClick = ['seeMoreChev','showElements','changeNote','changeContact','deleteContact','fa-times','fa-star']
-                    if( e.target.classList.contains('seeMoreChev') || e.target.classList.contains('showElements') || e.target.classList.contains('changeNote') || e.target.classList.contains('changeContact') || e.target.classList.contains('deleteContact')|| e.target.classList.contains('fa-star')|| e.target.classList.contains('fa-check') ) {
-                    return false
-                    }
 
-                    const valueAddress = element.find('.textAddress').html()
-                    ContactsPane.input.setRecipentAddress.val(valueAddress)
-                    notyf.success("Address added to recipient address")
+                    if( e.target.classList.contains('seeMoreChev') || e.target.classList.contains('showElements') || e.target.classList.contains('changeNote') || e.target.classList.contains('changeContact') || e.target.classList.contains('deleteContact')|| e.target.classList.contains('fa-star')|| e.target.classList.contains('fa-check'))
+                        return false
+
+                    ContactsPane.input.setRecipentAddress.val(element.find('.textAddress').html())
                     ContactsPane.buttons.goBack.click()
 
                 })
@@ -238,9 +223,8 @@ class ContactsPane {
                     deleteFavorite(idFavorite)
                 })
 
-                if (res[l].favorite) {
+                if (res[l].favorite)
                     element.find('.fa-star').removeClass("fa-thin fa-star").addClass('fa-solid fa-star').css('color', '#F7d06c')
-                }
 
                 element.find('.noteContact').html(res[l].note)
                 element.find('svg').attr("data-jdenticon-value", res[l].address)
@@ -252,10 +236,8 @@ class ContactsPane {
                 element.find('.deleteContact').attr('id', l).attr('data-address',res[l].address).click(function () {
                     deleteContact($(this).attr('data-address'))
                     element.remove()
-                    if (ContactsPane.div.contactList.length <= 0) {
+                    if (ContactsPane.div.contactList.length <= 0)
                         ContactsPane.div.noContactFound.show()
-
-                    }
                 })
 
                 element.find('.showElements').click(function () {
@@ -266,7 +248,6 @@ class ContactsPane {
                         element.find('.inputNameContact').prop( "disabled", true ).css('cursor','')
 
                         $(this).parent().find('.notesPart').hide()
-
                     } else {
                         $(this).addClass('opened')
                         $(this).css('transform', "rotate(90deg)")
@@ -279,8 +260,6 @@ class ContactsPane {
                 element.show()
                 SendPane.divContactList.append(element)
                 ContactsPane.loading.loader.hide()
-
-
             }
             jdenticon()
 

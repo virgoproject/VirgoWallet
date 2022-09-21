@@ -158,20 +158,20 @@
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
-                <div class="col-12 mb-3">
+                <div class="col-12 mb-3 p-0">
                     <p class="label">Send to</p>
                     <div class="input-group ">
-                        <i class="fas fa-address-book d-flex align-items-center contactButton"></i>
-                        <input type="text" class="input col-10 recipient" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
+                        <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
+                        <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
 
                     </div>
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-12 mb-3 p-0">
                     <p class="label">Asset</p>
                     <select class="input w-100 assetSelect">
                     </select>
                 </div>
-                <div class="col-12 mb-4">
+                <div class="col-12 mb-4 p-0">
                     <div class="row">
                         <p class="label col-3">Amount</p>
                         <p class="label col-9 text-right sendBal">Balance:
@@ -212,17 +212,17 @@
                     <div class="range">
                         <div class="row steps">
                             <div class="col-4">
-                                <div id="leftStep">
+                                <div class="leftStep">
                                     <span class="position-absolute mt-4 leftStepLabel">Slow</span>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div id="centerStep">
+                                <div class="centerStep">
                                     <span class="position-absolute mt-4 centerStepLabel">Normal</span>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div id="rightStep">
+                                <div class="rightStep">
                                     <span class="position-absolute mt-4 rightStepLabel">Fast</span>
                                 </div>
                             </div>
@@ -285,7 +285,7 @@
                     <div class="col-12 text-center" id="swapRateLoading" style="display: none">
                         <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
                     </div>
-                    <div class="route " id="swapRoute" style="display: none">
+                    <div class="route" id="swapRoute" style="display: none">
                     </div>
                     <div class="step" id="swapRouteBaseStep" style="display: none"></div>
                     <div class="col-12 p-0" style="margin-top: 2.25em;">
@@ -296,8 +296,66 @@
             <div id="swapLoading" style="display: none">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
-            <div id="swapReview">
-                <div></div>
+            <div id="swapReview" style="display: none">
+                <h5>Payment details</h5>
+                <div class="receiveAmount">
+                    <p class="m-0">You will receive</p>
+                    <p class="amount">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+                </div>
+                <div class="row details mt-2">
+                    <div class="col-6">
+                        <p class="title">You transfer</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="title">Swap fees</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="title">Slippage</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="value">1%</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="title">Network fees</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="value">0.00258 <span class="ticker">ETH</span></p>
+                    </div>
+                </div>
+                <div class="range">
+                    <div class="row steps">
+                        <div class="col-4">
+                            <div class="leftStep">
+                                <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="centerStep">
+                                <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="rightStep">
+                                <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="range" min="0" max="100" step="10" class="w-100" id="swapRangeFees">
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button class="button w-100" id="rejectSwapBtn" disabled="true">Cancel</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="button w-100" id="confirmSwapBtn" disabled="true">Confirm</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1122,7 +1180,7 @@
         <div id="contactDiv">
         <div class="row text-center justify-content-center contactList mb-2">
             <label class="text-center searchLabel mt-3" id="d">
-                <input type="text" class="inputSearch" placeholder="Search for contact or adress">
+                <input type="text" class="inputSearch" placeholder="Search for name or address">
                 <i class="fas fa-search searchIcon"></i>
             </label>
         </div>
@@ -1130,8 +1188,8 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
             <div class="text-center mt-5 mb-5 noContactFound" style="display: none">
-                <h4>No contacts ?</h4>
-                <p>Contact will simplify your transactions! <br><span>Add it now!</span></p>
+                <h4>No contacts?</h4>
+                <p>Save time on your transactions by saving recurrent addresses.<br><span>Add a contact now!</span></p>
             </div>
             <div class="row text-center m-0 p-0 contactUser" id="contactEx" style="display: none">
                     <div class="col-2 align-self-center pe-0">
@@ -1168,17 +1226,17 @@
                 <div class="col-12 mt-2 mb-2">
                     <p class="label text-left">Address</p>
                     <input type="text" class="input col-12 addressInput" placeholder="Enter the asset's contract address">
-                    <div class="form-text addressText">Add the address of the contact here for fastest transactions.</div>
+                    <div class="form-text addressText">Add the address of your contact here for faster transactions.</div>
                 </div>
                 <div class="col-12 mt-2 mb-2">
                     <p class="label text-left">Name</p>
                     <input type="text" class="input col-12 nameInput" placeholder="Enter the address name you want" maxlength="24">
-                    <div class="form-text">Name an address will help you to differ from other address.</div>
+                    <div class="form-text">Naming an address will help you to differ from other addresses.</div>
                 </div>
                 <div class="col-12 mt-2 mb-2">
                     <p class="label text-left">Contact note</p>
                     <input type="text" class="input col-12 noteInput" placeholder="Note" maxlength="144">
-                    <div class="form-text">Add a note help you to remember differents things about this contact.</div>
+                    <div class="form-text">Add a note to help you remember different things about this contact.</div>
                 </div>
                 <div class="text-left p-1 mt-4">
                     <div class="form-check form-switch align-self-center">
@@ -1204,7 +1262,6 @@
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 <script src="../js/rangeSlider.js"></script>
-<script src="../js/progressRing.js"></script>
 <script src="../js/chart.min.js"></script>
 <script src="../js/bootstrap-select.min.js"></script>
 <script src="../js/backgroundMessaging.js"></script>
