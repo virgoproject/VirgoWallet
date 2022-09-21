@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -11,13 +11,14 @@ class Web3Wallet {
         this.tokens = tokens
         this.transactions = transactions
         this.explorer = explorer
+        this.swapParams = swapParams
 
         this.balances = new Map()
 
         this.tokenSet = new Map()
 
         for(let token of this.tokens)
-            this.tokenSet.set(token.contract, true)
+            this.tokenSet.set(token.contract, token)
 
         const wallet = this
         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
@@ -56,7 +57,15 @@ class Web3Wallet {
                     break
             }
         }
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer)
+        if(json.swapParams === undefined){
+            json.swapParams = {
+                type: "uni2",
+                routerAddress: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+                factoryAddress: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
+                popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
+            }
+        }
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams)
     }
 
     toJSON(){
@@ -72,7 +81,8 @@ class Web3Wallet {
                 "chainID": this.chainID,
                 "tokens": this.tokens,
                 "transactions": this.transactions,
-                "explorer": this.explorer
+                "explorer": this.explorer,
+                "swapParams": this.swapParams
             }
         }
     }
@@ -211,9 +221,6 @@ class Web3Wallet {
                             return
                         }
 
-                        console.log(transaction.hash)
-                        console.log(transaction.status)
-
                         if(transaction.status === undefined){
                             if(receipt.status){
                                 browser.notifications.create("txNotification", {
@@ -330,6 +337,13 @@ class Web3Wallet {
 
     getTransaction(hash){
         return this.transactions.find(tx => tx.hash === hash)
+    }
+
+    async getSwapRoute(amount, token1, token2){
+        if(this.swapUtils === undefined)
+            this.swapUtils = new UniswapUtils(this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens)
+
+        return await this.swapUtils.findRoute(amount, token1, token2)
     }
 
 }

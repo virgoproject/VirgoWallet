@@ -109,7 +109,17 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "getBalance":
-            sendResponse(baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset])
+            const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset]
+
+            if(!bal.tracked){
+                const contract = new web3.eth.Contract(ERC20_ABI, request.asset);
+                contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
+                    .then(function(res){
+                        bal.balance = res
+                        sendResponse(bal)
+                    })
+            }else sendResponse(bal)
+
             break
 
         case "sendTo":
@@ -117,6 +127,16 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             //send native asset
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
                 if (request.asset == baseWallet.getCurrentWallet().ticker) {
+
+                    console.log("base asset")
+                    console.log({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
+                    })
 
                     web3.eth.sendTransaction({
                         from: baseWallet.getCurrentAddress(),
@@ -137,6 +157,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 "gasLimit": request.gasLimit,
                                 "nonce": nonce
                             }
+                            console.log("Got hash: " + hash)
                             baseWallet.getCurrentWallet().transactions.unshift(txResume)
                             sendResponse(hash)
                             baseWallet.save()
@@ -204,11 +225,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     return
                 }
 
+                console.log("contract asset")
+                console.log({
+                    asset: request.asset,
+                    from: baseWallet.getCurrentWallet(),
+                    to: request.recipient,
+                    amount: request.amount,
+                    nonce: nonce,
+                    gas: request.gasLimit,
+                    gasPrice: request.gasPrice
+                })
+
                 const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
                 const transaction = contract.methods.transfer(request.recipient, request.amount);
 
                 transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                     .on("transactionHash", function (hash) {
+                        console.log("got hash: " + hash)
                         txResume = {
                             "hash": hash,
                             "contractAddr": request.asset,
@@ -450,6 +483,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
+        
         case "closedUpdatePopup":
             baseWallet.version = VERSION
             baseWallet.save()
@@ -461,6 +495,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 delay: lockDelay
             })
             break
+        
         case "setAutolock":
             autolockEnabled = request.enabled
             lockDelay = request.delay
@@ -515,7 +550,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
 
             })
-            break;
+            break
+        
         case "deleteFavorite":
             browser.storage.local.get('contactList').then(function(res) {
                 for (var i=0 ; i < res.contactList.length ; i++) {
@@ -534,8 +570,6 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 
             })
-
-
             return false
 
         case "updateContact":
@@ -584,10 +618,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
 
             })
+            break
+        
+        case "getSwapRoute":
+            let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
 
+            if(decimals === undefined)
+                decimals = baseWallet.getCurrentWallet().decimals
+            else
+                decimals = decimals.decimals
 
+            if(request.token1 == baseWallet.getCurrentWallet().ticker)
+                request.token1 = baseWallet.getCurrentWallet().contract
+            else if(request.token2 == baseWallet.getCurrentWallet().ticker)
+                request.token2 = baseWallet.getCurrentWallet().contract
 
-
+            baseWallet.getCurrentWallet().getSwapRoute(
+                web3.utils.toBN(parseInt(request.amount)*10**decimals),
+                request.token1,
+                request.token2
+            ).then(function(resp){
+                sendResponse(resp)
+            })
             break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
@@ -695,6 +747,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas).then(function(result){
                 if(result !== false)
                     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
+                        console.log(nonce)
                         web3.currentProvider.send({
                             jsonrpc: "2.0",
                             id: Date.now() + "." + Math.random(),

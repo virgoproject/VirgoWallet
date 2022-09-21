@@ -121,7 +121,7 @@ async function getAutolock(){
     return await browser.runtime.sendMessage({command: 'getAutolock'})
 }
 
-async function setAutolock(enabled, delay){
+function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
 }
 
@@ -146,4 +146,8 @@ function deleteFavorite(index) {
 
 async function getContacts(){
     return await browser.runtime.sendMessage({command: 'getContacts'})
+}
+
+async function getSwapRoute(amount, token1, token2){
+    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
 }
