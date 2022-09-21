@@ -125,6 +125,29 @@ function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
 }
 
+async function addingContact(address,name,note,favorite) {
+   return await browser.runtime.sendMessage({command: 'addContact' , address:address , name:name , note:note , favorite:favorite })
+
+}
+
+function deleteContact(contactIndex){
+     browser.runtime.sendMessage({command: 'deleteContact' , address:contactIndex })
+}
+
+function updateContact(index,name,note) {
+    browser.runtime.sendMessage({command: 'updateContact' ,  contactIndex:index  , name:name , note:note  })
+
+}
+
+function deleteFavorite(index) {
+    browser.runtime.sendMessage({command: 'deleteFavorite' , address:index })
+
+}
+
+async function getContacts(){
+    return await browser.runtime.sendMessage({command: 'getContacts'})
+}
+
 async function getSwapRoute(amount, token1, token2){
     return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
 }

@@ -1,0 +1,154 @@
+#contacts{
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+    background: linear-gradient(0deg, #5a009c14, transparent);
+    background-color: white;
+}
+
+#contacts .contactsList{
+    z-index: 99999;
+    padding: 0 1em !important;
+    max-height: 485px;
+
+}
+
+#contacts .showElements{
+    transition:transform 0.25s ease;
+}
+
+#contacts .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#contacts .adressContact {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10px;
+}
+
+#contacts .searchIcon{
+    cursor: pointer;
+}
+
+#contacts svg {
+    border-radius: 50%;
+    border: 1px solid #e9e9e9;
+}
+
+#contacts .fa-ellipsis-v{
+    cursor: pointer;
+    transition: all 250ms;
+
+}
+
+
+#contacts .inputNameContact {
+    background:unset;
+    border: unset;
+    color: var(--highlightColor1);
+    font-size: 15px !important;
+    width: 165px;
+    cursor: pointer;
+
+}
+
+#contacts .contactUser{
+    transition: background-color 250ms;
+    background: #5a009c14;
+    border-radius: 0.5em;
+    padding-top: 0.375em !important;
+    padding-bottom: 0.375em !important;
+    margin-bottom: 0.5em !important;
+}
+
+
+#contacts .contactUser:hover{
+    background-color: #ece2f3;
+}
+
+#contacts .favoriteContacts {
+    background: var(--mainColor);
+    color: white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-top: 1px solid white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#contacts .addBottomLogo{
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    background: var(--mainColorLight);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 250ms;
+}
+
+#contacts .addBottomLogo:hover {
+    background: #8200e2;
+}
+
+#contacts .addLogo {
+    padding: 15px;
+    font-size: 1.2em;
+}
+
+#contacts .fa-chevron-right{
+    cursor: pointer;
+}
+
+#contacts textarea{
+    resize: none;
+    border-radius: 0.5em;
+    border: unset;
+    background: #5a009c14;
+}
+
+#contacts .contactFormContent{
+    padding: 0 1em;
+}
+
+#contacts .contactFormContent .form-text{
+    margin-top: 0.25rem;
+    font-size: .675em;
+    color: #6c757d;
+}
+
+#contacts .textAddress {
+    cursor: pointer;
+}
+
+#contacts #contactDiv .noContactFound span {
+    color: var(--highlightColor1);
+    transition: all ease 0.25s;
+    cursor: pointer;
+}
+
+#contacts #contactDiv .noContactFound span:hover {
+    color: var(--mainColorLight30);
+}
+
+
+#contacts #contactDiv .deleteContact {
+    background: #545454 !important;
+}
+
+#contacts #contactDiv .contactsList .fa-star{
+    cursor: pointer;
+}
