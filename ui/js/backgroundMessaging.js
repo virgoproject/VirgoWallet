@@ -131,7 +131,7 @@ async function addingContact(address,name,note,favorite) {
 }
 
 function deleteContact(contactIndex){
-     browser.runtime.sendMessage({command: 'deleteContact' , contactIndex:contactIndex })
+     browser.runtime.sendMessage({command: 'deleteContact' , address:contactIndex })
 }
 
 function updateContact(index,name,note) {
@@ -140,7 +140,7 @@ function updateContact(index,name,note) {
 }
 
 function deleteFavorite(index) {
-    browser.runtime.sendMessage({command: 'deleteFavorite' , contactIndex:index })
+    browser.runtime.sendMessage({command: 'deleteFavorite' , address:index })
 
 }
 

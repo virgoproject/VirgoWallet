@@ -61,6 +61,8 @@
     color: var(--highlightColor1);
     font-size: 15px !important;
     width: 165px;
+    cursor: pointer;
+
 }
 
 #contacts .contactUser{

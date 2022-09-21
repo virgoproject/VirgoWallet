@@ -19,7 +19,8 @@ class ContactsPane {
         formContact: $('#contacts #contactForm'),
         formContent: $('#contacts .contactFormContent'),
         noContactFound: $('#contacts .noContactFound'),
-        contactList: $('#contacts #contactDiv .contactsList')
+        contactList: $('#contacts #contactDiv .contactsList'),
+        showMore : $('#contacts #contactDiv .showElements')
     }
 
     static loading = {
@@ -114,6 +115,7 @@ class ContactsPane {
                     record.name.toLowerCase().includes(searchValue.toLowerCase())
                 )
 
+
                 if (result.length <= 0) {
                     ContactsPane.loading.loader.hide()
                     ContactsPane.div.noContactFound.show()
@@ -207,15 +209,24 @@ class ContactsPane {
                 ContactsPane.div.noContactFound.hide()
 
                 const element = SendPane.divContactClone.clone()
+                element.css('cursor','pointer')
                 element.find('.inputNameContact').val(res[l].name)
 
-                element.find('.textAddress').html(res[l].address).click(function () {
-                    ContactsPane.input.setRecipentAddress.val($(this).text())
+                element.click(function (e) {
+                    e.stopPropagation();
+                    const checkForClick = ['seeMoreChev','showElements','changeNote','changeContact','deleteContact','fa-times','fa-star']
+                    if( e.target.classList.contains('seeMoreChev') || e.target.classList.contains('showElements') || e.target.classList.contains('changeNote') || e.target.classList.contains('changeContact') || e.target.classList.contains('deleteContact')|| e.target.classList.contains('fa-star')|| e.target.classList.contains('fa-check') ) {
+                    return false
+                    }
+
+                    const valueAddress = element.find('.textAddress').html()
+                    ContactsPane.input.setRecipentAddress.val(valueAddress)
                     notyf.success("Address added to recipient address")
+                    ContactsPane.buttons.goBack.click()
 
                 })
 
-                element.find('.fa-star').click(function () {
+                element.find('.fa-star').attr('data-address',res[l].address).click(function () {
 
                     if ($(this).hasClass('fa-solid')) {
                         $(this).removeClass('fa-solid').addClass('fa-thin').css('color', 'unset')
@@ -223,7 +234,7 @@ class ContactsPane {
                         $(this).removeClass('fa-thin').addClass('fa-solid').css('color', 'rgb(247, 208, 108)')
 
                     }
-                    let idFavorite = element.find('.bg-danger').attr('id')
+                    let idFavorite = element.find('.bg-danger').attr('data-address')
                     deleteFavorite(idFavorite)
                 })
 
@@ -238,10 +249,9 @@ class ContactsPane {
                     updateContact($(this).attr('data-index'), element.find('.inputNameContact').val(), element.find('.changeNote').val())
                 })
 
-                element.find('.deleteContact').attr('id', l).click(function () {
-                    deleteContact($(this).attr('id'))
+                element.find('.deleteContact').attr('id', l).attr('data-address',res[l].address).click(function () {
+                    deleteContact($(this).attr('data-address'))
                     element.remove()
-                    console.log(ContactsPane.div.contactList.length)
                     if (ContactsPane.div.contactList.length <= 0) {
                         ContactsPane.div.noContactFound.show()
 
@@ -253,12 +263,15 @@ class ContactsPane {
                     if ($(this).hasClass('opened')) {
                         $(this).removeClass('opened')
                         $(this).css('transform', "rotate(0deg)")
+                        element.find('.inputNameContact').prop( "disabled", true ).css('cursor','')
+
                         $(this).parent().find('.notesPart').hide()
 
                     } else {
                         $(this).addClass('opened')
                         $(this).css('transform', "rotate(90deg)")
                         element.find('.notesPart').show()
+                        element.find('.inputNameContact').prop( "disabled", false ).css('cursor','pointer')
                         $(this).parent().find('.notesPart').show()
                     }
                 })

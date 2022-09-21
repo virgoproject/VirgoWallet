@@ -487,14 +487,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         const result = res.contactList.filter(record =>
                             record.address === request.address)
 
-
                         if (result.length <= 0){
-                            console.log('Existe pas ')
                             res.contactList.push(newContact)
                             browser.storage.local.set({"contactList": res.contactList})
                             sendResponse(true)
                         } else {
-                            console.log('Existe ')
                             sendResponse("already")
                         }
 
@@ -506,25 +503,34 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case "deleteContact":
             browser.storage.local.get('contactList').then(function(res) {
-                res.contactList.splice(request.contactIndex, 1)
-                browser.storage.local.set({"contactList": res.contactList})
+
+                for (var i=0 ; i < res.contactList.length ; i++)
+                {
+                    if (res.contactList[i].address === request.address) {
+                        res.contactList.splice(i, 1)
+                        browser.storage.local.set({"contactList": res.contactList})
+                        sendResponse(true)
+                        break
+                    }
+                }
 
             })
-            return false
-
+            break;
         case "deleteFavorite":
             browser.storage.local.get('contactList').then(function(res) {
+                for (var i=0 ; i < res.contactList.length ; i++) {
+                    if (res.contactList[i].address === request.address) {
 
-                console.log(res.contactList)
-
-                if (res.contactList[request.contactIndex].favorite !== false){
-                    res.contactList[request.contactIndex].favorite = false
-                } else {
-                    res.contactList[request.contactIndex].favorite = true
+                        if (res.contactList[i].favorite !== false) {
+                            res.contactList[i].favorite = false
+                        } else {
+                            res.contactList[i].favorite = true
+                        }
+                    }
 
                 }
                 browser.storage.local.set({"contactList": res.contactList})
-                console.log(res.contactList)
+
 
 
             })
