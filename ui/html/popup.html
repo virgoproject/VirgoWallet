@@ -145,8 +145,7 @@
                                 <div class="col-4 text-right">
                                     <p class="fiatEq">$0</p>
                                     <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                                        <val></val>
-                                        %
+                                        <val></val>%
                                     </p>
                                 </div>
                             </div>
@@ -237,55 +236,63 @@
             </div>
         </div>
         <div class="bodyElem swap" style="display: none" id="swapPane">
-            <div class="row inputHeader">
-                <div class="col-3 pl-0">
-                    <p class="m-0">You send</p>
+            <div id="swapParams">
+                <div class="row inputHeader">
+                    <div class="col-3 pl-0">
+                        <p class="m-0">You send</p>
+                    </div>
+                    <div class="col-9 pr-0 text-right">
+                        <p class="m-0">Available: <span class="amount" id="swapBalance1">-</span> <span class="ticker" id="swapTicker1"></span></p>
+                    </div>
                 </div>
-                <div class="col-9 pr-0 text-right">
-                    <p class="m-0">Available: <span class="amount" id="swapBalance1">-</span> <span class="ticker" id="swapTicker1"></span></p>
+                <div class="row swapInput pt-1 pb-1">
+                    <div class="col-7 p-0">
+                        <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
+                        <span class="maxBtn" id="swapMaxBtn1">Max</span>
+                    </div>
+                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                        <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <button id="swapSwitchBtn"><i class="fas fa-sync"></i></button>
+                </div>
+                <div class="row inputHeader">
+                    <div class="col-3 pl-0">
+                        <p class="m-0">You get</p>
+                    </div>
+                    <div class="col-9 pr-0 text-right">
+                        <p class="m-0">Available: <span class="amount" id="swapBalance2">-</span> <span class="ticker" id="swapTicker2"></span></p>
+                    </div>
+                </div>
+                <div class="row swapInput pt-1 pb-1">
+                    <div class="col-7 p-0">
+                        <input type="text" class="amountInput" placeholder="0.0" id="swapInput2" disabled="disabled">
+                    </div>
+                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                        <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12 p-0" id="swapRate" style="display: none">
+                        <p class="rate">Rate: <span class="amount" id="swapRateAmount"></span> <span class="ticker" id="swapRateTicker2">-</span>/<span class="ticker" id="swapRateTicker1">-</span></p>
+                    </div>
+                    <div class="col-12 text-center" id="swapRateLoading" style="display: none">
+                        <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
+                    </div>
+                    <div class="route " id="swapRoute" style="display: none">
+                    </div>
+                    <div class="step" id="swapRouteBaseStep" style="display: none"></div>
+                    <div class="col-12 p-0" style="margin-top: 2.25em;">
+                        <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
+                    </div>
                 </div>
             </div>
-            <div class="row swapInput pt-1 pb-1">
-                <div class="col-7 p-0">
-                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
-                    <span class="maxBtn" id="swapMaxBtn1">Max</span>
-                </div>
-                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                    <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
-                </div>
+            <div id="swapLoading" style="display: none">
+                <i class="fas fa-spinner fa-pulse"></i>
             </div>
-            <div class="row mt-3">
-                <button id="swapSwitchBtn"><i class="fas fa-sync"></i></button>
-            </div>
-            <div class="row inputHeader">
-                <div class="col-3 pl-0">
-                    <p class="m-0">You get</p>
-                </div>
-                <div class="col-9 pr-0 text-right">
-                    <p class="m-0">Available: <span class="amount" id="swapBalance2">-</span> <span class="ticker" id="swapTicker2"></span></p>
-                </div>
-            </div>
-            <div class="row swapInput pt-1 pb-1">
-                <div class="col-7 p-0">
-                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput2">
-                </div>
-                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                    <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12 p-0" id="swapRate" style="display: none">
-                    <p class="rate">Rate: <span class="amount" id="swapRateAmount">12.634</span> <span class="ticker" id="swapRateTicker1">ETH</span>/<span class="ticker" id="swapRateTicker2">WBTC</span></p>
-                </div>
-                <div class="col-12 text-center" id="swapRateLoading" style="display: none">
-                    <i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
-                </div>
-                <div class="route steps5" id="swapRoute" style="display: none">
-                </div>
-                <div class="step" id="baseStep" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png); display: none"></div>
-                <div class="col-12 p-0" style="margin-top: 2.25em;">
-                    <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
-                </div>
+            <div id="swapReview">
+                <div></div>
             </div>
         </div>
     </div>

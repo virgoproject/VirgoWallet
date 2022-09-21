@@ -11,6 +11,10 @@ class UniswapUtils {
     }
 
     async findRoute(amount, tokenA, tokenB) {
+        console.log(amount)
+        console.log(tokenA)
+        console.log(tokenB)
+
         const WETH = await this.router.methods.WETH().call()
 
         let bestRoute = null;

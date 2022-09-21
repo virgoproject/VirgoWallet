@@ -492,6 +492,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             lockDelay = request.delay
             browser.storage.local.set({"autolockEnabled": autolockEnabled})
             browser.storage.local.set({"lockDelay": lockDelay})
+            break
+        case "getSwapRoute":
+            let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
+
+            if(decimals === undefined)
+                decimals = baseWallet.getCurrentWallet().decimals
+            else
+                decimals = decimals.decimals
+
+            if(request.token1 == baseWallet.getCurrentWallet().ticker)
+                request.token1 = baseWallet.getCurrentWallet().contract
+            else if(request.token2 == baseWallet.getCurrentWallet().ticker)
+                request.token2 = baseWallet.getCurrentWallet().contract
+
+            baseWallet.getCurrentWallet().getSwapRoute(
+                web3.utils.toBN(parseInt(request.amount)*10**decimals),
+                request.token1,
+                request.token2
+            ).then(function(resp){
+                sendResponse(resp)
+            })
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -598,6 +620,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas).then(function(result){
                 if(result !== false)
                     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
+                        console.log(nonce)
                         web3.currentProvider.send({
                             jsonrpc: "2.0",
                             id: Date.now() + "." + Math.random(),

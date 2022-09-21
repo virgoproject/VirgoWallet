@@ -38,6 +38,12 @@
     margin-left: 0.5em;
 }
 
+#swapInput2 {
+    width: initial !important;
+    min-width: initial !important;
+    max-width: 100% !important;
+}
+
 #swapPane .swapInput .maxBtn {
     font-size: 0.8em;
     color: var(--mainColor);
@@ -116,7 +122,7 @@
 }
 
 #swapPane .route .step:last-child {
-    right: 16px;
+    right: 15px;
 }
 
 #swapPane .route.steps3 .step:nth-child(2){
@@ -149,4 +155,10 @@
 
 #swapPane .rate .ticker {
     color: var(--mainColor);
+}
+
+#swapLoading {
+    text-align: center;
+    margin-top: 4em;
+    font-size: 2em;
 }
