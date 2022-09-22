@@ -84,6 +84,7 @@ class Web3Wallet {
             let balances = this.getBalances(address)
             json.push({
                 "address": address,
+                "name": accName[address],
                 "balances": balances
             })
         }

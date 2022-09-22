@@ -398,6 +398,7 @@ class SettingsPane {
         let i = 0;
         for(const addressObj of data.addresses){
             const address = addressObj.address
+            console.log(data)
 
             const elem = SettingsPane.baseAccountRow.clone()
             elem.find("svg").attr("data-jdenticon-value", address)
