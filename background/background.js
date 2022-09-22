@@ -22,8 +22,9 @@ browser.storage.local.get("yourAccountName").then(function (res){
         for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
             accName[address.address] = "Account "+count
             count++
-            console.log(accName)
         }
+    }else{
+        accName = res.yourAccountName
     }
 })
 
@@ -93,6 +94,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.selectAddress(request.accountID)
             sendResponse(getBaseInfos())
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
+            break
+
+        case "changeAccountName":
+            accName[request.address] = request.newName
+            browser.storage.local.set({"yourAccountName": accName});
             break
 
         case "getGasPrice":

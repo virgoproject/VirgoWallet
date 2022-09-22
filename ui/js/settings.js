@@ -402,12 +402,12 @@ class SettingsPane {
 
             const elem = SettingsPane.baseAccountRow.clone()
             elem.find("svg").attr("data-jdenticon-value", address)
-            elem.find(".address").html(name)
+            elem.find(".address").val(name)
             elem.find(".address").click(function (e){
                 e.stopPropagation()
             })
-            elem.find(".address").change(function (){
-                console.log("e")
+            elem.find(".address").change(function (e){
+                changeAccountName(address,e.target.value)
             })
 
             const mainAssetBalance = addressObj.balances[data.wallets[data.selectedWallet].wallet.ticker]
