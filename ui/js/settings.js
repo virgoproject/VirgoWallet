@@ -398,11 +398,17 @@ class SettingsPane {
         let i = 0;
         for(const addressObj of data.addresses){
             const address = addressObj.address
-            console.log(data)
+            const name = addressObj.name
 
             const elem = SettingsPane.baseAccountRow.clone()
             elem.find("svg").attr("data-jdenticon-value", address)
-            elem.find(".address").html(address)
+            elem.find(".address").html(name)
+            elem.find(".address").click(function (e){
+                e.stopPropagation()
+            })
+            elem.find(".address").change(function (){
+                console.log("e")
+            })
 
             const mainAssetBalance = addressObj.balances[data.wallets[data.selectedWallet].wallet.ticker]
             elem.find(".balance").html(Utils.formatAmount(mainAssetBalance.balance, mainAssetBalance.decimals))
