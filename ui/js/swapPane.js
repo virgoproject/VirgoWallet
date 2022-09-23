@@ -39,7 +39,9 @@ class SwapPane {
         swapFees: $("#swapReviewSwapFees"),
         swapFeesTicker: $("#swapReviewSwapFeesTicker"),
         networkFees: $("#swapReviewNetFees"),
-        networkFeesTicker: $("#swapReviewNetFeesTicker")
+        networkFeesTicker: $("#swapReviewNetFeesTicker"),
+        rangeFees: $("#swapRangeFees"),
+        confirmBtn: $("#confirmSwapBtn")
     }
 
     constructor() {
@@ -101,24 +103,44 @@ class SwapPane {
                 SwapPane.review.swapFees.html(Utils.precisionRound(parseFloat(SwapPane.inputs.one.input.val())*res.feesRate, 9))
                 SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
 
-                SwapPane.review.networkFees.html(res.gas * res.gasPrice / 10**MAIN_ASSET.decimals)
                 SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
 
-                const estimateFees = function(){
+                _this.estimateFees = function(){
                     getGasPrice().then(function(gasPrice){
-                        SwapPane.review.networkFees.html(res.gas * gasPrice / 10**MAIN_ASSET.decimals)
+                        getBalance(MAIN_ASSET.ticker).then(function (nativeBalance) {
+                            let feesModifier = 0.5 + SwapPane.review.rangeFees.val() / 100
+
+                            SwapPane.review.networkFees.html(Utils.formatAmount(res.gas * Math.round(gasPrice * feesModifier), MAIN_ASSET.decimals))
+
+                            let totalForNative = res.gas * Math.round(gasPrice * feesModifier);
+                            if (_this.route.route[0] == MAIN_ASSET.contract)
+                                totalForNative += Math.trunc(parseFloat(SwapPane.inputs.one.input.val()) * 10 ** MAIN_ASSET.decimals)
+
+                            if (totalForNative <= nativeBalance){
+                                SwapPane.review.confirmBtn.attr("disabled", false)
+                                SwapPane.review.confirmBtn.html("Confirm")
+                            }else{
+                                SwapPane.review.confirmBtn.attr("disabled", true)
+                                SwapPane.review.confirmBtn.html("Not enough " + MAIN_ASSET.ticker)
+                            }
+
+                            SwapPane.loading.hide()
+                            SwapPane.review.self.show()
+                        })
                     })
                 }
 
-                estimateFees()
+                _this.estimateFees()
                 _this.feesInterval = setInterval(function(){
                     estimateFees()
                 }, 2500)
 
-                SwapPane.loading.hide()
-                SwapPane.review.self.show()
             })
 
+        })
+
+        SwapPane.review.rangeFees.on("input", function(){
+            _this.estimateFees()
         })
     }
 

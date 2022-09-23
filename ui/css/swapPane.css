@@ -222,3 +222,11 @@
     margin-top: 1em;
     margin-bottom: 2.5em;
 }
+
+#swapReviewAmountIn {
+    display: inline-block;
+    max-width: 92px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
