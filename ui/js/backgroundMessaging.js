@@ -32,6 +32,10 @@ async function validateAddress(address){
     return await browser.runtime.sendMessage({command: 'validateAddress', address: address})
 }
 
+async function hasAsset(address){
+    return await browser.runtime.sendMessage({command: 'hasAsset', address: address})
+}
+
 async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
@@ -150,4 +154,8 @@ async function getContacts(){
 
 async function getSwapRoute(amount, token1, token2){
     return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
+}
+
+async function estimateSwapFees(amount, route){
+    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount: amount, route: route})
 }

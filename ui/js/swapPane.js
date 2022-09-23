@@ -37,7 +37,9 @@ class SwapPane {
         amountOut: $("#swapReviewAmountOut"),
         outTicker: $("#swapReviewTickerOut"),
         swapFees: $("#swapReviewSwapFees"),
-        swapFeesTicker: $("#swapReviewSwapFeesTicker")
+        swapFeesTicker: $("#swapReviewSwapFeesTicker"),
+        networkFees: $("#swapReviewNetFees"),
+        networkFeesTicker: $("#swapReviewNetFeesTicker")
     }
 
     constructor() {
@@ -95,11 +97,28 @@ class SwapPane {
             SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
             SwapPane.review.outTicker.html(SwapPane.inputs.two.ticker.html())
 
-            SwapPane.review.swapFees.html(parseFloat(SwapPane.inputs.one.input.val())*0.013)
-            SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
+            estimateSwapFees(SwapPane.inputs.one.input.val(), _this.route.route).then(function(res){
+                SwapPane.review.swapFees.html(Utils.precisionRound(parseFloat(SwapPane.inputs.one.input.val())*res.feesRate, 9))
+                SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
 
-            SwapPane.loading.hide()
-            SwapPane.review.self.show()
+                SwapPane.review.networkFees.html(res.gas * res.gasPrice / 10**MAIN_ASSET.decimals)
+                SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
+
+                const estimateFees = function(){
+                    getGasPrice().then(function(gasPrice){
+                        SwapPane.review.networkFees.html(res.gas * gasPrice / 10**MAIN_ASSET.decimals)
+                    })
+                }
+
+                estimateFees()
+                _this.feesInterval = setInterval(function(){
+                    estimateFees()
+                }, 2500)
+
+                SwapPane.loading.hide()
+                SwapPane.review.self.show()
+            })
+
         })
     }
 
@@ -198,6 +217,8 @@ class SwapPane {
         SwapPane.rate.self.hide()
         SwapPane.initBtn.attr("disabled", true)
 
+        const _this = this
+
         const intAmnt = parseFloat(SwapPane.inputs.one.input.val())
         if(isNaN(intAmnt) || intAmnt <= 0 || SwapPane.inputs.one.select.val() == "" || SwapPane.inputs.two.select.val() == ""){
             SwapPane.rate.loading.hide()
@@ -215,6 +236,8 @@ class SwapPane {
                 //if entry has changed while calculating route then ignore
                 if (amount != SwapPane.inputs.one.input.val() || token1 != SwapPane.inputs.one.select.val() || token2 != SwapPane.inputs.two.select.val())
                     return
+
+                _this.route = res
 
                 SwapPane.rate.loading.hide()
 

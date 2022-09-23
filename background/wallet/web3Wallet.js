@@ -62,9 +62,16 @@ class Web3Wallet {
                 type: "uni2",
                 routerAddress: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
                 factoryAddress: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
-                popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
+                popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"],
+                feesRate: 0.0025
             }
         }
+
+        if(json.swapParams.feesRate === undefined)
+            json.swapParams.feesRate = 0.0025
+        if(json.swapParams.proxyAddress === undefined)
+            json.swapParams.proxyAddress = "0xea0dbd3cC976569a8d354EC2D8d5228F97b9A6eA"
+
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams)
     }
 
@@ -339,11 +346,21 @@ class Web3Wallet {
         return this.transactions.find(tx => tx.hash === hash)
     }
 
-    async getSwapRoute(amount, token1, token2){
+    initSwapUtils(){
         if(this.swapUtils === undefined)
-            this.swapUtils = new UniswapUtils(this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens)
+            this.swapUtils = new UniswapUtils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate)
+    }
+
+    async getSwapRoute(amount, token1, token2){
+        this.initSwapUtils()
 
         return await this.swapUtils.findRoute(amount, token1, token2)
+    }
+
+    async estimateSwapFees(amount, route){
+        this.initSwapUtils()
+
+        return await this.swapUtils.estimateSwapFees(amount, route)
     }
 
 }

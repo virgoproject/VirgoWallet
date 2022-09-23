@@ -154,8 +154,6 @@ class ContactsPane {
                 ContactsPane.text.title.html('Contacts')
             }
         })
-
-
     }
 
     static loadContacts(res) {
@@ -198,6 +196,10 @@ class ContactsPane {
                 element.css('cursor','pointer')
                 element.find('.inputNameContact').val(res[l].name)
                 element.find('.textAddress').html(res[l].address)
+
+                element.find(".inputNameContact").click(function(e){
+                    e.stopPropagation()
+                })
 
                 element.click(function (e) {
                     e.stopPropagation()

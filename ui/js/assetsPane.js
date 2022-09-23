@@ -115,8 +115,10 @@ class AssetsPane {
         })
 
         AssetsPane.add.contract.input.on("input", function(){
-            validateAddress($(this).val()).then(function(res){
-                AssetsPane.add.contract.submit.attr("disabled", !res)
+            validateAddress(AssetsPane.add.contract.input.val()).then(function(res){
+                hasAsset(AssetsPane.add.contract.input.val()).then(function(hasAsset){
+                    AssetsPane.add.contract.submit.attr("disabled", !res || hasAsset)
+                })
             })
         })
 
