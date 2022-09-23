@@ -1,0 +1,63 @@
+#virgoFarm {
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+    background: linear-gradient(0deg, #5a009c14, transparent);
+    background-color: white;
+}
+
+#virgoFarm .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#virgoFarm .listStake {
+    padding: 0 1em;
+}
+
+#virgoFarm .list {
+    padding: 0 1em;
+}
+
+#virgoFarm .item-list {
+    background-color: rgba(90, 0, 156, 0.08);
+    padding: 0.375em;
+    border-radius: 0.5em;
+}
+
+#virgoFarm .stakeButton {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+#virgoFarm .bottomBtn {
+    border-radius: 25px;
+}
+
+#virgoFarm .showStaking {
+    transition: transform 0.25s ease;
+}
+
+#virgoFarm .fa-chevron-down {
+    cursor: pointer;
+}
+
+#virgoFarm .listStake b{
+    color: var(--mainColor);
+}
+
+#virgoFarm hr {
+    height: 2px;
+    background-color: var(--highlightColor1);
+}

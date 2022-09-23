@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/ui/css/contacts.css">
     <link rel="stylesheet" href="/ui/css/swapPane.css">
     <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
+    <link rel="stylesheet" href="/ui/css/apps.css">
+    <link rel="stylesheet" href="/ui/css/virgoFarm.css">
 </head>
 <body>
 
@@ -300,25 +302,57 @@
                 <div></div>
             </div>
         </div>
+        <div class="bodyElem store" style="display: none">
+            <div class="row">
+                <span class="text-center">Apps</span>
+                <div class="row mt-3">
+                    <div class="col-6 text-left"><span class="fw-bold">My Apps</span></div>
+                    <div class="col-6 text-end"><span class=" seeMore">See all</span></div>
+                </div>
 
-    </div>
-    <div id="footer" class="row">
-        <div class="footerElem col-4" data-target="send">
-            <div>
-                <i class="fas fa-dollar-sign"></i>
-                <p>Pay</p>
+                <div class="col-3 text-center appElement mt-2 mb-2" data-app="virgo-farm">
+                    <div class="appsImg" style="background-image:url('/ui/images/vgoLogoApp.png')"></div>
+                    <p>Virgo farm</p>
+                </div>
+                <div class="col-3 text-center appElement mt-2 mb-2">
+                    <div class="appsImg" style="background-image:url('/ui/images/apps/main/rampNetwork.svg')"></div>
+                    <p>Ramp Network</p>
+                </div>
+                <div class="col-3 text-center appElement mt-2 mb-2">
+                    <div class="appsImg" style="background-image:url('/ui/images/apps/main/simpleSwap.jpg')"></div>
+                    <p>Simple Swap</p>
+                </div>
+                <div class="col-3 text-center appElement mt-2 mb-2">
+                    <div class="appsImg" style="background-image:url('/ui/images/apps/main/rampNetwork.svg')"></div>
+
+                    <p>Simple Swap</p>
+                </div>
             </div>
         </div>
-        <div class="footerElem col-4 selected" data-target="resume">
+    </div>
+    <div id="footer" class="row">
+        <div class="footerElem col-3 selected" data-target="resume">
             <div>
                 <i class="fas fa-home"></i>
                 <p>Home</p>
             </div>
         </div>
-        <div class="footerElem col-4" data-target="swap">
+        <div class="footerElem col-3" data-target="send">
+            <div>
+                <i class="fas fa-dollar-sign"></i>
+                <p>Pay</p>
+            </div>
+        </div>
+        <div class="footerElem col-3" data-target="swap">
             <div>
                 <i class="fas fa-retweet"></i>
                 <p>Swap</p>
+            </div>
+        </div>
+        <div class="footerElem col-3" data-target="store">
+            <div>
+                <i class="fa-solid fa-layer-plus"></i>
+                <p>Apps</p>
             </div>
         </div>
     </div>
@@ -1062,6 +1096,41 @@
             </div>
         </div>
     </div>
+    <div id="appPopup" class="popup">
+        <div class="box">
+            <div class="header row">
+                <div class="col-2"></div>
+                <div class="col-8"></div>
+                <div class="col-2 close">
+                    <i class="fas fa-times align-bottom"></i>
+                </div>
+            </div>
+            <div class="body row text-center p-4 pt-0">
+                <div class="col-12 appPPTitle">
+                        <h3 class="m-0 "></h3>
+                    <p style="font-size: 0.75em;margin-bottom: 0.25em;" class="appPPTDesc">Version 0.7</p>
+                </div>
+                <div class="col-12 text-left">
+                    <p class="leftLine c-green mb-1">
+                        <span class="appPPFeatures">New features</span>
+                    </p>
+                    <p style="font-size: 0.8em" class="appPPText1">
+                        <b>You can now stay informed</b> about your favorite token, whether it is Virgo or Rocket Shiba Elon.<br>
+                        Simply click on any token and get access to its charts, info, and latest news!
+                    </p>
+                    <p style="font-size: 0.8em" class="appPPText2">
+                        <b>You can now speed up or cancel pending transactions.</b> We know this gas price thing can sometimes be wild, so we made tools to control it better.
+                    </p>
+                    <p style="font-size: 0.8em" class="appPPText3">
+                        <b>We made the UI prettier</b> so it won't hurt your beautiful eyes.
+                    </p>
+                    <p style="font-size: 0.8em" class="appPPText4">
+                        <b>Your wallet can now lock itself if you're inactive.</b> Your funds are now SAFU, even if you're away. Just set up an auto-lock countdown in your security parameters!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="speedupPopup" class="popup">
         <div class="box">
             <div class="header row">
@@ -1194,6 +1263,53 @@
             </div>
         </div>
     </div>
+    <div id="virgoFarm" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center title m-0">VirgoFarm <i class="fa-solid fa-badge-check" style="color: var(--mainColor)"></i></p>
+            <small class="text-center title" style="color: var(--mainColorLight)">Apps</small>
+            <div class="row mt-3 p-0">
+                <button class="button w-50 stakeButton"> New stake <i class="fa-solid fa-plus"></i></button>
+                <p class="w-50 align-self-center m-0 text-end"> My stakes (<span style="color: var(--mainColorDark10)">2</span>)</p>
+            </div>
+            <div class="listStake">
+                <div class="row list mt-3 m-0">
+                    <div class="item-list">
+                        <div class="row m-0">
+                            <div class="col-2 align-self-center">
+                                <img src="/ui/images/vgoLogoApp.png" height="40px" width="40px" class="rounded-circle">
+                            </div>
+                            <div class="col-8 align-self-center">
+                                <span class="fw-bold">VGO</span>
+                                <p class="m-0 p-0">Value : <b class="stakedVGO">2000.48 </b>VGO</p>
+                            </div>
+                            <div class="col-2 align-self-center showStaking">
+                                <i class="fas fa-chevron-down"></i></p>
+                            </div>
+                            <div class="row infoStaking p-0 m-0 mt-2 text-center">
+                                <hr>
+                                <div class="col-6">
+                                    <p>Total earning : <b class="totalEarn">32542.21</b> VGO</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="m-0">Yield : <p class="m-0"> <b class="APR">31,2%</b> APR</p></p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="m-0">Available: <p class="m-0"><b class="availableEarn">32542.21</b> VGO</p></p>
+                                </div>
+                                <div class="col-12">
+                                    <button class="button col-5 me-2 ms-2 bottomBtn">Claim</button>
+                                    <button class="button col-5 me-2 ms-2 bottomBtn">Unlock</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../js/jquery.min.js"></script>
@@ -1224,5 +1340,7 @@
 <script src="../js/progressRing.js"></script>
 <script src="../js/chart.min.js"></script>
 <script src="../js/contactsPane.js"></script>
+<script async src="../js/transak.min.js"></script>
+<script src="../js/apps.js"></script>
 </body>
 </html>

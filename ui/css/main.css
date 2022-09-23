@@ -9,6 +9,12 @@ body {
     --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
     --whiteBackground: #F2EBF7;
+    --mainDark: #121212;
+    --mainDark10: #181818;
+    --mainDark20: #404040;
+    --mainDark30: #282828;
+    --mainLight: #FFFFFF;
+    --mainLight10: #B3B3B3;
     font-family: Ubuntu;
     overflow: hidden;
 }

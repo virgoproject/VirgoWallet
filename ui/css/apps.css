@@ -1,0 +1,28 @@
+#body .store .appsImg {
+    max-width: 45px;
+    height: 45px;
+    max-height: 45px;
+    border-radius: 10px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f8f4fb;
+}
+
+#body .store .appElement {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+#body .store p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+#body .store .seeMore {
+    color: var(--mainColor);
+    cursor: pointer;
+}

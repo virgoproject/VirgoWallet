@@ -25,6 +25,7 @@ function copyToClipboard(element) {
 
 $("#footer .footerElem").click(function(){
     if($(this).hasClass("selected")) return false
+    const header = $('#mainPane .header .stats')
 
     $("#footer .footerElem").removeClass("selected")
     $(this).addClass("selected")
@@ -32,6 +33,14 @@ $("#footer .footerElem").click(function(){
     $("#body .bodyElem").hide()
 
     $("#body .bodyElem."+$(this).attr("data-target")).show()
+    header.show()
+    $('#mainPane .header').css('height','')
+
+    if ($(this).attr("data-target") === "store"){
+        header.hide()
+        $('#mainPane .header').css('height','auto')
+        console.log("store")
+    }
 
     return false
 })
