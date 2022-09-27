@@ -21,6 +21,8 @@
     padding-bottom: 0.375em;
     cursor: pointer;
     transition: background ease 0.25s;
+    text-align: center;
+    margin: 0.25em 0;
 }
 
 #chainSelector .chain .logo {
@@ -29,6 +31,7 @@
     background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
+    margin: auto;
 }
 
 #chainSelector .chain.selected {
@@ -71,10 +74,13 @@
     display: none;
 }
 
-#swapReviewAmountOut {
-    display: inline-block;
-    max-width: 14ch;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: top;
+#chainSelector name {
+    font-size: 0.85em;
+}
+
+#chainSelector ticker {
+    font-size: 0.75em;
+    line-height: 1em;
+    display: block;
+    font-weight: bold;
 }

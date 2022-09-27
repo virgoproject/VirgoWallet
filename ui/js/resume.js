@@ -111,6 +111,7 @@ class MainPane {
                 if(mainPane.oldData !== JSON.stringify(response)) {
                     mainPane.displayData(response)
                     transactionsPane.updateTxs(response)
+                    swapPane.updateSwap(response)
                     mainPane.oldData = JSON.stringify(response)
                 }
             })

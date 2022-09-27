@@ -532,8 +532,6 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         }
 
                     }
-
-
             })
            break
 
@@ -628,7 +626,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 request.token2 = baseWallet.getCurrentWallet().contract
 
             baseWallet.getCurrentWallet().getSwapRoute(
-                web3.utils.toBN(parseFloat(request.amount)*10**decimals),
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals)),
                 request.token1,
                 request.token2
             ).then(function(resp){
@@ -645,10 +643,27 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 decimals2 = decimals2.decimals
 
             baseWallet.getCurrentWallet().estimateSwapFees(
-                web3.utils.toBN(parseFloat(request.amount)*10**decimals2),
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals2)),
                 request.route
             ).then(function(resp){
                 sendResponse(resp)
+            })
+            break
+
+        case "initSwap":
+            let decimals3 = baseWallet.getCurrentWallet().tokenSet.get(request.route[0])
+
+            if(decimals3 === undefined)
+                decimals3 = baseWallet.getCurrentWallet().decimals
+            else
+                decimals3 = decimals3.decimals
+
+            baseWallet.getCurrentWallet().initSwap(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals3)),
+                request.route,
+                request.gasPrice
+            ).then(function(resp){
+                sendResponse(true)
             })
             break
     }

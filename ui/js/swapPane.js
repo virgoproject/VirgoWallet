@@ -41,7 +41,8 @@ class SwapPane {
         networkFees: $("#swapReviewNetFees"),
         networkFeesTicker: $("#swapReviewNetFeesTicker"),
         rangeFees: $("#swapRangeFees"),
-        confirmBtn: $("#confirmSwapBtn")
+        confirmBtn: $("#confirmSwapBtn"),
+        back: $("#swapReviewBack")
     }
 
     constructor() {
@@ -67,7 +68,7 @@ class SwapPane {
         })
 
         SwapPane.inputs.one.btnMax.click(function(){
-            if(SwapPane.inputs.one.select.val() == "") return
+            if(SwapPane.inputs.one.select.val() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
             SwapPane.inputs.one.input.val(SwapPane.inputs.one.balance.html())
             SwapPane.inputs.one.input.trigger("input")
         })
@@ -90,6 +91,8 @@ class SwapPane {
         })
 
         SwapPane.initBtn.click(function(){
+            if(SwapPane.inputs.one.input.val() == "") return
+
             SwapPane.params.hide()
             SwapPane.loading.show()
 
@@ -112,17 +115,22 @@ class SwapPane {
 
                             SwapPane.review.networkFees.html(Utils.formatAmount(res.gas * Math.round(gasPrice * feesModifier), MAIN_ASSET.decimals))
 
-                            let totalForNative = res.gas * Math.round(gasPrice * feesModifier);
+                            _this.gasPrice = Math.round(gasPrice * feesModifier)
+
+                            let totalForNative = res.gas * _this.gasPrice
                             if (_this.route.route[0] == MAIN_ASSET.contract)
                                 totalForNative += Math.trunc(parseFloat(SwapPane.inputs.one.input.val()) * 10 ** MAIN_ASSET.decimals)
 
-                            if (totalForNative <= nativeBalance){
+                            if (totalForNative <= nativeBalance.balance && !isBtnDisabled(SwapPane.review.confirmBtn)){
                                 SwapPane.review.confirmBtn.attr("disabled", false)
-                                SwapPane.review.confirmBtn.html("Confirm")
+                                SwapPane.review.confirmBtn.find("val").html("Init swap")
                             }else{
                                 SwapPane.review.confirmBtn.attr("disabled", true)
-                                SwapPane.review.confirmBtn.html("Not enough " + MAIN_ASSET.ticker)
+                                SwapPane.review.confirmBtn.find("val").html("Insufficient " + MAIN_ASSET.ticker)
                             }
+
+                            if(SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
+                                SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
 
                             SwapPane.loading.hide()
                             SwapPane.review.self.show()
@@ -132,7 +140,7 @@ class SwapPane {
 
                 _this.estimateFees()
                 _this.feesInterval = setInterval(function(){
-                    estimateFees()
+                    _this.estimateFees()
                 }, 2500)
 
             })
@@ -142,6 +150,26 @@ class SwapPane {
         SwapPane.review.rangeFees.on("input", function(){
             _this.estimateFees()
         })
+
+        SwapPane.review.back.click(function(){
+            clearInterval(_this.feesInterval)
+            SwapPane.review.self.hide()
+            SwapPane.params.show()
+        })
+
+        SwapPane.review.confirmBtn.click(function (){
+            disableLoadBtn(SwapPane.review.confirmBtn)
+            initSwap(SwapPane.review.amountIn.html(), _this.route.route, _this.gasPrice)
+                .then(function(){
+                    SwapPane.inputs.one.input.val("")
+                    SwapPane.inputs.two.input.val("")
+                    SwapPane.inputs.one.input.trigger("input")
+                    enableLoadBtn(SwapPane.review.confirmBtn)
+                    SwapPane.review.back.click()
+                    notyf.success("Swap initiated!")
+                })
+        })
+
     }
 
     setSwap(data){
@@ -149,6 +177,12 @@ class SwapPane {
 
         this.setSelectOptions(SwapPane.inputs.one, selectedAddress.balances)
         this.setSelectOptions(SwapPane.inputs.two, selectedAddress.balances)
+    }
+
+    updateSwap(data){
+        this.updateBalance(SwapPane.inputs.one)
+        this.updateBalance(SwapPane.inputs.two)
+        SwapPane.inputs.one.input.trigger("input")
     }
 
     setSelectOptions(input, balances){
@@ -226,6 +260,8 @@ class SwapPane {
         elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
 
         getBalance(elem.select.val()).then(function(res){
+            console.log(typeof res.balance)
+            console.log(res.balance)
             elem.ticker.html(res.ticker)
             elem.rateTicker.html(res.ticker)
             elem.btnTicker.html(res.ticker)
@@ -289,6 +325,13 @@ class SwapPane {
 
                 if(SwapPane.inputs.one.input.val() <= SwapPane.inputs.one.balance.html())
                     SwapPane.initBtn.attr("disabled", false)
+
+                if(_this.checkAmountTimeout !== undefined)
+                    clearTimeout(_this.checkAmountTimeout)
+
+                _this.checkAmountTimeout = setTimeout(function(){
+                    _this.checkAmount()
+                }, 10000)
             })
         })
     }

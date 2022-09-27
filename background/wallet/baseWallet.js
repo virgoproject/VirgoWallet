@@ -159,7 +159,8 @@ class BaseWallet {
                     "type": "uni2",
                     "routerAddress": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
                     "factoryAddress": "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
-                    "popularTokens": ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
+                    "popularTokens": ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"],
+                    "proxyAddress": "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703"
                 }
             }
         }

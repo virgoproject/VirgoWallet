@@ -159,3 +159,7 @@ async function getSwapRoute(amount, token1, token2){
 async function estimateSwapFees(amount, route){
     return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount: amount, route: route})
 }
+
+async function initSwap(amount, route, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initSwap', amount: amount, route: route, gasPrice: gasPrice})
+}

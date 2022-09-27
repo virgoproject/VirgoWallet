@@ -223,9 +223,30 @@
     margin-bottom: 2.5em;
 }
 
-#swapReviewAmountIn {
+#swapReviewAmountIn, #swapReviewNetFees, #swapReviewSwapFees {
     display: inline-block;
-    max-width: 92px;
+    max-width: 84px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#swapReviewBack {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#swapReviewBack:hover {
+    color: black;
+}
+
+#swapReviewNetFees {
+    max-width: 78px!important;
+}
+
+#swapReviewAmountOut {
+    display: inline-block;
+    max-width: 14ch;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;

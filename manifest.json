@@ -16,6 +16,7 @@
 
   "background": {
     "scripts": [
+      "commonJS/utils.js",
       "commonJS/browser-polyfill.js",
       "background/bundle.js",
       "background/utils/converter.js",

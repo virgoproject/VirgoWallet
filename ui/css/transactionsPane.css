@@ -199,3 +199,34 @@
 #speedupPopup .ticker, #txCancelPopup .ticker {
     color: var(--mainColor);
 }
+
+#transactionsPane .listItem.swapTx .logo {
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    margin-top: -13px;
+}
+
+#transactionsPane .listItem.swapTx .logo.two {
+    margin-left: 13px;
+}
+
+#transactionsPane .listItem .ticker {
+    color: var(--mainColorDark10);
+}
+
+#transactionsPane .listItem.swapTx .smallDetails .amount {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 78px;
+    vertical-align: top;
+}
+
+#transactionsPane .listItem.swapTx.opened .header .title {
+    float: left;
+}
+
+#transactionsPane .listItem.swapTx.opened .header {
+    margin-top: 10px;
+}
