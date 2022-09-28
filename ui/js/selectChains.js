@@ -36,6 +36,9 @@ class SelectChains {
             elem.find("ticker").html(wallet.ticker)
             elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + wallet.ticker + "/" + wallet.ticker + "/logo.png')");
 
+            if(wallet.testnet)
+                elem.find(".testnet").css("display", "inline-block")
+
             elem.click(function(){
                 if(elem.find(".chain").hasClass("selected")) return
 

@@ -35,7 +35,7 @@
 }
 
 #chainSelector .chain.selected {
-    background: #ece2f3;
+    background: #e2d2ed;
     cursor: default;
 }
 
@@ -63,14 +63,25 @@
 }
 
 #chainSelector .chain .selectedIcon {
+    position: relative;
     display: none;
 }
 
 #chainSelector .chain.selected .selectedIcon {
-    display: inline-block;
+    display: block;
 }
 
-#chainSelector .chain.selected .selectIcon {
+#chainSelector .chain.selected .selectedIcon i {
+    position: absolute;
+    right: 1.5em;
+    font-size: 0.75em;
+}
+
+#chainSelector .chain .testnet {
+    font-size: 0.65em;
+    margin-left: -12%;
+    margin-top: 2em;
+    padding: 0.25em;
     display: none;
 }
 

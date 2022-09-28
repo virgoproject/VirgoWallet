@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -12,6 +12,7 @@ class Web3Wallet {
         this.transactions = transactions
         this.explorer = explorer
         this.swapParams = swapParams
+        this.testnet = testnet
 
         this.balances = new Map()
 
@@ -71,6 +72,9 @@ class Web3Wallet {
         if(json.chainID == 3){
             json.name = "Ropsten"
             json.ticker = "RETH"
+            json.testnet = true
+        }else{
+            json.testnet = false
         }
 
         if(json.chainID == 10001)
@@ -80,7 +84,7 @@ class Web3Wallet {
             json.swapParams.feesRate = 0.0025
         json.swapParams.proxyAddress = "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703"
 
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams)
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }
 
     toJSON(){
@@ -97,7 +101,8 @@ class Web3Wallet {
                 "tokens": this.tokens,
                 "transactions": this.transactions,
                 "explorer": this.explorer,
-                "swapParams": this.swapParams
+                "swapParams": this.swapParams,
+                "testnet": this.testnet
             }
         }
     }

@@ -16,6 +16,9 @@ class Utils {
         while(amount.endsWith("0"))
             amount = amount.slice(0, -1)
 
+        if(amount.endsWith("."))
+            amount = amount.slice(0, -1)
+
         return amount
     }
 

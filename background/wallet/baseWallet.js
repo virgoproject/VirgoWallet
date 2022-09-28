@@ -121,16 +121,17 @@ class BaseWallet {
         wallets[1] = {
             "type": "web3",
             "wallet": {
-                "name": "Ropsten Testnet",
+                "name": "Ropsten",
                 "asset": "Ethereum",
-                "ticker": "ETH",
+                "ticker": "RETH",
                 "decimals": 18,
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
                 "RPC": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 3,
                 "tokens": [],
                 "transactions": [],
-                "explorer": "https://ropsten.etherscan.io/tx/"
+                "explorer": "https://ropsten.etherscan.io/tx/",
+                "testnet": true
             }
         }
 
@@ -264,7 +265,7 @@ class BaseWallet {
         wallets[9] = {
             "type": "web3",
             "wallet": {
-                "name": "Ethereum PoW",
+                "name": "Ether PoW",
                 "asset": "EthereumPoW",
                 "ticker": "ETHW",
                 "decimals": 18,

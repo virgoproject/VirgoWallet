@@ -24,7 +24,7 @@
       "background/wallet/web3Wallet.js",
       "background/wallet/baseWallet.js",
       "background/background.js",
-      "background/swap/uniswapUtils.js"
+      "background/swap/uniswap02Utils.js"
     ]
   },
 

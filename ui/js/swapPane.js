@@ -260,8 +260,6 @@ class SwapPane {
         elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
 
         getBalance(elem.select.val()).then(function(res){
-            console.log(typeof res.balance)
-            console.log(res.balance)
             elem.ticker.html(res.ticker)
             elem.rateTicker.html(res.ticker)
             elem.btnTicker.html(res.ticker)
@@ -305,7 +303,7 @@ class SwapPane {
                     if (step == MAIN_ASSET.contract)
                         elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + MAIN_ASSET.ticker + "/logo.png)")
                     else
-                        elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step + "/logo.png)")
+                        elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step + "/logo.png), url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step.toLowerCase() + "/logo.png)")
                     SwapPane.rate.route.append(elem)
                     elem.show()
                 }
