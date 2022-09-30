@@ -251,3 +251,7 @@
     text-overflow: ellipsis;
     vertical-align: top;
 }
+
+#swapRouteNotFound {
+    border-radius: 0.5em;
+}

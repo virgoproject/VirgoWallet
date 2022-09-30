@@ -287,6 +287,11 @@
                     </div>
                     <div class="route" id="swapRoute" style="display: none">
                     </div>
+                    <div class="alert alert-warning align-items-center p-2" role="alert" id="swapRouteNotFound" style="display: none">
+                        <div>
+                            <i class="fa-regular fa-circle-exclamation"></i> Not enough liquidity for this trade
+                        </div>
+                    </div>
                     <div class="step" id="swapRouteBaseStep" style="display: none"></div>
                     <div class="col-12 p-0" style="margin-top: 2.25em;">
                         <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
@@ -310,28 +315,28 @@
                     <p class="amount">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
                 </div>
                 <div class="row details mt-2">
-                    <div class="col-6">
+                    <div class="col-5">
                         <p class="title">You transfer</p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                         <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p class="title">Swap fees</p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p class="title">Slippage</p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <p class="value">Auto</p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-5">
                         <p class="title">Network fees</p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                         <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
                     </div>
                 </div>

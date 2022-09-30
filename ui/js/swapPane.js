@@ -24,7 +24,8 @@ class SwapPane {
         loading: $("#swapRateLoading"),
         amount: $("#swapRateAmount"),
         route: $("#swapRoute"),
-        routeBaseStep: $("#swapRouteBaseStep")
+        routeBaseStep: $("#swapRouteBaseStep"),
+        notFound: $("#swapRouteNotFound")
     }
     static params = $("#swapParams")
     static switchBtn = $("#swapSwitchBtn")
@@ -271,6 +272,7 @@ class SwapPane {
         SwapPane.inputs.two.input.val("")
         SwapPane.rate.route.hide()
         SwapPane.rate.self.hide()
+        SwapPane.rate.notFound.hide()
         SwapPane.initBtn.attr("disabled", true)
 
         const _this = this
@@ -297,10 +299,17 @@ class SwapPane {
 
                 SwapPane.rate.loading.hide()
 
+                if(res === false){
+                    SwapPane.rate.notFound.show()
+                    console.log("ça devrait show")
+                    return
+                }
+
                 SwapPane.rate.route.html("")
+
                 for (const step of res.route) {
                     const elem = SwapPane.rate.routeBaseStep.clone()
-                    if (step == MAIN_ASSET.contract)
+                    if (step.toLowerCase() == MAIN_ASSET.contract.toLowerCase())
                         elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + MAIN_ASSET.ticker + "/logo.png)")
                     else
                         elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step + "/logo.png), url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step.toLowerCase() + "/logo.png)")

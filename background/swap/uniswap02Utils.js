@@ -18,82 +18,146 @@ class Uniswap02Utils {
     }
 
     async findRoute(amount, tokenA, tokenB) {
-        console.log(amount)
-        console.log(tokenA)
-        console.log(tokenB)
 
         const WETH = await this.getWETH()
 
-        let bestRoute = null;
+        let routes = [];
+        let maxRoutes = 2 + this.tokens.length * 3
 
-        const directPair = await this.factory.methods.getPair(tokenA, tokenB).call() != "0x0000000000000000000000000000000000000000"
-        if(directPair)
-            bestRoute = {
-                route: [tokenA, tokenB],
-                amount: await this.getAmountOut(amount, [tokenA, tokenB])
+        const _this = this
+
+        return await new Promise(async function(resolve){
+
+            const checkFinished = function (){//1
+
+                if(routes.length < maxRoutes)
+                    return
+
+                routes.sort(function(a, b){
+                    if(a.amount.eq(b.amount)) return 0
+                    if(a.amount.lt(b.amount)) return 1
+                    return -1
+                })
+
+                if(route.length == 0)
+                    return false
+
+                resolve(routes[0])
             }
 
+            let A_WETH;
+            let B_WETH;
 
-        const pairA_WETH = await this.factory.methods.getPair(tokenA, WETH).call() != "0x0000000000000000000000000000000000000000"
-        const pairB_WETH = await this.factory.methods.getPair(tokenB, WETH).call() != "0x0000000000000000000000000000000000000000"
-
-        if(pairA_WETH && pairB_WETH){
-            const pairAmount = await this.getAmountOut(amount, [tokenA, WETH, tokenB])
-            if(bestRoute == null || bestRoute.amount.lt(pairAmount))
-                bestRoute = {
-                    route: [tokenA, WETH, tokenB],
-                    amount: pairAmount
+            //check if has direct pair and add it
+            if(tokenA.toLowerCase() != WETH.toLowerCase() && tokenB.toLowerCase() != WETH.toLowerCase()){
+                _this.factory.methods.getPair(tokenA, tokenB).call().then(async function(res){
+                    if(res != "0x0000000000000000000000000000000000000000"){
+                        routes.push({
+                            route: [tokenA, tokenB],
+                            amount: await _this.getAmountOut(amount, [tokenA, tokenB])
+                        })
+                        checkFinished()
+                    } else {
+                        maxRoutes--;
+                        checkFinished()
+                    }
+                })
+                A_WETH = await _this.factory.methods.getPair(tokenA, WETH).call() != "0x0000000000000000000000000000000000000000"
+                B_WETH = await _this.factory.methods.getPair(tokenB, WETH).call() != "0x0000000000000000000000000000000000000000"
+            }else{
+                const res = await _this.factory.methods.getPair(tokenA, tokenB).call() != "0x0000000000000000000000000000000000000000"
+                if(tokenA.toLowerCase() == WETH.toLowerCase()){
+                    A_WETH = false
+                    B_WETH = res
+                }else{
+                    A_WETH = res
+                    B_WETH = false
                 }
-        }
-
-        for(const token of this.tokens){
-            if(tokenA == token || tokenB == token)
-                continue
-
-            const A_token = await this.factory.methods.getPair(tokenA, token).call() != "0x0000000000000000000000000000000000000000"
-            const B_token = await this.factory.methods.getPair(tokenB, token).call() != "0x0000000000000000000000000000000000000000"
-
-            if(A_token && B_token){
-                const pairAmount = await this.getAmountOut(amount, [tokenA, token, tokenB])
-                if(bestRoute == null || bestRoute.amount.lt(pairAmount))
-                    bestRoute = {
-                        route: [tokenA, token, tokenB],
-                        amount: pairAmount
-                    }
+                if(res){
+                    _this.getAmountOut(amount, [tokenA, tokenB]).then(amountOut => {
+                        routes.push({
+                            route: [tokenA, tokenB],
+                            amount: amountOut
+                        })
+                        checkFinished()
+                    })
+                } else {
+                    maxRoutes--;
+                    checkFinished()
+                }
             }
 
-            if((A_token && B_token && pairA_WETH) || (!A_token && B_token && pairA_WETH) && tokenB != WETH){
-                const pairAmount = await this.getAmountOut(amount, [tokenA, WETH, token, tokenB])
-                if(bestRoute == null || bestRoute.amount.lt(pairAmount))
-                    bestRoute = {
-                        route: [tokenA, WETH, token, tokenB],
-                        amount: pairAmount
-                    }
+            if(A_WETH && B_WETH){
+                _this.getAmountOut(amount, [tokenA, WETH, tokenB]).then(amountOut => {
+                    routes.push({
+                        route: [tokenA, WETH, tokenB],
+                        amount: amountOut
+                    })
+                    checkFinished()
+                })
+            } else {
+                maxRoutes--;
+                checkFinished()
             }
 
-            if((A_token && B_token && pairB_WETH) || (A_token && !B_token && pairB_WETH) && tokenA != WETH){
-                const pairAmount = await this.getAmountOut(amount, [tokenA, token, WETH, tokenB])
-                if(bestRoute == null || bestRoute.amount.lt(pairAmount))
-                    bestRoute = {
-                        route: [tokenA, token, WETH, tokenB],
-                        amount: pairAmount
-                    }
+            for(const token of _this.tokens){
+                if(tokenA.toLowerCase() == token.toLowerCase() || tokenB.toLowerCase() == token.toLowerCase()) {
+                    maxRoutes -= 3
+                    checkFinished()
+                    continue
+                }
+
+                _this.factory.methods.getPair(tokenA, token).call().then(A_token => {
+                    A_token = A_token != "0x0000000000000000000000000000000000000000"
+                    _this.factory.methods.getPair(tokenB, token).call().then(B_token => {
+                        B_token = B_token != "0x0000000000000000000000000000000000000000"
+
+                        if(A_token && B_token) {
+                            _this.getAmountOut(amount, [tokenA, token, tokenB]).then(pairAmount => {
+                                routes.push({
+                                    route: [tokenA, token, tokenB],
+                                    amount: pairAmount
+                                })
+                                checkFinished()
+                            })
+                        } else {
+                            maxRoutes--;
+                            checkFinished()
+                        }
+
+                        if(((A_token && B_token && A_WETH) || (!A_token && B_token && A_WETH)) && tokenB.toLowerCase() != WETH.toLowerCase()){
+                            _this.getAmountOut(amount, [tokenA, WETH, token, tokenB]).then(pairAmount => {
+                                routes.push({
+                                    route: [tokenA, WETH, token, tokenB],
+                                    amount: pairAmount
+                                })
+                                checkFinished()
+                            })
+                        } else {
+                            maxRoutes--;
+                            checkFinished()
+                        }
+
+                        if(((A_token && B_token && B_WETH) || (A_token && !B_token && B_WETH)) && tokenA.toLowerCase() != WETH.toLowerCase()){
+                            _this.getAmountOut(amount, [tokenA, token, WETH, tokenB]).then(pairAmount => {
+                                routes.push({
+                                    route: [tokenA, token, WETH, tokenB],
+                                    amount: pairAmount
+                                })
+                                checkFinished()
+                            })
+                        } else {
+                            maxRoutes--;
+                            checkFinished()
+                        }
+
+                    })
+                })
+
             }
 
-            if(pairA_WETH && pairB_WETH){
-                const pairAmount = await this.getAmountOut(amount, [tokenA, WETH, token, WETH, tokenB])
-                if(bestRoute == null || bestRoute.amount.lt(pairAmount))
-                    bestRoute = {
-                        route: [tokenA, WETH, token, WETH, tokenB],
-                        amount: pairAmount
-                    }
-            }
+        })
 
-        }
-
-        console.log(bestRoute)
-
-        return bestRoute
     }
 
     async getAmountOut(amount, route){
