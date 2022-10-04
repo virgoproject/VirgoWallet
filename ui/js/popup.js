@@ -78,3 +78,21 @@ $("[data-inputTarget]").keypress(function(e){
     if(target.attr("disabled")) return
     target.click()
 })
+
+$(".resizeOnInput").on("input", function(){
+    $(this).css("width", ($(this).val().length+2) + "ch")
+})
+
+$.fn.insertIndex = function (i) {
+    // The element we want to swap with
+    var $target = this.parent().children().eq(i);
+
+    // Determine the direction of the appended index so we know what side to place it on
+    if (this.index() > i) {
+        $target.before(this);
+    } else {
+        $target.after(this);
+    }
+
+    return this;
+};

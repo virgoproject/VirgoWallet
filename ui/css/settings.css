@@ -2,6 +2,15 @@
     z-index: 10;
 }
 
+.edit{
+    cursor: pointer;
+}
+
+.inputAddress{
+    background: unset;
+    border: unset;
+}
+
 #accountSelectionHeader svg {
     border-radius: 50%;
     border: 1px solid #e9e9e9;
@@ -24,6 +33,7 @@
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
+    z-index: 1;
 }
 
 #settings.opened {
@@ -32,11 +42,14 @@
 
 #settings .addAccount {
     cursor: pointer;
-    color: #545454;
+    color: var(--mainColor);
+    transition: all 0.2s ease-in;
+    width: fit-content;
+    float: right;
 }
 
 #settings .addAccount:hover {
-    color: var(--bs-body-color)
+    color: var(--mainColorDark10);
 }
 
 #settings .accounts {
@@ -57,9 +70,22 @@
     background: #ece2f3;
 }
 
+#settings .accounts .account i {
+    display: none;
+    cursor: pointer;
+}
+
+#settings .accounts .account:hover i {
+    display: inline-block;
+}
+
 #settings .accounts .account.selected {
     background: #ece2f3;
     cursor: default;
+}
+
+#settings .accounts .account .address:focus + i {
+    display: none;
 }
 
 #settings .accounts .account p {
@@ -74,12 +100,16 @@
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 15px !important;
+    cursor: pointer;
+    min-width: 6ch;
+    max-width: 18ch;
 }
 
 #settings .accounts .account .balance {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 7em;
+    max-width: 6em;
     display: inline-block;
     line-height: 1em;
     vertical-align: middle;

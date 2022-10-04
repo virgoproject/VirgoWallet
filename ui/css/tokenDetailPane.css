@@ -277,6 +277,7 @@
 
 #tokenDetailsSimple .address {
     font-size: 0.75em;
-    padding: 0.75em 2em 0.75em 0.75em!important;
+    padding: 0.75em!important;
     border-radius: 0.65em!important;
 }
+

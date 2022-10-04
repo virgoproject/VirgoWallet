@@ -16,11 +16,35 @@ class SendPane {
     static confirmFeesRange = $("#rangeFees")
     static sendBal = $("#body .send .sendForm .sendBal span")
     static maxBtn = $("#body .send .sendForm button.max")
+
+
+    static btnContacts = $("#body .send .sendForm .contactButton")
+    static headerValues = $(".header .stats")
+    static topbarValues = $(".header .topbar")
+    static contactsList = $("#contacts ")
+    static bodyContacts = $('#contacts #contactDiv')
+    static buttonContacts = $('#contacts .addContact')
+    static divContactClone = $('#contacts .contactUser')
+    static divContactList = $('#contacts .contactsList')
+    static contactExemple = $('#contactEx')
+
+
     static estimateFees = null;
 
     constructor() {
 
         let confirmInterval;
+        SendPane.divContactList.html("")
+
+        SendPane.btnContacts.click(function() {
+            SendPane.sendForm.hide()
+            SendPane.contactsList.show()
+            SendPane.bodyContacts.show()
+            SendPane.buttonContacts.show()
+
+            ContactsPane.loadContacts()
+        })
+
 
         SendPane.btnSubmit.click(function(){
             disableLoadBtn($(this))
@@ -54,11 +78,13 @@ class SendPane {
                             SendPane.confirmFees.attr("gasPrice", Math.round(fees.gasPrice * feesModifier))
                             SendPane.confirmForm.show()
 
-                            let totalForNative = fees.gasLimit * Math.round(fees.gasPrice * feesModifier);
+                            let totalForNative = new BN(fees.gasLimit * Math.round(fees.gasPrice * feesModifier));
                             if(assetInfos.ticker == MAIN_ASSET.ticker)
-                                totalForNative += Math.trunc(parseFloat(SendPane.amount.val())*10**MAIN_ASSET.decimals)
+                                totalForNative.add(new BN(Utils.toAtomicString(SendPane.amount.val(), MAIN_ASSET.decimals)))
 
-                            if(totalForNative <= nativeBalance.balance){
+                            console.log(typeof nativeBalance.balance)
+
+                            if(totalForNative.lte(new BN(nativeBalance.balance))){
                                 SendPane.btnConfirm.find("val").html("Send")
                                 SendPane.btnConfirm.attr("disabled", false)
                             }else{
@@ -99,7 +125,7 @@ class SendPane {
 
             getAsset(SendPane.assetSelect.val()).then(function(assetInfos){
                 sendTo(SendPane.recipient.val(),
-                    Math.trunc(parseFloat(SendPane.amount.val())*10**assetInfos.decimals),
+                    SendPane.amount.val(),
                     SendPane.assetSelect.val(),
                     SendPane.confirmFees.attr("gasLimit"),
                     SendPane.confirmFees.attr("gasPrice"))
@@ -205,7 +231,6 @@ class SendPane {
 
         SendPane.btnSubmit.attr("disabled", false)
     }
-
 }
 
 const sendPane = new SendPane()

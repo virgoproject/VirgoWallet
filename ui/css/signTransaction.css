@@ -23,3 +23,11 @@
     text-overflow: ellipsis;
     margin: 0;
 }
+
+#fees {
+    display: inline-block;
+    max-width: 138px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}

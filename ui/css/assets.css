@@ -8,8 +8,6 @@
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-    background: linear-gradient(0deg, #5a009c14, transparent);
-    background-color: white;
 }
 
 #assetsPane .content {
@@ -25,7 +23,7 @@
 }
 
 
-#assetsPane .inputSearch {
+ .inputSearch {
     background: transparent;
     border-radius: 0.5em;
     border: none;
@@ -33,7 +31,7 @@
     padding: 0.375em 2em 0.375em 0.75em;
 }
 
-#assetsPane .inputSearch:focus-visible{
+ .inputSearch:focus-visible{
     outline: none;
 }
 
@@ -88,7 +86,7 @@
 }
 
 #assetsPane .addBottomLogo:hover{
-    background: #8200e2;
+    background: var(--mainColorLight20);
 }
 
 #assetsPane .addLogo {
@@ -117,7 +115,7 @@
     background: rgb(31, 162, 104);
 }
 
-#assetsPane .searchLabel {
+ .searchLabel {
     display: flex;
     justify-content: center;
     align-items: center;

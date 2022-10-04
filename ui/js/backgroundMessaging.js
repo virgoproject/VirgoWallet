@@ -32,6 +32,10 @@ async function validateAddress(address){
     return await browser.runtime.sendMessage({command: 'validateAddress', address: address})
 }
 
+async function hasAsset(address){
+    return await browser.runtime.sendMessage({command: 'hasAsset', address: address})
+}
+
 async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
@@ -81,6 +85,10 @@ async function changeAccount(accountID){
     return await browser.runtime.sendMessage({command: 'changeAccount', accountID: accountID})
 }
 
+async function changeAccountName(address, newName){
+    return await browser.runtime.sendMessage({command: 'changeAccountName', address:address, newName:newName})
+}
+
 async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
 }
@@ -121,6 +129,41 @@ async function getAutolock(){
     return await browser.runtime.sendMessage({command: 'getAutolock'})
 }
 
-async function setAutolock(enabled, delay){
+function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
+}
+
+async function addingContact(address,name,note,favorite) {
+   return await browser.runtime.sendMessage({command: 'addContact' , address:address , name:name , note:note , favorite:favorite })
+
+}
+
+function deleteContact(contactIndex){
+     browser.runtime.sendMessage({command: 'deleteContact' , address:contactIndex })
+}
+
+function updateContact(index,name,note) {
+    browser.runtime.sendMessage({command: 'updateContact' ,  contactIndex:index  , name:name , note:note  })
+
+}
+
+function deleteFavorite(index) {
+    browser.runtime.sendMessage({command: 'deleteFavorite' , address:index })
+
+}
+
+async function getContacts(){
+    return await browser.runtime.sendMessage({command: 'getContacts'})
+}
+
+async function getSwapRoute(amount, token1, token2){
+    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
+}
+
+async function estimateSwapFees(amount, route){
+    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount: amount, route: route})
+}
+
+async function initSwap(amount, route, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initSwap', amount: amount, route: route, gasPrice: gasPrice})
 }

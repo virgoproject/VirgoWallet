@@ -1,7 +1,7 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7"
+const VERSION = "0.7.5"
 
 const connectedWebsites = []
 
@@ -14,6 +14,20 @@ browser.storage.local.get("backupPopupDate").then(function(res){
     if(res.backupPopupDate !== undefined)
         backupPopupDate = res.backupPopupDate
 })
+
+let accName = {}
+browser.storage.local.get("accountsNames").then(function (res){
+    if (res.accountsNames.length === 0){
+        let count = 0
+        for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
+            accName[address.address] = "Account "+count
+            count++
+        }
+    }else{
+        accName = res.accountsNames
+    }
+})
+
 
 let lockDelay = 60;
 let autolockEnabled = false;
@@ -28,6 +42,8 @@ browser.storage.local.get("lockDelay").then(function(res){
     if(res.lockDelay !== undefined)
         lockDelay = res.lockDelay
 })
+
+
 
 setInterval(function(){
     if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
@@ -44,10 +60,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
+
                 sendResponse(getBaseInfos())
                 lastActivity = Date.now()
             }
             break
+
 
         case "unlockWallet":
             lastActivity = Date.now()
@@ -79,6 +97,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
             break
 
+        case "changeAccountName":
+            accName[request.address] = request.newName
+            browser.storage.local.set({"accountsNames": accName});
+            return false
+
         case "getGasPrice":
             web3.eth.getGasPrice().then(function(gasPrice){
                 sendResponse(gasPrice)
@@ -104,11 +127,19 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
                     })
             })
-
             break
 
         case "getBalance":
-            sendResponse(baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset])
+            const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset]
+
+            if(!bal.tracked){
+                const contract = new web3.eth.Contract(ERC20_ABI, request.asset);
+                contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
+                    .then(function(res){
+                        bal.balance = res
+                        sendResponse(bal)
+                    })
+            }else sendResponse(bal)
             break
 
         case "sendTo":
@@ -116,6 +147,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             //send native asset
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
                 if (request.asset == baseWallet.getCurrentWallet().ticker) {
+                    console.log(request.amount)
+                    request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+                    console.log(request.amount.toString())
 
                     web3.eth.sendTransaction({
                         from: baseWallet.getCurrentAddress(),
@@ -131,11 +165,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 "contractAddr": baseWallet.getCurrentWallet().ticker,
                                 "date": Date.now(),
                                 "recipient": request.recipient,
-                                "amount": request.amount,
+                                "amount": request.amount.toString(),
                                 "gasPrice": request.gasPrice,
                                 "gasLimit": request.gasLimit,
                                 "nonce": nonce
                             }
+                            console.log("Got hash: " + hash)
                             baseWallet.getCurrentWallet().transactions.unshift(txResume)
                             sendResponse(hash)
                             baseWallet.save()
@@ -203,11 +238,21 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     return
                 }
 
+                let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.asset)
+
+                if(decimals === undefined)
+                    decimals = baseWallet.getCurrentWallet().decimals
+                else
+                    decimals = decimals.decimals
+
+                request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
+
                 const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
                 const transaction = contract.methods.transfer(request.recipient, request.amount);
 
                 transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                     .on("transactionHash", function (hash) {
+                        console.log("got hash: " + hash)
                         txResume = {
                             "hash": hash,
                             "contractAddr": request.asset,
@@ -297,6 +342,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendResponse(true)
             break
 
+        case "hasAsset":
+            sendResponse(baseWallet.getCurrentWallet().tokenSet.has(request.address) ||  baseWallet.getCurrentWallet().tokenSet.has(request.address.toLowerCase()))
+            break
+
         case "getMnemonic"://protect with a password later
             sendResponse(baseWallet.mnemonic)
             break
@@ -311,7 +360,6 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.save()
 
             sendResponse(true)
-
             break
 
         case "passwordMatch":
@@ -334,6 +382,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(false)
             }
             break
+
         case "isMnemonicValid":
             try {
                 BaseWallet.generateWallet(request.mnemonic)
@@ -343,6 +392,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(false)
             }
             break
+
         case "web3Request":
             handleWeb3Request(sendResponse, request.origin, request.method, request.params)
             break
@@ -350,22 +400,23 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "authorizeWebsiteConnection":
             if(pendingAuthorizations.get(request.id) == null)
                 pendingAuthorizations.set(request.id, request.decision)
-            break
+            return false
+
 
         case "authorizeTransaction":
             if(pendingTransactions.get(request.id) == null)
                 pendingTransactions.set(request.id, request.decision)
-            break
+            return false
 
         case "authorizeSign":
             if(pendingSigns.get(request.id) == null)
                 pendingSigns.set(request.id, request.decision)
-            break
+            return false
 
         case "closedBackupPopup":
             backupPopupDate = Date.now() + 604800000
             browser.storage.local.set({"backupPopupDate": backupPopupDate});
-            break
+            return false
 
         case "changeTokenTracking":
             baseWallet.getCurrentWallet().changeTracking(request.contract)
@@ -402,6 +453,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 })
             })
             break
+
         case "getCancelGasPrice":
             web3.eth.getTransaction(request.hash).then(transaction => {
                 if(transaction == null)
@@ -417,6 +469,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
+
         case "cancelTransaction":
             web3.eth.getTransaction(request.hash).then(transaction => {
                 if (transaction == null) {
@@ -444,21 +497,188 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
+
         case "closedUpdatePopup":
             baseWallet.version = VERSION
             baseWallet.save()
-            break
+            return false
+
         case "getAutolock":
             sendResponse({
                 enabled: autolockEnabled,
                 delay: lockDelay
             })
             break
+
         case "setAutolock":
             autolockEnabled = request.enabled
             lockDelay = request.delay
             browser.storage.local.set({"autolockEnabled": autolockEnabled})
             browser.storage.local.set({"lockDelay": lockDelay})
+            return false
+
+        case "addContact":
+            browser.storage.local.get('contactList').then(function(res){
+
+                const newContact = {
+                    name : request.name,
+                    address : request.address,
+                    note : request.note,
+                    favorite : request.favorite
+                }
+
+
+                if(res.contactList === undefined) {
+                    browser.storage.local.set({"contactList": [newContact]})
+                    sendResponse(true)
+                } else {
+
+                        const result = res.contactList.filter(record =>
+                            record.address === request.address)
+
+                        if (result.length <= 0){
+                            res.contactList.push(newContact)
+                            browser.storage.local.set({"contactList": res.contactList})
+                            sendResponse(true)
+                        } else {
+                            sendResponse("already")
+                        }
+
+                    }
+            })
+           break
+
+        case "deleteContact":
+            browser.storage.local.get('contactList').then(function(res) {
+
+                for (var i=0 ; i < res.contactList.length ; i++)
+                {
+                    if (res.contactList[i].address === request.address) {
+                        res.contactList.splice(i, 1)
+                        browser.storage.local.set({"contactList": res.contactList})
+                        sendResponse(true)
+                        break
+                    }
+                }
+
+            })
+            break
+
+        case "deleteFavorite":
+            browser.storage.local.get('contactList').then(function(res) {
+                for (var i=0 ; i < res.contactList.length ; i++) {
+                    if (res.contactList[i].address === request.address) {
+
+                        if (res.contactList[i].favorite !== false) {
+                            res.contactList[i].favorite = false
+                        } else {
+                            res.contactList[i].favorite = true
+                        }
+                    }
+
+                }
+                browser.storage.local.set({"contactList": res.contactList})
+            })
+            return false
+
+        case "updateContact":
+            browser.storage.local.get('contactList').then(function(res) {
+
+                let nameSetter = ''
+                let noteSetter = ''
+
+                if (request.name === '')
+                    nameSetter = res.contactList[request.contactIndex].name
+                 else
+                    nameSetter = request.name
+
+
+                if (request.note === ''){
+                    noteSetter = res.contactList[request.contactIndex].note
+                } else {
+                    noteSetter = request.note
+
+                }
+
+                const updateContact = {
+                    name : nameSetter,
+                    address : res.contactList[request.contactIndex].address,
+                    note : noteSetter,
+                    favorite : res.contactList[request.contactIndex].favorite
+                }
+
+                res.contactList.splice(request.contactIndex, 1)
+                res.contactList.splice(request.contactIndex, 0,updateContact)
+                browser.storage.local.set({"contactList": res.contactList})
+
+            })
+            return false
+
+        case "getContacts":
+            browser.storage.local.get('contactList').then(function(res) {
+                if(res.contactList !== undefined){
+                    sendResponse(res.contactList)
+                }else {
+                    sendResponse(false)
+                }
+
+            })
+            break
+
+        case "getSwapRoute":
+            let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
+
+            if(decimals === undefined)
+                decimals = baseWallet.getCurrentWallet().decimals
+            else
+                decimals = decimals.decimals
+
+            if(request.token1 == baseWallet.getCurrentWallet().ticker)
+                request.token1 = baseWallet.getCurrentWallet().contract
+            else if(request.token2 == baseWallet.getCurrentWallet().ticker)
+                request.token2 = baseWallet.getCurrentWallet().contract
+
+            baseWallet.getCurrentWallet().getSwapRoute(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals)),
+                request.token1,
+                request.token2
+            ).then(function(resp){
+                sendResponse(resp)
+            })
+            break
+
+        case "estimateSwapFees":
+            let decimals2 = baseWallet.getCurrentWallet().tokenSet.get(request.route[0])
+
+            if(decimals2 === undefined)
+                decimals2 = baseWallet.getCurrentWallet().decimals
+            else
+                decimals2 = decimals2.decimals
+
+            baseWallet.getCurrentWallet().estimateSwapFees(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals2)),
+                request.route
+            ).then(function(resp){
+                sendResponse(resp)
+            })
+            break
+
+        case "initSwap":
+            let decimals3 = baseWallet.getCurrentWallet().tokenSet.get(request.route[0])
+
+            if(decimals3 === undefined)
+                decimals3 = baseWallet.getCurrentWallet().decimals
+            else
+                decimals3 = decimals3.decimals
+
+            baseWallet.getCurrentWallet().initSwap(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, decimals3)),
+                request.route,
+                request.gasPrice
+            ).then(function(resp){
+                sendResponse(true)
+            })
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -565,6 +785,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas).then(function(result){
                 if(result !== false)
                     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
+                        console.log(nonce)
                         web3.currentProvider.send({
                             jsonrpc: "2.0",
                             id: Date.now() + "." + Math.random(),

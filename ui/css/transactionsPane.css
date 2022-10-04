@@ -8,8 +8,6 @@
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-    background: linear-gradient(0deg, rgba(90, 0, 156, 0.08), transparent);
-    background-color: white;
 }
 
 #transactionsPane .content {
@@ -198,4 +196,35 @@
 
 #speedupPopup .ticker, #txCancelPopup .ticker {
     color: var(--mainColor);
+}
+
+#transactionsPane .listItem.swapTx .logo {
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    margin-top: -13px;
+}
+
+#transactionsPane .listItem.swapTx .logo.two {
+    margin-left: 13px;
+}
+
+#transactionsPane .listItem .ticker {
+    color: var(--mainColorDark10);
+}
+
+#transactionsPane .listItem.swapTx .smallDetails .amount {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 78px;
+    vertical-align: top;
+}
+
+#transactionsPane .listItem.swapTx.opened .header .title {
+    float: left;
+}
+
+#transactionsPane .listItem.swapTx.opened .header {
+    margin-top: 10px;
 }
