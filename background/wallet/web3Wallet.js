@@ -77,7 +77,7 @@ class Web3Wallet {
                     "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
                 }
                 break
-            default:
+            case 56:
                 json.swapParams = {
                     type: "uni2",
                     routerAddress: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
@@ -86,6 +86,8 @@ class Web3Wallet {
                     proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
                     feesRate: 0.0025
                 }
+            default:
+                json.swapParams = false
         }
 
         if(json.chainID == 3){

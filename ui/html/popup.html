@@ -365,6 +365,10 @@
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
+            <div id="swapComing" class="text-center mt-2" style="display: none">
+                <h3>Coming soon!</h3>
+                <p>Swaps are not available for this network yet</p>
+            </div>
         </div>
 
     </div>
@@ -1279,7 +1283,6 @@
             <div class="row text-center m-0 p-0 contactUser" id="contactEx" style="display: none">
                     <div class="col-2 align-self-center pe-0">
                         <svg data-jdenticon-value="" width="36" height="36"></svg>
-
                     </div>
                     <div class="col-7 text-left adressContact">
                         <input type="text" placeholder="Name" class="inputNameContact" style="font-size: 15px !important;" maxlength="24" disabled>
@@ -1295,8 +1298,8 @@
 
                     <div class="col-12 mt-2 notesPart">
                         <textarea  class="w-100 noteContact changeNote"></textarea>
-                        <button class="button mb-2 changeContact col-7" data-index=""><i class="fas fa-check"></i> Apply changes</button>
-                        <button class="button mb-2 bg-danger deleteContact col-2" id="" data-address=""><i class="fas fa-times"></i></button>
+                        <button class="button mb-2 changeContact col-7" data-index="" style="font-size: 0.8em"><i class="fas fa-check"></i> Apply changes</button>
+                        <button class="button mb-2 bg-danger deleteContact col-2" id="" data-address="" style="font-size: 0.8em"><i class="fas fa-times"></i></button>
                     </div>
             </div>
         <div class="row contactsList m-0 p-0 overflow-scroll">
@@ -1310,24 +1313,23 @@
             <div class="contactFormContent">
                 <div class="col-12 mt-2 mb-2">
                     <p class="label text-left">Address</p>
-                    <input type="text" class="input col-12 addressInput" placeholder="Enter the asset's contract address">
-                    <div class="form-text addressText">Add the address of your contact here for faster transactions.</div>
+                    <input type="text" class="input col-12 addressInput" placeholder="Enter the contact's address">
+                    <div class="form-text addressText" style="color: var(--bs-red)"></div>
                 </div>
                 <div class="col-12 mt-2 mb-2">
                     <p class="label text-left">Name</p>
-                    <input type="text" class="input col-12 nameInput" placeholder="Enter the address name you want" maxlength="24">
-                    <div class="form-text">Naming an address will help you to differ from other addresses.</div>
+                    <input type="text" class="input col-12 nameInput" placeholder="Enter the contact's name" maxlength="24">
                 </div>
                 <div class="col-12 mt-2 mb-2">
-                    <p class="label text-left">Contact note</p>
-                    <input type="text" class="input col-12 noteInput" placeholder="Note" maxlength="144">
-                    <div class="form-text">Add a note to help you remember different things about this contact.</div>
+                    <p class="label text-left">Notes</p>
+                    <input type="text" class="input col-12 noteInput" placeholder="Write anything you want" maxlength="144">
+                    <div class="form-text">Add notes to help you remember different things about this contact.</div>
                 </div>
                 <div class="text-left p-1 mt-4">
                     <div class="form-check form-switch align-self-center">
                         <input class="form-check-input contactFavoriteInput" type="checkbox">
-                        <label class="form-check-label" for="autolockEnabledSetting">Favorite contact</label>
-                        <div class="form-text">Adding contact to your favorite will make them appear on top of contact list.</div>
+                        <label class="form-check-label" for="autolockEnabledSetting">Favorite</label>
+                        <div class="form-text">It will make the contact appear on top of your contact list.</div>
                     </div>
                 </div>
                 <button class="button col-12 submit mt-3 addContactButton" disabled="disabled">
@@ -1340,9 +1342,11 @@
 </div>
 
 <script src="../js/jquery.min.js"></script>
+<script src="../js/bn.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/progressRing.js"></script>
 <script src="../js/notyf.min.js"></script>
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
@@ -1360,11 +1364,6 @@
 <script src="../js/swapPane.js"></script>
 <script src="../js/transactionsPane.js"></script>
 <script src="../js/tokenDetailPane.js"></script>
-<script src="../js/jdenticon.min.js"></script>
-<script src="../js/tinysort.min.js"></script>
-<script src="../js/rangeSlider.js"></script>
-<script src="../js/progressRing.js"></script>
-<script src="../js/chart.min.js"></script>
 <script src="../js/contactsPane.js"></script>
 </body>
 </html>

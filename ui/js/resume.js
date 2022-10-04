@@ -109,9 +109,10 @@ class MainPane {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 if(mainPane.oldData !== JSON.stringify(response)) {
+                    if(response.wallets[response.selectedWallet].wallet.chainID != MAIN_ASSET.chainID)
+                        swapPane.setSwap(response)
                     mainPane.displayData(response)
                     transactionsPane.updateTxs(response)
-                    swapPane.updateSwap(response)
                     mainPane.oldData = JSON.stringify(response)
                 }
             })

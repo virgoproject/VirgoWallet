@@ -125,16 +125,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             //send native asset
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
                 if (request.asset == baseWallet.getCurrentWallet().ticker) {
-
-                    console.log("base asset")
-                    console.log({
-                        from: baseWallet.getCurrentAddress(),
-                        to: request.recipient,
-                        value: request.amount,
-                        gas: request.gasLimit,
-                        gasPrice: request.gasPrice,
-                        nonce: nonce
-                    })
+                    console.log(request.amount)
+                    request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+                    console.log(request.amount.toString())
 
                     web3.eth.sendTransaction({
                         from: baseWallet.getCurrentAddress(),
@@ -150,7 +143,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                                 "contractAddr": baseWallet.getCurrentWallet().ticker,
                                 "date": Date.now(),
                                 "recipient": request.recipient,
-                                "amount": request.amount,
+                                "amount": request.amount.toString(),
                                 "gasPrice": request.gasPrice,
                                 "gasLimit": request.gasLimit,
                                 "nonce": nonce
@@ -223,16 +216,14 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     return
                 }
 
-                console.log("contract asset")
-                console.log({
-                    asset: request.asset,
-                    from: baseWallet.getCurrentWallet(),
-                    to: request.recipient,
-                    amount: request.amount,
-                    nonce: nonce,
-                    gas: request.gasLimit,
-                    gasPrice: request.gasPrice
-                })
+                let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.asset)
+
+                if(decimals === undefined)
+                    decimals = baseWallet.getCurrentWallet().decimals
+                else
+                    decimals = decimals.decimals
+
+                request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
 
                 const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
                 const transaction = contract.methods.transfer(request.recipient, request.amount);

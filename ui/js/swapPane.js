@@ -45,6 +45,7 @@ class SwapPane {
         confirmBtn: $("#confirmSwapBtn"),
         back: $("#swapReviewBack")
     }
+    static comingSoon = $("#swapComing")
 
     constructor() {
         this.select1OldElem = ""
@@ -118,11 +119,11 @@ class SwapPane {
 
                             _this.gasPrice = Math.round(gasPrice * feesModifier)
 
-                            let totalForNative = res.gas * _this.gasPrice
+                            let totalForNative = new BN(res.gas * _this.gasPrice)
                             if (_this.route.route[0] == MAIN_ASSET.contract)
-                                totalForNative += Math.trunc(parseFloat(SwapPane.inputs.one.input.val()) * 10 ** MAIN_ASSET.decimals)
+                                totalForNative.add(new BN(Utils.toAtomicString(SwapPane.inputs.one.input.val(), MAIN_ASSET.decimals)))
 
-                            if (totalForNative <= nativeBalance.balance && !isBtnDisabled(SwapPane.review.confirmBtn)){
+                            if (totalForNative.lte(new BN(nativeBalance.balance)) && !isBtnDisabled(SwapPane.review.confirmBtn)){
                                 SwapPane.review.confirmBtn.attr("disabled", false)
                                 SwapPane.review.confirmBtn.find("val").html("Init swap")
                             }else{
@@ -175,9 +176,21 @@ class SwapPane {
 
     setSwap(data){
         const selectedAddress = data.addresses[data.selectedAddress]
+        const selectedWallet = data.wallets[data.selectedWallet].wallet
+
+        if(selectedWallet.swapParams != false){
+            console.log("ok")
+            SwapPane.params.show()
+            SwapPane.comingSoon.hide()
+        }else{
+            console.log("pasok")
+            SwapPane.params.hide()
+            SwapPane.comingSoon.show()
+        }
 
         this.setSelectOptions(SwapPane.inputs.one, selectedAddress.balances)
         this.setSelectOptions(SwapPane.inputs.two, selectedAddress.balances)
+        this.updateSwap(data)
     }
 
     updateSwap(data){

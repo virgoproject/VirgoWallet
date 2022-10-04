@@ -49,15 +49,17 @@ class ContactsPane {
         ContactsPane.buttons.addContact.click(function (e) {
             $(this).hide()
             ContactsPane.div.bodyContacts.hide()
+            ContactsPane.input.setContactAddressInput.val("")
+            ContactsPane.input.setContactNameInput.val("")
+            ContactsPane.input.setContactNoteInput.val("")
+            ContactsPane.input.setContactFavoriteInput.prop('checked', false)
             ContactsPane.div.formContact.show()
             ContactsPane.text.title.html('Add contact')
 
         })
 
         ContactsPane.buttons.addItNow.click(function (e) {
-            ContactsPane.div.bodyContacts.hide()
-            ContactsPane.div.formContact.show()
-            ContactsPane.text.title.html('Add contact')
+            ContactsPane.buttons.addContact.click()
         })
 
         ContactsPane.buttons.addContactButtonForm.click(function (e) {
@@ -73,7 +75,7 @@ class ContactsPane {
                     }
 
                     ContactsPane.input.setContactAddressInput.removeClass("is-invalid")
-                    ContactsPane.text.addressText.text('Add the address of the contact here for faster transactions.')
+                    ContactsPane.text.addressText.text('')
 
                     addingContact(ContactsPane.input.setContactAddressInput.val(), ContactsPane.input.setContactNameInput.val(), ContactsPane.input.setContactNoteInput.val(), ContactsPane.input.setContactFavoriteInput.is(':checked')).then(function (result) {
                             if (result !== "already") {
@@ -124,6 +126,8 @@ class ContactsPane {
 
 
         ContactsPane.input.setContactAddressInput.on("change keyup paste", function () {
+            ContactsPane.input.setContactAddressInput.removeClass("is-invalid")
+            ContactsPane.text.addressText.text('')
             if (ContactsPane.input.setContactAddressInput.val() !== "" && ContactsPane.input.setContactNameInput.val() !== "") {
                 ContactsPane.buttons.addContactButtonForm.prop("disabled", false)
             } else {
@@ -233,12 +237,14 @@ class ContactsPane {
                 element.find('.notesPart').hide()
                 element.find('.changeContact').attr('data-index', l).click(function () {
                     updateContact($(this).attr('data-index'), element.find('.inputNameContact').val(), element.find('.changeNote').val())
+                    element.find('.showElements').click()
+                    notyf.success("Contact updated!")
                 })
 
                 element.find('.deleteContact').attr('id', l).attr('data-address',res[l].address).click(function () {
                     deleteContact($(this).attr('data-address'))
                     element.remove()
-                    if (ContactsPane.div.contactList.length <= 0)
+                    if (ContactsPane.div.contactList.children().length <= 0)
                         ContactsPane.div.noContactFound.show()
                 })
 

@@ -56,7 +56,10 @@ class Utils {
     }
 
     static toAtomicString(amount, decimals){
-        const zerosToAdd = decimals - (amount.length - (amount.indexOf(".")+1))
+        let dotIndex = amount.indexOf(".")
+        if(dotIndex < 0)
+            dotIndex = amount.length-1
+        const zerosToAdd = decimals - (amount.length - (dotIndex+1))
         const res = amount.replace(".", "") + "0".repeat(zerosToAdd)
         if(res.startsWith("0"))
             return res.substring(1)

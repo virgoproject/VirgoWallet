@@ -101,7 +101,7 @@
 }
 
 #contacts .addBottomLogo:hover {
-    background: #8200e2;
+    background: var(--mainColorLight20);
 }
 
 #contacts .addLogo {

@@ -210,7 +210,7 @@ class TransactionsPane {
             elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
         }
 
-        elem.find(".details .recipient").html(transaction.recipient)
+        elem.find(".recipient").html(transaction.recipient)
         elem.find(".details .recipient").click(function(){
             copyToClipboard($(this).get(0))
             elem.find(".recipientTitle").hide()

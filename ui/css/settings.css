@@ -80,7 +80,7 @@
 #settings .accounts .account .balance {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 7em;
+    max-width: 6em;
     display: inline-block;
     line-height: 1em;
     vertical-align: middle;
