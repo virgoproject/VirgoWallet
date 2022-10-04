@@ -1,10 +1,14 @@
+#body .swap  {
+    padding-top: 1em;
+}
+
 #swapPane .inputHeader {
     font-size: 0.8em;
 }
 
 #swapPane .inputHeader .amount {
     display: inline-block;
-    max-width: 124px;
+    max-width: 96px;
     overflow: hidden;
     vertical-align: top;
     text-overflow: ellipsis;
@@ -32,6 +36,12 @@
     height: 100%;
     padding-right: 1em;
     margin-left: 0.5em;
+}
+
+#swapInput2 {
+    width: initial !important;
+    min-width: initial !important;
+    max-width: 100% !important;
 }
 
 #swapPane .swapInput .maxBtn {
@@ -112,7 +122,7 @@
 }
 
 #swapPane .route .step:last-child {
-    right: 16px;
+    right: 15px;
 }
 
 #swapPane .route.steps3 .step:nth-child(2){
@@ -145,4 +155,103 @@
 
 #swapPane .rate .ticker {
     color: var(--mainColor);
+}
+
+#swapLoading {
+    text-align: center;
+    margin-top: 4em;
+    font-size: 2em;
+}
+
+#swapParams {
+    margin-top: 1em;
+}
+
+#swapReview .confirmRoute {
+    border-bottom: 2px dashed black;
+    margin: 1em 0.25em 2em;
+}
+
+#swapReview .confirmRoute .step {
+    height: 56px;
+    width: 56px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    position: absolute;
+    margin-top: -28px;
+    border: 4px solid white;
+}
+
+#swapReview .confirmRoute .step:last-child {
+    right: 32px;
+}
+
+#swapReview .receiveAmount {
+    background: #fbf4f8;
+    background: #fbf4f8;
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#swapReview .receiveAmount .amount {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+#swapReview .details p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+#swapReview .details .value {
+    text-align: right;
+    font-weight: bold;
+}
+
+#swapReview .details .title, #swapReview .details .value {
+    margin: 0.25em 0;
+}
+
+#swapReview .ticker {
+    color: var(--mainColor);
+}
+
+#swapReview .range {
+    margin-top: 1em;
+    margin-bottom: 2.5em;
+}
+
+#swapReviewAmountIn, #swapReviewNetFees, #swapReviewSwapFees {
+    display: inline-block;
+    max-width: 84px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#swapReviewBack {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#swapReviewBack:hover {
+    color: black;
+}
+
+#swapReviewNetFees {
+    max-width: 78px!important;
+}
+
+#swapReviewAmountOut {
+    display: inline-block;
+    max-width: 14ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#swapRouteNotFound {
+    border-radius: 0.5em;
 }

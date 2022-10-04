@@ -1,7 +1,25 @@
 class Utils {
 
     static formatAmount(amount, decimals){
-        return amount/Math.pow(10, decimals);
+        if(amount == 0) return 0
+
+        amount = ""+amount//make sdure amount is a string
+
+        if(amount.length < decimals)
+            amount = "0".repeat(decimals - amount.length) + amount
+
+        amount = amount.substring(0, amount.length-decimals) + "." + amount.substring(amount.length-decimals)
+
+        if(amount.startsWith("."))
+            amount = "0" + amount
+
+        while(amount.endsWith("0"))
+            amount = amount.slice(0, -1)
+
+        if(amount.endsWith("."))
+            amount = amount.slice(0, -1)
+
+        return amount
     }
 
     static beautifyAmount(amount){
@@ -30,6 +48,22 @@ class Utils {
                 .replace(/\s+/g, '') // remove spaces
                 .replace(/[0-9a-f]{2}/g, '%$&') // add '%' before each 2 characters
         );
+    }
+
+    static precisionRound(number, precision) {
+        const factor = Math.pow(10, precision);
+        return Math.round(number * factor) / factor;
+    }
+
+    static toAtomicString(amount, decimals){
+        let dotIndex = amount.indexOf(".")
+        if(dotIndex < 0)
+            dotIndex = amount.length-1
+        const zerosToAdd = decimals - (amount.length - (dotIndex+1))
+        const res = amount.replace(".", "") + "0".repeat(zerosToAdd)
+        if(res.startsWith("0"))
+            return res.substring(1)
+        return res
     }
 
 }

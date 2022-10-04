@@ -16,6 +16,7 @@
 
   "background": {
     "scripts": [
+      "commonJS/utils.js",
       "commonJS/browser-polyfill.js",
       "background/bundle.js",
       "background/utils/converter.js",
@@ -23,7 +24,8 @@
       "background/wallet/web3Wallet.js",
       "background/wallet/baseWallet.js",
       "background/background.js",
-      "background/swap/uniswapUtils.js"
+      "background/swap/uniswap02Utils.js",
+      "background/swap/uniswap03Utils.js"
     ]
   },
 

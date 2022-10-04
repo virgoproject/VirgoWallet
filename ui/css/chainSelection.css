@@ -21,6 +21,8 @@
     padding-bottom: 0.375em;
     cursor: pointer;
     transition: background ease 0.25s;
+    text-align: center;
+    margin: 0.25em 0;
 }
 
 #chainSelector .chain .logo {
@@ -29,10 +31,11 @@
     background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
+    margin: auto;
 }
 
 #chainSelector .chain.selected {
-    background: #ece2f3;
+    background: #e2d2ed;
     cursor: default;
 }
 
@@ -56,16 +59,39 @@
 
 #chainSelectionHeader.opened i {
     transform: rotate(180deg);
+    vertical-align: middle;
 }
 
 #chainSelector .chain .selectedIcon {
+    position: relative;
     display: none;
 }
 
 #chainSelector .chain.selected .selectedIcon {
-    display: inline-block;
+    display: block;
 }
 
-#chainSelector .chain.selected .selectIcon {
+#chainSelector .chain.selected .selectedIcon i {
+    position: absolute;
+    right: 1.5em;
+    font-size: 0.75em;
+}
+
+#chainSelector .chain .testnet {
+    font-size: 0.65em;
+    margin-left: -12%;
+    margin-top: 2em;
+    padding: 0.25em;
     display: none;
+}
+
+#chainSelector name {
+    font-size: 0.85em;
+}
+
+#chainSelector ticker {
+    font-size: 0.75em;
+    line-height: 1em;
+    display: block;
+    font-weight: bold;
 }

@@ -25,22 +25,27 @@ class SelectChains {
             const wallet = walletObj.wallet
             const elem = SelectChains.baseChainRow.clone()
 
+            elem.attr("id", "")
+
             elem.attr("data-walletid", i)
 
             if(walletObj === data.wallets[data.selectedWallet])
-                elem.addClass("selected")
+                elem.find(".chain").addClass("selected")
 
             elem.find("name").html(wallet.name)
             elem.find("ticker").html(wallet.ticker)
             elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + wallet.ticker + "/" + wallet.ticker + "/logo.png')");
 
+            if(wallet.testnet)
+                elem.find(".testnet").css("display", "inline-block")
+
             elem.click(function(){
-                if(elem.hasClass("selected")) return
+                if(elem.find(".chain").hasClass("selected")) return
 
                 browser.runtime.sendMessage({command: 'changeWallet', walletId: elem.attr("data-walletid")})
                     .then(function () {
                         $("#chainsContainer .chain.selected").removeClass("selected")
-                        elem.addClass("selected")
+                        elem.find(".chain").addClass("selected")
 
                         //reset assets
                         const baseAssetRow = MainPane.baseAssetRow.clone()

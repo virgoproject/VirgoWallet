@@ -33,6 +33,7 @@
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
+    z-index: 1;
 }
 
 #settings.opened {
@@ -88,7 +89,7 @@
 #settings .accounts .account .balance {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 7em;
+    max-width: 6em;
     display: inline-block;
     line-height: 1em;
     vertical-align: middle;

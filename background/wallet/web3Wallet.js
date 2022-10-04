@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -11,13 +11,15 @@ class Web3Wallet {
         this.tokens = tokens
         this.transactions = transactions
         this.explorer = explorer
+        this.swapParams = swapParams
+        this.testnet = testnet
 
         this.balances = new Map()
 
         this.tokenSet = new Map()
 
         for(let token of this.tokens)
-            this.tokenSet.set(token.contract, true)
+            this.tokenSet.set(token.contract, token)
 
         const wallet = this
         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
@@ -56,7 +58,53 @@ class Web3Wallet {
                     break
             }
         }
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer)
+        switch(json.chainID){
+            case 1:
+                json.swapParams = {
+                    "type": "uni3",
+                    "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+                    "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+                    "popularTokens": ["0xdAC17F958D2ee523a2206206994597C13D831ec7","0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","0x6B175474E89094C44Da98b954EedeAC495271d0F"],
+                    "proxyAddress": "0x5366De6176049C58F53Cb385A09E52Ae51909b13"
+                }
+                break
+            case 137:
+                json.swapParams = {
+                    "type": "uni3",
+                    "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+                    "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+                    "popularTokens": ["0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","0xc2132D05D31c914a87C6611C10748AEb04B58e8F","0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"],
+                    "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
+                }
+                break
+            case 56:
+                json.swapParams = {
+                    type: "uni2",
+                    routerAddress: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+                    factoryAddress: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
+                    popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"],
+                    proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
+                    feesRate: 0.0025
+                }
+            default:
+                json.swapParams = false
+        }
+
+        if(json.chainID == 3){
+            json.name = "Ropsten"
+            json.ticker = "RETH"
+            json.testnet = true
+        }else{
+            json.testnet = false
+        }
+
+        if(json.chainID == 137)
+            json.contract = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+
+        if(json.chainID == 10001)
+            json.name = "Ether PoW"
+
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }
 
     toJSON(){
@@ -72,7 +120,9 @@ class Web3Wallet {
                 "chainID": this.chainID,
                 "tokens": this.tokens,
                 "transactions": this.transactions,
-                "explorer": this.explorer
+                "explorer": this.explorer,
+                "swapParams": this.swapParams,
+                "testnet": this.testnet
             }
         }
     }
@@ -225,19 +275,51 @@ class Web3Wallet {
 
                         if(transaction.status === undefined){
                             if(receipt.status){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction confirmed!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " confirmed"
-                                });
+
+                                if(transaction.contractAddr == "SWAP"){
+                                    const log = receipt.logs[receipt.logs.length-1]
+
+                                    const decodedLog = web3.eth.abi.decodeLog([
+                                        {type: "address", "name": "caller"},
+                                        {type: "address", "name": "from"},
+                                        {type: "address", "name": "to"},
+                                        {type: "uint256", "name": "amountIn"},
+                                        {type: "uint256", "name": "amountOut"}
+                                    ], log.data, log.topics)
+
+                                    transaction.swapInfos.amountOut = decodedLog.amountOut
+
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Swap successful!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " confirmed"
+                                    })
+
+                                }else{
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction confirmed!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " confirmed"
+                                    })
+                                }
+
                             }else if(receipt.status == false){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction failed.",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " failed"
-                                });
+                                if(transaction.contractAddr == "SWAP")
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Swap failed.",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " failed"
+                                    })
+                                else
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction failed.",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " failed"
+                                    })
                             }
                         }
 
@@ -339,6 +421,37 @@ class Web3Wallet {
 
     getTransaction(hash){
         return this.transactions.find(tx => tx.hash === hash)
+    }
+
+    initSwapUtils(){
+        if(this.swapUtils === undefined)
+            switch(this.chainID){
+                case 1:
+                case 137:
+                    this.swapUtils = new Uniswap03Utils(this.swapParams.proxyAddress, this.swapParams.quoterAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens)
+                    return
+                case 56:
+                    this.swapUtils = new Uniswap02Utils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate)
+                    return
+            }
+    }
+
+    async getSwapRoute(amount, token1, token2){
+        this.initSwapUtils()
+
+        return await this.swapUtils.findRoute(amount, token1, token2)
+    }
+
+    async estimateSwapFees(amount, route){
+        this.initSwapUtils()
+
+        return await this.swapUtils.estimateSwapFees(amount, route)
+    }
+
+    async initSwap(amount, route, gasPrice){
+        this.initSwapUtils()
+
+        return await this.swapUtils.initSwap(amount, route, gasPrice)
     }
 
 }
