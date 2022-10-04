@@ -15,6 +15,20 @@ browser.storage.local.get("backupPopupDate").then(function(res){
         backupPopupDate = res.backupPopupDate
 })
 
+let accName = {}
+browser.storage.local.get("yourAccountName").then(function (res){
+    if (res.yourAccountName.length === 0){
+        let count = 0
+        for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
+            accName[address.address] = "Account "+count
+            count++
+        }
+    }else{
+        accName = res.yourAccountName
+    }
+})
+
+
 let lockDelay = 60;
 let autolockEnabled = false;
 let lastActivity = Date.now();
@@ -28,6 +42,8 @@ browser.storage.local.get("lockDelay").then(function(res){
     if(res.lockDelay !== undefined)
         lockDelay = res.lockDelay
 })
+
+
 
 setInterval(function(){
     if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
@@ -44,6 +60,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
+
                 sendResponse(getBaseInfos())
                 lastActivity = Date.now()
             }
@@ -78,6 +95,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             baseWallet.selectAddress(request.accountID)
             sendResponse(getBaseInfos())
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
+            break
+
+        case "changeAccountName":
+            accName[request.address] = request.newName
+            browser.storage.local.set({"yourAccountName": accName});
             break
 
         case "getGasPrice":

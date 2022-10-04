@@ -85,6 +85,10 @@ async function changeAccount(accountID){
     return await browser.runtime.sendMessage({command: 'changeAccount', accountID: accountID})
 }
 
+async function changeAccountName(address, newName){
+    return await browser.runtime.sendMessage({command: 'changeAccountName', address:address, newName:newName})
+}
+
 async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
 }

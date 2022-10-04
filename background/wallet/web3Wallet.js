@@ -134,11 +134,23 @@ class Web3Wallet {
             let balances = this.getBalances(address)
             json.push({
                 "address": address,
+                "name": this.getAccountName(address),
                 "balances": balances
             })
         }
-
         return json
+    }
+
+    getAccountName(address){
+        let name = accName[address]
+
+        if (name === undefined || name === ""){
+            name = "Account "+baseWallet.getAddresses().indexOf(address)
+            accName[address] = name
+            browser.storage.local.set({"yourAccountName": accName});
+        }
+
+        return name
     }
 
     getBalances(address){
