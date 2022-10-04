@@ -8,8 +8,6 @@
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-    background: linear-gradient(0deg, #5a009c14, transparent);
-    background-color: white;
 }
 
 #assetsPane .content {

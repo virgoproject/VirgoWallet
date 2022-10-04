@@ -86,6 +86,7 @@ class Web3Wallet {
                     proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
                     feesRate: 0.0025
                 }
+                break
             default:
                 json.swapParams = false
         }
@@ -97,12 +98,6 @@ class Web3Wallet {
         }else{
             json.testnet = false
         }
-
-        if(json.chainID == 137)
-            json.contract = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
-
-        if(json.chainID == 10001)
-            json.name = "Ether PoW"
 
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }
@@ -147,7 +142,7 @@ class Web3Wallet {
         if (name === undefined || name === ""){
             name = "Account "+baseWallet.getAddresses().indexOf(address)
             accName[address] = name
-            browser.storage.local.set({"yourAccountName": accName});
+            browser.storage.local.set({"accountsNames": accName});
         }
 
         return name

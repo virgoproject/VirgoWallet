@@ -42,11 +42,14 @@
 
 #settings .addAccount {
     cursor: pointer;
-    color: #545454;
+    color: var(--mainColor);
+    transition: all 0.2s ease-in;
+    width: fit-content;
+    float: right;
 }
 
 #settings .addAccount:hover {
-    color: var(--bs-body-color)
+    color: var(--mainColorDark10);
 }
 
 #settings .accounts {
@@ -67,9 +70,22 @@
     background: #ece2f3;
 }
 
+#settings .accounts .account i {
+    display: none;
+    cursor: pointer;
+}
+
+#settings .accounts .account:hover i {
+    display: inline-block;
+}
+
 #settings .accounts .account.selected {
     background: #ece2f3;
     cursor: default;
+}
+
+#settings .accounts .account .address:focus + i {
+    display: none;
 }
 
 #settings .accounts .account p {
@@ -84,6 +100,10 @@
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 15px !important;
+    cursor: pointer;
+    min-width: 6ch;
+    max-width: 18ch;
 }
 
 #settings .accounts .account .balance {

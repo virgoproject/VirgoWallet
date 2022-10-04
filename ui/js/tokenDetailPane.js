@@ -98,6 +98,7 @@ class TokenDetailPane {
 
     displayToken(data){
         TokenDetailPane.detailedPane.menu.news.click()
+        TokenDetailPane.self.find("[data-period=1]").click()
         TokenDetailPane.detailedPane.chartInfos.name.html(data.name)
         TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data.price))
 

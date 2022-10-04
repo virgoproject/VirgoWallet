@@ -89,11 +89,14 @@ display: block;
 
 #mainPane .resume .assets .addAsset {
     cursor: pointer;
-    color: var(--highlightColor1);
+    color: var(--mainColor);
+    transition: all 0.2s ease-in;
+    width: fit-content;
+    float: right;
 }
 
 #mainPane .resume .assets .addAsset:hover {
-    color: var(--bs-body-color);
+    color: var(--mainColorDark10);
 }
 
 #body .bodyElem.addAsset .back {

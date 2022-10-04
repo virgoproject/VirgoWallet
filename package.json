@@ -1,6 +1,6 @@
 {
   "name": "virgoWallet",
-  "version": "0.7.0",
+  "version": "0.7.5",
   "description": "",
   "scripts": {
     "build": "webpack",

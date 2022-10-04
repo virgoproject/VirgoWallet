@@ -255,3 +255,14 @@
 #swapRouteNotFound {
     border-radius: 0.5em;
 }
+
+#swapComing div {
+    height: 2.5em;
+    width: 2.5em;
+    background: var(--mainColorLight20);
+    color: white;
+    line-height: 2.5em;
+    border-radius: 50%;
+    font-size: 2.5em;
+    margin: 0.25em auto;
+}

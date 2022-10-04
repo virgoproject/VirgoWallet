@@ -1,7 +1,7 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7"
+const VERSION = "0.7.5"
 
 const connectedWebsites = []
 
@@ -16,15 +16,15 @@ browser.storage.local.get("backupPopupDate").then(function(res){
 })
 
 let accName = {}
-browser.storage.local.get("yourAccountName").then(function (res){
-    if (res.yourAccountName.length === 0){
+browser.storage.local.get("accountsNames").then(function (res){
+    if (res.accountsNames.length === 0){
         let count = 0
         for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
             accName[address.address] = "Account "+count
             count++
         }
     }else{
-        accName = res.yourAccountName
+        accName = res.accountsNames
     }
 })
 
@@ -99,8 +99,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case "changeAccountName":
             accName[request.address] = request.newName
-            browser.storage.local.set({"yourAccountName": accName});
-            break
+            browser.storage.local.set({"accountsNames": accName});
+            return false
 
         case "getGasPrice":
             web3.eth.getGasPrice().then(function(gasPrice){

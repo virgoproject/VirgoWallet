@@ -121,7 +121,7 @@ class SwapPane {
 
                             let totalForNative = new BN(res.gas * _this.gasPrice)
                             if (_this.route.route[0] == MAIN_ASSET.contract)
-                                totalForNative.add(new BN(Utils.toAtomicString(SwapPane.inputs.one.input.val(), MAIN_ASSET.decimals)))
+                                totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SwapPane.inputs.one.input.val(), MAIN_ASSET.decimals)))
 
                             if (totalForNative.lte(new BN(nativeBalance.balance)) && !isBtnDisabled(SwapPane.review.confirmBtn)){
                                 SwapPane.review.confirmBtn.attr("disabled", false)
@@ -179,13 +179,12 @@ class SwapPane {
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 
         if(selectedWallet.swapParams != false){
-            console.log("ok")
             SwapPane.params.show()
             SwapPane.comingSoon.hide()
         }else{
-            console.log("pasok")
             SwapPane.params.hide()
             SwapPane.comingSoon.show()
+            return
         }
 
         this.setSelectOptions(SwapPane.inputs.one, selectedAddress.balances)
@@ -314,7 +313,6 @@ class SwapPane {
 
                 if(res === false){
                     SwapPane.rate.notFound.show()
-                    console.log("ça devrait show")
                     return
                 }
 

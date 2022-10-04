@@ -29,6 +29,9 @@ class Utils {
         if(amount > 1000000)
             return Utils.reduceDecimals(amount/1000000).toLocaleString('en-US') + "M"
 
+        if(amount < 0.001)
+            return Utils.reduceDecimals(amount)
+
         return Utils.reduceDecimals(amount).toLocaleString('en-US')
     }
 

@@ -408,6 +408,13 @@ class SettingsPane {
             })
             elem.find(".address").change(function (e){
                 changeAccountName(address,e.target.value)
+            }).on("input", function(){
+                $(this).css("width", ($(this).val().length+2) + "ch")
+            }).trigger("input")
+
+            elem.find(".editIcon").click(e => {
+                elem.find(".address").focus()
+                e.stopPropagation()
             })
 
             const mainAssetBalance = addressObj.balances[data.wallets[data.selectedWallet].wallet.ticker]

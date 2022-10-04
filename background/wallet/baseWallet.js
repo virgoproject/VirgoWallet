@@ -27,11 +27,18 @@ class BaseWallet {
         this.selectedWallet = data.selectedWallet
         this.selectedAddress = data.selectedAddress
 
+        if(this.selectedWallet === undefined)
+            this.selectedWallet = 0
+
+        if(this.selectedAddress === undefined)
+            this.selectedAddress = 0
+
         provider = new HDWalletProvider({
             mnemonic: this.mnemonic,
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
-            numberOfAddresses: this.nonce
+            numberOfAddresses: this.nonce,
+            shareNonce: false
         })
 
         this.setProvider(provider)
@@ -39,7 +46,7 @@ class BaseWallet {
         if(data.version !== undefined)
             this.version = data.version
         else{
-            this.version = "first"//To change for VERSION after next update
+            this.version = VERSION//To change for VERSION after next update
             this.save()
         }
     }
@@ -297,12 +304,48 @@ class BaseWallet {
                 "asset": "EthereumPoW",
                 "ticker": "ETHW",
                 "decimals": 18,
-                "contract": "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
+                "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
                 "RPC": "https://mainnet.ethereumpow.org/",
                 "chainID": 10001,
                 "tokens": [],
                 "transactions": [],
                 "explorer": "https://www.oklink.com/en/ethw/tx/",
+                "swapParams": false,
+                "testnet": false
+            }
+        }
+
+        wallets[10] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Ether Classic",
+                "asset": "Ethereum Classic",
+                "ticker": "ETC",
+                "decimals": 18,
+                "contract": "0x82A618305706B14e7bcf2592D4B9324A366b6dAd",
+                "RPC": "https://geth.etc-network.info/",
+                "chainID": 61,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://blockscout.com/etc/mainnet/tx/",
+                "swapParams": false,
+                "testnet": false
+            }
+        }
+
+        wallets[11] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Ether Fair",
+                "asset": "Ethereum Fair",
+                "ticker": "ETHF",
+                "decimals": 18,
+                "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                "RPC": "https://rpc.etherfair.org/",
+                "chainID": 513100,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://explorer.etherfair.org/tx/",
                 "swapParams": false,
                 "testnet": false
             }
