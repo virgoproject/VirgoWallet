@@ -1270,23 +1270,34 @@
             </div>
             <p class="text-center title m-0">VirgoFarm <i class="fa-solid fa-badge-check" style="color: var(--mainColor)"></i></p>
             <small class="text-center title" style="color: var(--mainColorLight)">Apps</small>
-            <div class="row mt-3 p-0">
-                <button class="button w-50 stakeButton"> New stake <i class="fa-solid fa-plus"></i></button>
-                <p class="w-50 align-self-center m-0 text-end"> My stakes (<span style="color: var(--mainColorDark10)">2</span>)</p>
+            <div class="row m-0 mt-3 text-center mb-3" id="switchFarmPane">
+                <div id="myStakeBtn" class="col-6 m-0 p-0 paneSwitchFarmBtn paneSetter activePane">
+                    <p class=" m-0 p-1 mb-2">MY stakes (<span id="stakingCount">2</span>)</p>
+                </div>
+                <div id="createStakeBtn" class="col-6  m-0 p-0 paneSwitchFarmBtn paneSetter">
+                    <p class=" m-0 p-1 mb-2">Stake your VGO</p>
+                </div>
             </div>
-            <div class="listStake">
-                <div class="row list mt-3 m-0">
-                    <div class="item-list">
+            <div class="row m-0 p-0" id="farmstaking">
+            <div class="row mt-2 p-0">
+                <button class="button w-50 stakeButton"> New stake <i class="fa-solid fa-plus"></i></button>
+            </div>
+            <div class="listStake mt-3">
+                <div class="row list m-0 overflow-auto">
+                    <div class="loading text-center mt-2 mb-2">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                    <div class="item-list mb-2 mt-2" style="display: none">
                         <div class="row m-0">
                             <div class="col-2 align-self-center">
                                 <img src="/ui/images/vgoLogoApp.png" height="40px" width="40px" class="rounded-circle">
                             </div>
                             <div class="col-8 align-self-center">
                                 <span class="fw-bold">VGO</span>
-                                <p class="m-0 p-0">Value : <b class="stakedVGO">2000.48 </b>VGO</p>
+                                <p class="m-0 p-0">Value : <b class="stakedVGO">2000.48 </b> VGO</p>
                             </div>
-                            <div class="col-2 align-self-center showStaking">
-                                <i class="fas fa-chevron-down"></i></p>
+                            <div class="col-2 align-self-center showStaking d-flex">
+                                <i class="fas fa-chevron-right"></i></p>
                             </div>
                             <div class="row infoStaking p-0 m-0 mt-2 text-center">
                                 <hr>
@@ -1300,13 +1311,50 @@
                                     <p class="m-0">Available: <p class="m-0"><b class="availableEarn">32542.21</b> VGO</p></p>
                                 </div>
                                 <div class="col-12">
-                                    <button class="button col-5 me-2 ms-2 bottomBtn">Claim</button>
-                                    <button class="button col-5 me-2 ms-2 bottomBtn">Unlock</button>
+                                    <button class="button col-5 me-2 ms-2 bottomBtn claimBtn">Claim</button>
+                                    <button class="button col-5 me-2 ms-2 bottomBtn unlockBtn">Unlock</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            </div>
+            <div class="row m-0" style="display: none"  id="farmSetStaking">
+                <span>Stake your VGO</span>
+                <div class="row m-0 " id="farmBody">
+                    <div class="row m-0 mt-3 farmCard">
+                        <span class="d-flex justify-content-between p-0">Balance <span class="balanceVGO"> aaa</span></span>
+                        <div class="row w-100 m-0 input inputWButton">
+                            <input type="number" class=" col-10" id="stakingValue" placeholder="0" min="100">
+                            <button class="col-2 max" id="stakingmaxBtn">Max</button>
+                        </div>
+                        <div class="p-0 form-text m-0">Min. stack amount 100VGO</div>
+                        <span class="fw-bold mt-4 mb-2">Lock for <span class="lockTime">0</span> months</span>
+                        <input type="range" class="rangeLockTime p-0 mb-4" step="1" max="24" min="0" id="allowRange">
+                        <div class="col-8 text-left">
+                            <p class="m-0 p-0">Estimated earning</p>
+                            <p class="m-0 p-0 mt-1"><span class="fw-bold lockTime" id="estReward">456,78</span> VGO</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <p class="m-0 p-0">APR</p>
+                            <p class="m-0 p-0 mt-1"><span class="fw-bold lockTime" id="stackAPR">19,7</span></p>
+                        </div>
+                        <div class="row m-0 d-flex justify-content-between mt-4">
+                            <button class="button col-12" id="stackVGOBtn">Stack VGO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-1" id="buySwapFarm" style="display: none">
+            <div class="buySwap ms-0 me-0 row d-flex justify-content-center align-items-center">
+                <div class="col-6 text-light fw-bold text-center">You don't have any VGO ?</div>
+                <div class="col-6"><img src="/ui/images/buyorswap.png" alt="noimg" class="img-fluid"></div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                    <button class="col-5 button">Buy</button>
+                    <button class="col-5 button">Swap</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -1337,10 +1385,10 @@
 <script src="../js/jdenticon.min.js"></script>
 <script src="../js/tinysort.min.js"></script>
 <script src="../js/rangeSlider.js"></script>
-<script src="../js/progressRing.js"></script>
 <script src="../js/chart.min.js"></script>
 <script src="../js/contactsPane.js"></script>
 <script async src="../js/transak.min.js"></script>
 <script src="../js/apps.js"></script>
+<script src="../js/apps/virgoFarm.js"></script>
 </body>
 </html>

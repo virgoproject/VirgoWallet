@@ -24,6 +24,8 @@
 
 #virgoFarm .listStake {
     padding: 0 1em;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 #virgoFarm .list {
@@ -49,15 +51,72 @@
     transition: transform 0.25s ease;
 }
 
-#virgoFarm .fa-chevron-down {
+#virgoFarm .fa-chevron-right {
     cursor: pointer;
 }
 
-#virgoFarm .listStake b{
+#virgoFarm .listStake b {
     color: var(--mainColor);
 }
 
 #virgoFarm hr {
     height: 2px;
     background-color: var(--highlightColor1);
+}
+
+#farmSetStaking {
+    padding: 0 1em;
+}
+
+#farmSetStaking .lockTime {
+    color: var(--mainColor);
+}
+
+.rangeLockTime {
+    background: linear-gradient(to right, var(--mainColorLight) 0%, var(--mainColorLight) 50%, var(--mainLight10)  50%, var(--mainLight10)  100%);
+    border-radius: 8px;
+    height: 12px;
+    outline: none;
+    transition: background 450ms ease-in;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.rangeLockTime::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    background: var(--mainColorLight);
+    border-radius: 30px;
+    height: 20px;
+    width: 20px;
+}
+
+#switchFarmPane .activePane {
+    border-bottom: 2px solid var(--mainColorLight) !important;
+    color: var(--mainColorLight);
+}
+
+#switchFarmPane .paneSetter {
+    border-bottom: 2px solid gray;
+}
+
+#switchFarmPane{
+    cursor: pointer;
+}
+
+
+#buySwapFarm .button {
+    background-color: white;
+    color: black;
+}
+
+.buySwap{
+    padding: 0.3em 0.3em;
+    background-color: var(--mainColor);
+    border-radius: 0.5em;
+}
+
+#buySwapFarm .row {
+    margin-right: 1em !important;
+    margin-left: 1em !important;
 }

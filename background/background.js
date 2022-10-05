@@ -379,8 +379,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
         case "web3Request":
             handleWeb3Request(sendResponse, request.origin, request.method, request.params)
-            return false
-
+            break
 
         case "authorizeWebsiteConnection":
             if(pendingAuthorizations.get(request.id) == null)
@@ -639,6 +638,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 request.token2
             ).then(function(resp){
                 sendResponse(resp)
+            })
+            break
+
+        case 'getLocks':
+            VirgoFarm.getLocks().then(function (lock) {
+                sendResponse(lock)
             })
             break
     }

@@ -151,3 +151,7 @@ async function getContacts(){
 async function getSwapRoute(amount, token1, token2){
     return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
 }
+
+async function getLocks(){
+    return await browser.runtime.sendMessage({command : 'getLocks'})
+}
