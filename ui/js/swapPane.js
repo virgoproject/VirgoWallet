@@ -341,7 +341,7 @@ class SwapPane {
                 SwapPane.inputs.two.input.val(amountOut / 10 ** t2Bal.decimals)
                 SwapPane.rate.amount.html((amountOut / 10 ** t2Bal.decimals)/SwapPane.inputs.one.input.val())
 
-                if(SwapPane.inputs.one.input.val() <= SwapPane.inputs.one.balance.html())
+                if(parseFloat(SwapPane.inputs.one.input.val()) <= parseFloat(SwapPane.inputs.one.balance.html()))
                     SwapPane.initBtn.attr("disabled", false)
 
                 if(_this.checkAmountTimeout !== undefined)
