@@ -110,9 +110,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case "getBalance":
             const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset]
-
+            console.log(bal)
             if(!bal.tracked){
                 const contract = new web3.eth.Contract(ERC20_ABI, request.asset);
+                console.log(contract)
                 contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
                     .then(function(res){
                         bal.balance = res
@@ -121,7 +122,15 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }else sendResponse(bal)
 
             break
+        case "getAllchainBalance":
+            for (let y = 0; y < baseWallet.wallets.length; y++){
+                if (baseWallet.wallets[y].ticker === request.asset){
+                    const balance = baseWallet.wallets[y].getBalances(baseWallet.wallets[y])[request.asset]
+                    sendResponse(balance)
+                }
+            }
 
+            break
         case "sendTo":
             let txResume = null;
             //send native asset
@@ -483,7 +492,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
-        
+
         case "closedUpdatePopup":
             baseWallet.version = VERSION
             baseWallet.save()
@@ -495,7 +504,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 delay: lockDelay
             })
             break
-        
+
         case "setAutolock":
             autolockEnabled = request.enabled
             lockDelay = request.delay
@@ -551,7 +560,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             })
             break
-        
+
         case "deleteFavorite":
             browser.storage.local.get('contactList').then(function(res) {
                 for (var i=0 ; i < res.contactList.length ; i++) {
@@ -619,7 +628,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             })
             break
-        
+
         case "getSwapRoute":
             let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
 
@@ -641,6 +650,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(resp)
             })
             break
+
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

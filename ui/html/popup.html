@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
     <link rel="stylesheet" href="/ui/css/apps.css">
     <link rel="stylesheet" href="/ui/css/virgoFarm.css">
+    <link rel="stylesheet" href="/ui/css/simpleSwap.css">
 </head>
 <body>
 
@@ -318,7 +319,7 @@
                     <div class="appsImg" style="background-image:url('/ui/images/apps/main/rampNetwork.svg')"></div>
                     <p>Ramp Network</p>
                 </div>
-                <div class="col-3 text-center appElement mt-2 mb-2">
+                <div class="col-3 text-center appElement mt-2 mb-2" data-app="simpleswap">
                     <div class="appsImg" style="background-image:url('/ui/images/apps/main/simpleSwap.jpg')"></div>
                     <p>Simple Swap</p>
                 </div>
@@ -1305,6 +1306,67 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="simpleswap" style="display: none">
+        <div class="row mt-2">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <p class="text-center title m-0">SimpleSwap <i class="fa-solid fa-badge-check" style="color: var(--mainColor)"></i></p>
+            <small class="text-center title" style="color: var(--mainColorLight)">Apps</small>
+            <div id="simpleswapParams" class="pt-5">
+                <div class="row inputHeader">
+                    <div class="col-3 pl-0">
+                        <p class="m-0">You send</p>
+                    </div>
+                    <div class="col-9 pr-0 text-right">
+                        <p class="m-0">Available: <span class="amount" id="simpleswapBalance1">-</span> <span class="ticker" id="simpleswapTicker1"></span></p>
+                    </div>
+                </div>
+                <div class="row swapInput pt-1 pb-1">
+                    <div class="col-7 p-0">
+                        <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="simpleswapInput1">
+                        <span class="maxBtn" id="simpleswapMaxBtn1">Max</span>
+                    </div>
+                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                        <select class="selectpicker w-100" id="simpleswapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <button id="simpleswapSwitchBtn"><i class="fas fa-sync"></i></button>
+                </div>
+                <div class="row inputHeader ">
+                    <div class="col-3 pl-0">
+                        <p class="m-0">You get</p>
+                    </div>
+                    <div class="col-9 pr-0 text-right">
+                        <p class="m-0">Available: <span class="amount" id="simpleswapBalance2">-</span> <span class="ticker" id="simpleswapTicker2"></span></p>
+                    </div>
+                </div>
+                <div class="row swapInput pt-1 pb-1 ">
+                    <div class="col-7 p-0">
+                        <input type="text" class="amountInput" placeholder="0.0" id="simpleswapInput2" disabled="disabled">
+                    </div>
+                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                        <select class="selectpicker w-100" id="simpleswapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                    </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-12 p-0" id="simpleswapRate" style="display: none">
+                        <p class="rate">Rate: <span class="amount" id="simpleswapRateAmount"></span> <span class="ticker" id="simpleswapRateTicker2">-</span>/<span class="ticker" id="simpleswapRateTicker1">-</span></p>
+                    </div>
+                    <div class="col-12 text-center" id="simpleswapRateLoading" style="display: none">
+                        <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
+                    </div>
+                    <div class="route " id="simpleswapRoute" style="display: none">
+                    </div>
+                    <div class="step" id="simpleswapRouteBaseStep" style="display: none"></div>
+                    <div class="col-12 p-0" style="margin-top: 2.25em;">
+                        <button class="button w-100" id="simpleinitSwapBtn" disabled="true">Swap <span id="simpleswapBtnTicker1">-</span> for <span id="simpleswapBtnTicker2">-</span></button>
                     </div>
                 </div>
             </div>

@@ -44,6 +44,10 @@ async function getBalance(asset){
     return await browser.runtime.sendMessage({command: 'getBalance', asset: asset})
 }
 
+async function getAllchainBalance(asset){
+    return await browser.runtime.sendMessage({command: 'getAllchainBalance', asset: asset})
+}
+
 async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
     return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice})
 }
@@ -151,3 +155,8 @@ async function getContacts(){
 async function getSwapRoute(amount, token1, token2){
     return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
 }
+
+async function getCurrency(){
+    return await browser.runtime.sendMessage({command: 'getCurrency'})
+}
+

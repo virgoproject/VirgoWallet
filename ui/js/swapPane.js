@@ -83,6 +83,7 @@ class SwapPane {
     }
 
     setSwap(data){
+
         const selectedAddress = data.addresses[data.selectedAddress]
 
         this.setSelectOptions(SwapPane.inputs.one, selectedAddress.balances)
@@ -113,6 +114,7 @@ class SwapPane {
 
     //remove selected token in other list
     updateSelects(elem){
+        console.log(this.select2OldElem)
         if(elem == 1){
             if(this.select2OldElem != ""){
                 SwapPane.inputs.two.select.append(this.select2OldElem.elem)
