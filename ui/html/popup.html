@@ -322,11 +322,6 @@
                     <div class="appsImg" style="background-image:url('/ui/images/apps/main/simpleSwap.jpg')"></div>
                     <p>Simple Swap</p>
                 </div>
-                <div class="col-3 text-center appElement mt-2 mb-2">
-                    <div class="appsImg" style="background-image:url('/ui/images/apps/main/rampNetwork.svg')"></div>
-
-                    <p>Simple Swap</p>
-                </div>
             </div>
         </div>
     </div>
@@ -1272,21 +1267,18 @@
             <small class="text-center title" style="color: var(--mainColorLight)">Apps</small>
             <div class="row m-0 mt-3 text-center mb-3" id="switchFarmPane">
                 <div id="myStakeBtn" class="col-6 m-0 p-0 paneSwitchFarmBtn paneSetter activePane">
-                    <p class=" m-0 p-1 mb-2">MY stakes (<span id="stakingCount">2</span>)</p>
+                    <p class=" m-0 p-1 mb-2">MY stakes (<span id="stakingCount"></span>)</p>
                 </div>
                 <div id="createStakeBtn" class="col-6  m-0 p-0 paneSwitchFarmBtn paneSetter">
                     <p class=" m-0 p-1 mb-2">Stake your VGO</p>
                 </div>
             </div>
             <div class="row m-0 p-0" id="farmstaking">
-            <div class="row mt-2 p-0">
-                <button class="button w-50 stakeButton"> New stake <i class="fa-solid fa-plus"></i></button>
-            </div>
-            <div class="listStake mt-3">
+            <div class="listStake">
+                <div class="loading text-center mt-2 mb-2">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                </div>
                 <div class="row list m-0 overflow-auto">
-                    <div class="loading text-center mt-2 mb-2">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                    </div>
                     <div class="item-list mb-2 mt-2" style="display: none">
                         <div class="row m-0">
                             <div class="col-2 align-self-center">
@@ -1331,7 +1323,7 @@
                         </div>
                         <div class="p-0 form-text m-0">Min. stack amount 100VGO</div>
                         <span class="fw-bold mt-4 mb-2">Lock for <span class="lockTime">0</span> months</span>
-                        <input type="range" class="rangeLockTime p-0 mb-4" step="1" max="24" min="0" id="allowRange">
+                        <input type="range" class="rangeLockTime p-0 mb-4" step="1" max="24" min="1" id="allowRange">
                         <div class="col-8 text-left">
                             <p class="m-0 p-0">Estimated earning</p>
                             <p class="m-0 p-0 mt-1"><span class="fw-bold lockTime" id="estReward">456,78</span> VGO</p>

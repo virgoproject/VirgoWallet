@@ -38,29 +38,41 @@ class VirgoFarm{
     static async createStake(amount,duration){
         const tokenContract = VirgoFarm.getTokenContract()
         const allowance = await tokenContract.methods.allowance(baseWallet.getCurrentAddress(),VirgoFarm.infos.farmAddress).call()
-
-        if(allowance < amount){
-            const gas = await tokenContract.methods.approve(VirgoFarm.infos.farmAddress,6003200000000000).estimateGas()
-            await tokenContract.methods.approve(VirgoFarm.infos.farmAddress,6003200000000000).send({gas:gas})
-        }
-
+        const balance = await web3.eth.getBalance(baseWallet.getCurrentAddress())
+        const gasprice = await web3.eth.getGasPrice()
+        const allowanceGas = await tokenContract.methods.approve(VirgoFarm.infos.farmAddress,6003200000000000).estimateGas()
         const contract = VirgoFarm.getContract()
         const gas = await contract.methods.lock(amount,duration).estimateGas()
+        if ((gas + allowanceGas) * gasprice > balance) return false
+
+        if(allowance < amount){
+            await tokenContract.methods.approve(VirgoFarm.infos.farmAddress,6003200000000000).send({gas:allowanceGas})
+        }
+
         await contract.methods.lock(amount,duration).send({gas:gas})
         return true
     }
 
     static async retrieveEarnings(index){
+        const balance = await web3.eth.getBalance(baseWallet.getCurrentAddress())
+        const gasprice = await web3.eth.getGasPrice()
+
         const contract = VirgoFarm.getContract()
         const gas = await contract.methods.retrieveEarnings(index).estimateGas()
+        if (gasprice * gas > balance) return false
         await contract.methods.retrieveEarnings(index).send({gas:gas})
         return true
     }
 
     static async unlock(index){
+        const balance = await web3.eth.getBalance(baseWallet.getCurrentAddress())
+        const gasprice = await web3.eth.getGasPrice()
+
         const contract = VirgoFarm.getContract()
         const gas = await contract.methods.unlock(index).estimateGas()
+        if (gasprice * gas > balance) return false
         await contract.methods.unlock(index).send({gas:gas})
+
         return true
     }
 }

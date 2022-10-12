@@ -32,4 +32,21 @@ class Utils {
         );
     }
 
+
+    static precisionRound(number, precision) {
+        const factor = Math.pow(10, precision);
+        return Math.round(number * factor) / factor;
+    }
+
+    static toAtomicString(amount, decimals){
+        let dotIndex = amount.indexOf(".")
+        if(dotIndex < 0)
+            dotIndex = amount.length-1
+        const zerosToAdd = decimals - (amount.length - (dotIndex+1))
+        const res = amount.replace(".", "") + "0".repeat(zerosToAdd)
+        if(res.startsWith("0"))
+            return res.substring(1)
+        return res
+    }
+
 }

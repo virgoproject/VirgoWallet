@@ -155,3 +155,15 @@ async function getSwapRoute(amount, token1, token2){
 async function getLocks(){
     return await browser.runtime.sendMessage({command : 'getLocks'})
 }
+
+async function createStake(stake,lockTime){
+    return await browser.runtime.sendMessage({command : 'createStake', stake:stake,lockTime:lockTime})
+}
+
+async function unlock(index){
+    return await browser.runtime.sendMessage({command : 'unlockStake', index:index})
+}
+
+async function retrieveEarnings(index){
+    return await browser.runtime.sendMessage({command : 'retrieveEarnings', index:index})
+}

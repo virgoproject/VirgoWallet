@@ -5,6 +5,7 @@ class VirgoFarm {
         stakingDiv: $(".item-list"),
         stakingList: $('#farmstaking .list'),
         loading : $('#farmstaking .loading'),
+        loadingStakeCount : $('#myStakeBtn div .loading'),
         buySwapPopup : $('#buySwapFarm')
     }
 
@@ -13,6 +14,7 @@ class VirgoFarm {
         goBackFarm: $('#virgoFarm .back'),
         inputStakingValue: $('#virgoFarm #stakingValue'),
         stakeButton: $('#virgoFarm #stackVGOBtn'),
+        stakeTimeRange : $('#virgoFarm #allowRange')
     }
 
     static alert = {
@@ -28,7 +30,7 @@ class VirgoFarm {
         appText3: $('#appPopup .appPPText3'),
         appText4: $('#appPopup .appPPText4'),
         stakeValue: $('#farmstaking .stakedVGO'),
-        stakeCount: $('#virgoFarm .stakingCount'),
+        stakeCount: $('#virgoFarm #stakingCount'),
         balanceValue: $("#virgoFarm .balanceVGO")
     }
 
@@ -47,17 +49,20 @@ class VirgoFarm {
                 $("#farmSetStaking").show()
                 $("#myStakeBtn").removeClass('activePane')
                 $("#createStakeBtn").addClass('activePane')
+                VirgoFarm.div.stakingList.html("")
             }else {
                 $("#farmstaking").show()
                 $("#createStakeBtn").removeClass('activePane')
                 $("#myStakeBtn").addClass('activePane')
                 $("#farmSetStaking").hide()
+                VirgoFarm.getLock()
             }
         })
 
 
         VirgoFarm.buttons.goBackFarm.click(function () {
             VirgoFarm.div.virgoFarmApp.hide()
+            VirgoFarm.div.stakingList.html("")
         })
 
         VirgoFarm.text.appsTitle.html('Virgo Farm <i class="fa-solid fa-badge-check" style="color: var(--mainColor)"></i>')
@@ -92,9 +97,26 @@ class VirgoFarm {
              balance = res.balance
             VirgoFarm.text.balanceValue.html(Utils.formatAmount(balance,res.decimals))
 
+            $('#virgoFarm #stackVGOBtn').click(function () {
+                if (balance >= 0 && balance >= 99.99){
+                    if (VirgoFarm.buttons.inputStakingValue.val() >=0 && VirgoFarm.buttons.inputStakingValue.val() >= 99.99 && VirgoFarm.buttons.stakeTimeRange.val() >= 0) {
+                        let lockValue = VirgoFarm.buttons.inputStakingValue.val()
+                        let lockTime = VirgoFarm.buttons.stakeTimeRange.val()
+                        console.log(Number(lockValue),typeof lockValue)
+                        createStake(Utils.toAtomicString(lockValue,8),Number(lockTime)).then(result => {
+                            if (result){
+                                notyf.success("Staking succesfully created !")
+                            } else {
+                                notyf.error("Inssufficence BNB balance")
+                            }
+                        })
+                    }
+                }
+            })
+
             $('#virgoFarm #stakingmaxBtn').click(function () {
                 VirgoFarm.buttons.inputStakingValue.val(Utils.formatAmount(balance,res.decimals))
-                VirgoFarm.calculateEarning()
+                VirgoFarm.calculateEarning(balance)
             })
         })
     }
@@ -104,13 +126,14 @@ class VirgoFarm {
         let apy = (0.25*$("#allowRange").val()*4.34524+5.2)/100
         let duration = $("#allowRange").val()
         let estReward = Math.round((input*(1+apy)-input)/12*duration)
-        VirgoFarm.checkStakeValue(balance)
+        VirgoFarm.checkStakeValue(parseFloat(balance))
         $('#estReward').html(estReward)
     }
 
     static getLock(){
         getLocks().then(locks => {
-            VirgoFarm.text.stakeCount.html(locks.length)
+            VirgoFarm.text.stakeCount.html(locks.length).hide()
+            VirgoFarm.div.loadingStakeCount.show()
 
             for ( let i = 0; i < locks.length;i++){
 
@@ -120,9 +143,9 @@ class VirgoFarm {
 
                 const element = VirgoFarm.div.stakingDiv.clone()
                 element.find('.infoStaking').hide()
-               element.find('.stakedVGO').html(VirgoFarm.formatNumber(locks[i].amount))
-                element.find('.totalEarn').html(VirgoFarm.formatNumber(locks[i].totalEarnings).toFixed(2))
-                element.find('.availableEarn').html(VirgoFarm.formatNumber(locks[i].earnings))
+                element.find('.stakedVGO').html(Utils.formatAmount(locks[i].amount,8).toFixed(2))
+                element.find('.totalEarn').html(Utils.formatAmount(locks[i].totalEarnings,8).toFixed(2))
+                element.find('.availableEarn').html(Utils.formatAmount(locks[i].earnings,8).toFixed(2))
                 element.find('.APR').html(.25*locks[i].lockDuration+5.2)
 
                 element.find('.showStaking').click(function () {
@@ -139,13 +162,35 @@ class VirgoFarm {
                     }
                 })
                 if (locks[i].unlockTime <= Date.now()/1000){
-                    element.find('.unlockBtn').html("UNLOCK")
+                    element.find('.unlockBtn').html("UNLOCK").attr('data-index',i).click(function () {
+                    const elemIndex = $(this).attr('data-index')
+                        unlock(elemIndex).then( res => {
+                            if (res){
+                                element.remove()
+                                notyf.success("Staking succesfully unlocked!")
+                            }else {
+                                notyf.error("Inssufficence BNB balance")
+                            }
+                        })
+                    })
                 }else {
                     let remainingDays = Math.round((locks[i].unlockTime-Date.now()/1000)/86400)
                     element.find(".unlockBtn").html(remainingDays + " DAYS").attr('disabled','disabled')
                 }
 
-                if (locks[i].earnings >= 0){
+                element.find('.claimBtn').click(function () {
+                    const indexEarn = element.find('.unlockBtn').attr('data-index')
+                    if (locks[indexEarn].earnings <=0) return false
+                    retrieveEarnings(indexEarn).then(res => {
+                        if (res){
+                            notyf.success("Claim succesfully operated!")
+                        }else {
+                            notyf.error("Inssufficence BNB balance")
+                        }
+                    })
+                })
+
+                if (locks[i].earnings <= 0){
                     element.find(".claimBtn").attr('disabled','disabled')
                 }
 
@@ -153,25 +198,20 @@ class VirgoFarm {
                 VirgoFarm.div.stakingList.append(element)
             }
             VirgoFarm.div.loading.hide()
-
+            VirgoFarm.div.loadingStakeCount.hide()
+            VirgoFarm.text.stakeCount.html(locks.length).show()
 
         })
     }
 
-    static formatNumber(amount){
-        return amount/Math.pow(10, 8)
-    }
-
     static checkStakeValue(balance){
-        console.log(balance)
-        if (!VirgoFarm.buttons.inputStakingValue.val() > balance || $('#allowRange').val() >= 0){
-            VirgoFarm.buttons.stakeButton.attr("disabled","")
-            console.log('1')
+
+        if (parseFloat(VirgoFarm.buttons.inputStakingValue.val()) <= parseFloat( Utils.formatAmount(balance,8)) && VirgoFarm.buttons.inputStakingValue.val() >= 100){
+            VirgoFarm.buttons.stakeButton.attr("disabled",false)
         }else {
-            console.log('test')
+            VirgoFarm.buttons.stakeButton.attr("disabled","")
         }
     }
-
 }
 
 const virgofarmPane = new VirgoFarm()

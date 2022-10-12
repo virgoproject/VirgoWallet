@@ -646,6 +646,20 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(lock)
             })
             break
+        case 'createStake':
+            VirgoFarm.createStake(request.stake,request.lockTime).then(function (stakeState) {
+                sendResponse(stakeState)
+            })
+            break
+        case 'unlockStake':
+            VirgoFarm.unlock(request.index).then(function (unlock) {
+                sendResponse(unlock)
+            })
+            break
+        case 'retrieveEarnings':
+            VirgoFarm.retrieveEarnings(request.index).then(function (earning){
+                sendResponse(earning)
+            })
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
