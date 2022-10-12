@@ -22,22 +22,24 @@ class Web3Wallet {
             this.tokenSet.set(token.contract, token)
 
         const wallet = this
-        fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
-            .then(function(resp){
-                resp.json().then(function(res){
-                    wallet.CG_Platform = res.CG_Platform
-                    for(let token of res.tokens){
-                        if(!wallet.hasToken(token)){
-                            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
-                                .then(function(resp2){
-                                    resp2.json().then(function(res2){
-                                        wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
+        try {
+            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
+                .then(function(resp){
+                    resp.json().then(function(res){
+                        wallet.CG_Platform = res.CG_Platform
+                        for(let token of res.tokens){
+                            if(!wallet.hasToken(token)){
+                                fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
+                                    .then(function(resp2){
+                                        resp2.json().then(function(res2){
+                                            wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
+                                        })
                                     })
-                                })
+                            }
                         }
-                    }
+                    })
                 })
-            })
+        }catch(e){}
     }
 
     static fromJSON(json){

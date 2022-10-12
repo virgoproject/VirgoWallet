@@ -201,6 +201,9 @@ class SwapPane {
     setSelectOptions(input, balances){
         input.select.html("")
 
+        this.select1OldElem = ""
+        this.select2OldElem = ""
+
         Object.entries(balances).map(([contractAddr, balance]) => {
             let elem = $("<option></option>")
             elem.val(contractAddr)
@@ -260,17 +263,19 @@ class SwapPane {
 
     }
 
-    updateBalance(elem){
-        elem.ticker.html("")
+    updateBalance(elem, bypassLoading = false){
+        if(!bypassLoading){
+            elem.ticker.html("")
 
-        if(elem.select.val() == "") {
-            elem.balance.html("-")
-            elem.btnTicker.html("-")
-            elem.rateTicker.html("-")
-            return
+            if(elem.select.val() == "") {
+                elem.balance.html("-")
+                elem.btnTicker.html("-")
+                elem.rateTicker.html("-")
+                return
+            }
+
+            elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
         }
-
-        elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
 
         getBalance(elem.select.val()).then(function(res){
             elem.ticker.html(res.ticker)

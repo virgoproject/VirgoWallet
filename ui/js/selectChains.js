@@ -67,8 +67,6 @@ class SelectChains {
                         $("[data-networkname]").html(wallet.name)
                         $("[data-networkticker]").html(wallet.ticker)
 
-                        MAIN_ASSET = wallet
-
                         SelectChains.header.click()
                     })
 
