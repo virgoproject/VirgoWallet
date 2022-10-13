@@ -260,6 +260,25 @@ class SettingsPane {
 
         })
 
+        $('#settings .settingsPane .tab[data-target=connectedWebsites]').click(function () {
+
+            getBaseInfos().then(res => {
+                console.log(res)
+                res = res.connectedSites
+                if (res.length <= 0 || res.length === undefined){
+                    $(".settingsPane .noTracked").show()
+                }
+                for(let l = 0; l < res.length; l++){
+                const element = $(".settingsPane .trakeExemple").clone()
+                    console.log(element)
+                    element.find(".signedSite").html(res[l])
+                    element.find(".imgAffiliated").attr('src','https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url='+ res[l] +'&size=128')
+                    $('.settingsCat').append(element)
+                    element.show()
+                }
+            })
+        })
+
         SettingsPane.getMnemonic.passwordInput.click(function(){
             SettingsPane.getMnemonic.passwordInput.removeClass("is-invalid")
             SettingsPane.getMnemonic.passwordErr.hide()
