@@ -215,7 +215,6 @@ class Uniswap02Utils {
         return await new Promise(resolve => {
 
             if(route[0].toLowerCase() == WETH.toLowerCase()){
-                console.log("swapExactBNBForToken")
                 _this.proxy.methods.swapExactBNBForToken(route).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
                     gas += this.additionalGas
                     _this.proxy.methods.swapExactBNBForToken(route).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {

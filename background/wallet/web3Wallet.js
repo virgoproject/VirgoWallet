@@ -410,7 +410,7 @@ class Web3Wallet {
                     let balances = this.getBalances(address)
                     delete balances[token.contract]
                 }
-                this.tokenSet.remove(token.contract)
+                this.tokenSet.delete(token.contract)
                 baseWallet.save()
                 return;
             }

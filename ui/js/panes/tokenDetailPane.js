@@ -8,7 +8,8 @@ class TokenDetailPane {
         name: $("#tokenDetailsSimple .name"),
         symbol: $("#tokenDetailsSimple .symbol"),
         decimals: $("#tokenDetailsSimple .decimals"),
-        address: $("#tokenDetailsSimple .address")
+        address: $("#tokenDetailsSimple .address"),
+        delete: $("#tokenDetailSimpleDel")
     }
     static detailedPane = {
         self: $("#tokenDetailsDetailed"),
@@ -140,6 +141,13 @@ class TokenDetailPane {
                         TokenDetailPane.simplePane.symbol.val(_this.data.ticker)
                         TokenDetailPane.simplePane.decimals.val(_this.data.decimals)
                         TokenDetailPane.simplePane.address.val(_this.data.contract)
+                        TokenDetailPane.simplePane.delete.find("span").html(_this.data.ticker)
+                        TokenDetailPane.simplePane.delete.unbind("click").click(function(){
+                            removeToken(_this.data.contract)
+                            $("#bal"+_this.data.contract).remove()
+                            notyf.success("Removed " + _this.data.name + "!")
+                            TokenDetailPane.back.click()
+                        })
 
                         TokenDetailPane.simplePane.self.show()
                         TokenDetailPane.loading.hide()

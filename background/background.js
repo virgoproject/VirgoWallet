@@ -680,6 +680,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(true)
             })
             break
+        case "removeToken":
+            baseWallet.getCurrentWallet().removeToken(request.address)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

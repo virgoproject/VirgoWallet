@@ -476,6 +476,7 @@ class BaseWallet {
     }
 
     save(){
+        console.log("saving")
         browser.storage.local.set({"wallet": this.toJSON()})
     }
 
