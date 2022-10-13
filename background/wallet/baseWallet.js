@@ -49,6 +49,7 @@ class BaseWallet {
             this.version = VERSION//To change for VERSION after next update
             this.save()
         }
+
     }
 
     startLoop(){
@@ -67,7 +68,7 @@ class BaseWallet {
                 return
             }
             baseWallet.getCurrentWallet().updatePrices()
-        }, 30000)
+        }, 60000)
     }
 
     static generateWallet(mnemonic){
@@ -348,6 +349,24 @@ class BaseWallet {
                 "explorer": "https://explorer.etherfair.org/tx/",
                 "swapParams": false,
                 "testnet": false
+            }
+        }
+
+        wallets[12] = {
+            "type": "web3",
+            "wallet": {
+                "name": "Hyperon",
+                "asset": "Hyperon",
+                "ticker": "HPN",
+                "decimals": 18,
+                "contract": "0xe3D2Ba4eBcc6e9AE3569d6418BC2eaABB8FeEf60",
+                "RPC": "https://testnet-rpc.hyperonchain.com",
+                "chainID": 400,
+                "tokens": [],
+                "transactions": [],
+                "explorer": "https://testnet.hyperonchain.com/tx/",
+                "swapParams": false,
+                "testnet": true
             }
         }
 

@@ -19,7 +19,7 @@ class SelectChains {
 
     setChains(data){
         $("#mainPaneCurrentChain").html(data.wallets[data.selectedWallet].wallet.name)
-
+        SelectChains.container.html("")
         let i = 0;
         for(const walletObj of data.wallets){
             const wallet = walletObj.wallet
@@ -64,7 +64,7 @@ class SelectChains {
                             swapPane.setSwap(res)
                         })
 
-                        $("[data-networkname]").html(wallet.name)
+                        $("[data-networkname]").html(wallet.name + " Testnet")
                         $("[data-networkticker]").html(wallet.ticker)
 
                         SelectChains.header.click()

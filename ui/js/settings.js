@@ -341,15 +341,10 @@ class SettingsPane {
             disableLoadBtn($(this))
             restoreFromMnemonic(SettingsPane.importMnemonic.askText.val()).then(function(data){
                 setTimeout(function(){
-
-                    //reset current display
                     //chain selection
-                    let elem = SelectChains.baseChainRow.clone()
-                    SelectChains.selector.html("")
-                    SelectChains.selector.append(elem)
                     selectChains.setChains(data)
                     //settings
-                    elem = SettingsPane.baseAccountRow.clone()
+                    let elem = SettingsPane.baseAccountRow.clone()
                     SettingsPane.accounts.html("")
                     SettingsPane.accounts.append(elem)
                     settingsPane.setSettings(data)

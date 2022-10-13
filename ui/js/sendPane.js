@@ -32,6 +32,7 @@ class SendPane {
     static estimateFees = null;
 
     constructor() {
+        const _this = this
 
         let confirmInterval;
         SendPane.divContactList.html("")
@@ -202,9 +203,15 @@ class SendPane {
             sendPane.checkSendFormValues()
         })
 
+        events.addListener("assetsChanged", function (data){
+            _this.setSend(data)
+        })
+
     }
 
     setSend(data){
+        SendPane.assetSelect.html("")
+
         const selectedAddress = data.addresses[data.selectedAddress]
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
             if(!balance.tracked) return

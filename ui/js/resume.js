@@ -39,8 +39,6 @@ class MainPane {
 
     constructor() {
 
-        this.oldData = ""
-
         MainPane.address.click(function(){
             copyToClipboard(document.querySelector("[data-mainAddress]"));
             MainPane.addressTitle.html("Copied! (")
@@ -108,13 +106,13 @@ class MainPane {
     updateData(){
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
-                if(mainPane.oldData !== JSON.stringify(response)) {
+                if(events.oldData !== JSON.stringify(response)) {
                     mainPane.displayData(response)
                     transactionsPane.updateTxs(response)
-                    mainPane.oldData = JSON.stringify(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)
                     swapPane.updateBalance(SwapPane.inputs.two, true)
                 }
+                events.updateData(response)
             })
     }
 
@@ -124,7 +122,11 @@ class MainPane {
 
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 
-        $("[data-networkname]").html(selectedWallet.name)
+        if(selectedWallet.testnet)
+            $("[data-networkname]").html(selectedWallet.name + " Testnet")
+        else
+            $("[data-networkname]").html(selectedWallet.name)
+
         $("[data-networkticker]").html(selectedWallet.ticker)
 
         MAIN_ASSET = selectedWallet
@@ -184,6 +186,11 @@ class MainPane {
                 }
                 elem.find(".balance").html(bal)
                 elem.find(".fiatEq").html(fiatBal)
+                elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
+                if(balance.change >= 0)
+                    elem.find(".fluctuation").removeClass("negative")
+                else
+                    elem.find(".fluctuation").addClass("negative")
                 elem.unbind("click").click(function(){
                     tokenDetailPane.displayToken(balance)
                 })
@@ -233,6 +240,7 @@ class MainPane {
         setInterval(function(){
             mainPane.updateData()
         }, 250)
+
     }
 
 }

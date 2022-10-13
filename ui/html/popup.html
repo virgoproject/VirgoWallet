@@ -389,20 +389,21 @@
     </div>
     <div id="chainSelector" class="p-4 pt-0">
         <div class="row gx-2" id="chainsContainer">
-            <div class="col-4" id="baseChainRow" style="display: none">
-                <div class="chain">
-                    <div class="row">
-                        <div class="selectedIcon">
-                            <i class="fa-solid fa-check"></i>
+
+        </div>
+        <div class="col-4" id="baseChainRow" style="display: none">
+            <div class="chain">
+                <div class="row">
+                    <div class="selectedIcon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="logo">
+                            <span class="badge bg-success testnet">Testnet</span>
                         </div>
-                        <div class="col-12">
-                            <div class="logo">
-                                <span class="badge bg-success testnet">Testnet</span>
-                            </div>
-                        </div>
-                        <div class="col-12 justify-content-center align-self-center">
-                            <p><name>Ethereum</name><ticker>ETH</ticker></p>
-                        </div>
+                    </div>
+                    <div class="col-12 justify-content-center align-self-center">
+                        <p><name>Ethereum</name><ticker>ETH</ticker></p>
                     </div>
                 </div>
             </div>
@@ -860,7 +861,17 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
+                <div class="row tab" data-target="connectedWebsites">
+                    <div class="col-10">
+                        <h4 class="m-0">Conencted websites</h4>
+                        <p class="m-0">Secure and backup your wallet</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
             </div>
+
             <div class="settingsCat" data-settingId="security" data-title="Security" data-settingsLevel="1">
                 <div class="row tab" data-target="setupPassword">
                     <div class="col-10">
@@ -1353,6 +1364,7 @@
 <script src="../js/chart.min.js"></script>
 <script src="../js/bootstrap-select.min.js"></script>
 <script src="../js/backgroundMessaging.js"></script>
+<script src="../js/events.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/unlockPane.js"></script>
 <script src="../js/selectChains.js"></script>

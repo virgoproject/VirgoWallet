@@ -15,6 +15,7 @@ class Web3Wallet {
         this.testnet = testnet
 
         this.balances = new Map()
+        this.prices = new Map()
 
         this.tokenSet = new Map()
 
@@ -97,9 +98,9 @@ class Web3Wallet {
             json.name = "Ropsten"
             json.ticker = "RETH"
             json.testnet = true
-        }else{
-            json.testnet = false
         }
+        if(json.chainID == 400)
+            json.testnet = true
 
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }
@@ -161,8 +162,8 @@ class Web3Wallet {
                 "contract": this.contract,
                 "tracked": true,
                 "balance": 0,
-                "change": 0,
-                "price": 0
+                "price": 0,
+                "change": 0
             }
 
             for(const token of this.tokens){
@@ -173,14 +174,25 @@ class Web3Wallet {
                     "contract": token.contract,
                     "tracked": token.tracked,
                     "balance": 0,
-                    "change": 0,
-                    "price": 0
+                    "price": 0,
+                    "change": 0
                 }
             }
+
+            this.balances.set(address, balances)
+
         }
 
-
-        this.balances.set(address, balances)
+        for(const token of this.tokens){
+            const price = this.prices.get(token.contract)
+            if(price === undefined) continue
+            balances[token.contract].change = price.change
+            balances[token.contract].price = price.price
+            if(token.contract.toLowerCase() == this.contract.toLowerCase()){
+                balances[this.ticker].change = price.change
+                balances[this.ticker].price = price.price
+            }
+        }
 
         return balances
     }
@@ -331,20 +343,25 @@ class Web3Wallet {
     }
 
     updatePrices(){
+        console.log("updating prices")
+        const _this = this
+        if (!this.CG_Platform) return
         //not optimised, better to fetch prices for all addresses at once
-        for(const address of baseWallet.getAddresses()) {
-            if (this.CG_Platform)
-                Object.entries(this.balances.get(address)).map(([contractAddr, balance]) => {
-                    if(!balance.tracked) return;
-                    fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + balance.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
-                        .then(function (resp) {
-                            resp.json().then(function (res) {
-                                balance.price = parseFloat(res[balance.contract.toLowerCase()].usd)
-                                balance.change = parseFloat(res[balance.contract.toLowerCase()].usd_24h_change)
-                            })
-                        }).catch(function (e) {
+        for(const token of this.tokens){
+            if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
+            console.log("updating price for " + token.contract)
+            fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
+                .then(function (resp) {
+                    resp.json().then(function (res) {
+                        const price = {
+                            price: parseFloat(res[token.contract.toLowerCase()].usd),
+                            change: parseFloat(res[token.contract.toLowerCase()].usd_24h_change)
+                        }
+                        _this.prices.set(token.contract, price)
                     })
-                })
+                }).catch(function (e) {
+
+            })
         }
     }
 
@@ -375,8 +392,8 @@ class Web3Wallet {
                 "contract": token.contract,
                 "tracked": track,
                 "balance": 0,
-                "change": 0,
-                "price": 0
+                "price": 0,
+                "change": 0
             }
         }
 
@@ -401,10 +418,12 @@ class Web3Wallet {
         }
     }
 
-    changeTracking(contract){
+    changeTracking(contract, setToTrue = false){
         for(const token of this.tokens){
             if(token.contract == contract){
-                const newState = !token.tracked
+                let newState = !token.tracked
+                if(setToTrue)
+                    newState = true
                 token.tracked = newState
                 for(const address of baseWallet.getAddresses()) {
                     let balances = this.getBalances(address)

@@ -676,6 +676,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 request.route,
                 request.gasPrice
             ).then(function(resp){
+                baseWallet.getCurrentWallet().changeTracking(request.route[request.route.length-1], true)
                 sendResponse(true)
             })
             break

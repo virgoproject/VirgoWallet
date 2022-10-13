@@ -264,6 +264,8 @@ class SwapPane {
     }
 
     updateBalance(elem, bypassLoading = false){
+        if(elem.select.val() == "") return
+
         if(!bypassLoading){
             elem.ticker.html("")
 
