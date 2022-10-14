@@ -142,7 +142,22 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     sendResponse(bal)
                 })
             }else{
+                const chain = baseWallet.getChainByID(request.chainID)
+                const tempWeb3 = new Web3(chain.rpcURL)
 
+                let assetBal = chain.getBalances(baseWallet.getCurrentAddress())[request.asset]
+                if(request.asset == chain.ticker){
+                    tempWeb3.eth.getBalance(baseWallet.getCurrentAddress()).then(bal => {
+                        assetBal.balance = bal
+                        sendResponse(assetBal)
+                    })
+                }else{
+                    const contract = new tempWeb3.eth.Contract(ERC20_ABI, request.asset)
+                    contract.methods.balanceOf(baseWallet.getCurrentAddress()).call().then(bal => {
+                        assetBal.balance = bal
+                        sendResponse(assetBal)
+                    })
+                }
             }
             break
 

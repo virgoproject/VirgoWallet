@@ -535,6 +535,14 @@ class BaseWallet {
         return [...provider.addresses]
     }
 
+    getChainByID(id){
+        for(let chain of this.wallets){
+            if(chain.chainID == id)
+                return chain
+        }
+        return false
+    }
+
 }
 
 BaseWallet.loadFromJSON()

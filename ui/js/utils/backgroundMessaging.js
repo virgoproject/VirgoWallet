@@ -171,3 +171,7 @@ async function initSwap(amount, route, gasPrice){
 function removeToken(address){
     browser.runtime.sendMessage({command: 'removeToken' , address:address })
 }
+
+async function getBalanceCross(chainID, asset){
+    return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID: chainID, asset: asset})
+}
