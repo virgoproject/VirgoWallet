@@ -167,3 +167,7 @@ async function estimateSwapFees(amount, route){
 async function initSwap(amount, route, gasPrice){
     return await browser.runtime.sendMessage({command: 'initSwap', amount: amount, route: route, gasPrice: gasPrice})
 }
+
+async function deleteConnectedSite(address){
+    return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
+}

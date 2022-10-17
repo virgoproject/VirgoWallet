@@ -679,6 +679,17 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse(true)
             })
             break
+        case 'deleteConnectedSite':
+            for (var i=0 ; i < connectedWebsites.length ; i++)
+            {
+                if (connectedWebsites[i] === request.address) {
+                    connectedWebsites.splice(i, 1)
+                    sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
+                    break
+                }
+            }
+            sendResponse(true)
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true

@@ -183,3 +183,14 @@
 #settings .settingsPane .writeMnemonic .word val {
     font-size: 0.85em;
 }
+
+#settings .settingsPane .fa-trash-can{
+    cursor: pointer;
+}
+
+#settings .settingsPane .signedSite {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 25ch;
+    white-space: nowrap;
+}
