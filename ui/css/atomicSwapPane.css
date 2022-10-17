@@ -1,0 +1,35 @@
+#atomicSwapPane {
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+}
+
+#atomicSwapPane .content {
+    z-index: 99999;
+    padding: 0 1em !important;
+    max-height: 485px;
+}
+
+#atomicSwapPane .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#atomicSwapPane .back:hover {
+    color: black;
+}
+
+#atomicSwapPane .back i {
+    font-size: 1.5em;
+}
