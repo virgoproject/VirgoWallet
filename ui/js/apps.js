@@ -1,5 +1,167 @@
 class appsPane {
+   static currencyArray = [
+        {
+            "symbol": "ETH",
+            "network": "",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 1,
+            "name": "ETH",
+            "warnings_from": [
+                "Please be careful not to deposit your ETH from a smart contract."
+            ],
+            "warnings_to": [
+                "Please be careful not to provide a smart contract as your ETH payout address."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://etherscan.io/address/{}",
+            "tx_explorer": "https://etherscan.io/tx/{}",
+            "confirmations_from": "1",
+            "image": "https://static.simpleswap.io/images/currencies-logo/eth.svg"
+        },
 
+        {
+            "symbol": "MATIC",
+            "network": "polygon",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 137,
+            "name": "MATIC",
+            "warnings_from": [
+                "Only MATIC network supported. Please ensure your deposit is made on the MATIC network."
+            ],
+            "warnings_to": [
+                "Only MATIC network withdrawals supported. Withdrawing to an address that is not a MATIC network address will result the LOSS of your funds."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://polygonscan.com/address/{}",
+            "tx_explorer": "https://polygonscan.com/tx/{}",
+            "confirmations_from": " ",
+            "image": "https://static.simpleswap.io/images/currencies-logo/matic.svg"
+        },
+        {
+            "symbol": "bnb-bsc",
+            "network": "BSC",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 56,
+            "name": "BNB BSC",
+            "warnings_from": [
+                "Only BSC network supported. Please ensure your deposit is made on the BSC network."
+            ],
+            "warnings_to": [
+                "Only BSC network withdrawals supported. Withdrawing to an address that is not a BSC network address will result the LOSS of your funds."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://bscscan.com/address/{}",
+            "tx_explorer": "https://bscscan.com/tx/{}",
+            "confirmations_from": "15",
+            "image": "https://static.simpleswap.io/images/currencies-logo/bnb-bsc.svg"
+        },
+
+        {
+            "symbol": "AVAX",
+            "network": "AVAX-X",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 43114,
+            "name": "AVAX",
+            "warnings_from": [],
+            "warnings_to": [],
+            "validation_address": "^(X-avax)[0-9A-Za-z]{30,70}$",
+            "validation_extra": null,
+            "address_explorer": "https://avascan.info/blockchain/x/address/{}",
+            "tx_explorer": "https://avascan.info/blockchain/x/tx/{}",
+            "confirmations_from": "1",
+            "image": "https://static.simpleswap.io/images/currencies-logo/avax.svg"
+        },
+
+        {
+            "symbol": "FTM",
+            "network": "FTM",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 250,
+            "name": "FTM",
+            "warnings_from": [
+                "Please note that we accept FTM mainnet coins only."
+            ],
+            "warnings_to": [
+                "Please note that only FTM mainnet coins are available for the withdrawal."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://ftmscan.com/address/{}",
+            "tx_explorer": "https://ftmscan.com/tx/{}",
+            "confirmations_from": "1",
+            "image": "https://static.simpleswap.io/images/currencies-logo/ftm.svg"
+        },
+
+        {
+            "symbol": "KCS",
+            "network": "ERC20",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 321,
+            "name": "KCS",
+            "warnings_from": [
+                "Please note that only KCS ERC-20 tokens are available for the deposit.",
+                "Please be careful not to deposit your KCS from a smart contract."
+            ],
+            "warnings_to": [
+                "Please note that only KCS ERC-20 tokens are available for the withdrawal."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://etherscan.io/address/{}",
+            "tx_explorer": "https://etherscan.io/tx/{}",
+            "confirmations_from": "24",
+            "image": "https://static.simpleswap.io/images/currencies-logo/kcs.svg"
+        },
+
+        {
+            "symbol": "CRO",
+            "network": "ERC20",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 25,
+            "name": "CRO",
+            "warnings_from": [
+                "Please note that only CRO ERC-20 tokens are available for the deposit.",
+                "Please be careful not to deposit your CRO from a smart contract."
+            ],
+            "warnings_to": [
+                "Please note that only CRO ERC-20 tokens are available for the withdrawal."
+            ],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://etherscan.io/address/{}",
+            "tx_explorer": "https://etherscan.io/tx/{}",
+            "confirmations_from": "24",
+            "image": "https://static.simpleswap.io/images/currencies-logo/cro.svg"
+        },
+        {
+            "symbol": "ETHW",
+            "network": "ethw",
+            "has_extra_id": false,
+            "extra_id": "",
+            "chainID": 10001,
+            "name": "ETHW",
+            "warnings_from": [
+                "Please note that exchanges of ETHW mainnet might take some time due to the fact that, network transactions require at least 1500 conformations to be considered valid."
+            ],
+            "warnings_to": [],
+            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+            "validation_extra": null,
+            "address_explorer": "https://www.oklink.com/en/ethw/address/{}",
+            "tx_explorer": "https://www.oklink.com/en/ethw/tx/{}",
+            "confirmations_from": "1500",
+            "image": "https://static.simpleswap.io/images/currencies-logo/ethw.svg"
+        }
+    ]
     static inputs = {
         one: {
             input: $("#simpleswapInput1"),
@@ -43,7 +205,17 @@ class appsPane {
         appText3: $('#appPopup .appPPText3'),
         appText4: $('#appPopup .appPPText4')
     }
+    static rate = {
+        self: $("#simpleswapRate"),
+        loading: $("#simpleswapRateLoading"),
+        amount: $("#simpleswapRateAmount"),
+        route: $("#simpleswapRoute"),
+        routeBaseStep: $("#simpleswapRouteBaseStep")
+    }
     static switchBtn = $("#simpleswapSwitchBtn")
+    static params = $("#simpleswapParams")
+    static initBtn = $("#simpleinitSwapBtn")
+    static loading = $("#simpleswapLoading")
     constructor() {
 
 
@@ -117,6 +289,14 @@ class appsPane {
             appsPane.inputs.one.input.trigger("input")
         })
 
+        appsPane.inputs.one.input.on("input",function(){
+            appsPane.simplecheckAmount(appsPane.inputs.one,appsPane.inputs.two)
+        })
+
+        appsPane.initBtn.click(function (){
+            appsPane.sendSimpleSwap()
+        })
+
         appsPane.inputs.one.btnMax.click(function(){
             if(appsPane.inputs.one.select.val() == "") return
             appsPane.inputs.one.input.val(appsPane.inputs.one.balance.html())
@@ -144,169 +324,15 @@ class appsPane {
     }
 
    static setSelect(input){
-        const currencyArray = [
-            {
-                "symbol": "ETH",
-                "network": "",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "ETH",
-                "warnings_from": [
-                    "Please be careful not to deposit your ETH from a smart contract."
-                ],
-                "warnings_to": [
-                    "Please be careful not to provide a smart contract as your ETH payout address."
-                ],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://etherscan.io/address/{}",
-                "tx_explorer": "https://etherscan.io/tx/{}",
-                "confirmations_from": "1",
-                "image": "https://static.simpleswap.io/images/currencies-logo/eth.svg"
-            },
-
-            {
-                "symbol": "MATIC",
-                "network": "polygon",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "MATIC",
-                "warnings_from": [
-                    "Only MATIC network supported. Please ensure your deposit is made on the MATIC network."
-                ],
-                "warnings_to": [
-                    "Only MATIC network withdrawals supported. Withdrawing to an address that is not a MATIC network address will result the LOSS of your funds."
-                ],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://polygonscan.com/address/{}",
-                "tx_explorer": "https://polygonscan.com/tx/{}",
-                "confirmations_from": " ",
-                "image": "https://static.simpleswap.io/images/currencies-logo/matic.svg"
-            },
-
-            {
-                "symbol": "BNB",
-                "network": "BEP2",
-                "has_extra_id": true,
-                "extra_id": "Memo",
-                "name": "BNB",
-                "warnings_from": [],
-                "warnings_to": [],
-                "validation_address": "^(bnb1)[0-9a-z]{38}$",
-                "validation_extra": "^[0-9A-Za-z\\-_]{1,120}$",
-                "address_explorer": "https://explorer.binance.org/address/{}",
-                "tx_explorer": "https://explorer.binance.org/tx/{}",
-                "confirmations_from": "1",
-                "image": "https://static.simpleswap.io/images/currencies-logo/bnb.svg"
-            },
-
-            {
-                "symbol": "AVAX",
-                "network": "AVAX-X",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "AVAX",
-                "warnings_from": [],
-                "warnings_to": [],
-                "validation_address": "^(X-avax)[0-9A-Za-z]{30,70}$",
-                "validation_extra": null,
-                "address_explorer": "https://avascan.info/blockchain/x/address/{}",
-                "tx_explorer": "https://avascan.info/blockchain/x/tx/{}",
-                "confirmations_from": "1",
-                "image": "https://static.simpleswap.io/images/currencies-logo/avax.svg"
-            },
-
-            {
-                "symbol": "FTM",
-                "network": "FTM",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "FTM",
-                "warnings_from": [
-                    "Please note that we accept FTM mainnet coins only."
-                ],
-                "warnings_to": [
-                    "Please note that only FTM mainnet coins are available for the withdrawal."
-                ],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://ftmscan.com/address/{}",
-                "tx_explorer": "https://ftmscan.com/tx/{}",
-                "confirmations_from": "1",
-                "image": "https://static.simpleswap.io/images/currencies-logo/ftm.svg"
-            },
-
-            {
-                "symbol": "KCS",
-                "network": "ERC20",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "KCS",
-                "warnings_from": [
-                    "Please note that only KCS ERC-20 tokens are available for the deposit.",
-                    "Please be careful not to deposit your KCS from a smart contract."
-                ],
-                "warnings_to": [
-                    "Please note that only KCS ERC-20 tokens are available for the withdrawal."
-                ],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://etherscan.io/address/{}",
-                "tx_explorer": "https://etherscan.io/tx/{}",
-                "confirmations_from": "24",
-                "image": "https://static.simpleswap.io/images/currencies-logo/kcs.svg"
-            },
-
-            {
-                "symbol": "CRO",
-                "network": "ERC20",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "CRO",
-                "warnings_from": [
-                    "Please note that only CRO ERC-20 tokens are available for the deposit.",
-                    "Please be careful not to deposit your CRO from a smart contract."
-                ],
-                "warnings_to": [
-                    "Please note that only CRO ERC-20 tokens are available for the withdrawal."
-                ],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://etherscan.io/address/{}",
-                "tx_explorer": "https://etherscan.io/tx/{}",
-                "confirmations_from": "24",
-                "image": "https://static.simpleswap.io/images/currencies-logo/cro.svg"
-            },
-            {
-                "symbol": "ETHW",
-                "network": "ethw",
-                "has_extra_id": false,
-                "extra_id": "",
-                "name": "ETHW",
-                "warnings_from": [
-                    "Please note that exchanges of ETHW mainnet might take some time due to the fact that, network transactions require at least 1500 conformations to be considered valid."
-                ],
-                "warnings_to": [],
-                "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-                "validation_extra": null,
-                "address_explorer": "https://www.oklink.com/en/ethw/address/{}",
-                "tx_explorer": "https://www.oklink.com/en/ethw/tx/{}",
-                "confirmations_from": "1500",
-                "image": "https://static.simpleswap.io/images/currencies-logo/ethw.svg"
-            }
-        ]
-
                 input.select.html("")
 
-                Object.entries(currencyArray).map(([index, result]) => {
+                Object.entries(this.currencyArray).map(([index, result]) => {
                     let elem = $("<option></option>")
-                    elem.val(result.symbol)
+                    elem.val(result.chainID)
                     elem.html(result.name)
 
                     elem.attr("data-content",
-                        '<div class="selectLogo" style="background-image: url('+result.image+');"></div><span class="selectText">'+result.name+'</span>')
-
+                        '<div class="selectLogo"  style="background-image: url('+result.image+');"></div><span class="selectText">'+result.name+'</span>')
                     input.select.append(elem)
                 })
 
@@ -363,16 +389,57 @@ class appsPane {
             elem.rateTicker.html("-")
             return
         }
+        for (let y = 0;y < this.currencyArray.length;y++){
+            const array = this.currencyArray
+            if (array[y].chainID == elem.select.val()){
+                getBalanceCross(elem.select.val(),array[y].name).then(function(res){
+                    elem.ticker.html(res.ticker)
+                    elem.rateTicker.html(res.ticker)
+                    elem.btnTicker.html(res.ticker)
+                    elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
+                })
+            }
+        }
 
-        elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
 
-        getAllchainBalance(elem.select.val()).then(function(res){
-            elem.ticker.html(res.ticker)
-            elem.rateTicker.html(res.ticker)
-            elem.btnTicker.html(res.ticker)
-            elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
-        })
     }
+
+   static simplecheckAmount(asset1,asset2) {
+       let from = ""
+       let to = ""
+       let amount = asset1.input.val()
+       appsPane.initBtn.attr("disabled", true)
+
+       for (let y = 0;y < this.currencyArray.length;y++) {
+           const array = this.currencyArray
+               if (array[y].chainID == asset1.select.val()) {
+                   from = array[y].name.toLowerCase()
+               }
+               if (array[y].chainID == asset2.select.val()){
+                   to = array[y].name.toLowerCase()
+               }
+           }
+
+       let requestOptions = {
+           method: 'GET',
+           redirect: 'follow'
+       };
+
+       fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
+           .then(response => response.json())
+           .then(function(res){
+               appsPane.inputs.two.input.val(res)
+           })
+           .catch(error => console.log('error', error));
+       if (amount <= appsPane.inputs.one.balance.html()){
+           appsPane.initBtn.attr("disabled", false)
+       }
+   }
+
+ static sendSimpleSwap(){
+
+ }
+
 }
 
 const appsPans = new appsPane()

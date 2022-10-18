@@ -109,27 +109,35 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "getBalance":
-            const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[request.asset]
-            console.log(bal)
-            if(!bal.tracked){
-                const contract = new web3.eth.Contract(ERC20_ABI, request.asset);
-                console.log(contract)
-                contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
-                    .then(function(res){
-                        bal.balance = res
-                        sendResponse(bal)
-                    })
-            }else sendResponse(bal)
+            console.log(baseWallet.wallets)
+            getBalance(request.asset).then(bal => {
+                sendResponse(bal)
+            })
 
             break
-        case "getAllchainBalance":
-            for (let y = 0; y < baseWallet.wallets.length; y++){
-                if (baseWallet.wallets[y].ticker === request.asset){
-                    const balance = baseWallet.wallets[y].getBalances(baseWallet.wallets[y])[request.asset]
-                    sendResponse(balance)
+        case "getBalanceCross":
+            if(request.chainID == baseWallet.getCurrentWallet().chainID){
+                getBalance(request.asset).then(bal => {
+                    sendResponse(bal)
+                })
+            }else{
+                const chain = baseWallet.getChainByID(request.chainID)
+                const tempWeb3 = new Web3(chain.rpcURL)
+
+                let assetBal = chain.getBalances(baseWallet.getCurrentAddress())[request.asset]
+                if(request.asset == chain.ticker){
+                    tempWeb3.eth.getBalance(baseWallet.getCurrentAddress()).then(bal => {
+                        assetBal.balance = bal
+                        sendResponse(assetBal)
+                    })
+                }else{
+                    const contract = new tempWeb3.eth.Contract(ERC20_ABI, request.asset)
+                    contract.methods.balanceOf(baseWallet.getCurrentAddress()).call().then(bal => {
+                        assetBal.balance = bal
+                        sendResponse(assetBal)
+                    })
                 }
             }
-
             break
         case "sendTo":
             let txResume = null;
@@ -637,6 +645,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             else
                 decimals = decimals.decimals
 
+            console.log(baseWallet.getCurrentWallet())
             if(request.token1 == baseWallet.getCurrentWallet().ticker)
                 request.token1 = baseWallet.getCurrentWallet().contract
             else if(request.token2 == baseWallet.getCurrentWallet().ticker)
@@ -673,6 +682,18 @@ function forgetWallet() {
     browser.storage.local.remove("wallet");
     browser.storage.local.remove("lastShowedSetupPwMsg");
     wallet = null;
+}
+
+
+async function getBalance(asset){
+    const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
+
+    if(!bal.tracked){
+        const contract = new web3.eth.Contract(ERC20_ABI, asset)
+        bal.balance = await contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()
+    }
+
+    return bal
 }
 
 function handleWeb3Request(sendResponse, origin, method, params){
