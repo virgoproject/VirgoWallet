@@ -424,16 +424,38 @@ class appsPane {
            method: 'GET',
            redirect: 'follow'
        };
+           fetch("https://api.simpleswap.io/get_ranges?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"", requestOptions)
+               .then(response => response.json())
+               .then(function(result){
 
-       fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
-           .then(response => response.json())
-           .then(function(res){
-               appsPane.inputs.two.input.val(res)
-           })
-           .catch(error => console.log('error', error));
-       if (amount <= appsPane.inputs.one.balance.html()){
-           appsPane.initBtn.attr("disabled", false)
-       }
+                   if (result !== null){
+                       switch (true){
+                           case (amount < parseInt(result.min)):
+                               console.log(result.min)
+                               break;
+                           case (amount > parseInt(result.max)):
+                               console.log(result.max)
+                               break;
+                           case (amount >= parseInt(result.min) && amount <= parseInt(result.max)):
+                               console.log("ok")
+                               fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
+                                   .then(response => response.json())
+                                   .then(function(res){
+                                       appsPane.inputs.two.input.val(res)
+                                   })
+                                   .catch(error => console.log('error', error));
+                               if (amount <= appsPane.inputs.one.balance.html()){
+                                   appsPane.initBtn.attr("disabled", false)
+                               }
+                               break;
+                       }
+
+
+                       }
+
+               })
+               .catch(error => console.log('error', error));
+
    }
 
  static sendSimpleSwap(){
