@@ -107,6 +107,7 @@ class MainPane {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 if(events.oldData !== JSON.stringify(response)) {
+                    console.log("updating")
                     mainPane.displayData(response)
                     transactionsPane.updateTxs(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)

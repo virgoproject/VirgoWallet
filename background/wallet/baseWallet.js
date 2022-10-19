@@ -137,16 +137,16 @@ class BaseWallet {
         wallets[1] = {
             "type": "web3",
             "wallet": {
-                "name": "Ropsten",
+                "name": "Goerli",
                 "asset": "Ethereum",
-                "ticker": "RETH",
+                "ticker": "GETH",
                 "decimals": 18,
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                "RPC": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-                "chainID": 3,
+                "RPC": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+                "chainID": 5,
                 "tokens": [],
                 "transactions": [],
-                "explorer": "https://ropsten.etherscan.io/tx/",
+                "explorer": "https://goerli.etherscan.io/tx/",
                 "swapParams": false,
                 "testnet": true
             }
@@ -252,7 +252,7 @@ class BaseWallet {
                 "ticker": "HT",
                 "decimals": 18,
                 "contract": "0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f",
-                "RPC": "https://http-mainnet-node.huobichain.com/",
+                "RPC": "https://http-mainnet.hecochain.com/",
                 "chainID": 128,
                 "tokens": [],
                 "transactions": [],

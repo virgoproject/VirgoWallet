@@ -277,7 +277,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                             "contractAddr": request.asset,
                             "date": Date.now(),
                             "recipient": request.recipient,
-                            "amount": request.amount,
+                            "amount": request.amount.toString(),
                             "gasPrice": request.gasPrice,
                             "gasLimit": request.gasLimit,
                             "nonce": nonce
@@ -662,6 +662,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 request.token1,
                 request.token2
             ).then(function(resp){
+                resp.amount = resp.amount.toString()
                 sendResponse(resp)
             })
             break

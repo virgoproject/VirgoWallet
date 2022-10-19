@@ -58,7 +58,7 @@ class SendPane {
 
             SendPane.estimateFees = function(){
                 getAsset(SendPane.assetSelect.val()).then(function(assetInfos){
-                    estimateSendFees(SendPane.recipient.val(), Math.trunc(parseFloat(SendPane.amount.val())*10**assetInfos.decimals), SendPane.assetSelect.val()).then(function(fees){
+                    estimateSendFees(SendPane.recipient.val(), Utils.toAtomicString(SendPane.amount.val(), assetInfos.decimals), SendPane.assetSelect.val()).then(function(fees){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance){
 
                             if(fees.gasLimit === undefined || isBtnDisabled(SendPane.btnConfirm)) return
@@ -205,6 +205,12 @@ class SendPane {
 
         events.addListener("assetsChanged", function (data){
             _this.setSend(data)
+        })
+
+        events.addListener("addressChanged", () => {
+            SendPane.recipient.val("")
+            SendPane.btnSubmit.attr("disabled", true)
+            SendPane.amount.val("")
         })
 
     }

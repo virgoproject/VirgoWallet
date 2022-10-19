@@ -60,8 +60,6 @@ class SelectChains {
                             enableLoadBtn(SendPane.btnSubmit)
                             SendPane.backBtn.click()
                             SendPane.assetSelect.html("")
-                            sendPane.setSend(res)
-                            swapPane.setSwap(res)
                         })
 
                         $("[data-networkname]").html(wallet.name + " Testnet")

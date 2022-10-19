@@ -29,6 +29,7 @@ class Web3Wallet {
                     resp.json().then(function(res){
                         wallet.CG_Platform = res.CG_Platform
                         for(let token of res.tokens){
+                            console.log(token)
                             if(!wallet.hasToken(token)){
                                 fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
                                     .then(function(resp2){
@@ -95,12 +96,18 @@ class Web3Wallet {
         }
 
         if(json.chainID == 3){
-            json.name = "Ropsten"
-            json.ticker = "RETH"
+            json.name = "Goerli"
+            json.chainID = 5
+            json.ticker = "GETH"
+            json.RPC = "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+            json.explorer = "https://goerli.etherscan.io/tx/"
             json.testnet = true
         }
         if(json.chainID == 400)
             json.testnet = true
+
+        if(json.chainID == 128)
+            json.RPC = "https://http-mainnet.hecochain.com/"
 
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }

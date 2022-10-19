@@ -135,7 +135,8 @@ class SwapPane {
                                 SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
 
                             SwapPane.loading.hide()
-                            SwapPane.review.self.show()
+                            if(!isBtnDisabled(SwapPane.review.confirmBtn) && !SwapPane.params.is(":visible"))
+                                SwapPane.review.self.show()
                         })
                     })
                 }
@@ -172,6 +173,10 @@ class SwapPane {
                 })
         })
 
+        events.addListener("chainChanged", data => {
+            this.setSwap(data)
+        })
+
     }
 
     setSwap(data){
@@ -201,6 +206,8 @@ class SwapPane {
     setSelectOptions(input, balances){
         input.select.html("")
 
+        console.log("eeeee")
+
         this.select1OldElem = ""
         this.select2OldElem = ""
 
@@ -220,7 +227,6 @@ class SwapPane {
         })
 
         input.select.selectpicker('refresh');
-
     }
 
     //remove selected token in other list
@@ -343,7 +349,7 @@ class SwapPane {
                 SwapPane.rate.route.show()
                 SwapPane.rate.self.show()
 
-                const amountOut = parseInt(res.amount, 16)
+                const amountOut = parseInt(res.amount)
 
                 SwapPane.inputs.two.input.val(amountOut / 10 ** t2Bal.decimals)
                 SwapPane.rate.amount.html((amountOut / 10 ** t2Bal.decimals)/SwapPane.inputs.one.input.val())
