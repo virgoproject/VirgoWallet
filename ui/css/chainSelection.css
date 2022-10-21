@@ -4,7 +4,7 @@
     width: 100%;
     top: 52px;
     position: absolute;
-    background: #faf6fc;
+    background: #fbf4f8;
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
