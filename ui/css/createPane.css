@@ -1,0 +1,40 @@
+#createPane {
+    background-color: #faf6fc;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 25% 30px 0;
+    z-index: 12;
+}
+
+#createPane img {
+    width: 40%;
+}
+
+#createPane .label {
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+#createPane .subtitle {
+    font-style: italic;
+    color: var(--highlightColor1);
+}
+
+#createPane .passwordBox, #createPane .recoverBox {
+    margin-top: 4em;
+}
+
+#createPane button {
+    margin-top: 1em;
+}
+
+#createPane .recover {
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+#createPane .recover span {
+    color: var(--highlightColor1);
+}
