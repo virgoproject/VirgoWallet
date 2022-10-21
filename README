@@ -8,6 +8,8 @@ Used the minified version at https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js
 Tinysort ver. 3.2.5: https://github.com/Sjeiti/TinySort/releases/tag/v3.2.5
 Used the minified version at https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js
 
+BN.Js ver. 5.2.1: https://github.com/indutny/bn.js/releases/tag/v5.2.1
+Used the /lib/bn.js file
 
 Build instructions:
 
