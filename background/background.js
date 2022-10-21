@@ -162,176 +162,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             break
 
         case "sendTo":
-            let txResume = null;
-            //send native asset
-            web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
-                if (request.asset == baseWallet.getCurrentWallet().ticker) {
-                    console.log(request.amount)
-                    request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
-                    console.log(request.amount.toString())
-
-                    web3.eth.sendTransaction({
-                        from: baseWallet.getCurrentAddress(),
-                        to: request.recipient,
-                        value: request.amount,
-                        gas: request.gasLimit,
-                        gasPrice: request.gasPrice,
-                        nonce: nonce
-                    })
-                        .on("transactionHash", function (hash) {
-                            txResume = {
-                                "hash": hash,
-                                "contractAddr": baseWallet.getCurrentWallet().ticker,
-                                "date": Date.now(),
-                                "recipient": request.recipient,
-                                "amount": request.amount.toString(),
-                                "gasPrice": request.gasPrice,
-                                "gasLimit": request.gasLimit,
-                                "nonce": nonce
-                            }
-                            console.log("Got hash: " + hash)
-                            baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                            sendResponse(hash)
-                            baseWallet.save()
-
-                            //resend if not propagated after 60s
-                            setTimeout(function (){
-                                web3.eth.getTransaction(hash)
-                                    .then(function(res){
-                                        if(res == null) {
-                                            console.log("transaction not propagated after 60s, resending")
-                                            web3.eth.sendTransaction({
-                                                from: baseWallet.getCurrentAddress(),
-                                                to: request.recipient,
-                                                value: request.amount,
-                                                gas: request.gasLimit,
-                                                gasPrice: request.gasPrice,
-                                                nonce: nonce
-                                            })
-
-                                            //still not propagated, reset web3 and resend
-                                            setTimeout(function(){
-                                                web3.eth.getTransaction(hash)
-                                                    .then(function(res) {
-                                                        if (res == null) {
-                                                            web3 = new Web3(provider)
-                                                            console.log("still not propagated, reset web3 and resend")
-                                                            web3.eth.sendTransaction({
-                                                                from: baseWallet.getCurrentAddress(),
-                                                                to: request.recipient,
-                                                                value: request.amount,
-                                                                gas: request.gasLimit,
-                                                                gasPrice: request.gasPrice,
-                                                                nonce: nonce
-                                                            })
-                                                        }
-                                                    })
-                                            }, 60000)
-                                        }
-                                    })
-                            }, 60000)
-                        })
-                        .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
-                            if(txResume.status === undefined){
-                                if(receipt.status){
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Transaction confirmed!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + txResume.hash + " confirmed"
-                                    });
-                                }else if(receipt.status == false){
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Transaction failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + txResume.hash + " failed"
-                                    });
-                                }
-                            }
-                            txResume.gasUsed = receipt.gasUsed
-                            txResume.status = receipt.status
-                            txResume.confirmations = confirmationNumber
-                            baseWallet.save()
-                        })
-                    return
-                }
-
-                let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.asset)
-
-                if(decimals === undefined)
-                    decimals = baseWallet.getCurrentWallet().decimals
-                else
-                    decimals = decimals.decimals
-
-                request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
-
-                const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
-                const transaction = contract.methods.transfer(request.recipient, request.amount);
-
-                transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
-                    .on("transactionHash", function (hash) {
-                        console.log("got hash: " + hash)
-                        txResume = {
-                            "hash": hash,
-                            "contractAddr": request.asset,
-                            "date": Date.now(),
-                            "recipient": request.recipient,
-                            "amount": request.amount.toString(),
-                            "gasPrice": request.gasPrice,
-                            "gasLimit": request.gasLimit,
-                            "nonce": nonce
-                        }
-                        baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                        sendResponse(hash)
-                        baseWallet.save()
-
-                        setTimeout(function (){
-                            web3.eth.getTransaction(hash)
-                                .then(function(res){
-                                    if(res == null) {
-                                        console.log("transaction not propagated after 60s, resending")
-                                        transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
-
-                                        //still not propagated, reset web3 and resend
-                                        setTimeout(function(){
-                                            web3.eth.getTransaction(hash)
-                                                .then(function(res) {
-                                                    if (res == null) {
-                                                        web3 = new Web3(provider)
-                                                        console.log("still not propagated, reset web3 and resend")
-                                                        transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
-                                                    }
-                                                })
-                                        }, 60000)
-                                    }
-                                })
-                        }, 60000)
-                    })
-                    .on("confirmation", function(confirmationNumber, receipt){
-                        if(txResume.status === undefined){
-                            if(receipt.status){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction confirmed!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + txResume.hash + " confirmed"
-                                });
-                            }else if(receipt.status == false){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction failed.",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + txResume.hash + " failed"
-                                });
-                            }
-                        }
-                        txResume.gasUsed = receipt.gasUsed
-                        txResume.status = receipt.status
-                        txResume.confirmations = confirmationNumber
-                        baseWallet.save()
-                    })
-            })
+            sendTo(request, sendResponse)
             break
 
         case "getTokenDetails":
@@ -390,6 +221,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 const startLoop = baseWallet === undefined
                 baseWallet = BaseWallet.generateWallet(request.mnemonic)
                 baseWallet.save()
+
+                accName = {}
+                browser.storage.local.set({"accountsNames": accName})
+
                 if(startLoop) baseWallet.startLoop()
                 else {
                     baseWallet.getCurrentWallet().update()
@@ -736,6 +571,169 @@ async function getBalance(asset){
     }
 
     return bal
+}
+
+function sendTo(request, sendResponse){
+    let txResume = null;
+    //send native asset
+    web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
+        if (request.asset == baseWallet.getCurrentWallet().ticker) {
+
+            request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+
+            web3.eth.sendTransaction({
+                from: baseWallet.getCurrentAddress(),
+                to: request.recipient,
+                value: request.amount,
+                gas: request.gasLimit,
+                gasPrice: request.gasPrice,
+                nonce: nonce
+            })
+                .on("transactionHash", function (hash) {
+                    txResume = {
+                        "hash": hash,
+                        "contractAddr": baseWallet.getCurrentWallet().ticker,
+                        "date": Date.now(),
+                        "recipient": request.recipient,
+                        "amount": request.amount.toString(),
+                        "gasPrice": request.gasPrice,
+                        "gasLimit": request.gasLimit,
+                        "nonce": nonce
+                    }
+                    console.log("Got hash: " + hash)
+                    baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                    sendResponse(hash)
+                    baseWallet.save()
+
+                    //resend if not propagated after 60s
+                    setTimeout(function (){
+                        web3.eth.getTransaction(hash)
+                            .then(function(res){
+                                if(res == null) {
+                                    console.log("transaction not propagated after 60s, resending")
+                                    web3.eth.sendTransaction({
+                                        from: baseWallet.getCurrentAddress(),
+                                        to: request.recipient,
+                                        value: request.amount,
+                                        gas: request.gasLimit,
+                                        gasPrice: request.gasPrice,
+                                        nonce: nonce
+                                    })
+                                }
+                            })
+                    }, 60000)
+                })
+                .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
+                    if(txResume.status === undefined){
+                        if(receipt.status){
+                            browser.notifications.create("txNotification", {
+                                "type": "basic",
+                                "title": "Transaction confirmed!",
+                                "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                "message": "Transaction " + txResume.hash + " confirmed"
+                            });
+                        }else if(receipt.status == false){
+                            browser.notifications.create("txNotification", {
+                                "type": "basic",
+                                "title": "Transaction failed.",
+                                "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                "message": "Transaction " + txResume.hash + " failed"
+                            });
+                        }
+                    }
+                    txResume.gasUsed = receipt.gasUsed
+                    txResume.status = receipt.status
+                    txResume.confirmations = confirmationNumber
+                    baseWallet.save()
+                }).catch(e => {
+                    if(e.code == -32000){
+                        baseWallet.selectWallet(baseWallet.selectedWallet)
+                        sendTo(request, sendResponse)
+                    }
+                })
+            return
+        }
+
+        let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.asset)
+
+        if(decimals === undefined)
+            decimals = baseWallet.getCurrentWallet().decimals
+        else
+            decimals = decimals.decimals
+
+        request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
+
+        const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
+        const transaction = contract.methods.transfer(request.recipient, request.amount);
+
+        transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+            .on("transactionHash", function (hash) {
+                console.log("got hash: " + hash)
+                txResume = {
+                    "hash": hash,
+                    "contractAddr": request.asset,
+                    "date": Date.now(),
+                    "recipient": request.recipient,
+                    "amount": request.amount.toString(),
+                    "gasPrice": request.gasPrice,
+                    "gasLimit": request.gasLimit,
+                    "nonce": nonce
+                }
+                baseWallet.getCurrentWallet().transactions.unshift(txResume)
+                sendResponse(hash)
+                baseWallet.save()
+
+                setTimeout(function (){
+                    web3.eth.getTransaction(hash)
+                        .then(function(res){
+                            if(res == null) {
+                                console.log("transaction not propagated after 60s, resending")
+                                transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+
+                                //still not propagated, reset web3 and resend
+                                setTimeout(function(){
+                                    web3.eth.getTransaction(hash)
+                                        .then(function(res) {
+                                            if (res == null) {
+                                                web3 = new Web3(provider)
+                                                console.log("still not propagated, reset web3 and resend")
+                                                transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
+                                            }
+                                        })
+                                }, 60000)
+                            }
+                        })
+                }, 60000)
+            })
+            .on("confirmation", function(confirmationNumber, receipt){
+                if(txResume.status === undefined){
+                    if(receipt.status){
+                        browser.notifications.create("txNotification", {
+                            "type": "basic",
+                            "title": "Transaction confirmed!",
+                            "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                            "message": "Transaction " + txResume.hash + " confirmed"
+                        });
+                    }else if(receipt.status == false){
+                        browser.notifications.create("txNotification", {
+                            "type": "basic",
+                            "title": "Transaction failed.",
+                            "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                            "message": "Transaction " + txResume.hash + " failed"
+                        });
+                    }
+                }
+                txResume.gasUsed = receipt.gasUsed
+                txResume.status = receipt.status
+                txResume.confirmations = confirmationNumber
+                baseWallet.save()
+            }).catch(e => {
+                if(e.code == -32000){
+                    baseWallet.selectWallet(baseWallet.selectedWallet)
+                    sendTo(request, sendResponse)
+                }
+            })
+    })
 }
 
 function handleWeb3Request(sendResponse, origin, method, params){

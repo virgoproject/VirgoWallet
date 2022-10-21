@@ -80,10 +80,9 @@ class SendPane {
                             SendPane.confirmForm.show()
 
                             let totalForNative = new BN(fees.gasLimit * Math.round(fees.gasPrice * feesModifier));
-                            if(assetInfos.ticker == MAIN_ASSET.ticker)
-                                totalForNative.add(new BN(Utils.toAtomicString(SendPane.amount.val(), MAIN_ASSET.decimals)))
 
-                            console.log(typeof nativeBalance.balance)
+                            if(assetInfos.ticker == MAIN_ASSET.ticker)
+                                totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SendPane.amount.val(), MAIN_ASSET.decimals)))
 
                             if(totalForNative.lte(new BN(nativeBalance.balance))){
                                 SendPane.btnConfirm.find("val").html("Send")
@@ -145,7 +144,8 @@ class SendPane {
         })
 
         SendPane.assetSelect.change(function(){
-            SendPane.btnSubmit.attr("disabled", true);
+            SendPane.btnSubmit.attr("disabled", true)
+            SendPane.amount.val("")
             getAsset($(this).val()).then(function(asset){
                 SendPane.sendBal.html(asset.ticker)
                 SendPane.balance.attr("data-bal", asset.contract)
@@ -160,8 +160,17 @@ class SendPane {
         })
 
         SendPane.maxBtn.click(function (){
-            SendPane.amount.val(SendPane.balance.html())
-            SendPane.amount.trigger("input")
+            if(SendPane.assetSelect.val() == MAIN_ASSET.ticker){
+                estimateSendFees("0x6F7AAEa1D07801f9fB0756e1849b9e440eDB25b4", Utils.toAtomicString(SendPane.balance.html(), MAIN_ASSET.decimals), MAIN_ASSET.ticker).then(function(fees){
+                    let maxSendable = new BN(Utils.toAtomicString(SendPane.balance.html(), MAIN_ASSET.decimals))
+                    maxSendable = maxSendable.sub(new BN(fees.gasLimit * fees.gasPrice))
+                    SendPane.amount.val(Utils.formatAmount(maxSendable.toString(), MAIN_ASSET.decimals))
+                    SendPane.amount.trigger("input")
+                })
+            }else{
+                SendPane.amount.val(SendPane.balance.html())
+                SendPane.amount.trigger("input")
+            }
         })
 
         SendPane.recipient.on("input", function(){
@@ -217,6 +226,11 @@ class SendPane {
 
     setSend(data){
         SendPane.assetSelect.html("")
+        SendPane.recipient.val("")
+        SendPane.amount.val("")
+        SendPane.backBtn.attr("disabled", false)
+        enableLoadBtn(SendPane.btnSubmit)
+        SendPane.backBtn.click()
 
         const selectedAddress = data.addresses[data.selectedAddress]
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {

@@ -293,7 +293,12 @@ class Web3Wallet {
                             if(receipt.status){
 
                                 if(transaction.contractAddr == "SWAP"){
-                                    const log = receipt.logs[receipt.logs.length-1]
+                                    let log = receipt.logs[receipt.logs.length-1]
+
+                                    for(let nLog of receipt.logs){
+                                        if(nLog.address == transaction.recipient)
+                                            log = nLog
+                                    }
 
                                     const decodedLog = web3.eth.abi.decodeLog([
                                         {type: "address", "name": "caller"},

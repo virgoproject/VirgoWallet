@@ -172,4 +172,20 @@
     line-height: 1.3em;
 }
 
+#testnetFaucet {
+    text-align: center;
+    font-size: 0.75em;
+    background: var(--whiteBackground);
+    border-radius: 0.75em;
+    padding: 0.5em;
+}
 
+#testnetFaucet span {
+    color: var(--mainColor);
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#testnetFaucet span:hover {
+    color: var(--mainColorDark10);
+}

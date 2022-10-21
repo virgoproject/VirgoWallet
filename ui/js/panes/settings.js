@@ -339,32 +339,34 @@ class SettingsPane {
 
         SettingsPane.importMnemonic.warnBtn.click(function(){
             disableLoadBtn($(this))
-            restoreFromMnemonic(SettingsPane.importMnemonic.askText.val()).then(function(data){
+            restoreFromMnemonic(SettingsPane.importMnemonic.askText.val()).then(function(res){
                 setTimeout(function(){
-                    //chain selection
-                    selectChains.setChains(data)
-                    //settings
-                    let elem = SettingsPane.baseAccountRow.clone()
-                    SettingsPane.accounts.html("")
-                    SettingsPane.accounts.append(elem)
-                    settingsPane.setSettings(data)
-                    //assets
-                    elem = MainPane.baseAssetRow.clone()
-                    MainPane.walletAssets.html("")
-                    MainPane.walletAssets.append(elem)
-                    mainPane.displayData(data)
-                    //send form
-                    SendPane.recipient.val("")
-                    SendPane.amount.val("")
-                    SendPane.backBtn.attr("disabled", false)
-                    enableLoadBtn(SendPane.btnSubmit)
-                    SendPane.backBtn.click()
-                    SendPane.assetSelect.html("")
-                    sendPane.setSend(data)
+                    getBaseInfos().then(data => {
+                        //chain selection
+                        selectChains.setChains(data)
+                        //settings
+                        let elem = SettingsPane.baseAccountRow.clone()
+                        SettingsPane.accounts.html("")
+                        SettingsPane.accounts.append(elem)
+                        settingsPane.setSettings(data)
+                        //assets
+                        elem = MainPane.baseAssetRow.clone()
+                        MainPane.walletAssets.html("")
+                        MainPane.walletAssets.append(elem)
+                        mainPane.displayData(data)
+                        //send form
+                        SendPane.recipient.val("")
+                        SendPane.amount.val("")
+                        SendPane.backBtn.attr("disabled", false)
+                        enableLoadBtn(SendPane.btnSubmit)
+                        SendPane.backBtn.click()
+                        SendPane.assetSelect.html("")
+                        sendPane.setSend(data)
 
-                    enableLoadBtn(SettingsPane.importMnemonic.warnBtn)
-                    notyf.success("Wallet recovered!")
-                    SettingsPane.accountSelectionHeader.click()
+                        enableLoadBtn(SettingsPane.importMnemonic.warnBtn)
+                        notyf.success("Wallet recovered!")
+                        SettingsPane.accountSelectionHeader.click()
+                    })
                 }, 2000)
             })
         })

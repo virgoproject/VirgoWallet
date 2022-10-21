@@ -52,16 +52,6 @@ class SelectChains {
                         MainPane.walletAssets.html("")
                         MainPane.walletAssets.append(baseAssetRow)
 
-                        //reset send and swap form
-                        getBaseInfos().then(function(res){
-                            SendPane.recipient.val("")
-                            SendPane.amount.val("")
-                            SendPane.backBtn.attr("disabled", false)
-                            enableLoadBtn(SendPane.btnSubmit)
-                            SendPane.backBtn.click()
-                            SendPane.assetSelect.html("")
-                        })
-
                         $("[data-networkname]").html(wallet.name + " Testnet")
                         $("[data-networkticker]").html(wallet.ticker)
 

@@ -119,7 +119,7 @@ class SwapPane {
 
                             _this.gasPrice = Math.round(gasPrice * feesModifier)
 
-                            let totalForNative = new BN(res.gas * _this.gasPrice)
+                            let totalForNative = new BN(res.gas).mul(new BN(_this.gasPrice))
                             if (_this.route.route[0] == MAIN_ASSET.contract)
                                 totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SwapPane.inputs.one.input.val(), MAIN_ASSET.decimals)))
 
@@ -174,7 +174,9 @@ class SwapPane {
         })
 
         events.addListener("chainChanged", data => {
-            this.setSwap(data)
+            SwapPane.inputs.one.input.val("")
+            SwapPane.review.self.hide()
+            _this.setSwap(data)
         })
 
     }
@@ -205,8 +207,6 @@ class SwapPane {
 
     setSelectOptions(input, balances){
         input.select.html("")
-
-        console.log("eeeee")
 
         this.select1OldElem = ""
         this.select2OldElem = ""
@@ -270,7 +270,17 @@ class SwapPane {
     }
 
     updateBalance(elem, bypassLoading = false){
-        if(elem.select.val() == "") return
+        if(elem.select.val() == ""){
+            elem.ticker.html("")
+
+            if(elem.select.val() == "") {
+                elem.balance.html("-")
+                elem.btnTicker.html("-")
+                elem.rateTicker.html("-")
+                return
+            }
+            return
+        }
 
         if(!bypassLoading){
             elem.ticker.html("")

@@ -214,10 +214,9 @@ class Uniswap02Utils {
 
         return await new Promise(resolve => {
 
-            if(route[0].toLowerCase() == WETH.toLowerCase()){
-                console.log("swapExactBNBForToken")
+            const swapExactETHForToken = function(){
                 _this.proxy.methods.swapExactBNBForToken(route).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
-                    gas += this.additionalGas
+                    gas += _this.additionalGas
                     _this.proxy.methods.swapExactBNBForToken(route).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
                         baseWallet.getCurrentWallet().transactions.unshift({
                             "hash": hash,
@@ -236,8 +235,21 @@ class Uniswap02Utils {
                         })
                         baseWallet.save()
                         resolve(true)
+                    }).catch(e => {
+                        console.log(e)
+                        if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
+                            baseWallet.selectWallet(baseWallet.selectedWallet)
+                            web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
+                                nonce = newNonce
+                                swapExactETHForToken()
+                            })
+                        }
                     })
                 })
+            }
+
+            if(route[0].toLowerCase() == WETH.toLowerCase()){
+                swapExactETHForToken()
                 return
             }
 
@@ -262,6 +274,15 @@ class Uniswap02Utils {
                     })
                     baseWallet.save()
                     resolve(true)
+                }).catch(e => {
+                    console.log(e)
+                    if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
+                        baseWallet.selectWallet(baseWallet.selectedWallet)
+                        web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
+                            nonce = newNonce
+                            swapExactTokenForBNB(approveHash, gas)
+                        })
+                    }
                 })
             }
 
@@ -284,6 +305,15 @@ class Uniswap02Utils {
                     })
                     baseWallet.save()
                     resolve(true)
+                }).catch(e => {
+                    console.log(e)
+                    if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
+                        baseWallet.selectWallet(baseWallet.selectedWallet)
+                        web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
+                            nonce = newNonce
+                            swapExactTokenForToken(approveHash, gas)
+                        })
+                    }
                 })
             }
 
@@ -309,8 +339,8 @@ class Uniswap02Utils {
 
             token.methods.allowance(baseWallet.getCurrentAddress(), this.proxyAddress).call().then(allowance => {
                 if(web3.utils.toBN(allowance).lt(amount)){
-                    token.methods.approve(this.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
-                        token.methods.approve(this.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
+                    token.methods.approve(_this.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
+                        token.methods.approve(_this.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
                             nonce++
                             swap(hash)
                         })
