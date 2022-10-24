@@ -45,7 +45,7 @@ class SettingsPane {
         ask: $("#settings .importMnemonic .mnemonicAsk"),
         askText: $("#settings .importMnemonic .mnemonicAsk textarea"),
         askBtn: $("#settings .importMnemonic .mnemonicAsk #grantAccess"),
-        importBTN : $("#settings .importMnemonic .mnemonicAsk #importPhrase"),
+        importBtn : $("#settings .importMnemonic .mnemonicAsk #importPhrase"),
         askInput: $("#settings .importMnemonic .mnemonicAsk input"),
         showWords : $('#settings .importMnemonic .fa-eye'),
         hideWords : $('#settings .importMnemonic .fa-eye-slash'),
@@ -53,6 +53,7 @@ class SettingsPane {
         selectPhrase : $('#settings .importMnemonic #phraseLength'),
         shortWords : $('#settings .importMnemonic #12-length'),
         longWords : $('#settings .importMnemonic #24-length'),
+        importFileInput : $("#settings .importMnemonic #importPhraseInput"),
         label: {
             err: $("#settings .importMnemonic .mnemonicAsk .label.error"),
             normal: $("#settings .importMnemonic .mnemonicAsk .label.normal")
@@ -346,8 +347,12 @@ class SettingsPane {
             SettingsPane.importMnemonic.askInput.attr("disabled", false)
         })
 
-        SettingsPane.importMnemonic.askText.on("input", function(){
-            SettingsPane.importMnemonic.askBtn.prop("disabled", $(this).val().split(" ").length < 12);
+        SettingsPane.importMnemonic.inputWords.on("input", function(){
+            if (SettingsPane.importMnemonic.selectPhrase.find(":selected").val() === "12"){
+                SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.checkPhraseLength().split(" ").length < 12);
+            }else {
+                SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.checkPhraseLength().split(" ").length < 24);
+            }
         });
 
         SettingsPane.importMnemonic.askText.click(function(){
@@ -373,8 +378,8 @@ class SettingsPane {
 
         })
 
-        SettingsPane.importMnemonic.importBTN.click(function () {
-            settingsPane.checkPhraseLength()
+        SettingsPane.importMnemonic.importBtn.click(function () {
+            SettingsPane.importMnemonic.importFileInput.trigger('click')
         })
 
         SettingsPane.importMnemonic.selectPhrase.on('change', function() {
@@ -528,21 +533,14 @@ class SettingsPane {
 
     checkPhraseLength(){
         let phraseSeed = ""
-
-        SettingsPane.importMnemonic.inputWords.each(function (i,obj) {
-
-            const val = obj.value
-            if(val !== ""){
-                phraseSeed = phraseSeed +" "+ val
-                console.log(phraseSeed,phraseSeed.length)
-                if (phraseSeed.length === 12)  return phraseSeed
+        for(let i = 0; i < SettingsPane.importMnemonic.inputWords.length; i++){
+            const inputVal = SettingsPane.importMnemonic.inputWords[i].value
+            if(inputVal !== ""){
+                phraseSeed = phraseSeed +inputVal+ " "
             }
-
-        })
-
-
+        }
+        return phraseSeed.trim();
     }
-
 }
 
 const settingsPane = new SettingsPane()

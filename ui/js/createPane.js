@@ -18,11 +18,13 @@ class createPane{
 
     constructor() {
 
-        createPane.Buttons.createWallet.click(function () {
+        createPane.Buttons.createWallet.click(async function () {
             createPane.div.createPane.hide()
             createPane.div.mainPane.show()
             createPane.div.settingsMain.removeClass('opened')
-
+            setupDone().then(function (res) {
+                  console.log(res)
+              })
         })
 
         createPane.Buttons.importWallet.click(function () {

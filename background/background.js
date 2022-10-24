@@ -32,6 +32,20 @@ browser.storage.local.get("accountsNames").then(function (res){
 let lockDelay = 60;
 let autolockEnabled = false;
 let lastActivity = Date.now();
+let setupDone = false;
+
+browser.storage.local.get('setupDone').then(function (res) {
+
+    if (baseWallet.version != VERSION){
+        browser.storage.local.set({"setupDone": true})
+        setupDone = true;
+        return
+    }
+
+    if (res.setupDone !== undefined){
+        setupDone = true;
+    }
+})
 
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
@@ -690,6 +704,18 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
             sendResponse(true)
             break
+
+        case 'setupDone':
+             browser.storage.local.get("setupDone").then(function (res) {
+                 if (!setupDone) {
+                     browser.storage.local.set({"setupDone": true})
+                     setupDone = true
+                     sendResponse(setupDone)
+                 }
+            })
+            sendResponse(setupDone)
+            break
+
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
@@ -704,7 +730,8 @@ function getBaseInfos(){
         "encrypted": baseWallet.isEncrypted(),
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
-        "connectedSites": connectedWebsites
+        "connectedSites": connectedWebsites,
+        "setupDone" : setupDone
     }
 }
 
