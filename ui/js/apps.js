@@ -42,12 +42,12 @@ class appsPane {
             "image": "https://static.simpleswap.io/images/currencies-logo/matic.svg"
         },
         {
-            "symbol": "bnb-bsc",
+            "symbol": "BNB",
             "network": "BSC",
             "has_extra_id": false,
             "extra_id": "",
             "chainID": 56,
-            "name": "BNB BSC",
+            "name": "BNB",
             "warnings_from": [
                 "Only BSC network supported. Please ensure your deposit is made on the BSC network."
             ],
@@ -216,6 +216,20 @@ class appsPane {
     static params = $("#simpleswapParams")
     static initBtn = $("#simpleinitSwapBtn")
     static loading = $("#simpleswapLoading")
+    static review = {
+        self: $("#simpleswapReview"),
+        amountIn: $("#simpleswapReviewAmountIn"),
+        inTicker: $("#simpleswapReviewTickerIn"),
+        amountOut: $("#simpleswapReviewAmountOut"),
+        outTicker: $("#simpleswapReviewTickerOut"),
+        swapFees: $("#simpleswapReviewSwapFees"),
+        swapFeesTicker: $("#simpleswapReviewSwapFeesTicker"),
+        networkFees: $("#simpleswapReviewNetFees"),
+        networkFeesTicker: $("#simpleswapReviewNetFeesTicker"),
+        rangeFees: $("#simpleswapRangeFees"),
+        confirmBtn: $("#confirmSimpleSwapBtn"),
+        back: $("#simpleswapReviewBack")
+    }
     constructor() {
 
 
@@ -272,7 +286,6 @@ class appsPane {
         appsPane.buttons.goBackSwap.click(function () {
             appsPane.div.simpleSwapApp.hide()
         })
-        console.log(this.select2OldElem)
         this.setSelect(appsPane.inputs.one)
         this.setSelect(appsPane.inputs.two)
 
@@ -294,7 +307,12 @@ class appsPane {
         })
 
         appsPane.initBtn.click(function (){
-            appsPane.sendSimpleSwap()
+            appsPane.sendSimpleSwap(appsPane.inputs.one,appsPane.inputs.two)
+        })
+
+        appsPane.review.back.click(function(){
+            appsPane.review.self.hide()
+            appsPane.params.show()
         })
 
         appsPane.inputs.one.btnMax.click(function(){
@@ -332,7 +350,7 @@ class appsPane {
                     elem.html(result.name)
 
                     elem.attr("data-content",
-                        '<div class="selectLogo"  style="background-image: url('+result.image+');"></div><span class="selectText">'+result.name+'</span>')
+                        '<div class="selectLogo"  style="background-image: url('+result.image+');"></div><span class="selectText">'+result.symbol+'</span>')
                     input.select.append(elem)
                 })
 
@@ -413,10 +431,10 @@ class appsPane {
        for (let y = 0;y < this.currencyArray.length;y++) {
            const array = this.currencyArray
                if (array[y].chainID == asset1.select.val()) {
-                   from = array[y].name.toLowerCase()
+                   from = array[y].symbol.toLowerCase()
                }
                if (array[y].chainID == asset2.select.val()){
-                   to = array[y].name.toLowerCase()
+                   to = array[y].symbol.toLowerCase()
                }
            }
 
@@ -449,17 +467,84 @@ class appsPane {
                                }
                                break;
                        }
-
-
                        }
-
                })
                .catch(error => console.log('error', error));
-
    }
 
- static sendSimpleSwap(){
+ static sendSimpleSwap(asset1,asset2){
+     if(appsPane.inputs.one.input.val() == "") return
 
+     let from = ""
+     let to = ""
+     let amount = asset1.input.val()
+     let chainID = asset1.select.val()
+     appsPane.initBtn.attr("disabled", true)
+
+     for (let y = 0;y < this.currencyArray.length;y++) {
+         const array = this.currencyArray
+         if (array[y].chainID == asset1.select.val()) {
+             from = array[y].symbol.toLowerCase()
+             if (from === "bnb"){
+                 from = "bnb-bsc"
+             }
+         }
+         if (array[y].chainID == asset2.select.val()){
+             to = array[y].symbol.toLowerCase()
+         }
+     }
+
+
+         getBaseInfos().then(function (res){
+             appsPane.params.hide()
+             appsPane.loading.show()
+             const selectedAddress = res.addresses[res.selectedAddress].address
+             let myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+
+             let raw = JSON.stringify({
+                 "currency_from": from,
+                 "currency_to": to,
+                 "fixed": true,
+                 "amount": amount,
+                 "address_to": selectedAddress,
+                 "extraIdTo": "",
+                 "userRefundAddress": selectedAddress,
+                 "userRefundExtraId": "",
+                 "referral": ""
+             });
+
+             let requestOptions = {
+                 method: 'POST',
+                 headers: myHeaders,
+                 body: raw,
+                 redirect: 'follow'
+             };
+
+             fetch("https://api.simpleswap.io/create_exchange?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802", requestOptions)
+                 .then(response => response.json())
+                 .then(function (res){
+                     console.log(res)
+                     appsPane.review.amountIn.html(appsPane.inputs.one.input.val())
+                     appsPane.review.inTicker.html(appsPane.inputs.one.ticker.html())
+
+                     appsPane.review.amountOut.html(appsPane.inputs.two.input.val())
+                     appsPane.review.outTicker.html(appsPane.inputs.two.ticker.html())
+
+                     appsPane.review.confirmBtn.attr("disabled", false)
+                     getAsset(from.toUpperCase()).then(function (assetInfo){
+                         estimateSendFeesCross(res.address_from,Math.trunc(parseFloat(amount)*10**assetInfo.decimals),from,chainID).then(function (fees){
+                             appsPane.review.networkFeesTicker.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice), fees.decimals))
+                         })
+                     })
+
+                 })
+                 .catch(error => console.log('error', error));
+         })
+
+
+
+     appsPane.review.self.show()
  }
 
 }

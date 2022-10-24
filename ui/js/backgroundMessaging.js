@@ -36,6 +36,10 @@ async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
 
+async function estimateSendFeesCross(recipient, amount, asset, chainID){
+    return await browser.runtime.sendMessage({command: 'estimateSendFeesCross', recipient: recipient, amount: amount, asset: asset, chainID: chainID})
+}
+
 async function getGasPrice(){
     return await browser.runtime.sendMessage({command: 'getGasPrice'})
 }

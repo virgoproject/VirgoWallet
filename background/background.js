@@ -108,6 +108,22 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             break
 
+        case "estimateSendFeesCross":
+            const chain = baseWallet.getChainByID(request.chainID)
+            const tempWeb3 = new Web3(chain.rpcURL)
+
+            tempWeb3.eth.getGasPrice().then(function(gasPrice){
+                //may have a problem with sending wrapped version of the main asset
+                if(request.asset.toUpperCase() == chain.ticker){
+                    //sending chain's native asset
+                    web3.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: request.recipient})
+                        .then(function(gasLimit){
+                            sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
+                        })
+                    return
+                }
+            })
+            break
         case "getBalance":
             console.log(baseWallet.wallets)
             getBalance(request.asset).then(bal => {
@@ -139,6 +155,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             }
             break
+
+
+
         case "sendTo":
             let txResume = null;
             //send native asset

@@ -1370,6 +1370,50 @@
                     </div>
                 </div>
             </div>
+            <div id="simpleswapReview" style="display: none">
+                <div class="row">
+                    <div class="col-3">
+                        <p class="m-0" id="simpleswapReviewBack"><i class="fa-solid fa-chevron-left"></i> back</p>
+                    </div>
+                    <div class="col-9 text-right">
+                        <h5>Payment details</h5>
+                    </div>
+                </div>
+                <div class="receiveAmount">
+                    <p class="m-0">You will receive</p>
+                    <p class="amount">~ <span id="simpleswapReviewAmountOut"></span> <span class="ticker" id="simpleswapReviewTickerOut"></span></p>
+                </div>
+                <div class="row details mt-2">
+                    <div class="col-5">
+                        <p class="title">You transfer</p>
+                    </div>
+                    <div class="col-7">
+                        <p class="value"><span id="simpleswapReviewAmountIn"></span> <span class="ticker" id="simpleswapReviewTickerIn"></span></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="title">Swap fees</p>
+                    </div>
+                    <div class="col-8">
+                        <p class="value"><span id="simpleswapReviewSwapFees"></span> <span class="ticker" id="simpleswapReviewSwapFeesTicker">USDT</span></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="title">Slippage</p>
+                    </div>
+                    <div class="col-8">
+                        <p class="value">Auto</p>
+                    </div>
+                    <div class="col-5">
+                        <p class="title">Network fees</p>
+                    </div>
+                    <div class="col-7">
+                        <p class="value">~ <span id="simpleswapReviewNetFees"></span> <span class="ticker" id="simpleswapReviewNetFeesTicker"></span></p>
+                    </div>
+                </div>
+                <button class="button w-100" disabled="disabled" id="confirmSimpleSwapBtn">
+                    <val>Init swap</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>
