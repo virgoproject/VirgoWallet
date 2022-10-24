@@ -43,8 +43,6 @@ browser.storage.local.get("lockDelay").then(function(res){
         lockDelay = res.lockDelay
 })
 
-
-
 setInterval(function(){
     if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
 
@@ -60,12 +58,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
-
                 sendResponse(getBaseInfos())
                 lastActivity = Date.now()
             }
             break
-
 
         case "unlockWallet":
             lastActivity = Date.now()
@@ -230,6 +226,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     baseWallet.getCurrentWallet().update()
                     baseWallet.getCurrentWallet().updatePrices()
                 }
+
                 sendResponse(getBaseInfos())
             }catch(e){
                 console.log(e)

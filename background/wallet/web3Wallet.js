@@ -29,7 +29,6 @@ class Web3Wallet {
                     resp.json().then(function(res){
                         wallet.CG_Platform = res.CG_Platform
                         for(let token of res.tokens){
-                            console.log(token)
                             if(!wallet.hasToken(token)){
                                 fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
                                     .then(function(resp2){
@@ -393,7 +392,7 @@ class Web3Wallet {
         }
 
         this.tokens.push(token)
-        this.tokenSet.set(token.contract, true)
+        this.tokenSet.set(token.contract, token)
 
         for(const address of baseWallet.getAddresses()) {
             let balances = this.getBalances(address)
