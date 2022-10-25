@@ -161,6 +161,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
             break
 
+
+
         case "sendTo":
             let txResume = null;
             //send native asset

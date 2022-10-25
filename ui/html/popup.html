@@ -1344,12 +1344,68 @@
             </div>
         </div>
     </div>
-    <div id="atomicSwapPane" style="display: none">
+    <div id="atomicSwapPane" style="display: block">
         <div class="row mt-2">
             <div class="back" id="atomicSwapBack">
                 <i class="fas fa-chevron-left"></i>
             </div>
             <p class="text-center title">Atomic Swap</p>
+        </div>
+        <div class="swapParams" id="atomicSwapParams">
+            <div class="row inputHeader">
+                <div class="col-3 pl-0">
+                    <p class="m-0">You send</p>
+                </div>
+                <div class="col-9 pr-0 text-right">
+                    <p class="m-0">Available: <span class="amount" id="atomicSwapBalance1">-</span> <span class="ticker" id="atomicSwapTicker1"></span></p>
+                </div>
+            </div>
+            <div class="row swapInput pt-1 pb-1">
+                <div class="col-7 p-0">
+                    <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="atomicSwapInput1">
+                    <span class="maxBtn" id="atomicSwapMaxBtn1">Max</span>
+                </div>
+                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="atomicSwapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <button id="atomicSwapSwitchBtn"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+            <div class="row inputHeader">
+                <div class="col-3 pl-0">
+                    <p class="m-0">You get</p>
+                </div>
+                <div class="col-9 pr-0 text-right">
+                    <p class="m-0">Available: <span class="amount" id="atomicSwapBalance2">-</span> <span class="ticker" id="atomicSwapTicker2"></span></p>
+                </div>
+            </div>
+            <div class="row swapInput pt-1 pb-1">
+                <div class="col-7 p-0">
+                    <input type="text" class="amountInput" placeholder="0.0" id="atomicSwapInput2" disabled="disabled">
+                </div>
+                <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="atomicSwapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 p-0" id="atomicSwapRate" style="display: none">
+                    <p class="rate">Rate: <span class="amount" id="atomicSwapRateAmount"></span> <span class="ticker" id="atomicSwapRateTicker2">-</span>/<span class="ticker" id="swapRateTicker1">-</span></p>
+                </div>
+                <div class="col-12 text-center" id="atomicSwapRateLoading" style="display: none">
+                    <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
+                </div>
+                </div>
+                <div class="alert alert-warning align-items-center p-2" role="alert" id="atomicSwapRouteNotFound" style="display: none">
+                    <div>
+                        <i class="fa-regular fa-circle-exclamation"></i> Not enough liquidity for this trade
+                    </div>
+                </div>
+                <div class="step" id="atomicSwapRouteBaseStep" style="display: none"></div>
+                <div class="row p-0" style="margin-top: 2.25em;">
+                    <button class="button w-100" id="initAtomicSwapBtn" disabled="true">Swap <span id="atomicSwapBtnTicker1">-</span> for <span id="atomicSwapBtnTicker2">-</span></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
