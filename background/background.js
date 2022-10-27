@@ -339,6 +339,120 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     })
             })
             break
+        case "sendToCross":
+            let txResumeCross = null;
+            //send native asset
+            const chainCross = baseWallet.getChainByID(request.chainID)
+            const TempWeb3 = new Web3(chainCross.rpcURL)
+
+            const pKey = "0x" + Converter.bytesToHex(web3._provider.wallets[baseWallet.getCurrentAddress()].privateKey)
+
+            const account = TempWeb3.eth.accounts.privateKeyToAccount(pKey)
+            TempWeb3.eth.accounts.wallet.add(account)
+
+
+            TempWeb3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
+                console.log(chainCross.ticker)
+                if (request.asset.toUpperCase() == chainCross.ticker) {
+
+                    console.log("base asset")
+                    console.log({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
+                    })
+
+                    web3.eth.sendTransaction({
+                        from: baseWallet.getCurrentAddress(),
+                        to: request.recipient,
+                        value: request.amount,
+                        gas: request.gasLimit,
+                        gasPrice: request.gasPrice,
+                        nonce: nonce
+                    })
+                        .on("transactionHash", function (hash) {
+                            txResumeCross = {
+                                "hash": hash,
+                                "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                "date": Date.now(),
+                                "recipient": request.recipient,
+                                "amount": request.amount,
+                                "gasPrice": request.gasPrice,
+                                "gasLimit": request.gasLimit,
+                                "nonce": nonce
+                            }
+                            console.log("Got hash: " + hash)
+                            baseWallet.getCurrentWallet().transactions.unshift(txResumeCross)
+                            sendResponse(hash)
+                            baseWallet.save()
+
+                            //resend if not propagated after 60s
+                            setTimeout(function () {
+                                web3.eth.getTransaction(hash)
+                                    .then(function (res) {
+                                        if (res == null) {
+                                            console.log("transaction not propagated after 60s, resending")
+                                            web3.eth.sendTransaction({
+                                                from: baseWallet.getCurrentAddress(),
+                                                to: request.recipient,
+                                                value: request.amount,
+                                                gas: request.gasLimit,
+                                                gasPrice: request.gasPrice,
+                                                nonce: nonce
+                                            })
+
+                                            //still not propagated, reset web3 and resend
+                                            setTimeout(function () {
+                                                web3.eth.getTransaction(hash)
+                                                    .then(function (res) {
+                                                        if (res == null) {
+                                                            web3 = new Web3(provider)
+                                                            console.log("still not propagated, reset web3 and resend")
+                                                            web3.eth.sendTransaction({
+                                                                from: baseWallet.getCurrentAddress(),
+                                                                to: request.recipient,
+                                                                value: request.amount,
+                                                                gas: request.gasLimit,
+                                                                gasPrice: request.gasPrice,
+                                                                nonce: nonce
+                                                            })
+                                                        }
+                                                    })
+                                            }, 60000)
+                                        }
+                                    })
+                            }, 60000)
+                        })
+                        .on("confirmation", function (confirmationNumber, receipt, lastestBlockHash) {
+                            if (txResumeCross.status === undefined) {
+                                if (receipt.status) {
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction confirmed!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + txResumeCross.hash + " confirmed"
+                                    });
+                                } else if (receipt.status == false) {
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction failed.",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + txResumeCross.hash + " failed"
+                                    });
+                                }
+                            }
+                            txResumeCross.gasUsed = receipt.gasUsed
+                            txResumeCross.status = receipt.status
+                            txResumeCross.confirmations = confirmationNumber
+                            baseWallet.save()
+                        })
+                    return
+                }
+            })
+            break
 
         case "getTokenDetails":
             const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});

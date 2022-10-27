@@ -41,26 +41,26 @@ class appsPane {
             "confirmations_from": " ",
             "image": "https://static.simpleswap.io/images/currencies-logo/matic.svg"
         },
-        {
-            "symbol": "BNB",
-            "network": "BSC",
-            "has_extra_id": false,
-            "extra_id": "",
-            "chainID": 56,
-            "name": "BNB",
-            "warnings_from": [
-                "Only BSC network supported. Please ensure your deposit is made on the BSC network."
-            ],
-            "warnings_to": [
-                "Only BSC network withdrawals supported. Withdrawing to an address that is not a BSC network address will result the LOSS of your funds."
-            ],
-            "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
-            "validation_extra": null,
-            "address_explorer": "https://bscscan.com/address/{}",
-            "tx_explorer": "https://bscscan.com/tx/{}",
-            "confirmations_from": "15",
-            "image": "https://static.simpleswap.io/images/currencies-logo/bnb-bsc.svg"
-        },
+       {
+           "symbol": "BNB",
+           "network": "BSC",
+           "has_extra_id": false,
+           "extra_id": "",
+           "chainID": 56,
+           "name": "BNB",
+           "warnings_from": [
+               "Only BSC network supported. Please ensure your deposit is made on the BSC network."
+           ],
+           "warnings_to": [
+               "Only BSC network withdrawals supported. Withdrawing to an address that is not a BSC network address will result the LOSS of your funds."
+           ],
+           "validation_address": "^(0x)[0-9A-Fa-f]{40}$",
+           "validation_extra": null,
+           "address_explorer": "https://bscscan.com/address/{}",
+           "tx_explorer": "https://bscscan.com/tx/{}",
+           "confirmations_from": "15",
+           "image": "https://static.simpleswap.io/images/currencies-logo/bnb-bsc.svg"
+       },
 
         {
             "symbol": "AVAX",
@@ -167,7 +167,8 @@ class appsPane {
             input: $("#simpleswapInput1"),
             select: $("#simpleswapSelect1"),
             ticker: $("#simpleswapTicker1"),
-            rateTicker: $("#simpleswapRateTicker1"),
+            amountmini: $("#amoutMini"),
+            amountmax: $("#amoutMax"),
             balance: $("#simpleswapBalance1"),
             btnTicker: $("#simpleswapBtnTicker1"),
             btnMax: $("#simpleswapMaxBtn1")
@@ -208,7 +209,8 @@ class appsPane {
     static rate = {
         self: $("#simpleswapRate"),
         loading: $("#simpleswapRateLoading"),
-        amount: $("#simpleswapRateAmount"),
+        max: $("#simpleswapMax"),
+        amount: $("#amoutMini"),
         route: $("#simpleswapRoute"),
         routeBaseStep: $("#simpleswapRouteBaseStep")
     }
@@ -280,34 +282,56 @@ class appsPane {
     static simpleswap(){
         this.select1OldElem = ""
         this.select2OldElem = ""
+
+        const inputOne = appsPane.inputs.one
+        const inputTwo = appsPane.inputs.two
+
         let officalApp = true
+
         appsPane.div.simpleSwapApp.show()
 
         appsPane.buttons.goBackSwap.click(function () {
+
+            inputOne.ticker.html("")
+            inputOne.balance.html("-")
+            inputOne.btnTicker.html("-")
+
+            inputTwo.ticker.html("")
+            inputTwo.balance.html("-")
+            inputTwo.btnTicker.html("-")
+
+            inputOne.input.val("")
+            inputTwo.input.val("")
+
+            appsPane.rate.max.hide()
+            appsPane.rate.self.hide()
+
+            appsPane.initBtn.attr("disabled", true)
+
             appsPane.div.simpleSwapApp.hide()
         })
-        this.setSelect(appsPane.inputs.one)
-        this.setSelect(appsPane.inputs.two)
 
+        this.setSelect(inputOne)
+        this.setSelect(inputTwo)
 
         appsPane.inputs.one.select.change(function(){
             appsPane.updateSelects(1)
-            appsPane.updateBalance(appsPane.inputs.one)
+            appsPane.updateBalance(inputOne)
             appsPane.inputs.one.input.trigger("input")
         })
 
         appsPane.inputs.two.select.change(function(){
             appsPane.updateSelects(2)
-            appsPane.updateBalance(appsPane.inputs.two)
+            appsPane.updateBalance(inputTwo)
             appsPane.inputs.one.input.trigger("input")
         })
 
         appsPane.inputs.one.input.on("input",function(){
-            appsPane.simplecheckAmount(appsPane.inputs.one,appsPane.inputs.two)
+            appsPane.simplecheckAmount(inputOne,inputTwo)
         })
 
         appsPane.initBtn.click(function (){
-            appsPane.sendSimpleSwap(appsPane.inputs.one,appsPane.inputs.two)
+            appsPane.sendSimpleSwap(inputOne,inputTwo)
         })
 
         appsPane.review.back.click(function(){
@@ -317,11 +341,14 @@ class appsPane {
 
         appsPane.inputs.one.btnMax.click(function(){
             if(appsPane.inputs.one.select.val() == "") return
-            appsPane.inputs.one.input.val(appsPane.inputs.one.balance.html())
+            appsPane.inputs.one.input.val(inputOne.balance.html())
             appsPane.inputs.one.input.trigger("input")
         })
 
         appsPane.switchBtn.click(function(){
+            inputOne.input.val("")
+            inputTwo.input.val("")
+
             const oneVal = appsPane.inputs.one.select.val()
             const twoVal = appsPane.inputs.two.select.val()
 
@@ -355,8 +382,6 @@ class appsPane {
                 })
 
                 input.select.selectpicker('refresh');
-
-
     }
 
    static updateSelects(elem){
@@ -404,7 +429,6 @@ class appsPane {
         if(elem.select.val() == "") {
             elem.balance.html("-")
             elem.btnTicker.html("-")
-            elem.rateTicker.html("-")
             return
         }
         for (let y = 0;y < this.currencyArray.length;y++){
@@ -412,17 +436,15 @@ class appsPane {
             if (array[y].chainID == elem.select.val()){
                 getBalanceCross(elem.select.val(),array[y].name).then(function(res){
                     elem.ticker.html(res.ticker)
-                    elem.rateTicker.html(res.ticker)
                     elem.btnTicker.html(res.ticker)
                     elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
                 })
             }
         }
-
-
     }
 
    static simplecheckAmount(asset1,asset2) {
+
        let from = ""
        let to = ""
        let amount = asset1.input.val()
@@ -432,9 +454,15 @@ class appsPane {
            const array = this.currencyArray
                if (array[y].chainID == asset1.select.val()) {
                    from = array[y].symbol.toLowerCase()
+                   if (from === "bnb"){
+                       from = "bnb-bsc"
+                   }
                }
                if (array[y].chainID == asset2.select.val()){
                    to = array[y].symbol.toLowerCase()
+                   if (to === "bnb"){
+                       to = "bnb-bsc"
+                   }
                }
            }
 
@@ -446,25 +474,31 @@ class appsPane {
                .then(response => response.json())
                .then(function(result){
 
+                   appsPane.rate.max.show()
+                   appsPane.inputs.one.amountmax.html(result.max)
+
+                   appsPane.rate.self.show()
+                   appsPane.inputs.one.amountmini.html(result.min)
+
                    if (result !== null){
                        switch (true){
-                           case (amount < parseInt(result.min)):
-                               console.log(result.min)
-                               break;
-                           case (amount > parseInt(result.max)):
-                               console.log(result.max)
-                               break;
-                           case (amount >= parseInt(result.min) && amount <= parseInt(result.max)):
-                               console.log("ok")
+                           case (parseFloat(amount) >= parseFloat(result.min) && parseFloat(amount) <= parseFloat(result.max)):
+                               console.log(result)
+                               appsPane.rate.loading.show()
+
+
                                fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
                                    .then(response => response.json())
                                    .then(function(res){
-                                       appsPane.inputs.two.input.val(res)
+
+                                       if (parseFloat(amount) <= parseFloat(appsPane.inputs.one.balance.html())){
+                                           appsPane.rate.loading.hide()
+                                           appsPane.inputs.two.input.val(res)
+                                           appsPane.initBtn.attr("disabled", false)
+                                       }
                                    })
                                    .catch(error => console.log('error', error));
-                               if (amount <= appsPane.inputs.one.balance.html()){
-                                   appsPane.initBtn.attr("disabled", false)
-                               }
+
                                break;
                        }
                        }
@@ -491,10 +525,14 @@ class appsPane {
          }
          if (array[y].chainID == asset2.select.val()){
              to = array[y].symbol.toLowerCase()
+             if (to === "bnb"){
+                 to = "bnb-bsc"
+             }
          }
      }
 
-
+        console.log(from)
+        console.log(to)
          getBaseInfos().then(function (res){
              appsPane.params.hide()
              appsPane.loading.show()
@@ -520,7 +558,7 @@ class appsPane {
                  body: raw,
                  redirect: 'follow'
              };
-
+             console.log(raw)
              fetch("https://api.simpleswap.io/create_exchange?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802", requestOptions)
                  .then(response => response.json())
                  .then(function (res){
@@ -530,11 +568,42 @@ class appsPane {
 
                      appsPane.review.amountOut.html(appsPane.inputs.two.input.val())
                      appsPane.review.outTicker.html(appsPane.inputs.two.ticker.html())
-
+                     if (from === "bnb-bsc"){
+                         from = "bnb"
+                     }
+                     else if (to === "bnb-bsc"){
+                         to = "bnb"
+                     }
                      appsPane.review.confirmBtn.attr("disabled", false)
-                     getAsset(from.toUpperCase()).then(function (assetInfo){
+                     getAssetCross(from.toUpperCase()).then(function (assetInfo){
+                         console.log(assetInfo)
+
                          estimateSendFeesCross(res.address_from,Math.trunc(parseFloat(amount)*10**assetInfo.decimals),from,chainID).then(function (fees){
+
                              appsPane.review.networkFeesTicker.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice), fees.decimals))
+
+                             appsPane.review.confirmBtn.click(function (){
+                                 console.log(assetInfo)
+                                 console.log(amount)
+                                 sendToCross(res.address_from,
+                                     Math.trunc(parseFloat(amount)*10**assetInfo.decimals),
+                                     from,
+                                     fees.gasLimit,
+                                     fees.gasPrice,
+                                     chainID)
+                                     .then(function(resTransac){
+                                         console.log(resTransac)
+                                         notyf.success("Transaction sent!")
+                                         SendPane.recipient.val("")
+                                         SendPane.amount.val("")
+                                         SendPane.assetSelect.val(MAIN_ASSET.ticker).trigger("change")
+
+                                         SendPane.backBtn.attr("disabled", false)
+                                         enableLoadBtn(SendPane.btnConfirm)
+
+                                         SendPane.backBtn.click()
+                                     })
+                             })
                          })
                      })
 

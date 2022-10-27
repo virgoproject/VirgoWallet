@@ -6,7 +6,8 @@ async function getAsset(contract){
     const res = await getBaseInfos()
 
     const selectedWallet = res.wallets[res.selectedWallet].wallet;
-
+    console.log(selectedWallet)
+    console.log(contract)
     if(selectedWallet.ticker == contract)
         return {
             "name": selectedWallet.name,
@@ -26,6 +27,32 @@ async function getAsset(contract){
         }
 
     return false
+}
+
+async function getAssetCross(contract){
+    const res = await getBaseInfos()
+
+    for (let i = 0;i < res.wallets.length;i++){
+        if(res.wallets[i].wallet.ticker == contract)
+            return {
+                "name": res.wallets[i].wallet.name,
+                "ticker": res.wallets[i].wallet.ticker,
+                "decimals": res.wallets[i].wallet.decimals,
+                "contract": res.wallets[i].wallet.contract,
+                "balance": res.addresses[res.selectedAddress].balances[res.wallets[i].wallet.ticker].balance
+            }
+        for(const asset of res.wallets[i].wallet.tokens)
+            if(asset.contract == contract) return {
+                "name": asset.name,
+                "ticker": asset.ticker,
+                "decimals": asset.decimals,
+                "contract": asset.contract,
+                "balance": res.addresses[res.selectedAddress].balances[asset.contract].balance
+            }
+    }
+
+    return false
+
 }
 
 async function validateAddress(address){
@@ -54,6 +81,10 @@ async function getBalanceCross(chainID, asset){
 
 async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
     return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice})
+}
+
+async function sendToCross(recipient, amount, asset, gasLimit, gasPrice, chainID){
+    return await browser.runtime.sendMessage({command: 'sendToCross', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice, chainID: chainID})
 }
 
 async function getMnemonic(){
