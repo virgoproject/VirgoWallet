@@ -1391,12 +1391,6 @@
                         <p class="value"><span id="simpleswapReviewAmountIn"></span> <span class="ticker" id="simpleswapReviewTickerIn"></span></p>
                     </div>
                     <div class="col-4">
-                        <p class="title">Swap fees</p>
-                    </div>
-                    <div class="col-8">
-                        <p class="value"><span id="simpleswapReviewSwapFees"></span> <span class="ticker" id="simpleswapReviewSwapFeesTicker">USDT</span></p>
-                    </div>
-                    <div class="col-4">
                         <p class="title">Slippage</p>
                     </div>
                     <div class="col-8">
@@ -1408,6 +1402,29 @@
                     <div class="col-7">
                         <p class="value">~ <span id="simpleswapReviewNetFees"></span> <span class="ticker" id="simpleswapReviewNetFeesTicker"></span></p>
                     </div>
+                </div>
+                <div class="range">
+                    <div class="row steps">
+                        <div class="col-4">
+                            <div class="leftStep">
+                                <span class="position-absolute mt-4 leftStepLabel">Slow</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="centerStep">
+                                <span class="position-absolute mt-4 centerStepLabel">Normal</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="rightStep">
+                                <span class="position-absolute mt-4 rightStepLabel">Fast</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="range" min="0" max="100" step="10" class="w-100" id="simpleswapRangeFees" >
+                </div>
+                <div class="col-12 text-center" id="simpleswapReviewLoading" style="display: none">
+                    <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
                 </div>
                 <button class="button w-100" disabled="disabled" id="confirmSimpleSwapBtn">
                     <val>Init swap</val>

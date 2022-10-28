@@ -230,7 +230,8 @@ class appsPane {
         networkFeesTicker: $("#simpleswapReviewNetFeesTicker"),
         rangeFees: $("#simpleswapRangeFees"),
         confirmBtn: $("#confirmSimpleSwapBtn"),
-        back: $("#simpleswapReviewBack")
+        back: $("#simpleswapReviewBack"),
+        loading: $("#simpleswapReviewLoading")
     }
     constructor() {
 
@@ -491,11 +492,11 @@ class appsPane {
                                    .then(response => response.json())
                                    .then(function(res){
 
-                                       if (parseFloat(amount) <= parseFloat(appsPane.inputs.one.balance.html())){
+                                       // if (parseFloat(amount) <= parseFloat(appsPane.inputs.one.balance.html())){
                                            appsPane.rate.loading.hide()
                                            appsPane.inputs.two.input.val(res)
                                            appsPane.initBtn.attr("disabled", false)
-                                       }
+                                       // }
                                    })
                                    .catch(error => console.log('error', error));
 
@@ -508,7 +509,7 @@ class appsPane {
 
  static sendSimpleSwap(asset1,asset2){
      if(appsPane.inputs.one.input.val() == "") return
-
+     appsPane.review.loading.show()
      let from = ""
      let to = ""
      let amount = asset1.input.val()
@@ -535,7 +536,7 @@ class appsPane {
         console.log(to)
          getBaseInfos().then(function (res){
              appsPane.params.hide()
-             appsPane.loading.show()
+
              const selectedAddress = res.addresses[res.selectedAddress].address
              let myHeaders = new Headers();
              myHeaders.append("Content-Type", "application/json");
@@ -574,10 +575,11 @@ class appsPane {
                      else if (to === "bnb-bsc"){
                          to = "bnb"
                      }
+
                      appsPane.review.confirmBtn.attr("disabled", false)
                      getAssetCross(from.toUpperCase()).then(function (assetInfo){
                          console.log(assetInfo)
-
+                         appsPane.review.loading.hide()
                          estimateSendFeesCross(res.address_from,Math.trunc(parseFloat(amount)*10**assetInfo.decimals),from,chainID).then(function (fees){
 
                              appsPane.review.networkFeesTicker.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice), fees.decimals))
@@ -585,24 +587,25 @@ class appsPane {
                              appsPane.review.confirmBtn.click(function (){
                                  console.log(assetInfo)
                                  console.log(amount)
-                                 sendToCross(res.address_from,
-                                     Math.trunc(parseFloat(amount)*10**assetInfo.decimals),
-                                     from,
-                                     fees.gasLimit,
-                                     fees.gasPrice,
-                                     chainID)
-                                     .then(function(resTransac){
-                                         console.log(resTransac)
-                                         notyf.success("Transaction sent!")
-                                         SendPane.recipient.val("")
-                                         SendPane.amount.val("")
-                                         SendPane.assetSelect.val(MAIN_ASSET.ticker).trigger("change")
 
-                                         SendPane.backBtn.attr("disabled", false)
-                                         enableLoadBtn(SendPane.btnConfirm)
-
-                                         SendPane.backBtn.click()
-                                     })
+                                 // sendToCross(res.address_from,
+                                 //     Math.trunc(parseFloat(amount)*10**assetInfo.decimals),
+                                 //     from,
+                                 //     fees.gasLimit,
+                                 //     fees.gasPrice,
+                                 //     chainID)
+                                 //     .then(function(resTransac){
+                                 //         console.log(resTransac)
+                                 //         notyf.success("Transaction sent!")
+                                 //         SendPane.recipient.val("")
+                                 //         SendPane.amount.val("")
+                                 //         SendPane.assetSelect.val(MAIN_ASSET.ticker).trigger("change")
+                                 //
+                                 //         SendPane.backBtn.attr("disabled", false)
+                                 //         enableLoadBtn(SendPane.btnConfirm)
+                                 //
+                                 //         SendPane.backBtn.click()
+                                 //     })
                              })
                          })
                      })
