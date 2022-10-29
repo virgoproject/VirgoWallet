@@ -179,6 +179,10 @@
 
 #settings .settingsPane .writeMnemonic .word i {
     font-size: 0.6em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #settings .settingsPane .writeMnemonic .word val {
@@ -212,6 +216,10 @@
     padding: 0em 2em;
 }
 
+#settings .settingsPane .importMnemonic{
+    margin-top: -19px !important;
+}
+
 #settings .settingsPane .importMnemonic .backToCreate {
     cursor: pointer;
     color: var(--mainColor);
@@ -221,6 +229,7 @@
 #settings .settingsPane .importMnemonic .backToCreate:hover{
     color: var(--mainColorDark10);
 }
+
 
 #settings .settingsPane #phraseLength{
     background: var(--whiteBackground);
@@ -244,6 +253,6 @@
 }
 
 #settings .mnemonicAsk {
-    max-height: 545px;
+    max-height: 555px;
     overflow: auto;
 }

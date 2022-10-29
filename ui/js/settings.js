@@ -37,7 +37,8 @@ class SettingsPane {
         passwordInput: $("#settings .getMnemonic .getPassword input"),
         passwordBtn: $("#settings .getMnemonic .getPassword button"),
         passwordErr: $("#settings .getMnemonic .getPassword .error"),
-        words: $("#settings .getMnemonic .writeMnemonic .word")
+        words: $("#settings .getMnemonic .writeMnemonic .word"),
+        additionalWords : $('#settings .getMnemonic .writeMnemonic .additionalLength')
     }
     static importMnemonic = {
         warn: $("#settings .importMnemonic .mnemonicWarn"),
@@ -110,7 +111,7 @@ class SettingsPane {
                 return
             }
 
-            $("[data-settingsLevel="+mainSettingsBackLevel+"]").hide()
+                $("[data-settingsLevel="+mainSettingsBackLevel+"]").hide()
 
             if(mainSettingsBackLevel == 1)
                 SettingsPane.settingsTitle.html("Settings")
@@ -258,6 +259,7 @@ class SettingsPane {
                 }else{
                     getMnemonic().then(function(mnemonic){
                         const mnemonicArray = mnemonic.split(" ")
+                        if(mnemonicArray.length === 24) SettingsPane.getMnemonic.additionalWords.show()
                         SettingsPane.getMnemonic.words.each(function(index){
                             $(this).find("val").html(mnemonicArray[index])
                         })
@@ -342,20 +344,16 @@ class SettingsPane {
             SettingsPane.importMnemonic.warn.hide()
             SettingsPane.importMnemonic.ask.show()
 
-            SettingsPane.importMnemonic.askText.val("")
+            SettingsPane.importMnemonic.inputWords.val("")
             SettingsPane.importMnemonic.askBtn.attr("disabled", true)
             SettingsPane.importMnemonic.askInput.attr("disabled", false)
         })
 
         SettingsPane.importMnemonic.inputWords.on("input", function(){
-            if (SettingsPane.importMnemonic.selectPhrase.find(":selected").val() === "12"){
-                SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.checkPhraseLength().split(" ").length < 12);
-            }else {
-                SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.checkPhraseLength().split(" ").length < 24);
-            }
+                settingsPane.verifyMnemonic()
         });
 
-        SettingsPane.importMnemonic.askText.click(function(){
+        SettingsPane.importMnemonic.inputWords.click(function(){
             $(this).removeClass("is-invalid")
             SettingsPane.importMnemonic.label.err.hide()
             SettingsPane.importMnemonic.label.normal.show()
@@ -393,21 +391,58 @@ class SettingsPane {
                 SettingsPane.importMnemonic.longWords.removeClass('d-none').addClass('d-flex')
             }
             SettingsPane.importMnemonic.inputWords.val("")
+            settingsPane.verifyMnemonic()
         });
+
+        SettingsPane.importMnemonic.inputWords.on('paste', function (e) {
+            e.preventDefault()
+            let paste = e.originalEvent.clipboardData.getData('text')
+            let selectedVal = SettingsPane.importMnemonic.selectPhrase.find(':selected').val()
+
+            let data = paste.replace(/\n/g, " ").split(" ")
+            data = data.filter(el => el.trim());
+            let parsingData = ""
+
+            if (!data.length < 12) {
+
+                for (let i = 0; SettingsPane.importMnemonic.inputWords.length > i; i++) {
+                    if (Number(selectedVal) === 12) parsingData = [i]
+                    if (Number(selectedVal) === 24) parsingData = [i + 12]
+                    const node = SettingsPane.importMnemonic.inputWords[parsingData]
+                    if (data[i] === undefined) break
+                    node.value = data[i]
+                    settingsPane.verifyMnemonic()
+                }
+            }
+        })
+
+        SettingsPane.settingsBackBtn.click(function () {
+            getBaseInfos().then(res => {
+                if (!res.setupDone){
+                    createPane.div.createPane.show()
+                    createPane.Buttons.settingsBackBtn.show()
+                    createPane.Buttons.settingsSelectionBtn.show()
+                    createPane.div.settingsMain.css({'transform': '', 'transition': ''})
+                    createPane.div.settingsPane.hide()
+                    createPane.div.settingsPaneMemonic.hide()
+                }
+            })
+        })
+
 
         SettingsPane.importMnemonic.askBtn.click(function(){
             disableLoadBtn($(this))
-            isMnemonicValid(SettingsPane.importMnemonic.askText.val()).then(function(response){
+            isMnemonicValid(settingsPane.assembleMnemonic()).then(function(response){
                 enableLoadBtn(SettingsPane.importMnemonic.askBtn)
                 SettingsPane.importMnemonic.askBtn.attr("disabled", true)
                 if(!response){
                     SettingsPane.importMnemonic.label.normal.hide()
                     SettingsPane.importMnemonic.label.err.show()
-                    SettingsPane.importMnemonic.askText.addClass("is-invalid")
+                    SettingsPane.importMnemonic.inputWords.addClass("is-invalid")
 
                     setTimeout(function (){
                         if(SettingsPane.importMnemonic.label.normal.is(":hidden")){
-                            SettingsPane.importMnemonic.askText.removeClass("is-invalid")
+                            SettingsPane.importMnemonic.inputWords.removeClass("is-invalid")
                             SettingsPane.importMnemonic.label.err.hide()
                             SettingsPane.importMnemonic.label.normal.show()
                         }
@@ -421,7 +456,7 @@ class SettingsPane {
 
         SettingsPane.importMnemonic.warnBtn.click(function(){
             disableLoadBtn($(this))
-            restoreFromMnemonic(SettingsPane.importMnemonic.askText.val()).then(function(data){
+            restoreFromMnemonic(settingsPane.assembleMnemonic()).then(function(data){
                 setTimeout(function(){
 
                     //reset current display
@@ -531,7 +566,7 @@ class SettingsPane {
         jdenticon()
     }
 
-    checkPhraseLength(){
+    assembleMnemonic(){
         let phraseSeed = ""
         for(let i = 0; i < SettingsPane.importMnemonic.inputWords.length; i++){
             const inputVal = SettingsPane.importMnemonic.inputWords[i].value
@@ -539,7 +574,15 @@ class SettingsPane {
                 phraseSeed = phraseSeed +inputVal+ " "
             }
         }
-        return phraseSeed.trim();
+        return phraseSeed.substring(0, phraseSeed.length - 1);
+    }
+
+    verifyMnemonic(){
+        if (SettingsPane.importMnemonic.selectPhrase.find(":selected").val() === "12"){
+            SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.assembleMnemonic().split(" ").length < 12);
+        }else {
+            SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.assembleMnemonic().split(" ").length < 24);
+        }
     }
 }
 

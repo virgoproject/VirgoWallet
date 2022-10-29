@@ -12,8 +12,7 @@ class createPane{
         createWallet : $('#createPane #createWallet'),
         importWallet : $('#createPane #importWallet'),
         settingsBackBtn : $('#settings .settingsPane .back'),
-        settingsSelectionBtn : $('#accountSelectionHeader'),
-        backToCreate : $('#settings .settingsPane .importMnemonic .backToCreate')
+        settingsSelectionBtn : $('#accountSelectionHeader')
     }
 
     constructor() {
@@ -30,21 +29,10 @@ class createPane{
         createPane.Buttons.importWallet.click(function () {
             createPane.div.settingsMain.css({'transform': 'scaleY(1)', 'transition': 'unset'})
             createPane.div.createPane.hide()
-            createPane.Buttons.settingsBackBtn.hide()
             createPane.Buttons.settingsSelectionBtn.hide()
             createPane.div.settingsPane.show()
             createPane.div.settingsPaneMemonic.show()
 
-        })
-
-        createPane.Buttons.backToCreate.click(function () {
-            createPane.div.createPane.show()
-            createPane.Buttons.settingsBackBtn.show()
-            createPane.Buttons.settingsSelectionBtn.show()
-            createPane.div.settingsMain.css({'transform': '', 'transition': ''})
-            createPane.Buttons.backToCreate.hide()
-            createPane.div.settingsPane.hide()
-            createPane.div.settingsPaneMemonic.hide()
         })
     }
 }
