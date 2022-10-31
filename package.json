@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "Virgo SAS",
   "devDependencies": {
-    "@truffle/hdwallet-provider": "^2.0.4",
+    "@truffle/hdwallet-provider": "2.0.4",
     "bip39": "^3.0.4",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
