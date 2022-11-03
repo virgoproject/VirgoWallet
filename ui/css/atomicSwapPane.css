@@ -1,0 +1,153 @@
+#atomicSwapPane {
+    display: block;
+    height: 600px;
+    width: 100%;
+    background: #faf6fc;
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+}
+
+#atomicSwapPane .content {
+    z-index: 99999;
+    padding: 0 1em !important;
+    max-height: 485px;
+}
+
+#atomicSwapPane .back {
+    position: absolute;
+    top: 0.9em;
+    width: 2em;
+    text-align: center;
+    left: 0.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#atomicSwapPane .back:hover {
+    color: black;
+}
+
+#atomicSwapPane .back i {
+    font-size: 1.5em;
+}
+
+#atomicSwapPane .inputHeader {
+    font-size: 0.8em;
+}
+
+#atomicSwapPane .inputHeader .amount {
+    display: inline-block;
+    max-width: 96px;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+}
+
+#atomicSwapPane .inputHeader .ticker {
+    color: var(--mainColor)
+}
+
+#atomicSwapPane .swapInput {
+    background: var(--whiteBackground);
+    border-radius: 0.5em;
+    height: 50px;
+}
+
+#atomicSwapPane .swapInput .amountInput {
+    width: 3ch;
+    min-width: 4.5ch;
+    max-width: 12ch;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 1.35em;
+    height: 100%;
+    padding-right: 1em;
+    margin-left: 0.5em;
+}
+
+#atomicSwapInput2 {
+    width: initial !important;
+    min-width: initial !important;
+    max-width: 100% !important;
+}
+
+#atomicSwapPane .swapInput .maxBtn {
+    font-size: 0.8em;
+    color: var(--mainColor);
+    vertical-align: top;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    margin-left: -1.25em;
+    display: inline-block;
+    padding-top: 12px;
+}
+
+#atomicSwapPane .swapInput .maxBtn:hover {
+    color: var(--mainColorLight);
+}
+
+#atomicSwapPane .swapInput .bootstrap-select > .dropdown-toggle {
+    background: none;
+    border: none;
+    padding: 0em 0.5em;
+}
+
+#atomicSwapPane .swapInput .selectLogo {
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    display: inline-block;
+    margin-top: 4px;
+}
+
+#atomicSwapPane .swapInput .selectText {
+    vertical-align: top;
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 6px;
+}
+
+#atomicSwapPane .swapInput .selectCoin {
+    border-left: 2px solid #ece2f3;
+}
+
+#atomicSwapSwitchBtn {
+    height: 36px;
+    width: 36px;
+    padding: 0px;
+    background: var(--whiteBackground);
+    border: none;
+    margin: auto;
+    border-radius: 50%;
+    color: var(--mainColorDark10);
+    transition: all 0.2s ease-in;
+}
+
+#atomicSwapSwitchBtn:hover {
+    background: #ece2f3;
+}
+
+#atomicSwapPane .rate {
+    font-size: 0.8em;
+}
+
+#atomicSwapPane .rate .ticker {
+    color: var(--mainColor);
+}
+
+#atomicSwapLoading {
+    text-align: center;
+    margin-top: 4em;
+    font-size: 2em;
+}
+
+#atomicSwapPane .swapParams {
+    padding: 1em 2em 0;
+}
