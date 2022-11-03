@@ -106,6 +106,7 @@ class UnlockPane {
         sendPane.setSend(data)
         swapPane.setSwap(data)
         settingsPane.setSettings(data)
+        atomicSwap.setAtomicSwap(data)
         $("#mainPane").show()
     }
 

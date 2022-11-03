@@ -157,6 +157,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
             break
 
+
+
         case "sendTo":
             sendTo(request, sendResponse)
             break
