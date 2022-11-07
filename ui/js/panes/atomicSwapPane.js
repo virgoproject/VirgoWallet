@@ -27,11 +27,15 @@ class AtomicSwapPane {
         amount: $("#atomicSwapRateAmount"),
         route: $("#atomicSwapRoute"),
         routeBaseStep: $("#atomicSwapRouteBaseStep"),
-        notFound: $("#atomicSwapRouteNotFound")
+        notFound: {
+            self: $("#atomicSwapRouteNotFound"),
+            amount: $("#atomicSwapRouteNotFound amount"),
+            ticker: $("#atomicSwapRouteNotFound ticker")
+        }
     }
     static params = $("#atomicSwapParams")
     static switchBtn = $("#atomicSwapSwitchBtn")
-
+    static initBtn = $("#initAtomicSwapBtn")
 
     constructor() {
         this.select1OldElem = ""
@@ -53,6 +57,10 @@ class AtomicSwapPane {
             atomicSwap.updateSelects(2)
             _this.updateBalance(AtomicSwapPane.inputs.two)
             AtomicSwapPane.inputs.one.input.trigger("input")
+        })
+
+        AtomicSwapPane.inputs.one.input.on("input", function(){
+            _this.checkAmount()
         })
 
         AtomicSwapPane.switchBtn.click(function(){
@@ -92,6 +100,7 @@ class AtomicSwapPane {
             elem.val(wallet.ticker)
             elem.html(wallet.ticker)
             elem.attr("chainID", wallet.chainID)
+            elem.attr("decimals", wallet.decimals)
 
             elem.attr("data-content",
                 '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+wallet.ticker+'/'+wallet.ticker+'/logo.png);"></div><span class="selectText">'+wallet.ticker+'</span>')
@@ -163,6 +172,48 @@ class AtomicSwapPane {
             elem.rateTicker.html(res.ticker)
             elem.btnTicker.html(res.ticker)
             elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
+        })
+    }
+
+    checkAmount(){
+        AtomicSwapPane.inputs.two.input.val("")
+        AtomicSwapPane.rate.self.hide()
+        AtomicSwapPane.rate.notFound.self.hide()
+        AtomicSwapPane.initBtn.attr("disabled", true)
+
+        const _this = this
+
+        const intAmnt = parseFloat(AtomicSwapPane.inputs.one.input.val())
+        if(isNaN(intAmnt) || intAmnt <= 0 || AtomicSwapPane.inputs.one.select.val() == "" || AtomicSwapPane.inputs.two.select.val() == ""){
+            AtomicSwapPane.rate.loading.hide()
+            return
+        }
+
+        const amount = AtomicSwapPane.inputs.one.input.val()
+        const token1 = AtomicSwapPane.inputs.one.select.val()
+        const token2 = AtomicSwapPane.inputs.two.select.val()
+
+        const amntAtomic = Utils.toAtomicString(amount, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals'))
+
+        AtomicSwapPane.rate.loading.show()
+
+        fetch("http://localhost/api/quote/"+token1+"/"+token2+"/"+amntAtomic).then(res => {
+            res.json().then(json => {
+                if (amount != AtomicSwapPane.inputs.one.input.val() || token1 != AtomicSwapPane.inputs.one.select.val() || token2 != AtomicSwapPane.inputs.two.select.val())
+                    return
+
+                AtomicSwapPane.rate.loading.hide()
+
+                AtomicSwapPane.inputs.two.input.val(Utils.formatAmount(json.amountOut, $('option:selected', AtomicSwapPane.inputs.two.select).attr('decimals')))
+
+                if(new BN(json.max).lt(new BN(json.amountOut))){
+                    AtomicSwapPane.rate.notFound.amount.html(Utils.formatAmount(json.max, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals')))
+                    AtomicSwapPane.rate.notFound.ticker.html(token1)
+                    AtomicSwapPane.rate.notFound.self.show()
+                    return
+                }
+
+            })
         })
     }
 
