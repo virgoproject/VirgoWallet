@@ -1,40 +1,31 @@
-class createPane{
+class CreatePane {
 
-    static div = {
-        createPane : $('#createPane'),
-        mainPane : $('#mainPane'),
-        settingsMain : $('#settings'),
-        settingsPane : $('#settings .settingsPane'),
-        settingsPaneMemonic : $('#settings .settingsPane .importMnemonic')
-    }
+    static self = $("#createPane")
 
-    static Buttons = {
-        createWallet : $('#createPane #createWallet'),
-        importWallet : $('#createPane #importWallet'),
-        settingsBackBtn : $('#settings .settingsPane .back'),
-        settingsSelectionBtn : $('#accountSelectionHeader')
+    static buttons = {
+        createWallet : $('#createWallet'),
+        importWallet : $('#importWallet')
     }
 
     constructor() {
 
-        createPane.Buttons.createWallet.click(async function () {
-            createPane.div.createPane.hide()
-            createPane.div.mainPane.show()
-            createPane.div.settingsMain.removeClass('opened')
-            setupDone().then(function (res) {
-                  console.log(res)
-              })
+        CreatePane.buttons.createWallet.click(async function () {
+            CreatePane.self.hide()
+            MainPane.self.show()
+            SettingsPane.settings.removeClass('opened')
+            setupDone()
         })
 
-        createPane.Buttons.importWallet.click(function () {
-            createPane.div.settingsMain.css({'transform': 'scaleY(1)', 'transition': 'unset'})
-            createPane.div.createPane.hide()
-            createPane.Buttons.settingsSelectionBtn.hide()
-            createPane.div.settingsPane.show()
-            createPane.div.settingsPaneMemonic.show()
-
+        CreatePane.buttons.importWallet.click(function () {
+            SettingsPane.settings.addClass("walletSetup")
+            CreatePane.self.hide()
+            SettingsPane.accountSelectionHeader.hide()
+            SettingsPane.settings.addClass("opened")
+            SettingsPane.accountSelectionHeader.addClass("opened")
+            SettingsPane.settingsMain.show()
+            SettingsPane.importMnemonic.self.show()
         })
     }
 }
 
-const CreatePane = new createPane()
+const createPane = new CreatePane()

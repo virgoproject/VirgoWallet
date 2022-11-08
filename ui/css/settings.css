@@ -36,6 +36,11 @@
     z-index: 1;
 }
 
+#settings.walletSetup {
+    transform: scaleY(1) !important;
+    transition: unset !important;
+}
+
 #settings.opened {
     transform: scaleY(1);
 }

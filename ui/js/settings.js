@@ -41,6 +41,7 @@ class SettingsPane {
         additionalWords : $('#settings .getMnemonic .writeMnemonic .additionalLength')
     }
     static importMnemonic = {
+        self: $("#settings .importMnemonic"),
         warn: $("#settings .importMnemonic .mnemonicWarn"),
         warnBtn: $("#settings .importMnemonic .mnemonicWarn button"),
         ask: $("#settings .importMnemonic .mnemonicAsk"),
@@ -84,11 +85,10 @@ class SettingsPane {
                 SettingsPane.settings.addClass("opened")
                 SettingsPane.accountSelectionHeader.addClass("opened")
             }
-
             //make sure settings is closed
-            do {
+            for(let i = mainSettingsBackLevel; i >= 0; i--){
                 SettingsPane.settingsBackBtn.click()
-            } while(mainSettingsBackLevel != 0)
+            }
 
             //close transaction pane
             if(TransactionsPane.self.is(":visible"))
@@ -103,20 +103,31 @@ class SettingsPane {
 
         let mainSettingsBackLevel = 0;
 
-        SettingsPane.settingsBackBtn.click(function(){
-            if(mainSettingsBackLevel == 0){
-                SettingsPane.main.show()
+        SettingsPane.settingsBackBtn.click(async function(){
+            const res = await getBaseInfos()
+            if (!res.setupDone){
+                CreatePane.self.show()
+                SettingsPane.accountSelectionHeader.show()
+                SettingsPane.settings.removeClass("opened")
+                SettingsPane.accountSelectionHeader.removeClass("opened")
+                SettingsPane.settings.removeClass("walletSetup")
                 SettingsPane.settingsMain.hide()
-                SettingsPane.settingsTitle.html("My Wallet")
-                return
-            }
+                SettingsPane.importMnemonic.self.hide()
+            }else{
+                if(mainSettingsBackLevel == 0){
+                    SettingsPane.main.show()
+                    SettingsPane.settingsMain.hide()
+                    SettingsPane.settingsTitle.html("My Wallet")
+                    return
+                }
 
                 $("[data-settingsLevel="+mainSettingsBackLevel+"]").hide()
 
-            if(mainSettingsBackLevel == 1)
-                SettingsPane.settingsTitle.html("Settings")
+                if(mainSettingsBackLevel == 1)
+                    SettingsPane.settingsTitle.html("Settings")
 
-            mainSettingsBackLevel--
+                mainSettingsBackLevel--
+            }
         })
 
         $("#settings .settingsPane .tab").click(function(){
@@ -129,7 +140,6 @@ class SettingsPane {
 
             mainSettingsBackLevel = target.attr("data-settingsLevel")
         })
-
 
         /** -- Password setup and mnemonic -- **/
         $("#settings .settingsPane .tab[data-target=setupPassword]").click(function(){
@@ -239,7 +249,6 @@ class SettingsPane {
                     SettingsPane.setupPassword.setup.show()
                 })
         })
-
 
         /** -- Show mnemonic -- **/
         $("#settings .settingsPane .tab[data-target=getMnemonic]").click(function(){
@@ -416,20 +425,6 @@ class SettingsPane {
             }
         })
 
-        SettingsPane.settingsBackBtn.click(function () {
-            getBaseInfos().then(res => {
-                if (!res.setupDone){
-                    createPane.div.createPane.show()
-                    createPane.Buttons.settingsBackBtn.show()
-                    createPane.Buttons.settingsSelectionBtn.show()
-                    createPane.div.settingsMain.css({'transform': '', 'transition': ''})
-                    createPane.div.settingsPane.hide()
-                    createPane.div.settingsPaneMemonic.hide()
-                }
-            })
-        })
-
-
         SettingsPane.importMnemonic.askBtn.click(function(){
             disableLoadBtn($(this))
             isMnemonicValid(settingsPane.assembleMnemonic()).then(function(response){
@@ -458,7 +453,11 @@ class SettingsPane {
             disableLoadBtn($(this))
             restoreFromMnemonic(settingsPane.assembleMnemonic()).then(function(data){
                 setTimeout(function(){
-
+                    //in case of initial setup
+                    SettingsPane.accountSelectionHeader.show()
+                    SettingsPane.settings.removeClass("walletSetup")
+                    SettingsPane.settingsMain.hide()
+                    SettingsPane.importMnemonic.self.hide()
                     //reset current display
                     //chain selection
                     let elem = SelectChains.baseChainRow.clone()
