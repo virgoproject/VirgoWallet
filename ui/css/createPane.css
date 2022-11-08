@@ -6,6 +6,15 @@
     padding: 25% 30px 0;
     z-index: 12;
 }
+#createPane #importWallet{
+    cursor: pointer;
+    color: var(--mainColorLight);
+    transition: all ease-in 0.1s;
+}
+
+#createPane #importWallet:hover{
+    color: var(--mainColorDark10);
+}
 
 #createPane img {
     width: 40%;

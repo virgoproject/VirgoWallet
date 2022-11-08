@@ -102,7 +102,6 @@ class UnlockPane {
                 }
             })
         })
-
     }
 
     displayWallet(data){
@@ -116,5 +115,6 @@ class UnlockPane {
     }
 
 }
+
 
 const unlockPane = new UnlockPane()
