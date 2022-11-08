@@ -2,6 +2,7 @@ MAIN_ASSET = undefined
 
 class MainPane {
 
+    static self = $("#mainPane")
     static resume = $("#body .bodyElem.resume")
     static address = $("#mainPane .header .address")
     static addressTitle = $("#mainPane .header .address .title")

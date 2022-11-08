@@ -1,7 +1,7 @@
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.5"
+const VERSION = "0.7.6"
 
 const connectedWebsites = []
 
@@ -32,6 +32,13 @@ browser.storage.local.get("accountsNames").then(function (res){
 let lockDelay = 60;
 let autolockEnabled = false;
 let lastActivity = Date.now();
+let setupDone = false;
+
+browser.storage.local.get('setupDone').then(function (res) {
+    if (res.setupDone !== undefined){
+        setupDone = res.setupDone;
+    }
+})
 
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
@@ -42,6 +49,8 @@ browser.storage.local.get("lockDelay").then(function(res){
     if(res.lockDelay !== undefined)
         lockDelay = res.lockDelay
 })
+
+
 
 setInterval(function(){
     if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
@@ -58,10 +67,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
+
                 sendResponse(getBaseInfos())
                 lastActivity = Date.now()
             }
             break
+
 
         case "unlockWallet":
             lastActivity = Date.now()
@@ -228,7 +239,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     baseWallet.getCurrentWallet().update()
                     baseWallet.getCurrentWallet().updatePrices()
                 }
-
+                browser.storage.local.set({"setupDone": true})
+                setupDone = true
                 sendResponse(getBaseInfos())
             }catch(e){
                 console.log(e)
@@ -537,12 +549,39 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
             break
+        case 'deleteConnectedSite':
+            for (var i=0 ; i < connectedWebsites.length ; i++)
+            {
+                if (connectedWebsites[i] === request.address) {
+                    connectedWebsites.splice(i, 1)
+                    sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
+                    break
+                }
+            }
+            sendResponse(true)
+            break
+
+        case 'setupDone':
+            browser.storage.local.set({"setupDone": true})
+            setupDone = true
+            sendResponse(setupDone)
+            break
+
+        case "setupNot":
+            browser.storage.local.set({"setupDone": false})
+            setupDone = false
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
 });
 
 function getBaseInfos(){
+    if (baseWallet.version != VERSION){
+        browser.storage.local.set({"setupDone": true})
+        setupDone = true
+    }
+
     return {
         "wallets": baseWallet.getWalletsJSON(),
         "selectedWallet": baseWallet.selectedWallet,
@@ -551,7 +590,8 @@ function getBaseInfos(){
         "encrypted": baseWallet.isEncrypted(),
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
-        "connectedSites": connectedWebsites
+        "connectedSites": connectedWebsites,
+        "setupDone" : setupDone
     }
 }
 
@@ -1027,8 +1067,6 @@ async function signTransaction(origin, from, to, value, data, gas){
 
     if(web3.utils.isHexStrict(gas))
         gas = web3.utils.hexToNumberString(gas)
-
-    console.log("beeee " + gas)
 
     pendingTransactions.set(requestID, null)
 

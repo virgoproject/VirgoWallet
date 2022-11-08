@@ -36,6 +36,11 @@
     z-index: 1;
 }
 
+#settings.walletSetup {
+    transform: scaleY(1) !important;
+    transition: unset !important;
+}
+
 #settings.opened {
     transform: scaleY(1);
 }
@@ -173,13 +178,86 @@
     background: #ede3f4;
     padding: 0.25em;
     border-radius: 0.5em;
+    border: 1px solid #dfd6e5;
     margin: 0.25em;
 }
 
 #settings .settingsPane .writeMnemonic .word i {
     font-size: 0.6em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #settings .settingsPane .writeMnemonic .word val {
     font-size: 0.85em;
+}
+
+#settings .settingsPane .fa-trash-can{
+    cursor: pointer;
+}
+
+#settings .settingsPane .signedSite {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 25ch;
+    white-space: nowrap;
+}
+
+#settings .settingsPane .trakeExemple{
+    background: var(--whiteBackground);
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    transition: background ease 0.25s;
+}
+
+#settings .settingsPane .trakeExemple:hover{
+    background: #ece2f3;
+}
+
+#settings .settingsPane .settingsCat[data-settingId='connectedWebsites'] {
+    padding: 0em 2em;
+}
+
+#settings .settingsPane .importMnemonic{
+    margin-top: -19px !important;
+}
+
+#settings .settingsPane .importMnemonic .backToCreate {
+    cursor: pointer;
+    color: var(--mainColor);
+    transition: all 0.2s ease-in;
+}
+
+#settings .settingsPane .importMnemonic .backToCreate:hover{
+    color: var(--mainColorDark10);
+}
+
+
+#settings .settingsPane #phraseLength{
+    background: var(--whiteBackground);
+    border-radius: 0.5em;
+    border: unset;
+    height: 25px;
+}
+
+#settings .settingsPane .lengtInput{
+    background: var(--whiteBackground);
+    border-radius: 10px;
+    border: 1px solid #dfd6e5;
+}
+
+#settings .settingsPane .fa-eye{
+    cursor: pointer;
+}
+
+#settings .settingsPane .fa-eye-slash{
+    cursor: pointer;
+}
+
+#settings .mnemonicAsk {
+    max-height: 555px;
+    overflow: auto;
 }

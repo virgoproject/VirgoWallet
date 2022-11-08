@@ -175,3 +175,12 @@ function removeToken(address){
 async function getBalanceCross(chainID, asset){
     return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID: chainID, asset: asset})
 }
+
+
+async function deleteConnectedSite(address){
+    return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
+}
+
+async function setupDone(){
+    return await browser.runtime.sendMessage({command : 'setupDone'})
+}

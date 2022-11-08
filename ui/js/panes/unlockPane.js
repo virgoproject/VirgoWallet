@@ -6,6 +6,7 @@ class UnlockPane {
     static passBase = $("#unlockPanePasswordBase")
     static recoverBtn = $("#unlockPane .passwordBox .recover")
     static passwordBox = $("#unlockPane .passwordBox")
+    static createpane = $('#createPane')
     static recoverBox = {
         self: $("#unlockPane .recoverBox"),
         back: $("#unlockPane .recoverBox .back"),
@@ -20,6 +21,11 @@ class UnlockPane {
             .then(function (response) {
                 if(!response.locked)
                     unlockPane.displayWallet(response)
+                if(!response.setupDone)
+                    UnlockPane.createpane.show()
+                else {
+                    UnlockPane.createpane.hide()
+                }
             })
 
         UnlockPane.password.on("input", function(){
@@ -96,7 +102,6 @@ class UnlockPane {
                 }
             })
         })
-
     }
 
     displayWallet(data){
@@ -111,5 +116,6 @@ class UnlockPane {
     }
 
 }
+
 
 const unlockPane = new UnlockPane()
