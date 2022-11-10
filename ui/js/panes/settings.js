@@ -297,7 +297,7 @@ class SettingsPane {
                     const siteUrl = res[l].replace(/(^\w+:|^)\/\//, '')
                     element.find(".signedSite").html(siteUrl).attr('data-site',res[l])
                     element.find(".imgAffiliated").attr('src','https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url='+ res[l] +'&size=128')
-                    element.find(".fa-trash-can").click(function () {
+                    element.find("i").click(function () {
                         const elementSite = element.find(".signedSite").attr('data-site')
                         deleteConnectedSite(elementSite).then(res => {
                             if (res.accepted) {

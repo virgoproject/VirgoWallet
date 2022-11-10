@@ -239,7 +239,13 @@ class BaseWallet {
                 "tokens": [],
                 "transactions": [],
                 "explorer": "https://ftmscan.com/tx/",
-                "swapParams": false,
+                "swapParams": {
+                    "type": "uni2",
+                    "routerAddress": "0xf491e7b69e4244ad4002bc14e878a34207e38c29",
+                    "factoryAddress": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
+                    "popularTokens": ["0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83","0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e","0x04068da6c83afcfa0e13ba15a6696662335d5b75","0x049d68029688eabf473097a2fc38ef61633a3c7a"],
+                    "proxyAddress": "0xd52852E3aDad6e722d5834918Df792BDc9eC872F"
+                },
                 "testnet": false
             }
         }
