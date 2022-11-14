@@ -36,6 +36,7 @@ class AtomicSwapPane {
     static params = $("#atomicSwapParams")
     static switchBtn = $("#atomicSwapSwitchBtn")
     static initBtn = $("#initAtomicSwapBtn")
+    static loading = $("#atomicSwapLoading")
 
     constructor() {
         this.select1OldElem = ""
@@ -78,6 +79,15 @@ class AtomicSwapPane {
 
             AtomicSwapPane.inputs.one.select.trigger("change")
             AtomicSwapPane.inputs.two.select.trigger("change")
+        })
+
+        AtomicSwapPane.initBtn.click(() => {
+            if(AtomicSwapPane.inputs.one.input.val() == "") return
+
+            AtomicSwapPane.params.hide()
+            AtomicSwapPane.loading.show()
+
+
         })
 
     }
@@ -202,16 +212,26 @@ class AtomicSwapPane {
                 if (amount != AtomicSwapPane.inputs.one.input.val() || token1 != AtomicSwapPane.inputs.one.select.val() || token2 != AtomicSwapPane.inputs.two.select.val())
                     return
 
+                if(_this.checkAmountTimeout !== undefined)
+                    clearTimeout(_this.checkAmountTimeout)
+
+                _this.checkAmountTimeout = setTimeout(function(){
+                    _this.checkAmount()
+                }, 10000)
+
                 AtomicSwapPane.rate.loading.hide()
 
                 AtomicSwapPane.inputs.two.input.val(Utils.formatAmount(json.amountOut, $('option:selected', AtomicSwapPane.inputs.two.select).attr('decimals')))
 
-                if(new BN(json.max).lt(new BN(json.amountOut))){
+                if(new BN(json.max).lt(new BN(amntAtomic))){
                     AtomicSwapPane.rate.notFound.amount.html(Utils.formatAmount(json.max, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals')))
                     AtomicSwapPane.rate.notFound.ticker.html(token1)
                     AtomicSwapPane.rate.notFound.self.show()
                     return
                 }
+
+                if(parseFloat(AtomicSwapPane.inputs.one.input.val()) <= parseFloat(AtomicSwapPane.inputs.one.balance.html()))
+                    AtomicSwapPane.initBtn.attr("disabled", false)
 
             })
         })
