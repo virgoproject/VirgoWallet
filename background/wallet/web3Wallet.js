@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -13,6 +13,7 @@ class Web3Wallet {
         this.explorer = explorer
         this.swapParams = swapParams
         this.testnet = testnet
+        this.atomicSwapParams = atomicSwapParams
 
         this.balances = new Map()
         this.prices = new Map()
@@ -32,6 +33,7 @@ class Web3Wallet {
                             if(!wallet.hasToken(token)){
                                 fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
                                     .then(function(resp2){
+                                        console.log("adding " + ticker + " " + token)
                                         resp2.json().then(function(res2){
                                             wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
                                         })
@@ -89,6 +91,9 @@ class Web3Wallet {
                     proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
                     feesRate: 0.0025
                 }
+                json.atomicSwapParams = {
+                    lockerAddress: "0xCcF5B2bC73A7e84Fa7eb594D20c9E75E04Ce36b5"
+                }
                 break
             default:
                 json.swapParams = false
@@ -108,7 +113,7 @@ class Web3Wallet {
         if(json.chainID == 128)
             json.RPC = "https://http-mainnet.hecochain.com/"
 
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 
     toJSON(){
@@ -126,7 +131,8 @@ class Web3Wallet {
                 "transactions": this.transactions,
                 "explorer": this.explorer,
                 "swapParams": this.swapParams,
-                "testnet": this.testnet
+                "testnet": this.testnet,
+                "atomicSwapParams": this.atomicSwapParams
             }
         }
     }

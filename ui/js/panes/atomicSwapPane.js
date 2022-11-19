@@ -37,6 +37,18 @@ class AtomicSwapPane {
     static switchBtn = $("#atomicSwapSwitchBtn")
     static initBtn = $("#initAtomicSwapBtn")
     static loading = $("#atomicSwapLoading")
+    static review = {
+        networkFeesTicker: $("#atomicSwapReviewNetFeesTicker"),
+        rangeFees: $("#atomicSwapRangeFees"),
+        networkFees: $("#atomicSwapReviewNetFees"),
+        self: $("#atomicSwapReview"),
+        amountIn: $("#atomicSwapReviewAmountIn"),
+        inTicker: $("#atomicSwapReviewTickerIn"),
+        amountOut: $("#atomicSwapReviewAmountOut"),
+        outTicker: $("#atomicSwapReviewTickerOut"),
+        confirmBtn: $("#confirmAtomicSwapBtn"),
+        back: $("#atomicSwapReviewBack")
+    }
 
     constructor() {
         this.select1OldElem = ""
@@ -87,7 +99,78 @@ class AtomicSwapPane {
             AtomicSwapPane.params.hide()
             AtomicSwapPane.loading.show()
 
+            AtomicSwapPane.review.amountIn.html(AtomicSwapPane.inputs.one.input.val())
+            AtomicSwapPane.review.inTicker.html(AtomicSwapPane.inputs.one.ticker.html())
 
+            AtomicSwapPane.review.amountOut.html(AtomicSwapPane.inputs.two.input.val())
+            AtomicSwapPane.review.outTicker.html(AtomicSwapPane.inputs.two.ticker.html())
+
+            AtomicSwapPane.review.networkFeesTicker.html(AtomicSwapPane.inputs.one.select.val())
+
+            _this.estimateFees = () => {
+                const oneChainID = $('option:selected', AtomicSwapPane.inputs.one.select).attr('chainID')
+
+                estimateAtomicSwapFees(oneChainID).then(res => {
+
+                    getBalanceCross(oneChainID, AtomicSwapPane.inputs.one.select.val()).then(function(res2){
+
+                        let feesModifier = 0.5 + AtomicSwapPane.review.rangeFees.val() / 100
+
+                        AtomicSwapPane.review.networkFees.html(Utils.formatAmount(res.gas * Math.round(res.gasPrice * feesModifier), res2.decimals))
+
+                        _this.gasPrice = Math.round(res.gasPrice * feesModifier)
+
+                        let totalForNative = new BN(res.gas).mul(new BN(_this.gasPrice))
+                        totalForNative = totalForNative.add(new BN(Utils.toAtomicString(AtomicSwapPane.inputs.one.input.val(), res2.decimals)))
+
+                        if (totalForNative.lte(new BN(res2.balance)) && !isBtnDisabled(AtomicSwapPane.review.confirmBtn)){
+                            AtomicSwapPane.review.confirmBtn.attr("disabled", false)
+                            AtomicSwapPane.review.confirmBtn.find("val").html("Init swap")
+                        }else{
+                            AtomicSwapPane.review.confirmBtn.attr("disabled", true)
+                            AtomicSwapPane.review.confirmBtn.find("val").html("Insufficient " + MAIN_ASSET.ticker)
+                        }
+
+                        if(AtomicSwapPane.review.amountOut.html() != AtomicSwapPane.inputs.two.input.val() && AtomicSwapPane.inputs.two.input.val() != "")
+                            AtomicSwapPane.review.amountOut.html(AtomicSwapPane.inputs.two.input.val())
+
+                        AtomicSwapPane.loading.hide()
+                        if(!isBtnDisabled(AtomicSwapPane.review.confirmBtn) && !AtomicSwapPane.params.is(":visible"))
+                            AtomicSwapPane.review.self.show()
+
+                    })
+
+                })
+            }
+
+            _this.estimateFees()
+            _this.feesInterval = setInterval(function(){
+                _this.estimateFees()
+            }, 2500)
+
+        })
+
+        AtomicSwapPane.review.rangeFees.on("input", function(){
+            _this.estimateFees()
+        })
+
+        AtomicSwapPane.review.back.click(function(){
+            clearInterval(_this.feesInterval)
+            AtomicSwapPane.review.self.hide()
+            AtomicSwapPane.params.show()
+        })
+
+        AtomicSwapPane.review.confirmBtn.click(function (){
+            disableLoadBtn(AtomicSwapPane.review.confirmBtn)
+            initAtomicSwap(AtomicSwapPane.review.amountIn.html(), $('option:selected', AtomicSwapPane.inputs.one.select).attr('chainID'), $('option:selected', AtomicSwapPane.inputs.two.select).attr('chainID'), _this.gasPrice)
+                .then(function(){
+                    AtomicSwapPane.inputs.one.input.val("")
+                    AtomicSwapPane.inputs.two.input.val("")
+                    AtomicSwapPane.inputs.one.input.trigger("input")
+                    enableLoadBtn(AtomicSwapPane.review.confirmBtn)
+                    AtomicSwapPane.review.back.click()
+                    notyf.success("Atomic swap initiated!")
+                })
         })
 
     }

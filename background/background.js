@@ -537,6 +537,24 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
             break
+
+        case "estimateAtomicSwapFees":
+            sendResponse(AtomicSwapUtils.estimateLockFees(request.chainID))
+            break
+
+        case "initAtomicSwap":
+            let chainDecimals = baseWallet.getChainByID(request.chainA).decimals
+
+            AtomicSwapUtils.initAtomicSwap(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, chainDecimals)),
+                request.chainA,
+                request.chainB,
+                request.gasPrice
+            ).then(function(res){
+                sendResponse(true)
+            })
+
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
