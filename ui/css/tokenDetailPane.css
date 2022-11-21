@@ -7,6 +7,7 @@
     transform-origin: 50% 0;
     position: absolute;
     top: 0;
+    right: 0;
     transition: transform 0.25s ease;
     background: linear-gradient(0deg, rgba(90, 0, 156, 0.08), transparent);
     background-color: white;

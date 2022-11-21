@@ -19,6 +19,7 @@
     height: 600px;
     width: 100%;
     top: 0px;
+    right: 0;
     position: absolute;
     background: #faf6fc;
     transform: scaleY(0);

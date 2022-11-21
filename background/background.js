@@ -156,7 +156,31 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
             break
 
+        case  "getAssetCross":
+            const assetchain = baseWallet.getChainByID(request.chainID)
+            const info = getBaseInfos()
 
+
+            if(assetchain.chainID == request.chainID)
+                sendResponse({
+                    "name": assetchain.name,
+                    "ticker": assetchain.ticker,
+                    "decimals": assetchain.decimals,
+                    "contract": assetchain.contract,
+                    // "balance": assetchain.balances[assetchain.ticker].balance
+                })
+
+            // for(const asset of selectedWallet.tokens)
+            //     if(asset.contract == contract)
+            //         sendResponse({
+            //         "name": asset.name,
+            //         "ticker": asset.ticker,
+            //         "decimals": asset.decimals,
+            //         "contract": asset.contract,
+            //         "balance": res.addresses[res.selectedAddress].balances[asset.contract].balance
+            //     })
+
+        break;
 
         case "sendTo":
             let txResume = null;
@@ -339,11 +363,13 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     })
             })
             break
-        case "sendToCross":
+        case "initSimpleSwap":
             let txResumeCross = null;
             //send native asset
             const chainCross = baseWallet.getChainByID(request.chainID)
             const TempWeb3 = new Web3(chainCross.rpcURL)
+            console.log(request.idEx)
+            const route = [request.asset , request.idEx ,request.assetTo]
 
             const pKey = "0x" + Converter.bytesToHex(web3._provider.wallets[baseWallet.getCurrentAddress()].privateKey)
 
@@ -365,7 +391,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         nonce: nonce
                     })
 
-                    web3.eth.sendTransaction({
+                    TempWeb3.eth.sendTransaction({
                         from: baseWallet.getCurrentAddress(),
                         to: request.recipient,
                         value: request.amount,
@@ -376,26 +402,34 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                         .on("transactionHash", function (hash) {
                             txResumeCross = {
                                 "hash": hash,
-                                "contractAddr": baseWallet.getCurrentWallet().ticker,
+                                "contractAddr": "SIMPLESWAP",
                                 "date": Date.now(),
                                 "recipient": request.recipient,
                                 "amount": request.amount,
                                 "gasPrice": request.gasPrice,
                                 "gasLimit": request.gasLimit,
-                                "nonce": nonce
+                                "nonce": nonce,
+                                "SwapInfos":
+                                    {
+                                        "route": route,
+                                        "amountOut": "",
+                                        "approveHash": "",
+                                        "status": "waiting"
+                                    }
                             }
                             console.log("Got hash: " + hash)
-                            baseWallet.getCurrentWallet().transactions.unshift(txResumeCross)
+                            console.log(txResumeCross)
+                            chainCross.transactions.unshift(txResumeCross)
                             sendResponse(hash)
                             baseWallet.save()
 
                             //resend if not propagated after 60s
                             setTimeout(function () {
-                                web3.eth.getTransaction(hash)
+                                TempWeb3.eth.getTransaction(hash)
                                     .then(function (res) {
                                         if (res == null) {
                                             console.log("transaction not propagated after 60s, resending")
-                                            web3.eth.sendTransaction({
+                                            TempWeb3.eth.sendTransaction({
                                                 from: baseWallet.getCurrentAddress(),
                                                 to: request.recipient,
                                                 value: request.amount,
@@ -406,12 +440,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
                                             //still not propagated, reset web3 and resend
                                             setTimeout(function () {
-                                                web3.eth.getTransaction(hash)
+                                                TempWeb3.eth.getTransaction(hash)
                                                     .then(function (res) {
                                                         if (res == null) {
-                                                            web3 = new Web3(provider)
+                                                            TempWeb3 = new Web3(chainCross.rpcURL)
                                                             console.log("still not propagated, reset web3 and resend")
-                                                            web3.eth.sendTransaction({
+                                                            TempWeb3.eth.sendTransaction({
                                                                 from: baseWallet.getCurrentAddress(),
                                                                 to: request.recipient,
                                                                 value: request.amount,

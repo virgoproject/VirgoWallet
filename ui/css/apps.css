@@ -26,3 +26,28 @@
     color: var(--mainColor);
     cursor: pointer;
 }
+
+#body .virgoStore{
+    background: var(--mainColor);
+    height: 100px;
+    border-radius: 10px;
+}
+
+.nofav{
+    background-image: url("../images/VirgoFav.png");
+}
+
+.star{
+    display: none;
+}
+
+
+#body .store .appElement:hover .star{
+    top: 10px;
+    left: 18px;
+    display: block;
+}
+
+.favorite{
+    color: yellow;
+}

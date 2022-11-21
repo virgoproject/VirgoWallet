@@ -6,10 +6,11 @@
     transform-origin: 50% 0;
     position: absolute;
     top: 0;
+    right: 0;
     transition: transform 0.25s ease;
     background: linear-gradient(0deg, #5a009c14, transparent);
     background-color: white;
-    padding: 1em 2em;
+    padding: 0em 2em;
 }
 
 #simpleswap .back {
@@ -183,6 +184,10 @@
     font-size: 2em;
 }
 
+#simpleswapReview {
+    z-index: 0;
+}
+
 #simpleswapReview .confirmRoute {
     border-bottom: 2px dashed black;
     margin: 1em 0.25em 2em;
@@ -266,4 +271,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
+}
+
+#simpleSwapLoading{
+    text-align: center;
+    margin-top: 4em;
+    font-size: 2em;
 }

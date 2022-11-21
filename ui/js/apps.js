@@ -102,7 +102,7 @@ class appsPane {
 
         {
             "symbol": "KCS",
-            "network": "ERC20",
+            "network": "KCC",
             "has_extra_id": false,
             "extra_id": "",
             "chainID": 321,
@@ -218,6 +218,7 @@ class appsPane {
     static params = $("#simpleswapParams")
     static initBtn = $("#simpleinitSwapBtn")
     static loading = $("#simpleswapLoading")
+    static swaploading = $("#simpleSwapLoading")
     static review = {
         self: $("#simpleswapReview"),
         amountIn: $("#simpleswapReviewAmountIn"),
@@ -234,12 +235,16 @@ class appsPane {
         loading: $("#simpleswapReviewLoading")
     }
     constructor() {
+        $('.star').click(function (e){
+            if ($(this).hasClass('favorite')){
+                $(this).removeClass('favorite')
+            }else{
+                $(this).addClass('favorite')
+            }
+        })
 
 
-
-
-
-        $('.appElement').click(function (e) {
+        $('.appsImg').click(function (e) {
             const appSwitch = $(this).attr('data-app')
 
             switch (appSwitch) {
@@ -290,6 +295,7 @@ class appsPane {
         let officalApp = true
 
         appsPane.div.simpleSwapApp.show()
+        appsPane.review.self.hide()
 
         appsPane.buttons.goBackSwap.click(function () {
 
@@ -446,6 +452,8 @@ class appsPane {
 
    static simplecheckAmount(asset1,asset2) {
 
+
+
        let from = ""
        let to = ""
        let amount = asset1.input.val()
@@ -471,45 +479,31 @@ class appsPane {
            method: 'GET',
            redirect: 'follow'
        };
-           fetch("https://api.simpleswap.io/get_ranges?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"", requestOptions)
-               .then(response => response.json())
-               .then(function(result){
 
-                   appsPane.rate.max.show()
-                   appsPane.inputs.one.amountmax.html(result.max)
+        if (from !== "" && to !== "" && amount !== ""){
+            appsPane.rate.loading.show()
+        }
 
-                   appsPane.rate.self.show()
-                   appsPane.inputs.one.amountmini.html(result.min)
-
-                   if (result !== null){
-                       switch (true){
-                           case (parseFloat(amount) >= parseFloat(result.min) && parseFloat(amount) <= parseFloat(result.max)):
-                               console.log(result)
-                               appsPane.rate.loading.show()
-
-
-                               fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=true&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
-                                   .then(response => response.json())
-                                   .then(function(res){
-
-                                       // if (parseFloat(amount) <= parseFloat(appsPane.inputs.one.balance.html())){
-                                           appsPane.rate.loading.hide()
-                                           appsPane.inputs.two.input.val(res)
-                                           appsPane.initBtn.attr("disabled", false)
-                                       // }
-                                   })
-                                   .catch(error => console.log('error', error));
-
-                               break;
-                       }
-                       }
-               })
-               .catch(error => console.log('error', error));
+        fetch("https://api.simpleswap.io/get_estimated?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&fixed=false&currency_from="+from+"&currency_to="+to+"&amount="+amount+"", requestOptions)
+            .then(response => response.json())
+            .then(function(res){
+                if (parseFloat(amount) <= parseFloat(appsPane.inputs.one.balance.html())){
+                    appsPane.rate.loading.hide()
+                    appsPane.inputs.two.input.val(res)
+                    appsPane.initBtn.attr("disabled", false)
+                }
+            })
+            .catch(error => console.log('error', error));
    }
 
  static sendSimpleSwap(asset1,asset2){
+     appsPane.params.hide()
+     appsPane.review.self.hide()
+     appsPane.swaploading.show()
+
+
+
      if(appsPane.inputs.one.input.val() == "") return
-     appsPane.review.loading.show()
      let from = ""
      let to = ""
      let amount = asset1.input.val()
@@ -532,10 +526,9 @@ class appsPane {
          }
      }
 
-        console.log(from)
-        console.log(to)
+
          getBaseInfos().then(function (res){
-             appsPane.params.hide()
+
 
              const selectedAddress = res.addresses[res.selectedAddress].address
              let myHeaders = new Headers();
@@ -544,7 +537,7 @@ class appsPane {
              let raw = JSON.stringify({
                  "currency_from": from,
                  "currency_to": to,
-                 "fixed": true,
+                 "fixed": false,
                  "amount": amount,
                  "address_to": selectedAddress,
                  "extraIdTo": "",
@@ -559,7 +552,7 @@ class appsPane {
                  body: raw,
                  redirect: 'follow'
              };
-             console.log(raw)
+
              fetch("https://api.simpleswap.io/create_exchange?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802", requestOptions)
                  .then(response => response.json())
                  .then(function (res){
@@ -572,51 +565,70 @@ class appsPane {
                      if (from === "bnb-bsc"){
                          from = "bnb"
                      }
+
                      else if (to === "bnb-bsc"){
                          to = "bnb"
                      }
 
-                     appsPane.review.confirmBtn.attr("disabled", false)
-                     getAssetCross(from.toUpperCase()).then(function (assetInfo){
-                         console.log(assetInfo)
-                         appsPane.review.loading.hide()
-                         estimateSendFeesCross(res.address_from,Math.trunc(parseFloat(amount)*10**assetInfo.decimals),from,chainID).then(function (fees){
 
-                             appsPane.review.networkFeesTicker.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice), fees.decimals))
+                         getAssetCross(chainID).then(function (assetInfo){
+                          setInterval(function (){
 
-                             appsPane.review.confirmBtn.click(function (){
-                                 console.log(assetInfo)
-                                 console.log(amount)
+                                 estimateSendFeesCross(res.address_from,Math.trunc(parseFloat(amount)*10**assetInfo.decimals),from,chainID).then(function (fees){
 
-                                 // sendToCross(res.address_from,
-                                 //     Math.trunc(parseFloat(amount)*10**assetInfo.decimals),
-                                 //     from,
-                                 //     fees.gasLimit,
-                                 //     fees.gasPrice,
-                                 //     chainID)
-                                 //     .then(function(resTransac){
-                                 //         console.log(resTransac)
-                                 //         notyf.success("Transaction sent!")
-                                 //         SendPane.recipient.val("")
-                                 //         SendPane.amount.val("")
-                                 //         SendPane.assetSelect.val(MAIN_ASSET.ticker).trigger("change")
-                                 //
-                                 //         SendPane.backBtn.attr("disabled", false)
-                                 //         enableLoadBtn(SendPane.btnConfirm)
-                                 //
-                                 //         SendPane.backBtn.click()
-                                 //     })
-                             })
+                                     let feesModifier = 0.5 + appsPane.review.rangeFees.val() / 100
+                                     let estimateFees = Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice*feesModifier), fees.decimals)
+
+
+                                     if (appsPane.review.amountIn.html() === amount && appsPane.inputs.one.ticker.html() === assetInfo.ticker){
+                                         let amoutAndFees = Number(amount)+Number(estimateFees)
+
+                                         if (amoutAndFees <= appsPane.inputs.one.balance.html()){
+                                             appsPane.review.confirmBtn.attr("disabled", false)
+                                         }else{
+                                             appsPane.review.confirmBtn.attr("disabled", true)
+                                         }
+                                         appsPane.review.networkFees.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice*feesModifier), fees.decimals))
+                                         appsPane.review.networkFeesTicker.html(assetInfo.ticker)
+                                     }
+
+                                     appsPane.swaploading.hide()
+                                     if(!appsPane.params.is(":visible")){
+                                         appsPane.review.self.show()
+                                     }
+
+
+
+                                     appsPane.review.confirmBtn.unbind("click").click(function (){
+
+                                         appsPane.review.confirmBtn.attr("disabled", true)
+                                         appsPane.review.confirmBtn.find("val").hide()
+                                         appsPane.review.confirmBtn.find("i").show()
+
+                                         initSimpleSwap(res.address_from,
+                                             Math.trunc(parseFloat(amount)*10**assetInfo.decimals),
+                                             from,
+                                             fees.gasLimit,
+                                             fees.gasPrice,
+                                             chainID,
+                                             to,
+                                             res.id)
+                                             .then(function(resTransac){
+                                                 console.log(resTransac)
+                                                 notyf.success("Transaction sent!")
+                                                 appsPane.review.confirmBtn.find("val").show()
+                                                 appsPane.review.confirmBtn.find("val").html("Transaction sent!")
+                                                 appsPane.review.confirmBtn.find("i").hide()
+                                                 appsPane.params.show()
+                                                 appsPane.review.self.hide()
+                                             })
+                                     })
+                                 })
+                             },2500)
                          })
-                     })
-
                  })
                  .catch(error => console.log('error', error));
          })
-
-
-
-     appsPane.review.self.show()
  }
 
 }

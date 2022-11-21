@@ -200,50 +200,77 @@ class Web3Wallet {
         }
 
         if(this.transactions.length > 0){
+
             web3.eth.getBlockNumber().then(function(blockNumber){
-                for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false) continue
+                for(const transaction of wallet.transactions) {
 
-                    web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
-                        if(receipt == null){
-                            if(transaction.canceling){
-                                transaction.status = false
-                                transaction.gasUsed = 21000
-                                transaction.gasPrice = transaction.cancelingPrice
-                                baseWallet.save()
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction canceled!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " successfully canceled"
-                                });
+                    if (transaction.confirmations !== undefined && transaction.confirmations >= 12) {
+
+                        web3.eth.getTransactionReceipt(transaction.hash).then(function (receipt) {
+                            if (receipt == null) {
+
+                                if (transaction.canceling) {
+                                    transaction.status = false
+                                    transaction.gasUsed = 21000
+                                    transaction.gasPrice = transaction.cancelingPrice
+                                    baseWallet.save()
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction canceled!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " successfully canceled"
+                                    });
+                                }
+                                return
                             }
-                            return
-                        }
 
-                        if(transaction.status === undefined){
-                            if(receipt.status){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction confirmed!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " confirmed"
-                                });
-                            }else if(receipt.status == false){
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction failed.",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " failed"
-                                });
+                            if (transaction.status === undefined) {
+                                if (receipt.status) {
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction confirmed!",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " confirmed"
+                                    });
+                                } else if (receipt.status == false) {
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Transaction failed.",
+                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " failed"
+                                    });
+                                }
                             }
-                        }
 
-                        transaction.confirmations = blockNumber - receipt.blockNumber
-                        transaction.gasUsed = receipt.gasUsed
-                        transaction.status = receipt.status
-                        baseWallet.save()
-                    })
+
+
+                            transaction.confirmations = blockNumber - receipt.blockNumber
+                            transaction.gasUsed = receipt.gasUsed
+                            transaction.status = receipt.status
+                            baseWallet.save()
+                        })
+                    }
+                    if (transaction.contractAddr == "SIMPLESWAP") {
+                        if (transaction.SwapInfos.status !== undefined && transaction.SwapInfos.status !== "finished") {
+
+                            let requestOptions = {
+                                method: 'GET',
+                                redirect: 'follow'
+                            };
+
+
+                            fetch('https://api.simpleswap.io/get_exchange?api_key=befea97b-5be5-4bc7-b02e-8aaf2417e802&id=' + transaction.SwapInfos.route[1] + '', requestOptions)
+                                .then(response => response.json())
+                                .then(function (res) {
+                                    transaction.SwapInfos.status = res.status
+                                    transaction.SwapInfos.amountOut = res.amount_to
+                                    console.log(transaction)
+                                    baseWallet.save()
+                                })
+                                .catch(error => console.log('error', error));
+
+                        }
+                    }
                 }
             })
         }

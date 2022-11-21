@@ -3,6 +3,7 @@
     height: 562px;
     width: 100%;
     top: 52px;
+    right: 0;
     position: absolute;
     background: #faf6fc;
     transform: scaleY(0);
