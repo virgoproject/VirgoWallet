@@ -43,6 +43,11 @@ class Web3Wallet {
                     })
                 })
         }catch(e){}
+
+        if(atomicSwapParams.orders !== undefined)
+            for(const order of atomicSwapParams.orders)
+                atomicSwap.addOrder(order)
+
     }
 
     static fromJSON(json){
@@ -72,6 +77,7 @@ class Web3Wallet {
                     "popularTokens": ["0xdAC17F958D2ee523a2206206994597C13D831ec7","0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","0x6B175474E89094C44Da98b954EedeAC495271d0F"],
                     "proxyAddress": "0x5366De6176049C58F53Cb385A09E52Ae51909b13"
                 }
+                json.atomicSwapParams = false
                 break
             case 137:
                 json.swapParams = {
@@ -80,6 +86,10 @@ class Web3Wallet {
                     "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
                     "popularTokens": ["0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","0xc2132D05D31c914a87C6611C10748AEb04B58e8F","0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"],
                     "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
+                }
+                json.atomicSwapParams = {
+                    lockerAddress: "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0",
+                    orders: []
                 }
                 break
             case 56:
@@ -92,11 +102,14 @@ class Web3Wallet {
                     feesRate: 0.0025
                 }
                 json.atomicSwapParams = {
-                    lockerAddress: "0xCcF5B2bC73A7e84Fa7eb594D20c9E75E04Ce36b5"
+                    lockerAddress: "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
+                    orders: []
                 }
                 break
             default:
                 json.swapParams = false
+                json.atomicSwapParams = false
+
         }
 
         if(json.chainID == 3){

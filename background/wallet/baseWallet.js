@@ -50,6 +50,8 @@ class BaseWallet {
             this.save()
         }
 
+
+
     }
 
     startLoop(){
@@ -182,7 +184,8 @@ class BaseWallet {
                 },
                 "testnet": false,
                 "atomicSwap": {
-                    "lockerAddress": "0xCcF5B2bC73A7e84Fa7eb594D20c9E75E04Ce36b5"
+                    "lockerAddress": "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
+                    "orders": []
                 }
             }
         }
@@ -207,7 +210,10 @@ class BaseWallet {
                     "popularTokens": ["0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","0xc2132D05D31c914a87C6611C10748AEb04B58e8F","0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"],
                     "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
                 },
-                "testnet": false
+                "testnet": false,
+                "atomicSwap": {
+                    "lockerAddress": "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0"
+                }
             }
         }
 
