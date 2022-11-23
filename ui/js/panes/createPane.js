@@ -24,6 +24,7 @@ class CreatePane {
             SettingsPane.accountSelectionHeader.addClass("opened")
             SettingsPane.settingsMain.show()
             SettingsPane.importMnemonic.self.show()
+            MainPane.backupPopup.self.hide()
         })
     }
 }

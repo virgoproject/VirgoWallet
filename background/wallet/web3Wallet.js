@@ -118,6 +118,9 @@ class Web3Wallet {
         if(json.chainID == 128)
             json.RPC = "https://http-mainnet.hecochain.com/"
 
+        if(json.chainID == 61)
+            json.RPC = "https://geth-de.etc-network.info/"
+
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
     }
 

@@ -225,6 +225,7 @@
 
 #settings .settingsPane .importMnemonic{
     margin-top: -19px !important;
+    height: 100%;
 }
 
 #settings .settingsPane .importMnemonic .backToCreate {

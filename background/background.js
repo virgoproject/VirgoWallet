@@ -67,7 +67,6 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
-
                 sendResponse(getBaseInfos())
                 lastActivity = Date.now()
             }

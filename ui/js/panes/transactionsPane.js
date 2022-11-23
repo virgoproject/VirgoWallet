@@ -346,12 +346,12 @@ class TransactionsPane {
 
         getCancelGasPrice(transaction.hash).then(cancelPrice => {
             getBalance(MAIN_ASSET.ticker).then(bal => {
-                const newFee = cancelPrice * transaction.gasLimit
-                TransactionsPane.cancel.amount.html(Utils.formatAmount(newFee, MAIN_ASSET.decimals))
+                const newFee = new BN(cancelPrice).mul(new BN(transaction.gasLimit))
+                TransactionsPane.cancel.amount.html(Utils.formatAmount(newFee.toString(), MAIN_ASSET.decimals))
                 TransactionsPane.cancel.body.show()
                 TransactionsPane.cancel.loading.hide()
 
-                if(bal.balance >= newFee) {
+                if(new BN(bal.balance).gte(newFee)) {
                     TransactionsPane.cancel.button.self.attr("disabled", false)
                     TransactionsPane.cancel.button.text.html("Cancel")
                 }else{
@@ -382,13 +382,13 @@ class TransactionsPane {
         getSpeedupGasPrice(transaction.hash).then(gasPrice => {
             getBalance(MAIN_ASSET.ticker).then(bal => {
 
-                const newFee = gasPrice * transaction.gasLimit
+                const newFee = new BN(gasPrice).mul(new BN(transaction.gasLimit))
 
-                TransactionsPane.speedUp.amount.html(Utils.formatAmount(newFee, MAIN_ASSET.decimals))
+                TransactionsPane.speedUp.amount.html(Utils.formatAmount(newFee.toString(), MAIN_ASSET.decimals))
                 TransactionsPane.speedUp.body.show()
                 TransactionsPane.speedUp.loading.hide()
 
-                if(bal.balance >= transaction.amount + newFee){
+                if(new BN(bal.balance).gte(new BN(transaction.amount).add(newFee))){
                     TransactionsPane.speedUp.button.self.attr("disabled", false)
                     TransactionsPane.speedUp.button.text.html("Speed up")
                 }else{

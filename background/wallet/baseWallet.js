@@ -330,7 +330,7 @@ class BaseWallet {
                 "ticker": "ETC",
                 "decimals": 18,
                 "contract": "0x82A618305706B14e7bcf2592D4B9324A366b6dAd",
-                "RPC": "https://geth.etc-network.info/",
+                "RPC": "https://geth-de.etc-network.info/",
                 "chainID": 61,
                 "tokens": [],
                 "transactions": [],
@@ -387,8 +387,14 @@ class BaseWallet {
     }
 
     //check current wallets against reference list, if some networks are missing add them
-    checkMissingWallets(){
-        const referenceWallets = BaseWallet.getBaseWallets()
+    async checkMissingWallets(){
+
+        let referenceWallets = BaseWallet.getBaseWallets()
+
+        try {
+            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/chains.json")
+            referenceWallets = await refWalletsReq.json()
+        }catch(e){}
 
         let changed = false
 

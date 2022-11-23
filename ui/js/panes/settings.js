@@ -459,6 +459,8 @@ class SettingsPane {
                         SettingsPane.settings.removeClass("walletSetup")
                         SettingsPane.settingsMain.hide()
                         SettingsPane.importMnemonic.self.hide()
+                        if(data.backupPopup)
+                            MainPane.backupPopup.self.show()
                         //chain selection
                         selectChains.setChains(data)
                         //settings

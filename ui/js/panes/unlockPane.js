@@ -106,6 +106,7 @@ class UnlockPane {
 
     displayWallet(data){
         $("#unlockPane").hide()
+        UnlockPane.createpane.hide()
         selectChains.setChains(data)
         mainPane.setResume(data)
         sendPane.setSend(data)
