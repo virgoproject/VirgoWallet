@@ -1,12 +1,12 @@
 #body .store .appsImg {
-    max-width: 45px;
-    height: 45px;
-    max-height: 45px;
+    max-width: 64px;
+    height: 64px;
+    max-height: 64px;
     border-radius: 10px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #f8f4fb;
+    margin-left: 6px;
 }
 
 #body .store .appElement {
@@ -28,9 +28,7 @@
 }
 
 #body .virgoStore{
-    background: var(--mainColor);
-    height: 100px;
-    border-radius: 10px;
+    cursor: pointer;
 }
 
 .nofav{
@@ -38,16 +36,24 @@
 }
 
 .star{
+    top: 10px;
+    left: 30px;
+    overflow: hidden;
     display: none;
 }
 
 
 #body .store .appElement:hover .star{
     top: 10px;
-    left: 18px;
+    left: 30px;
+    overflow: hidden;
     display: block;
 }
 
 .favorite{
     color: yellow;
+}
+
+.VirgoStoreImg{
+    border-radius: 10px;
 }
