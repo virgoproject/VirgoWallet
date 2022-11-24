@@ -236,9 +236,15 @@ class appsPane {
     }
     constructor() {
         $('.star').click(function (e){
+
             if ($(this).hasClass('favorite')){
                 $(this).removeClass('favorite')
             }else{
+                let parent = this.parentNode
+                let img = $(parent).find('.appsImg').css('background-image').slice(4, -1).replace(/"/g, "");
+
+                console.log(img);
+                addAppFavorite()
                 $(this).addClass('favorite')
             }
         })

@@ -19,6 +19,11 @@ let lockDelay = 60;
 let autolockEnabled = false;
 let lastActivity = Date.now();
 
+let appFav = {}
+browser.storage.local.get("appFavorites").then(function (res){
+   appFav = appFavorites
+})
+
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
         autolockEnabled = res.autolockEnabled
@@ -84,6 +89,13 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             web3.eth.getGasPrice().then(function(gasPrice){
                 sendResponse(gasPrice)
             })
+            break
+
+        case "addAppFavorite":
+                appFav = {
+                    "img": request.img
+                }
+            browser.storage.local.set({"appFavorites": appFav});
             break
 
         case "estimateSendFees"://only support web3 R/N

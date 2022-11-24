@@ -41,6 +41,10 @@ async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
 
+async function addAppFavorite(appName, img){
+    return await browser.runtime.sendMessage({command: 'addAppFavorite', img:img})
+}
+
 async function estimateSendFeesCross(recipient, amount, asset, chainID){
     return await browser.runtime.sendMessage({command: 'estimateSendFeesCross', recipient: recipient, amount: amount, asset: asset, chainID: chainID})
 }

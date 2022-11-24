@@ -12,6 +12,7 @@
 #body .store .appElement {
     cursor: pointer;
     overflow: hidden;
+    margin-top: -21px;
     text-overflow: ellipsis;
 }
 
@@ -36,18 +37,16 @@
 }
 
 .star{
-    top: 10px;
+    top: 14px;
     left: 30px;
-    overflow: hidden;
-    display: none;
+   opacity: 0;
 }
 
 
 #body .store .appElement:hover .star{
-    top: 10px;
+    top: 14px;
     left: 30px;
-    overflow: hidden;
-    display: block;
+   opacity: 1;
 }
 
 .favorite{
