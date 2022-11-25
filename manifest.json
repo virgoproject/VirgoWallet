@@ -25,7 +25,8 @@
       "background/wallet/baseWallet.js",
       "background/background.js",
       "background/swap/uniswap02Utils.js",
-      "background/swap/uniswap03Utils.js"
+      "background/swap/uniswap03Utils.js",
+      "background/utils/txIdentifierAbi.js"
     ]
   },
 
