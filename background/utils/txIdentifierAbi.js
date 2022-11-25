@@ -7,6 +7,7 @@ class TxIdentifier {
             case 'approve':
                 let approveInfo = {
                     'approveInfo':{
+                        'name' : decodedMethod.name,
                         'address': decodedMethod.params[0].value
                     }
                 }

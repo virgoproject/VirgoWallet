@@ -880,16 +880,31 @@ function handleWeb3Request(sendResponse, origin, method, params){
                                 if (method == "eth_sendTransaction") {
                                     let data = TxIdentifier.getDecodeAbi(params[0].data)
                                     console.log(data)
-                                    baseWallet.getCurrentWallet().transactions.unshift({
-                                        "hash": resp.result,
-                                        "contractAddr": "WEB3_CALL",
-                                        "date": Date.now(),
-                                        "recipient": params[0].to,
-                                        "amount": params[0].value,
-                                        "gasPrice": web3.utils.hexToNumber(result),
-                                        "gasLimit": web3.utils.hexToNumber(params[0].gas),
-                                        "nonce": nonce
-                                    })
+                                    if (data.approveInfo.name === "approve"){
+                                        baseWallet.getCurrentWallet().transactions.unshift({
+                                            "hash": resp.result,
+                                            "contractAddr": "WEB3_CALL",
+                                            "date": Date.now(),
+                                            "recipient": params[0].to,
+                                            "amount": params[0].value,
+                                            "gasPrice": web3.utils.hexToNumber(result),
+                                            "gasLimit": web3.utils.hexToNumber(params[0].gas),
+                                            "nonce": nonce,
+                                             data
+                                        })
+                                    }else{
+                                        baseWallet.getCurrentWallet().transactions.unshift({
+                                            "hash": resp.result,
+                                            "contractAddr": "WEB3_CALL",
+                                            "date": Date.now(),
+                                            "recipient": params[0].to,
+                                            "amount": params[0].value,
+                                            "gasPrice": web3.utils.hexToNumber(result),
+                                            "gasLimit": web3.utils.hexToNumber(params[0].gas),
+                                            "nonce": nonce
+                                        })
+                                    }
+
                                     baseWallet.save()
                                 }
                                 return

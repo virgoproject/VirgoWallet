@@ -66,7 +66,7 @@ class TransactionsPane {
             let transactions = selectedWallet.transactions
 
             let initialCount = transactionsPane.txsCount
-
+            console.log(transactions)
             while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
                 transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
                 transactionsPane.txsCount++
