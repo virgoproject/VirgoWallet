@@ -17,6 +17,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "abi-decoder": "^2.4.0",
     "web3": "^1.7.1",
     "@truffle/hdwallet-provider": "2.0.4",
     "bip39": "^3.0.4",

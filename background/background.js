@@ -878,6 +878,8 @@ function handleWeb3Request(sendResponse, origin, method, params){
                                 })
 
                                 if (method == "eth_sendTransaction") {
+                                    let data = TxIdentifierAbi.getDecodeAbi(params[0].data)
+                                    console.log(data)
                                     baseWallet.getCurrentWallet().transactions.unshift({
                                         "hash": resp.result,
                                         "contractAddr": "WEB3_CALL",

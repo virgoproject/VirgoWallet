@@ -1,3 +1,4 @@
+
 const ERC20_ABI = [
     {
         "constant": true,
@@ -1996,3 +1997,10 @@ const VIRGOSWAP_3 = [
         "type": "receive"
     }
 ]
+
+abiDecoder.addABI(ERC20_ABI)
+abiDecoder.addABI(UNI_ROUTER02)
+abiDecoder.addABI(UNI_FACTORY)
+abiDecoder.addABI(UNI_FACTORY03)
+abiDecoder.addABI(UNI_QUOTERV2)
+
