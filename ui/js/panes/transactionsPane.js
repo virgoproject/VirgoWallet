@@ -7,6 +7,7 @@ class TransactionsPane {
         self: $("#transactionsPane .list"),
         basicTx: $("#transactionsBasicTx"),
         swapTx: $("#transactionsSwapTx"),
+        atomicSwapTx: $("#transactionsAtomicSwapTx"),
         loading: $("#transactionsPane .loading"),
         wrapper: $("#transactionsPane .listWrap"),
         empty: $("#transactionsPane .listEmpty")
@@ -92,7 +93,74 @@ class TransactionsPane {
             this.showSwapTransaction(selectedWallet, transaction)
             return
         }
+        if(transaction.contractAddr == "ATOMICSWAP"){
+            this.showAtomicSwapTransaction(transaction)
+            return
+        }
         this.showBasicTransaction(selectedWallet, transaction)
+    }
+
+    showAtomicSwapTransaction(transaction){
+        console.log(transaction)
+        let elem = TransactionsPane.list.atomicSwapTx.clone()
+        elem.attr("id", "tx"+transaction.hash)
+
+        let token1 = {
+            decimals: 18,
+            ticker: transaction.swapInfos.tickerA
+        }
+
+        elem.find(".logo.one").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + token1.ticker + "/" + token1.ticker + "/logo.png')")
+
+        let token2 = {
+            decimals: 18,
+            ticker: transaction.swapInfos.tickerB
+        }
+        elem.find(".logo.two").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + token2.ticker + "/" + token2.ticker + "/logo.png')")
+
+        elem.find(".smallDetails .amount").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
+        elem.find(".smallDetails .tickerA").html(token1.ticker)
+        elem.find(".smallDetails .tickerB").html(token2.ticker)
+
+        elem.find(".ticker.one").html(token1.ticker)
+        elem.find(".ticker.two").html(token2.ticker)
+
+        elem.find(".amountIn val").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
+
+        if(transaction.swapInfos.amountOut !== undefined)
+            elem.find(".amountOut val").html(Utils.formatAmount(transaction.swapInfos.amountOut, token2.decimals))
+
+        elem.attr("data-date", transaction.date)
+        const date = new Date(transaction.date)
+
+        let options = {month: "short", day: "numeric"};
+        elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+        options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+        elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+        elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+        elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, token1.decimals))
+        elem.find(".totalFees span").html(token1.ticker)
+
+        elem.click(function(){
+            if(elem.hasClass("opened")) return
+
+            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+            elem.addClass("opened")
+        })
+
+        elem.find(".close").click(function(){
+            elem.removeClass("opened")
+            return false
+        })
+
+        TransactionsPane.list.self.append(elem)
+        elem.show()
+
+        this.updateAtomicSwapTx(elem, transaction)
     }
 
     showSwapTransaction(selectedWallet, transaction){
@@ -283,6 +351,28 @@ class TransactionsPane {
         elem.show()
     }
 
+    updateAtomicSwapTx(elem, transaction){
+
+        if(transaction.swapInfos.gasUsed !== undefined){
+            elem.find(".gasUsed").html(transaction.swapInfos.gasUsed.toLocaleString('en-US'))
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.swapInfos.gasUsed, 18))
+        }
+
+        if(transaction.swapInfos.status == -1){
+            elem.find("progress-ring").hide()
+            elem.find(".refused").show()
+            return
+        }
+        if(transaction.swapInfos.status == 3){
+            elem.find("progress-ring").hide()
+            elem.find(".confirmed").show()
+            return
+        }
+        const progress = Math.min(100, (transaction.swapInfos.status+1)/4*100)
+
+        elem.find("progress-ring").attr("progress", progress)
+    }
+
     updateTxs(data){
         let selectedWallet = data.wallets[data.selectedWallet].wallet
         let transactions = selectedWallet.transactions
@@ -291,6 +381,11 @@ class TransactionsPane {
             let elem = $("#tx"+transaction.hash)
 
             if(elem.length){
+                if(transaction.contractAddr == "ATOMICSWAP"){
+                    this.updateAtomicSwapTx(elem, transaction)
+                    continue
+                }
+
                 if(transaction.status !== undefined){
                     elem.find(".badge-warning").hide()
                     if(!transaction.status){

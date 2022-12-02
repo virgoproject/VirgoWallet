@@ -12,17 +12,94 @@ class AtomicSwapUtils {
                     const remoteOrder = await remoteOrderReq.json()
 
                     if(remoteOrder.lockIndexB != undefined) {
-
-                        const unlockReq = await fetch("http://localhost/api/order/" + order.id + "/unlock/" + order.secret)
-                        const unlockRes = await unlockReq.json()
-
-                        if (unlockRes.hash != undefined) {
-                            order.unlockHash = unlockRes.hash
-                            order.lockIndexB = remoteOrder.lockIndexB
-                            order.status = 2
-                            baseWallet.save()
+                        if(order.chainIdB === undefined){
+                            switch (order.tickerB){
+                                case "BNB":
+                                    order.chainIdB = 56
+                                    break
+                                case "MATIC":
+                                    order.chainIdB = 137
+                                    break
+                                case "ETH":
+                                    order.chainIdB = 1
+                            }
                         }
+
+                        const chain = baseWallet.getChainByID(order.chainIdB)
+                        const tempWeb3 = baseWallet.getWeb3ByID(order.chainIdB)
+
+                        const lockContract = new tempWeb3.eth.Contract(ATOMIC_LOCKER, chain.atomicSwapParams.lockerAddress)
+
+                        const gasLimit = await lockContract.methods.unlock(remoteOrder.lockIndexB, order.secret).estimateGas({from: order.address})
+                        const gasPrice = await tempWeb3.eth.getGasPrice()
+
+                        if(web3.utils.toBN(await tempWeb3.eth.getBalance(order.address)).gt(web3.utils.toBN(gasLimit).mul(web3.utils.toBN(gasPrice)))){
+                            console.log("unlocking ourself")
+                            lockContract.methods.unlock(remoteOrder.lockIndexB, order.secret).send({from: order.address, gas: gasLimit, gasPrice: gasPrice}).on("transactionHash", hash => {
+                                order.unlockHash = hash
+                                order.lockIndexB = remoteOrder.lockIndexB
+                                order.status = 2
+                                AtomicSwapUtils.saveOrder(order)
+                                console.log("unlocked: " + hash)
+                            })
+                        }else{
+                            const unlockReq = await fetch("http://localhost/api/order/" + order.id + "/unlock/" + order.secret)
+                            const unlockRes = await unlockReq.json()
+
+                            if (unlockRes.hash != undefined) {
+                                order.unlockHash = unlockRes.hash
+                                order.lockIndexB = remoteOrder.lockIndexB
+                                order.status = 2
+                                AtomicSwapUtils.saveOrder(order)
+                            }
+                        }
+
+
                     }
+                }
+
+                if(order.gasUsed === undefined){
+                    if(order.chainIdA === undefined){
+                        order.status = -1
+                        AtomicSwapUtils.saveOrder(order)
+                        return
+                    }
+                    const chainA = baseWallet.getChainByID(order.chainIdA)
+                    const tempWeb3 = new Web3(chainA.rpcURL)
+
+                    tempWeb3.eth.getTransactionReceipt(order.lockHashA).then(async receipt => {
+                        if(receipt == null) return
+
+                        order.gasUsed = receipt.gasUsed
+                        AtomicSwapUtils.saveOrder(order)
+                    })
+                }
+
+                if(order.status == 2){
+                    if(order.chainIdB === undefined){
+                        order.status = -1
+                        AtomicSwapUtils.saveOrder(order)
+                    }
+                    const chainB = baseWallet.getChainByID(order.chainIdB)
+                    const tempWeb3 = new Web3(chainB.rpcURL)
+
+                    tempWeb3.eth.getTransactionReceipt(order.unlockHash).then(async receipt => {
+                        if(receipt == null)
+                            return
+
+                        if(!receipt.status){
+                            const unlockReq = await fetch("http://localhost/api/order/" + order.id + "/unlock/" + order.secret)
+                            const unlockRes = await unlockReq.json()
+
+                            if (unlockRes.hash != undefined) {
+                                order.unlockHash = unlockRes.hash
+                                order.status = 2
+                            }
+                        }else
+                            order.status = 3
+
+                        AtomicSwapUtils.saveOrder(order)
+                    })
                 }
 
             })
@@ -31,8 +108,25 @@ class AtomicSwapUtils {
     }
 
     addOrder(order){
-        if(order.status != -1 || order.status != 3)
-            this.pendingOrders.set(order.id, order)
+        if(order.status == -1 || order.status == 3 || this.pendingOrders.has(order.id))
+            return
+
+        this.pendingOrders.set(order.id, order)
+    }
+
+    static saveOrder(order){
+        const chainA = baseWallet.getChainByID(order.chainIdA)
+        const chainB = baseWallet.getChainByID(order.chainIdB)
+
+        for(let transaction of chainA.transactions)
+            if(transaction.hash == order.lockHashA)
+                transaction.swapInfos = order
+
+        for(let transaction of chainB.transactions)
+            if(transaction.hash == order.lockHashA)
+                transaction.swapInfos = order
+
+        baseWallet.save()
     }
 
     /**
@@ -92,9 +186,13 @@ class AtomicSwapUtils {
                 .on("transactionHash", async hash => {
                     order.lockHashA = hash
                     order.secret = secret
+                    order.status = 1
+                    order.chainIdA = chainIdA
+                    order.chainIdB = chainIdB
+
                     atomicSwap.addOrder(order)
 
-                    chainA.transactions.unshift({
+                    const txResume = {
                         "hash": hash,
                         "contractAddr": "ATOMICSWAP",
                         "date": Date.now(),
@@ -104,9 +202,14 @@ class AtomicSwapUtils {
                         "gasLimit": gasAmount,
                         "nonce": nonce,
                         "swapInfos": order
-                    })
+                    }
 
-                    baseWallet.save()
+                    chainA.atomicSwapParams.orders.push(order)
+
+                    chainA.transactions.unshift(txResume)
+                    chainB.transactions.unshift(txResume)
+
+                    AtomicSwapUtils.saveOrder(order)
 
                     const updateOrderReq = await fetch("http://localhost/api/order/" + order.id + "/update/" + hash)
 

@@ -23,6 +23,10 @@ class Web3Wallet {
         for(let token of this.tokens)
             this.tokenSet.set(token.contract, token)
 
+        for(let transaction of this.transactions)
+            if(transaction.contractAddr == "ATOMICSWAP")
+                atomicSwap.addOrder(transaction.swapInfos)
+
         const wallet = this
         try {
             fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
@@ -43,11 +47,6 @@ class Web3Wallet {
                     })
                 })
         }catch(e){}
-
-        if(atomicSwapParams.orders !== undefined)
-            for(const order of atomicSwapParams.orders)
-                atomicSwap.addOrder(order)
-
     }
 
     static fromJSON(json){
@@ -77,7 +76,10 @@ class Web3Wallet {
                     "popularTokens": ["0xdAC17F958D2ee523a2206206994597C13D831ec7","0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","0x6B175474E89094C44Da98b954EedeAC495271d0F"],
                     "proxyAddress": "0x5366De6176049C58F53Cb385A09E52Ae51909b13"
                 }
-                json.atomicSwapParams = false
+                json.atomicSwapParams = {
+                    lockerAddress: "0x07AF5E2075BB32FfdFF5Ac2Ffb492bdE5D98D65b",
+                    orders: []
+                }
                 break
             case 137:
                 json.swapParams = {
@@ -288,7 +290,7 @@ class Web3Wallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false) continue
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
                         if(receipt == null){

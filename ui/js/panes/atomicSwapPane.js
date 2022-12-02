@@ -27,10 +27,15 @@ class AtomicSwapPane {
         amount: $("#atomicSwapRateAmount"),
         route: $("#atomicSwapRoute"),
         routeBaseStep: $("#atomicSwapRouteBaseStep"),
-        notFound: {
-            self: $("#atomicSwapRouteNotFound"),
-            amount: $("#atomicSwapRouteNotFound amount"),
-            ticker: $("#atomicSwapRouteNotFound ticker")
+        maxErr: {
+            self: $("#atomicSwapMaxErr"),
+            amount: $("#atomicSwapMaxErr amount"),
+            ticker: $("#atomicSwapMaxErr ticker")
+        },
+        minErr: {
+            self: $("#atomicSwapMinErr"),
+            amount: $("#atomicSwapMinErr amount"),
+            ticker: $("#atomicSwapMinErr ticker")
         }
     }
     static params = $("#atomicSwapParams")
@@ -186,6 +191,8 @@ class AtomicSwapPane {
         for(let wallet of data.wallets){
             wallet = wallet.wallet
 
+            if(wallet.chainID != 1 && wallet.chainID != 56 && wallet.chainID != 137) continue
+
             if(wallet.testnet)
                 continue
 
@@ -271,7 +278,8 @@ class AtomicSwapPane {
     checkAmount(){
         AtomicSwapPane.inputs.two.input.val("")
         AtomicSwapPane.rate.self.hide()
-        AtomicSwapPane.rate.notFound.self.hide()
+        AtomicSwapPane.rate.maxErr.self.hide()
+        AtomicSwapPane.rate.minErr.self.hide()
         AtomicSwapPane.initBtn.attr("disabled", true)
 
         const _this = this
@@ -307,9 +315,14 @@ class AtomicSwapPane {
                 AtomicSwapPane.inputs.two.input.val(Utils.formatAmount(json.amountOut, $('option:selected', AtomicSwapPane.inputs.two.select).attr('decimals')))
 
                 if(new BN(json.max).lt(new BN(amntAtomic))){
-                    AtomicSwapPane.rate.notFound.amount.html(Utils.formatAmount(json.max, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals')))
-                    AtomicSwapPane.rate.notFound.ticker.html(token1)
-                    AtomicSwapPane.rate.notFound.self.show()
+                    AtomicSwapPane.rate.maxErr.amount.html(Utils.formatAmount(json.max, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals')))
+                    AtomicSwapPane.rate.maxErr.ticker.html(token1)
+                    AtomicSwapPane.rate.maxErr.self.show()
+                    return
+                }else if(new BN(json.min).gt(new BN(amntAtomic))){
+                    AtomicSwapPane.rate.minErr.amount.html(Utils.formatAmount(json.min, $('option:selected', AtomicSwapPane.inputs.one.select).attr('decimals')))
+                    AtomicSwapPane.rate.minErr.ticker.html(token1)
+                    AtomicSwapPane.rate.minErr.self.show()
                     return
                 }
 
