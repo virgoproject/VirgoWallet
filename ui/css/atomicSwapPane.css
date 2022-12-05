@@ -137,6 +137,17 @@
     color: var(--mainColor);
 }
 
+#atomicSwapBeta {
+    background: var(--mainColor);
+    color: white;
+    font-size: 0.65em;
+    border-radius: 0.35em;
+    font-style: italic;
+    font-weight: bold;
+    padding: 0.25em 0.35em 0.25em 0.25em;
+    vertical-align: text-bottom;
+}
+
 #atomicSwapLoading {
     text-align: center;
     margin-top: 4em;

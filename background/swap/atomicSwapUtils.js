@@ -8,7 +8,7 @@ class AtomicSwapUtils {
             this.pendingOrders.forEach(async (order, k) => {
 
                 if(order.lockIndexB === undefined){
-                    const remoteOrderReq = await fetch("http://localhost/api/order/"+order.id)
+                    const remoteOrderReq = await fetch("https://atomicswap.virgo.net:2083/api/order/"+order.id)
                     const remoteOrder = await remoteOrderReq.json()
 
                     if(remoteOrder.lockIndexB != undefined) {
@@ -43,7 +43,7 @@ class AtomicSwapUtils {
                                 console.log("unlocked: " + hash)
                             })
                         }else{
-                            const unlockReq = await fetch("http://localhost/api/order/" + order.id + "/unlock/" + order.secret)
+                            const unlockReq = await fetch("https://atomicswap.virgo.net:2083/api/order/" + order.id + "/unlock/" + order.secret)
                             const unlockRes = await unlockReq.json()
 
                             if (unlockRes.hash != undefined) {
@@ -88,7 +88,7 @@ class AtomicSwapUtils {
                             return
 
                         if(!receipt.status){
-                            const unlockReq = await fetch("http://localhost/api/order/" + order.id + "/unlock/" + order.secret)
+                            const unlockReq = await fetch("https://atomicswap.virgo.net:2083/api/order/" + order.id + "/unlock/" + order.secret)
                             const unlockRes = await unlockReq.json()
 
                             if (unlockRes.hash != undefined) {
@@ -164,7 +164,7 @@ class AtomicSwapUtils {
         const secret = tempWeb3.utils.randomHex(32)
         const hash = "0x" + sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(sjcl.codec.hex.toBits(secret)))
 
-        const orderReq = await fetch("http://localhost/api/order/create/"+chainA.ticker+"/"+chainB.ticker+"/"+amount+"/"+baseWallet.getCurrentAddress())
+        const orderReq = await fetch("https://atomicswap.virgo.net:2083/api/order/create/"+chainA.ticker+"/"+chainB.ticker+"/"+amount+"/"+baseWallet.getCurrentAddress())
         const order = await orderReq.json()
 
         if(order.error != undefined)
@@ -211,7 +211,7 @@ class AtomicSwapUtils {
 
                     AtomicSwapUtils.saveOrder(order)
 
-                    const updateOrderReq = await fetch("http://localhost/api/order/" + order.id + "/update/" + hash)
+                    const updateOrderReq = await fetch("https://atomicswap.virgo.net:2083/api/order/" + order.id + "/update/" + hash)
 
                     resolve(true)
                 })

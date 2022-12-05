@@ -54,6 +54,7 @@ class AtomicSwapPane {
         confirmBtn: $("#confirmAtomicSwapBtn"),
         back: $("#atomicSwapReviewBack")
     }
+    static accessOne = $("#atomicSwapAccess1")
 
     constructor() {
         this.select1OldElem = ""
@@ -178,6 +179,11 @@ class AtomicSwapPane {
                 })
         })
 
+        AtomicSwapPane.accessOne.click(() => {
+            SelectChains.header.click()
+            AtomicSwapPane.self.show()
+        })
+
     }
 
     setAtomicSwap(data){
@@ -298,7 +304,7 @@ class AtomicSwapPane {
 
         AtomicSwapPane.rate.loading.show()
 
-        fetch("http://localhost/api/quote/"+token1+"/"+token2+"/"+amntAtomic).then(res => {
+        fetch("https://atomicswap.virgo.net:2083/api/quote/"+token1+"/"+token2+"/"+amntAtomic).then(res => {
             res.json().then(json => {
                 if (amount != AtomicSwapPane.inputs.one.input.val() || token1 != AtomicSwapPane.inputs.one.select.val() || token2 != AtomicSwapPane.inputs.two.select.val())
                     return
