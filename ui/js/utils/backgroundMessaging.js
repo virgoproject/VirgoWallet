@@ -175,3 +175,15 @@ function removeToken(address){
 async function getBalanceCross(chainID, asset){
     return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID: chainID, asset: asset})
 }
+
+async function tickerFromChainID(id){
+    return await browser.runtime.sendMessage({command: 'tickerFromChainID', id: id})
+}
+
+async function checkAirdropPlay(address,id){
+    return await browser.runtime.sendMessage({command : 'checkAirdropPlay',address : address ,id : id})
+}
+
+async function setAirdropPlay(address,id){
+    return await browser.runtime.sendMessage({command : 'setAirdropPlay',address : address ,id : id})
+}

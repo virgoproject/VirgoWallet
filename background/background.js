@@ -537,6 +537,55 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
             break
+        case 'tickerFromChainID':
+            sendResponse(baseWallet.getChainByID(request.id))
+            break
+
+        case 'checkAirdropPlay':
+            browser.storage.local.get('airdropinfos').then(function(res){
+
+                    const result = res.airdropinfos.filter(record => record.address === request.address && record.id === request.airdropid)
+                    if (result.length <= 0){
+                        sendResponse(false)
+                    } else {
+                        sendResponse(true)
+                    }
+
+            })
+            break
+        case 'setAirdropPlay' :
+            browser.storage.local.get('airdropinfos').then(function(res){
+                let addressUser = request.address
+                let airdropID = request.id
+                const newAirdrop = {
+                    airdropid : airdropID,
+                    address : addressUser
+                }
+
+                console.log(newAirdrop)
+
+                console.log(res.airdropinfos)
+
+                if(res.airdropinfos === undefined) {
+                    browser.storage.local.set({"airdropinfos": [newAirdrop]})
+                    sendResponse(true)
+                } else {
+                    const result = res.airdropinfos.filter(record => record.address === addressUser.address && record.id === airdropID.airdropid)
+                    console.log(result)
+                    if (result.length <= 0){
+                        res.airdropinfos.push(newAirdrop)
+                        browser.storage.local.set({"airdropinfos": res.airdropinfos})
+                        console.log('ici')
+                        sendResponse(true)
+                    } else {
+                        console.log('pas la')
+                        sendResponse(false)
+                    }
+
+                }
+            })
+            break
+
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
