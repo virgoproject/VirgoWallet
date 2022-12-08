@@ -103,7 +103,9 @@
 #transactionsPane .listItem .smallDetails .recipient {
     color: var(--highlightColor1);
 }
-
+#transactionsPane  .siteAdress {
+    color: var(--highlightColor1);
+}
 #transactionsPane .listItem .details {
     display: none;
 }

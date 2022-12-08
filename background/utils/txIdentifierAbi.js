@@ -8,7 +8,7 @@ class TxIdentifier {
                 case 'approve':
                     let tx = {
                         "hash": hash,
-                        "contractAddr": "WEB3_CALL",
+                        "contractAddr": "APPROVETOKEN",
                         "date": date,
                         "recipient": recipient,
                         "amount": amount,
@@ -25,7 +25,7 @@ class TxIdentifier {
                 case 'swapExactETHForTokens':
                     let swapEth = {
                         "hash": hash,
-                        "contractAddr": "WEB3_CALL",
+                        "contractAddr": "SWAPETHFORTOKEN",
                         "date": date,
                         "recipient": recipient,
                         "amount": amount,
@@ -40,7 +40,7 @@ class TxIdentifier {
                 case 'swapExactTokensForTokens':
                     let swapToken = {
                         "hash": hash,
-                        "contractAddr": "WEB3_CALL",
+                        "contractAddr": "SWAPTOKENFORTOKEN",
                         "date": date,
                         "recipient": recipient,
                         "amount": amount,
@@ -51,6 +51,8 @@ class TxIdentifier {
                     return swapToken
                 break
             }
+        }else{
+
         }
 
 
