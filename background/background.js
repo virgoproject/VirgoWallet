@@ -543,14 +543,20 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
         case 'checkAirdropPlay':
             browser.storage.local.get('airdropinfos').then(function(res){
+                let addressUser = request.address
+                let airdropID = request.id
+                console.log(res)
+                if(res === undefined){
+                    sendResponse(false)
+                    return
+                }
 
-                    const result = res.airdropinfos.filter(record => record.address === request.address && record.id === request.airdropid)
-                    if (result.length <= 0){
-                        sendResponse(false)
-                    } else {
-                        sendResponse(true)
-                    }
-
+                const result = res.airdropinfos.filter(record => record.address == addressUser && record.airdropid == airdropID)
+                if (result.length <= 0){
+                    sendResponse(true)
+                } else {
+                    sendResponse(false)
+                }
             })
             break
         case 'setAirdropPlay' :

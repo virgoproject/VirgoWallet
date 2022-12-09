@@ -111,8 +111,6 @@ class AirdropPane{
                                                         let cntJoined = elemjoined.textContent
                                                         let userNmb = Number(cntJoined)
                                                         elemjoined.innerHTML = userNmb + 1;
-
-
                                                     }
                                                 let userInfos = {
                                                     airdropID : elemClicked.id,
@@ -149,7 +147,7 @@ class AirdropPane{
                                         getBaseInfos().then(function (preset) {
                                             let btn = elem.querySelector('.joinDrop')
                                             console.log(btn.id)
-                                            checkAirdropPlay(preset.addresses[0].address,elem.id).then(function (state) {
+                                            checkAirdropPlay(preset.addresses[0].address,btn.id).then(function (state) {
                                             console.log(state)
                                             if (state){
                                                 btn.enabled = true
