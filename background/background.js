@@ -1,9 +1,24 @@
+window = self
+
+importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
+    "utils/converter.js", "swap/uniswap02Utils.js",
+    "swap/uniswap03Utils.js", "wallet/web3ABIs.js",
+    "wallet/web3Wallet.js", "wallet/baseWallet.js")
+
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
 const VERSION = "0.7.6"
 
-const connectedWebsites = []
+const loadedElems = {}
+
+let connectedWebsites = []
+browser.storage.local.get("connectedWebsites").then(function(res){
+    if(res.connectedWebsites !== undefined)
+        connectedWebsites = res.connectedWebsites
+
+    loadedElems["connectedWebsites"] = true
+})
 
 const pendingAuthorizations = new Map()
 const pendingTransactions = new Map()
@@ -13,6 +28,8 @@ let backupPopupDate = 0;
 browser.storage.local.get("backupPopupDate").then(function(res){
     if(res.backupPopupDate !== undefined)
         backupPopupDate = res.backupPopupDate
+
+    loadedElems["backupDate"] = true
 })
 
 let accName = {}
@@ -26,6 +43,8 @@ browser.storage.local.get("accountsNames").then(function (res){
     }else{
         accName = res.accountsNames
     }
+
+    loadedElems["accountsNames"] = true
 })
 
 
@@ -38,19 +57,22 @@ browser.storage.local.get('setupDone').then(function (res) {
     if (res.setupDone !== undefined){
         setupDone = res.setupDone;
     }
+    loadedElems["setupDone"] = true
 })
 
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
         autolockEnabled = res.autolockEnabled
+
+    loadedElems["autolockEnabled"] = true
 })
 
 browser.storage.local.get("lockDelay").then(function(res){
     if(res.lockDelay !== undefined)
         lockDelay = res.lockDelay
+
+    loadedElems["lockDelay"] = true
 })
-
-
 
 setInterval(function(){
     if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
@@ -62,6 +84,9 @@ setInterval(function(){
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+
+    while(Object.keys(loadedElems).length < 7){}
+
     switch (request.command) {
         case "getBaseInfos":
             if(baseWallet === undefined)
@@ -810,6 +835,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             askConnectToWebsite(origin).then(function(result){
                 if(result){
                     connectedWebsites.push(origin)
+                    browser.storage.local.set({"connectedWebsites": connectedWebsites})
                     sendResponse({
                         success: true,
                         data: [baseWallet.getCurrentAddress()]
@@ -999,7 +1025,6 @@ function sendMessageToTabs(command, data){
 }
 
 async function askConnectToWebsite(origin){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
     if(baseWallet === undefined){
         browser.windows.create({
@@ -1007,8 +1032,8 @@ async function askConnectToWebsite(origin){
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1022,8 +1047,8 @@ async function askConnectToWebsite(origin){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingAuthorizations.get(requestID) == null){
@@ -1034,16 +1059,14 @@ async function askConnectToWebsite(origin){
 }
 
 async function signTransaction(origin, from, to, value, data, gas){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-
     if(baseWallet === undefined){
         browser.windows.create({
             url: '/ui/html/notLogged.html',
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1074,8 +1097,8 @@ async function signTransaction(origin, from, to, value, data, gas){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingTransactions.get(requestID) == null){
@@ -1088,16 +1111,14 @@ async function signTransaction(origin, from, to, value, data, gas){
 }
 
 async function signMessage(origin, data){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-
     if(baseWallet === undefined){
         browser.windows.create({
             url: '/ui/html/notLogged.html',
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1111,8 +1132,8 @@ async function signMessage(origin, data){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingSigns.get(requestID) == null){
