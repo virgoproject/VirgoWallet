@@ -15,10 +15,12 @@ class UnlockPane {
         msgBase: $("#recoverPaneMnemonicBase"),
         msgWrong: $("#recoverPaneMnemonicWrong")
     }
+    static loadingPane = $("#loadingPane")
 
     constructor() {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
+                UnlockPane.loadingPane.hide()
                 if(!response.locked)
                     unlockPane.displayWallet(response)
                 if(!response.setupDone)

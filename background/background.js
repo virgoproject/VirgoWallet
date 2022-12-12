@@ -34,7 +34,7 @@ browser.storage.local.get("backupPopupDate").then(function(res){
 
 let accName = {}
 browser.storage.local.get("accountsNames").then(function (res){
-    if (res.accountsNames.length === 0){
+    if (res.accountsNames === undefined || res.accountsNames.length === 0){
         let count = 0
         for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
             accName[address.address] = "Account "+count
@@ -74,18 +74,64 @@ browser.storage.local.get("lockDelay").then(function(res){
     loadedElems["lockDelay"] = true
 })
 
-setInterval(function(){
-    if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+browser.storage.local.get("lastActivity").then(function(res){
+    if(res.lastActivity !== undefined)
+        lastActivity = res.lastActivity
 
-    if(Date.now()-lastActivity >= lockDelay*60000)
-        baseWallet = undefined
+    loadedElems["lastActivity"] = true
+})
 
-}, 1000)
+browser.storage.session.get("unlockPassword").then(function(res){
+    if(res.unlockPassword !== undefined){
+        unlockPassword = res.unlockPassword
+        BaseWallet.loadFromJSON(unlockPassword).then(() => {
+            loadedElems["unlockPassword"] = true
+        })
+    }else{
+        loadedElems["unlockPassword"] = true
+    }
+})
+
+browser.runtime.onInstalled.addListener(() => {
+    browser.alarms.get('walletLock').then(a => {
+        if (!a) browser.alarms.create('walletLock', { periodInMinutes: 1.0 })
+    })
+})
+
+browser.alarms.onAlarm.addListener(async a => {
+    while(Object.keys(loadedElems).length < 9){
+        await new Promise(r => setTimeout(r, 10));
+    }
+
+    if(a.name == "walletLock"){
+        if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+        if(Date.now()-lastActivity >= lockDelay*60000){
+            baseWallet = undefined
+            browser.storage.session.set({"unlockPassword": null})
+        }
+
+    }
+});
+
+function activityHeartbeat(){
+    lastActivity = Date.now()
+    browser.storage.local.set({"lastActivity": lastActivity})
+}
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
-    while(Object.keys(loadedElems).length < 7){}
+    onBackgroundMessage(request, sender, sendResponse)
+
+    //must return true or for some reason message promise will fullfill before sendResponse being called
+    return true
+});
+
+async function onBackgroundMessage(request, sender, sendResponse){
+    while(Object.keys(loadedElems).length < 9){
+        await new Promise(r => setTimeout(r, 10));
+    }
 
     switch (request.command) {
         case "getBaseInfos":
@@ -93,16 +139,17 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 sendResponse({"locked": true})
             else {
                 sendResponse(getBaseInfos())
-                lastActivity = Date.now()
+                activityHeartbeat()
             }
             break
 
-
         case "unlockWallet":
-            lastActivity = Date.now()
+            activityHeartbeat()
             BaseWallet.loadFromJSON(request.password).then(function(res){
-                if(res)
+                if(res){
+                    browser.storage.session.set({"unlockPassword": request.password})
                     sendResponse(getBaseInfos())
+                }
                 else sendResponse(false)
             })
             break
@@ -422,20 +469,20 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     sendResponse(true)
                 } else {
 
-                        const result = res.contactList.filter(record =>
-                            record.address === request.address)
+                    const result = res.contactList.filter(record =>
+                        record.address === request.address)
 
-                        if (result.length <= 0){
-                            res.contactList.push(newContact)
-                            browser.storage.local.set({"contactList": res.contactList})
-                            sendResponse(true)
-                        } else {
-                            sendResponse("already")
-                        }
-
+                    if (result.length <= 0){
+                        res.contactList.push(newContact)
+                        browser.storage.local.set({"contactList": res.contactList})
+                        sendResponse(true)
+                    } else {
+                        sendResponse("already")
                     }
+
+                }
             })
-           break
+            break
 
         case "deleteContact":
             browser.storage.local.get('contactList').then(function(res) {
@@ -478,7 +525,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
                 if (request.name === '')
                     nameSetter = res.contactList[request.contactIndex].name
-                 else
+                else
                     nameSetter = request.name
 
 
@@ -596,9 +643,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             setupDone = false
             break
     }
-    //must return true or for some reason message promise will fullfill before sendResponse being called
-    return true
-});
+}
 
 function getBaseInfos(){
     if (baseWallet.version != VERSION){
