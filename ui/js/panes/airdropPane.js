@@ -12,9 +12,18 @@ class AirdropPane{
         loadingpassedAirdrop : document.querySelector('.airdrop .loadingendedAirdrop'),
         airdropExemple : document.querySelector('.airdropExemple'),
         upcomingAirdropExemple : document.querySelector('.upcomingAirdropExemple'),
-        endedairdropExemple : document.querySelector('.endedAirdropExemple')
+        endedairdropExemple : document.querySelector('.endedAirdropExemple'),
+        winnedAmmount : document.querySelector('.airdrop .winnedAmmount'),
+        decimalTotalEarn : document.querySelector('.decimalValue')
     }
     constructor() {
+
+        let winSet = AirdropPane.airdropCard.winnedAmmount
+        let setWinAmmount = winSet.innerHTML = 234.25
+        let decimalValue = (setWinAmmount + "").split(".")
+        console.log(decimalValue)
+        winSet.innerHTML = decimalValue[0]
+        AirdropPane.airdropCard.decimalTotalEarn.innerHTML = "." + decimalValue[1]
 
     }
 

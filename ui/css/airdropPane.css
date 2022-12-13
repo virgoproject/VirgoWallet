@@ -4,8 +4,7 @@
 
 #mainPane .airdrop .airdropHeader{
     padding: 0.5em;
-    height: 111px;
-    background-color: #fbf4f8;
+    height: 110px;
 
 }
 
@@ -28,16 +27,18 @@
     border-radius: 0.5em;
 }
 
-#mainPane .airdrop .airdropHeader .stats{
-    position: absolute;
-    left: 1em;
-    right: 1em;
+#mainPane .airdrop .airdropHeader .stats .decimalValue{
+    color: rgba(0, 0, 0, 0.5);
 }
 
-#mainPane .airdrop .airdropHeader .stats .fluctuation {
-    color: var(--bs-teal);
-    margin-bottom: 6px;
-    font-size: 13px;
+#mainPane .airdrop .airdropHeader .stats .dollarSign{
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: .3em;
+}
+
+#mainPane .airdrop .airdropHeader .stats .address-bloc p span {
+    color: rgb(0 0 0 / 60%);
+    font-weight: bold;
 }
 
 #mainPane .airdrop .airdropHeader .stats .fluctuation.negative {
@@ -55,19 +56,36 @@
 
 #mainPane .airdrop .airdropHeader .stats .balance-header{
     align-items: center;
-    justify-content: space-between;
     padding: 0;
-    margin-top: 8px;
 }
 
-#mainPane .airdrop .airdropHeader .stats .balanceTitle{
+#mainPane .airdrop .airdropHeader .wallet-address .notifReward {
+    background-color: #fa3e3e;
+    border-radius: 50px;
+    color: white;
+    padding: 1px 5px;
+    font-size: 10px;
+    position: absolute;
+    top: -11px;
+    right: 0;
+}
+
+.airdropPaddingModifier {
+    padding: 0 2em !important;
+    margin-bottom: 1em !important;
+}
+
+#mainPane .airdrop .airdropHeader .stats .balanceTitle h1{
     padding: 0;
+    margin: unset !important;
+    font-size: .8em;
+    font-weight: unset !important;
+    color: rgba(0,0,0,0.5);
 }
 
 #mainPane .airdrop .airdropHeader .stats .title {
     font-size: 0.65em;
     margin: 0 0 0.25rem;
-    font-weight: bold;
 }
 
 #mainPane .airdrop .airdropHeader .stats .adress {
@@ -86,17 +104,22 @@
     padding-top: 0.375em;
     padding-bottom: 0.375em;
     border-radius: 1em;
-    background: var(--whiteBackground);
     align-items: baseline;
 }
 
 #mainPane .airdrop .airdropHeader .stats .address-div {
     padding: 0;
-    margin-top: -13px;
 }
 
-#mainPane .airdrop .airdropHeader .stats .wallet-address .address-bloc{
-    margin-left: 20px;
+#mainPane .airdrop .airdropHeader .stats .claimDropReward{
+    font-size: .7em;
+    border-radius: 25px;
+}
+
+#mainPane .airdrop .airdropHeader .stats .address-bloc p {
+    background-color: #f8f4fb;
+    border-radius: 25px;
+    padding: 0.575em 0.75em;
 }
 
 #mainPane .airdrop .airdropHeader .stats .wallet-address .copy{
@@ -105,9 +128,8 @@
 
 #mainPane .airdrop .airdropHeader .stats .values {
     margin-bottom: 0.1rem;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
-    padding-bottom: 10px;
 }
 
 #mainPane .airdrop .airdropHeader .pendingTxs {
@@ -162,6 +184,15 @@
 
 .airdropCard .joinDrop{
     font-size: .8em;
+}
+
+.airdrop .pendingReward{
+    background-color: rgba(255, 191, 0, 0.7) !important;
+    font-size: 12px;
+    color: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    margin-left: 1em !important;
+    padding: 0 1em;
 }
 
 
@@ -219,6 +250,7 @@
 
 .airdropCard .userEntered {
     font-size: .7em;
+    margin-left: 1em !important;
 }
 
 .airdropCard .cryptoMedia a {
