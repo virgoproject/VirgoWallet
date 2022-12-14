@@ -15,7 +15,7 @@
 }
 
 .detail {
-    background: #5a009c14;
+    background: #F1F1F1;
     border-radius: 0.5em;
     color: #545454;
     padding: 0.375em 2em 0.375em 0.75em;
@@ -26,7 +26,7 @@
 
 #fees {
     display: inline-block;
-    max-width: 138px;
+    max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
