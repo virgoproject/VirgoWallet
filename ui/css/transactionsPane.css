@@ -2,7 +2,7 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
+    background: white;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
@@ -50,7 +50,7 @@
 }
 
 #transactionsPane .listItem {
-    background: rgba(90, 0, 156, 0.08);
+    background: #ebebeb;
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -65,6 +65,7 @@
 #transactionsPane .listItem p {
     margin-bottom: 0;
 }
+
 
 #transactionsPane .listItem .header .amount val {
     max-width: 130px;
@@ -117,7 +118,6 @@
 
 #transactionsPane .listItem .detail .title {
     font-size: 0.85em;
-    font-weight: bold;
 }
 
 #transactionsPane .listItem .detail .body {
@@ -140,7 +140,11 @@
 }
 
 #transactionsPane .listItem.opened .smallDetails, #transactionsPane .listItem.opened .header .amount {
-    visibility: hidden;
+
+}
+
+#transactionsPane .listItem.opened .smallDetails, #transactionsPane .listItem.opened .header {
+    margin-bottom: 20px;
 }
 
 #transactionsPane .listItem.opened .details {
@@ -148,7 +152,7 @@
 }
 
 #transactionsPane .listItem.opened {
-    background: rgba(90, 0, 156, 0.12);
+    background: #ebebeb;
     cursor: default;
 }
 
@@ -166,15 +170,33 @@
     color: var(--mainColorLight30);
 }
 
-#transactionsPane .listItem .speed-up, #transactionsPane .listItem .cancel {
+#transactionsPane .listItem .speed-up {
     font-size: 0.85em;
-    color: var(--highlightColor1);
+    color: white;
     text-decoration: none;
     cursor: pointer;
     transition: color ease 0.25s;
+    background-color: var(--highlightColor1);
+    padding: 4px 7px;
+    border-radius: 15px;
 }
 
-#transactionsPane .listItem .speed-up:hover, #transactionsPane .listItem .cancel:hover {
+ #transactionsPane .listItem .cancel{
+     font-size: 0.85em;
+     color: red;
+     text-decoration: none;
+     cursor: pointer;
+     transition: color ease 0.25s;
+     padding: 4px 7px;
+     background-color: white;
+     border-radius: 15px;
+  }
+
+#transactionsPane .listItem .speed-up:hover {
+    color: var(--mainColorLight30);
+}
+
+#transactionsPane .listItem .cancel:hover{
     color: var(--mainColorLight30);
 }
 
@@ -230,3 +252,21 @@
 #transactionsPane .listItem.swapTx.opened .header {
     margin-top: 10px;
 }
+
+#transactionsPane .fees {
+    margin-right: 0px;
+    margin-left: 0px;
+    background-color: white;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+#transactionsPane .gas {
+margin-top: -12px;
+}
+
+#transactionsPane .bold {
+    font-weight: bold;
+}
+
+
