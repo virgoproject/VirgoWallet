@@ -40,6 +40,9 @@ browser.storage.local.get('setupDone').then(function (res) {
     }
 })
 
+
+
+
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
         autolockEnabled = res.autolockEnabled
@@ -1029,7 +1032,7 @@ async function askConnectToWebsite(origin){
 
 async function signTransaction(origin, from, to, value, data, gas){
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-
+    console.log(data)
     if(baseWallet === undefined){
         browser.windows.create({
             url: '/ui/html/notLogged.html',
@@ -1063,14 +1066,30 @@ async function signTransaction(origin, from, to, value, data, gas){
 
     pendingTransactions.set(requestID, null)
 
-    await browser.windows.create({
-        url: `/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
-        type:'popup',
-        height: 600,
-        width: 370,
-        top: top,
-        left: left
-    })
+    let dataTx = TxIdentifier.getDecodeAbi(data)
+    console.log(dataTx)
+    switch (dataTx.contractAddr){
+        case "APPROVETOKEN":
+            await browser.windows.create({
+                url: `/ui/html/approveToken.html?id=${requestID}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: top,
+                left: left
+            })
+            break
+        default:
+            await browser.windows.create({
+                url: `/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: top,
+                left: left
+            })
+    }
+
 
     while(pendingTransactions.get(requestID) == null){
         await new Promise(r => setTimeout(r, 50));
