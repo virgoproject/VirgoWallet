@@ -581,10 +581,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     if (result.length <= 0){
                         res.airdropinfos.push(newAirdrop)
                         browser.storage.local.set({"airdropinfos": res.airdropinfos})
-                        console.log('ici')
                         sendResponse(true)
                     } else {
-                        console.log('pas la')
                         sendResponse(false)
                     }
 

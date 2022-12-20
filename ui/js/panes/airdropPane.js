@@ -14,17 +14,27 @@ class AirdropPane{
         upcomingAirdropExemple : document.querySelector('.upcomingAirdropExemple'),
         endedairdropExemple : document.querySelector('.endedAirdropExemple'),
         winnedAmmount : document.querySelector('.airdrop .winnedAmmount'),
-        decimalTotalEarn : document.querySelector('.decimalValue')
+        decimalTotalEarn : document.querySelector('.decimalValue'),
+        claimBn : document.querySelector('.claimDropReward')
     }
     constructor() {
 
-        let winSet = AirdropPane.airdropCard.winnedAmmount
+/*        let winSet = AirdropPane.airdropCard.winnedAmmount
         let setWinAmmount = winSet.innerHTML = 234.25
         let decimalValue = (setWinAmmount + "").split(".")
-        console.log(decimalValue)
         winSet.innerHTML = decimalValue[0]
-        AirdropPane.airdropCard.decimalTotalEarn.innerHTML = "." + decimalValue[1]
-
+        AirdropPane.airdropCard.decimalTotalEarn.innerHTML = "." + decimalValue[1]*/
+        document.querySelector('.airdropHeader .notifReward').style.display = "flex"
+        document.querySelector('.airdropHeader .pendingReward').style.display = "flex"
+        AirdropPane.airdropCard.claimBn.addEventListener('click', (event) => {
+            getBaseInfos().then(function (infos) {
+                fetch('https://airdrops.virgo.net:2053/api/getreward',{
+                    method: "POST",
+                    body: JSON.stringify({address: infos.addresses[0].address}),
+                    headers: {'Content-Type': 'application/json'}
+                })
+            })
+        })
     }
 
     checkAirdropPane(elem){
@@ -45,20 +55,28 @@ class AirdropPane{
 
         }
     }
-
     loadUserStats(){
 
         getBaseInfos().then(function (infos) {
+            console.log(infos.addresses[0].address)
             fetch('https://airdrops.virgo.net:2053/api/airdropplayed',{
                 method: "POST",
-                body: JSON.stringify({address: infos.addresses[0].address}),
-                headers: {'Content-Type': 'application/json'}
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({address: infos.addresses[0].address})
             }).then(response => response.json())
                 .then(res => {
+                    console.log(res)
                     let airdropParticipated = res[0].length
                     let airdropWon = res[1].length
+                    let waitingWithdraw = res[2].length
                     document.querySelector('.airdropHeader .particpateddrops').innerHTML = airdropParticipated
                     document.querySelector('.airdropHeader .wondrops').innerHTML = airdropWon
+                    if(waitingWithdraw > 0){
+                        document.querySelector('.airdropHeader .notifReward').innerHTML = waitingWithdraw
+                    }else {
+                        document.querySelector('.airdropHeader .notifReward').style.display = "none"
+                        document.querySelector('.airdropHeader .pendingReward').style.display = "none"
+                    }
                 })
         })
 
@@ -73,7 +91,6 @@ class AirdropPane{
         }).then(response => response.json())
             .then(res => {
                 AirdropPane.airdropCard.loadingAirdrop.style.display ="flex"
-                console.log(res)
                 for (let i = 0; res.length > i; i++){
                     tickerFromChainID(res[i].chainID).then(function (infos) {
                         if (!infos) return
@@ -155,9 +172,7 @@ class AirdropPane{
 
                                         getBaseInfos().then(function (preset) {
                                             let btn = elem.querySelector('.joinDrop')
-                                            console.log(btn.id)
                                             checkAirdropPlay(preset.addresses[0].address,btn.id).then(function (state) {
-                                            console.log(state)
                                             if (state){
                                                 btn.enabled = true
                                             }else {
@@ -261,7 +276,6 @@ class AirdropPane{
                                 let dateEnd = new Date(res[i].endDate)
                                 let socials = JSON.parse(res[i].socials)
                                 let elem = AirdropPane.airdropCard.upcomingAirdropExemple.cloneNode(true)
-                                console.log(results.name)
                                 elem.classList.add('d-flex')
                                 elem.classList.remove('d-none')
                                 elem.classList.remove('upcomingAirdropExemple')
@@ -329,7 +343,6 @@ class AirdropPane{
 
                                 elem.querySelector('.fa-chevron-right').addEventListener('click', (e) => {
                                     let infosDom = elem.querySelector('.airdropCoinInfos')
-                                    console.log(elem.querySelector('.airdropCoinInfos').classList)
                                     if (infosDom.classList.contains('d-none')) {
                                         infosDom.classList.remove('d-none')
                                         infosDom.classList.add('d-flex')
@@ -446,7 +459,6 @@ class AirdropPane{
 
                                 elem.querySelector('.fa-chevron-right').addEventListener('click', (e) => {
                                     let infosDom = elem.querySelector('.airdropCoinInfos')
-                                    console.log(elem.querySelector('.airdropCoinInfos').classList)
                                     if (infosDom.classList.contains('d-none')) {
                                         infosDom.classList.remove('d-none')
                                         infosDom.classList.add('d-flex')
@@ -470,6 +482,7 @@ class AirdropPane{
 
 
     }
+
 
 
 }
