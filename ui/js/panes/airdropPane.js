@@ -3,12 +3,11 @@ class AirdropPane{
     static div = {
          header: $('#mainPane .header'),
         airdropBody : document.querySelector('.airdropBody'),
+        airdropHeader : document.querySelector('.airdrop .airdropHeader'),
         airdropLoadingBody : document.querySelector('.airdropLoadingBody')
     }
 
     static airdropCard = {
-        loadingAirdrop : document.querySelector('.airdrop .loadingAirdrop'),
-        loadingupcomingAirdrop : document.querySelector('.airdrop .loadingupcomingAirdrop'),
         loadingpassedAirdrop : document.querySelector('.airdrop .loadingendedAirdrop'),
         airdropExemple : document.querySelector('.airdropExemple'),
         upcomingAirdropExemple : document.querySelector('.upcomingAirdropExemple'),
@@ -18,14 +17,10 @@ class AirdropPane{
         claimBn : document.querySelector('.claimDropReward')
     }
     constructor() {
-
-/*        let winSet = AirdropPane.airdropCard.winnedAmmount
-        let setWinAmmount = winSet.innerHTML = 234.25
-        let decimalValue = (setWinAmmount + "").split(".")
-        winSet.innerHTML = decimalValue[0]
-        AirdropPane.airdropCard.decimalTotalEarn.innerHTML = "." + decimalValue[1]*/
-        document.querySelector('.airdropHeader .notifReward').style.display = "flex"
-        document.querySelector('.airdropHeader .pendingReward').style.display = "flex"
+        this.userState = false
+        this.loadedAirdrop = false
+        this.loadeduppcoming = false
+        this.loadedpassed = false
         AirdropPane.airdropCard.claimBn.addEventListener('click', (event) => {
             getBaseInfos().then(function (infos) {
                 fetch('https://airdrops.virgo.net:2053/api/getreward',{
@@ -57,9 +52,10 @@ class AirdropPane{
     }
     loadUserStats(){
 
+
         getBaseInfos().then(function (infos) {
             console.log(infos.addresses[0].address)
-            fetch('https://airdrops.virgo.net:2053/api/airdropplayed',{
+            fetch('https://airdrops.virgo.net:2053/api/user/stats',{
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({address: infos.addresses[0].address})
@@ -69,13 +65,18 @@ class AirdropPane{
                     let airdropParticipated = res[0].length
                     let airdropWon = res[1].length
                     let waitingWithdraw = res[2].length
+                    let totalEarnings = res[3][0].earnings
                     document.querySelector('.airdropHeader .particpateddrops').innerHTML = airdropParticipated
                     document.querySelector('.airdropHeader .wondrops').innerHTML = airdropWon
+                    document.querySelector('.airdropHeader .winnedAmmount').innerHTML = totalEarnings.toFixed(0)
+                    document.querySelector('.airdropHeader .decimalValue').innerHTML = "." + totalEarnings.toString().split('.')[1]
+                    airdropPane.userState = true
+                    airdropPane.checkLoadingState()
                     if(waitingWithdraw > 0){
+                        document.querySelector('.airdropHeader .notifReward').style.display = "flex"
                         document.querySelector('.airdropHeader .notifReward').innerHTML = waitingWithdraw
-                    }else {
-                        document.querySelector('.airdropHeader .notifReward').style.display = "none"
-                        document.querySelector('.airdropHeader .pendingReward').style.display = "none"
+                    } else {
+                        AirdropPane.airdropCard.claimBn.disabled = true
                     }
                 })
         })
@@ -90,7 +91,6 @@ class AirdropPane{
 
         }).then(response => response.json())
             .then(res => {
-                AirdropPane.airdropCard.loadingAirdrop.style.display ="flex"
                 for (let i = 0; res.length > i; i++){
                     tickerFromChainID(res[i].chainID).then(function (infos) {
                         if (!infos) return
@@ -230,17 +230,14 @@ class AirdropPane{
                                         }
                                     })
                                     document.querySelector(".airdropActive").appendChild(elem)
+                                    airdropPane.loadedAirdrop = true
+                                    airdropPane.checkLoadingState()
                                 }
                         })
                 })
 
                 }
-                AirdropPane.airdropCard.loadingAirdrop.style.display ="none"
                 AirdropPane.airdropCard.airdropExemple.classList.add('d-none')
-                AirdropPane.div.airdropLoadingBody.classList.add('d-none')
-                AirdropPane.div.airdropBody.classList.add('d-flex')
-                AirdropPane.div.airdropBody.classList.remove('d-none')
-
             })
     }
     loadUpcomingDrops(){
@@ -250,11 +247,11 @@ class AirdropPane{
 
         }).then(response => response.json())
             .then(res => {
-                AirdropPane.airdropCard.loadingupcomingAirdrop.style.display = "flex"
                 console.log(res)
                 if (res.length >= 0){
                     AirdropPane.airdropCard.upcomingAirdropExemple.classList.add('d-none')
-                    AirdropPane.airdropCard.loadingupcomingAirdrop.classList.add('d-none')
+                    airdropPane.loadeduppcoming = true
+                    airdropPane.checkLoadingState()
                 }
                 for (let i = 0; res.length > i; i++) {
                     tickerFromChainID(res[i].chainID).then(function (infos) {
@@ -354,6 +351,8 @@ class AirdropPane{
                                     }
                                 })
                                 document.querySelector(".upcomingAirdrop").appendChild(elem)
+                                airdropPane.loadeduppcoming = true
+                                airdropPane.checkLoadingState()
                             }
                         })
                     })
@@ -368,11 +367,9 @@ class AirdropPane{
 
         }).then(response => response.json())
             .then(res => {
-                AirdropPane.airdropCard.loadingpassedAirdrop.style.display = "flex"
                 console.log(res)
                 if (res.length >= 0 ){
                     AirdropPane.airdropCard.endedairdropExemple.classList.add('d-none')
-                    AirdropPane.airdropCard.loadingpassedAirdrop.classList.add('d-none')
                 }
                 for (let i = 0; res.length > i; i++) {
                     tickerFromChainID(res[i].chainID).then(function (infos) {
@@ -471,8 +468,8 @@ class AirdropPane{
                                 })
                                 document.querySelector(".endedAirdrop").appendChild(elem)
                                 AirdropPane.airdropCard.endedairdropExemple.classList.add('d-none')
-                                AirdropPane.airdropCard.loadingpassedAirdrop.classList.add('d-none')
-
+                                airdropPane.loadedpassed = true
+                                airdropPane.checkLoadingState()
                             }
                         })
                     })
@@ -481,6 +478,16 @@ class AirdropPane{
             })
 
 
+    }
+
+    checkLoadingState(){
+        if(airdropPane.loadedAirdrop && airdropPane.userState && airdropPane.loadedpassed && airdropPane.loadeduppcoming){
+            AirdropPane.div.airdropBody.classList.add('d-flex')
+            AirdropPane.div.airdropHeader.classList.remove('d-none')
+            AirdropPane.div.airdropBody.classList.remove('d-none')
+            AirdropPane.div.airdropLoadingBody.classList.add('d-none')
+
+        }
     }
 
 
