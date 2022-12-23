@@ -65,3 +65,6 @@ $("#rangeFees").on("input", function(){
 })
 
 estimateFees()
+
+const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+window.moveTo(top, left)

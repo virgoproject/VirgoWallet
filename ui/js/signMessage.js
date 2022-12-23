@@ -26,3 +26,6 @@ $("#siteLogo img").on("error", function(){
 $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
 $("#data").html(Utils.hexToUtf8(get("data")))
+
+const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
+window.moveTo(top, left)

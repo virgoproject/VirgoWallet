@@ -315,3 +315,15 @@ input[type=number] {
     outline: 0 !important;
     box-shadow: 0 0 0 0.25rem rgb(170 49 128 / 25%) !important;
 }
+
+#loadingPane {
+    height: 100%;
+    width: 100%;
+    font-size: 1.75em;
+    text-align: center;
+    line-height: 100vh;
+}
+
+#loadingPane i {
+    vertical-align: text-top;
+}

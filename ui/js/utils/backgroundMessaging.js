@@ -183,3 +183,27 @@ async function estimateAtomicSwapFees(chainID){
 async function initAtomicSwap(amount, chainA, chainB, gasPrice){
     return await browser.runtime.sendMessage({command: 'initAtomicSwap', amount: amount, chainA: chainA, chainB: chainB, gasPrice: gasPrice})
 }
+
+async function tickerFromChainID(id){
+    return await browser.runtime.sendMessage({command: 'tickerFromChainID', id: id})
+}
+
+async function checkAirdropPlay(address,id){
+    return await browser.runtime.sendMessage({command : 'checkAirdropPlay',address : address ,id : id})
+}
+
+async function setAirdropPlay(address,id){
+    return await browser.runtime.sendMessage({command : 'setAirdropPlay',address : address ,id : id})
+}
+
+async function resetAirdrops(){
+    return await browser.runtime.sendMessage({command : 'resetAirdrops'})
+}
+
+async function deleteConnectedSite(address){
+    return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
+}
+
+async function setupDone(){
+    return await browser.runtime.sendMessage({command : 'setupDone'})
+}

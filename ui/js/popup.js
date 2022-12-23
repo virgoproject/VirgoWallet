@@ -31,6 +31,8 @@ $("#footer .footerElem").click(function(){
 
     $("#body .bodyElem").hide()
 
+    airdropPane.checkAirdropPane($(this))
+
     $("#body .bodyElem."+$(this).attr("data-target")).show()
 
     return false

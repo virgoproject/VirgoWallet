@@ -2,6 +2,7 @@ MAIN_ASSET = undefined
 
 class MainPane {
 
+    static self = $("#mainPane")
     static resume = $("#body .bodyElem.resume")
     static address = $("#mainPane .header .address")
     static addressTitle = $("#mainPane .header .address .title")
@@ -73,7 +74,7 @@ class MainPane {
             SettingsPane.accountSelectionHeader.click()
             SettingsPane.openSettingsBtn.click()
             $("#settings .mainSettings [data-target=security]").click()
-            $("#settings .settingsCat[data-settingid=security] [data-target=setupPassword]").click()
+            $("#settings .settingsCat[data-settingid=security] .tab[data-target=setupPassword]").click()
             MainPane.backupPopup.close.click()
         })
 

@@ -1,12 +1,12 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Virgo Wallet",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "short_name": "Virgo Wallet",
   "description": "An easy-to-use, cross-chain wallet in your browser!",
-  "permissions": ["storage", "notifications"],
+  "permissions": ["storage", "notifications", "alarms"],
 
-  "browser_action": {
+  "action": {
     "default_icon": "ui/images/walletLogo.png",
     "default_popup": "ui/html/popup.html",
     "default_title": "Virgo"
@@ -15,20 +15,15 @@
   "icons": {"128": "ui/images/walletLogo.png"},
 
   "background": {
-    "scripts": [
-      "commonJS/utils.js",
-      "commonJS/browser-polyfill.js",
-      "background/bundle.js",
-      "background/utils/converter.js",
-      "background/wallet/web3ABIs.js",
-      "background/wallet/web3Wallet.js",
-      "background/wallet/baseWallet.js",
-      "background/background.js",
-      "background/swap/uniswap02Utils.js",
-      "background/swap/uniswap03Utils.js",
-      "background/swap/atomicSwapUtils.js"
-    ]
+    "service_worker": "background/background.js"
   },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["content/web3Provider.js"],
+      "matches": ["*://*/*"]
+    }
+  ],
 
   "content_scripts": [
     {

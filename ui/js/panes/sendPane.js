@@ -79,7 +79,7 @@ class SendPane {
                             SendPane.confirmFees.attr("gasPrice", Math.round(fees.gasPrice * feesModifier))
                             SendPane.confirmForm.show()
 
-                            let totalForNative = new BN(fees.gasLimit * Math.round(fees.gasPrice * feesModifier));
+                            let totalForNative = new BN(fees.gasLimit).mul(new BN(Math.round(fees.gasPrice * feesModifier)));
 
                             if(assetInfos.ticker == MAIN_ASSET.ticker)
                                 totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SendPane.amount.val(), MAIN_ASSET.decimals)))

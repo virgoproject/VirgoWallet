@@ -207,7 +207,6 @@ class ContactsPane {
 
                 element.click(function (e) {
                     e.stopPropagation()
-                    const checkForClick = ['seeMoreChev','showElements','changeNote','changeContact','deleteContact','fa-times','fa-star']
 
                     if( e.target.classList.contains('seeMoreChev') || e.target.classList.contains('showElements') || e.target.classList.contains('changeNote') || e.target.classList.contains('changeContact') || e.target.classList.contains('deleteContact')|| e.target.classList.contains('fa-star')|| e.target.classList.contains('fa-check'))
                         return false
@@ -219,10 +218,10 @@ class ContactsPane {
 
                 element.find('.fa-star').attr('data-address',res[l].address).click(function () {
 
-                    if ($(this).hasClass('fa-solid')) {
-                        $(this).removeClass('fa-solid').addClass('fa-thin').css('color', 'unset')
+                    if ($(this).hasClass('fas')) {
+                        $(this).removeClass('fas').addClass('fal').css('color', 'unset')
                     } else {
-                        $(this).removeClass('fa-thin').addClass('fa-solid').css('color', 'rgb(247, 208, 108)')
+                        $(this).removeClass('fal').addClass('fas').css('color', 'rgb(247, 208, 108)')
 
                     }
                     let idFavorite = element.find('.bg-danger').attr('data-address')
@@ -230,7 +229,7 @@ class ContactsPane {
                 })
 
                 if (res[l].favorite)
-                    element.find('.fa-star').removeClass("fa-thin fa-star").addClass('fa-solid fa-star').css('color', '#F7d06c')
+                    element.find('.fa-star').removeClass("fal fa-star").addClass('fas fa-star').css('color', '#F7d06c')
 
                 element.find('.noteContact').html(res[l].note)
                 element.find('svg').attr("data-jdenticon-value", res[l].address)

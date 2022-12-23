@@ -108,6 +108,16 @@ class Web3Wallet {
                     orders: []
                 }
                 break
+            case 250:
+                json.swapParams = {
+                    "type": "uni2",
+                    "routerAddress": "0xf491e7b69e4244ad4002bc14e878a34207e38c29",
+                    "factoryAddress": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
+                    "popularTokens": ["0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83","0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e","0x04068da6c83afcfa0e13ba15a6696662335d5b75","0x049d68029688eabf473097a2fc38ef61633a3c7a"],
+                    "proxyAddress": "0xd52852E3aDad6e722d5834918Df792BDc9eC872F",
+                    feesRate: 0.002
+                }
+                break
             default:
                 json.swapParams = false
                 json.atomicSwapParams = false
@@ -128,6 +138,9 @@ class Web3Wallet {
         if(json.chainID == 128)
             json.RPC = "https://http-mainnet.hecochain.com/"
 
+        if(json.chainID == 61)
+            json.RPC = "https://geth-de.etc-network.info/"
+      
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 
@@ -242,7 +255,7 @@ class Web3Wallet {
                     browser.notifications.create("txNotification", {
                         "type": "basic",
                         "title": "Money in!",
-                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                         "message": "Received " + (res-balances[wallet.ticker].balance)/10**wallet.decimals + " " + wallet.ticker + " on " + address
                     });
                 }
@@ -271,7 +284,7 @@ class Web3Wallet {
                             browser.notifications.create("txNotification", {
                                 "type": "basic",
                                 "title": "Money in!",
-                                "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                 "message": "Received " + (res-balances[token.contract].balance)/10**token.decimals + " " + token.ticker + " on " + address
                             });
                         }
@@ -302,7 +315,7 @@ class Web3Wallet {
                                 browser.notifications.create("txNotification", {
                                     "type": "basic",
                                     "title": "Transaction canceled!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                    "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                     "message": "Transaction " + transaction.hash + " successfully canceled"
                                 });
                             }
@@ -333,7 +346,7 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Swap successful!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " confirmed"
                                     })
 
@@ -341,7 +354,7 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction confirmed!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " confirmed"
                                     })
                                 }
@@ -351,14 +364,14 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Swap failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " failed"
                                     })
                                 else
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " failed"
                                     })
                             }
@@ -478,6 +491,7 @@ class Web3Wallet {
                 case 137:
                     this.swapUtils = new Uniswap03Utils(this.swapParams.proxyAddress, this.swapParams.quoterAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens)
                     return
+                case 250:
                 case 56:
                     this.swapUtils = new Uniswap02Utils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate)
                     return

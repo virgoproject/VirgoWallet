@@ -49,9 +49,6 @@ class BaseWallet {
             this.version = VERSION//To change for VERSION after next update
             this.save()
         }
-
-
-
     }
 
     startLoop(){
@@ -252,7 +249,13 @@ class BaseWallet {
                 "tokens": [],
                 "transactions": [],
                 "explorer": "https://ftmscan.com/tx/",
-                "swapParams": false,
+                "swapParams": {
+                    "type": "uni2",
+                    "routerAddress": "0xf491e7b69e4244ad4002bc14e878a34207e38c29",
+                    "factoryAddress": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
+                    "popularTokens": ["0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83","0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e","0x04068da6c83afcfa0e13ba15a6696662335d5b75","0x049d68029688eabf473097a2fc38ef61633a3c7a"],
+                    "proxyAddress": "0xd52852E3aDad6e722d5834918Df792BDc9eC872F"
+                },
                 "testnet": false
             }
         }
@@ -337,7 +340,7 @@ class BaseWallet {
                 "ticker": "ETC",
                 "decimals": 18,
                 "contract": "0x82A618305706B14e7bcf2592D4B9324A366b6dAd",
-                "RPC": "https://geth.etc-network.info/",
+                "RPC": "https://geth-de.etc-network.info/",
                 "chainID": 61,
                 "tokens": [],
                 "transactions": [],
@@ -394,8 +397,14 @@ class BaseWallet {
     }
 
     //check current wallets against reference list, if some networks are missing add them
-    checkMissingWallets(){
-        const referenceWallets = BaseWallet.getBaseWallets()
+    async checkMissingWallets(){
+
+        let referenceWallets = BaseWallet.getBaseWallets()
+
+        try {
+            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/chains.json")
+            referenceWallets = await refWalletsReq.json()
+        }catch(e){}
 
         let changed = false
 
@@ -476,15 +485,18 @@ class BaseWallet {
             baseWallet = BaseWallet.generateWallet()
             baseWallet.startLoop()
             baseWallet.save()
+            loadedElems["baseWallet"] = true
             return true
         } else {
             let wallet = BaseWallet.fromJSON(res.wallet, password)
             if(wallet){
                 baseWallet = wallet
                 baseWallet.startLoop()
+                loadedElems["baseWallet"] = true
                 return true
             }
         }
+        loadedElems["baseWallet"] = true
         return false
     }
 
