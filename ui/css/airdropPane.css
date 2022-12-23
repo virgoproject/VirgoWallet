@@ -33,11 +33,12 @@
 
 #mainPane .airdrop .airdropHeader .stats .dollarSign{
     color: rgba(0, 0, 0, 0.5);
-    margin-bottom: .3em;
+    margin-bottom: .7em;
+    margin-left: .2em;
 }
 
 #mainPane .airdrop .airdropHeader .stats .address-bloc p span {
-    color: rgb(0 0 0 / 60%);
+    color: black;
     font-weight: bold;
 }
 
@@ -120,6 +121,7 @@
     background-color: #f8f4fb;
     border-radius: 25px;
     padding: 0.575em 0.75em;
+    color: rgb(0 0 0 / 60%);
 }
 
 #mainPane .airdrop .airdropHeader .stats .wallet-address .copy{
@@ -250,7 +252,6 @@
 
 .airdropCard .userEntered {
     font-size: .7em;
-    margin-left: 1em !important;
 }
 
 .airdropCard .cryptoMedia a {
