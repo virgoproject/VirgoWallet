@@ -176,6 +176,14 @@ async function getBalanceCross(chainID, asset){
     return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID: chainID, asset: asset})
 }
 
+async function estimateAtomicSwapFees(chainID){
+    return await browser.runtime.sendMessage({command: 'estimateAtomicSwapFees', chainID: chainID})
+}
+
+async function initAtomicSwap(amount, chainA, chainB, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initAtomicSwap', amount: amount, chainA: chainA, chainB: chainB, gasPrice: gasPrice})
+}
+
 async function tickerFromChainID(id){
     return await browser.runtime.sendMessage({command: 'tickerFromChainID', id: id})
 }

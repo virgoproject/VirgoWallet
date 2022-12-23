@@ -7,12 +7,7 @@
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-}
-
-#atomicSwapPane .content {
-    z-index: 99999;
-    padding: 0 1em !important;
-    max-height: 485px;
+    z-index: 0;
 }
 
 #atomicSwapPane .back {
@@ -142,12 +137,87 @@
     color: var(--mainColor);
 }
 
+#atomicSwapBeta {
+    background: var(--mainColor);
+    color: white;
+    font-size: 0.65em;
+    border-radius: 0.35em;
+    font-style: italic;
+    font-weight: bold;
+    padding: 0.25em 0.35em 0.25em 0.25em;
+    vertical-align: text-bottom;
+}
+
 #atomicSwapLoading {
     text-align: center;
     margin-top: 4em;
     font-size: 2em;
 }
 
-#atomicSwapPane .swapParams {
-    padding: 1em 2em 0;
+#atomicSwapReview, #atomicSwapParams {
+    padding: 1em 2em !important;
+}
+
+#atomicSwapReview .receiveAmount {
+    background: #fbf4f8;
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#atomicSwapReview .receiveAmount .amount {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+#atomicSwapReview .details p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+#atomicSwapReview .details .value {
+    text-align: right;
+    font-weight: bold;
+}
+
+#atomicSwapReview .details .title, #atomicSwapReview .details .value {
+    margin: 0.25em 0;
+}
+
+#atomicSwapReview .ticker {
+    color: var(--mainColor);
+}
+
+#atomicSwapReview .range {
+    margin-top: 1em;
+    margin-bottom: 2.5em;
+}
+
+#atomicSwapReviewAmountIn, #atomicSwapReviewNetFees {
+    display: inline-block;
+    max-width: 84px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#atomicSwapReviewBack {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#atomicSwapReviewBack:hover {
+    color: black;
+}
+
+#atomicSwapReviewNetFees {
+    max-width: 78px!important;
+}
+
+#atomicSwapReviewAmountOut {
+    display: inline-block;
+    max-width: 14ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
 }

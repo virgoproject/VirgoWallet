@@ -2,7 +2,7 @@ window = self
 
 importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
     "utils/converter.js", "swap/uniswap02Utils.js",
-    "swap/uniswap03Utils.js", "wallet/web3ABIs.js",
+    "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
     "wallet/web3Wallet.js", "wallet/baseWallet.js")
 
 //Unlock SJCL AES CTR mode
@@ -619,6 +619,23 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
+            break
+
+        case "estimateAtomicSwapFees":
+            sendResponse(AtomicSwapUtils.estimateLockFees(request.chainID))
+            break
+
+        case "initAtomicSwap":
+            let chainDecimals = baseWallet.getChainByID(request.chainA).decimals
+
+            AtomicSwapUtils.initAtomicSwap(
+                web3.utils.toBN(Utils.toAtomicString(request.amount, chainDecimals)),
+                request.chainA,
+                request.chainB,
+                request.gasPrice
+            ).then(function(res){
+                sendResponse(true)
+            })
             break
             
         case 'tickerFromChainID':

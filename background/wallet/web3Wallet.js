@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -13,6 +13,7 @@ class Web3Wallet {
         this.explorer = explorer
         this.swapParams = swapParams
         this.testnet = testnet
+        this.atomicSwapParams = atomicSwapParams
 
         this.balances = new Map()
         this.prices = new Map()
@@ -21,6 +22,10 @@ class Web3Wallet {
 
         for(let token of this.tokens)
             this.tokenSet.set(token.contract, token)
+
+        for(let transaction of this.transactions)
+            if(transaction.contractAddr == "ATOMICSWAP")
+                atomicSwap.addOrder(transaction.swapInfos)
 
         const wallet = this
         try {
@@ -32,6 +37,7 @@ class Web3Wallet {
                             if(!wallet.hasToken(token)){
                                 fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
                                     .then(function(resp2){
+                                        console.log("adding " + ticker + " " + token)
                                         resp2.json().then(function(res2){
                                             wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
                                         })
@@ -70,6 +76,10 @@ class Web3Wallet {
                     "popularTokens": ["0xdAC17F958D2ee523a2206206994597C13D831ec7","0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","0x6B175474E89094C44Da98b954EedeAC495271d0F"],
                     "proxyAddress": "0x5366De6176049C58F53Cb385A09E52Ae51909b13"
                 }
+                json.atomicSwapParams = {
+                    lockerAddress: "0x07AF5E2075BB32FfdFF5Ac2Ffb492bdE5D98D65b",
+                    orders: []
+                }
                 break
             case 137:
                 json.swapParams = {
@@ -78,6 +88,10 @@ class Web3Wallet {
                     "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
                     "popularTokens": ["0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","0xc2132D05D31c914a87C6611C10748AEb04B58e8F","0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"],
                     "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
+                }
+                json.atomicSwapParams = {
+                    lockerAddress: "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0",
+                    orders: []
                 }
                 break
             case 56:
@@ -88,6 +102,10 @@ class Web3Wallet {
                     popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"],
                     proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
                     feesRate: 0.0025
+                }
+                json.atomicSwapParams = {
+                    lockerAddress: "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
+                    orders: []
                 }
                 break
             case 250:
@@ -102,6 +120,8 @@ class Web3Wallet {
                 break
             default:
                 json.swapParams = false
+                json.atomicSwapParams = false
+
         }
 
         if(json.chainID == 3){
@@ -120,8 +140,8 @@ class Web3Wallet {
 
         if(json.chainID == 61)
             json.RPC = "https://geth-de.etc-network.info/"
-
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet)
+      
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 
     toJSON(){
@@ -139,7 +159,8 @@ class Web3Wallet {
                 "transactions": this.transactions,
                 "explorer": this.explorer,
                 "swapParams": this.swapParams,
-                "testnet": this.testnet
+                "testnet": this.testnet,
+                "atomicSwapParams": this.atomicSwapParams
             }
         }
     }
@@ -282,7 +303,7 @@ class Web3Wallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false) continue
+                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
                         if(receipt == null){
