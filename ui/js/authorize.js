@@ -24,3 +24,5 @@ $("#refuse").click(function (){
 window.onbeforeunload = function(){
     browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: false})
 }
+
+window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

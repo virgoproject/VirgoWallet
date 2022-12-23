@@ -191,3 +191,11 @@ async function setAirdropPlay(address,id){
 async function resetAirdrops(){
     return await browser.runtime.sendMessage({command : 'resetAirdrops'})
 }
+
+async function deleteConnectedSite(address){
+    return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
+}
+
+async function setupDone(){
+    return await browser.runtime.sendMessage({command : 'setupDone'})
+}

@@ -1,9 +1,24 @@
+window = self
+
+importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
+    "utils/converter.js", "swap/uniswap02Utils.js",
+    "swap/uniswap03Utils.js", "wallet/web3ABIs.js",
+    "wallet/web3Wallet.js", "wallet/baseWallet.js")
+
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.5"
+const VERSION = "0.7.6"
 
-const connectedWebsites = []
+const loadedElems = {}
+
+let connectedWebsites = []
+browser.storage.local.get("connectedWebsites").then(function(res){
+    if(res.connectedWebsites !== undefined)
+        connectedWebsites = res.connectedWebsites
+
+    loadedElems["connectedWebsites"] = true
+})
 
 const pendingAuthorizations = new Map()
 const pendingTransactions = new Map()
@@ -13,11 +28,13 @@ let backupPopupDate = 0;
 browser.storage.local.get("backupPopupDate").then(function(res){
     if(res.backupPopupDate !== undefined)
         backupPopupDate = res.backupPopupDate
+
+    loadedElems["backupDate"] = true
 })
 
 let accName = {}
 browser.storage.local.get("accountsNames").then(function (res){
-    if (res.accountsNames.length === 0){
+    if (res.accountsNames === undefined || res.accountsNames.length === 0){
         let count = 0
         for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
             accName[address.address] = "Account "+count
@@ -26,48 +43,113 @@ browser.storage.local.get("accountsNames").then(function (res){
     }else{
         accName = res.accountsNames
     }
+
+    loadedElems["accountsNames"] = true
 })
 
 
 let lockDelay = 60;
 let autolockEnabled = false;
 let lastActivity = Date.now();
+let setupDone = false;
+
+browser.storage.local.get('setupDone').then(function (res) {
+    if (res.setupDone !== undefined){
+        setupDone = res.setupDone;
+    }
+    loadedElems["setupDone"] = true
+})
 
 browser.storage.local.get("autolockEnabled").then(function(res){
     if(res.autolockEnabled !== undefined)
         autolockEnabled = res.autolockEnabled
+
+    loadedElems["autolockEnabled"] = true
 })
 
 browser.storage.local.get("lockDelay").then(function(res){
     if(res.lockDelay !== undefined)
         lockDelay = res.lockDelay
+
+    loadedElems["lockDelay"] = true
 })
 
-setInterval(function(){
-    if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+browser.storage.local.get("lastActivity").then(function(res){
+    if(res.lastActivity !== undefined)
+        lastActivity = res.lastActivity
 
-    if(Date.now()-lastActivity >= lockDelay*60000)
-        baseWallet = undefined
+    loadedElems["lastActivity"] = true
+})
 
-}, 1000)
+browser.storage.session.get("unlockPassword").then(function(res){
+    if(res.unlockPassword !== undefined){
+        unlockPassword = res.unlockPassword
+        BaseWallet.loadFromJSON(unlockPassword).then(() => {
+            loadedElems["unlockPassword"] = true
+        })
+    }else{
+        loadedElems["unlockPassword"] = true
+    }
+})
+
+browser.runtime.onInstalled.addListener(() => {
+    browser.alarms.get('walletLock').then(a => {
+        if (!a) browser.alarms.create('walletLock', { periodInMinutes: 1.0 })
+    })
+})
+
+browser.alarms.onAlarm.addListener(async a => {
+    while(Object.keys(loadedElems).length < 9){
+        await new Promise(r => setTimeout(r, 10));
+    }
+
+    if(a.name == "walletLock"){
+        if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+        if(Date.now()-lastActivity >= lockDelay*60000){
+            baseWallet = undefined
+            browser.storage.session.set({"unlockPassword": null})
+        }
+
+    }
+});
+
+function activityHeartbeat(){
+    lastActivity = Date.now()
+    browser.storage.local.set({"lastActivity": lastActivity})
+}
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+
+    onBackgroundMessage(request, sender, sendResponse)
+
+    //must return true or for some reason message promise will fullfill before sendResponse being called
+    return true
+});
+
+async function onBackgroundMessage(request, sender, sendResponse){
+    while(Object.keys(loadedElems).length < 9){
+        await new Promise(r => setTimeout(r, 10));
+    }
+
     switch (request.command) {
         case "getBaseInfos":
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
                 sendResponse(getBaseInfos())
-                lastActivity = Date.now()
+                activityHeartbeat()
             }
             break
 
         case "unlockWallet":
-            lastActivity = Date.now()
+            activityHeartbeat()
             BaseWallet.loadFromJSON(request.password).then(function(res){
-                if(res)
+                if(res){
+                    browser.storage.session.set({"unlockPassword": request.password})
                     sendResponse(getBaseInfos())
+                }
                 else sendResponse(false)
             })
             break
@@ -228,7 +310,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     baseWallet.getCurrentWallet().update()
                     baseWallet.getCurrentWallet().updatePrices()
                 }
-
+                browser.storage.local.set({"setupDone": true})
+                setupDone = true
                 sendResponse(getBaseInfos())
             }catch(e){
                 console.log(e)
@@ -386,20 +469,20 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     sendResponse(true)
                 } else {
 
-                        const result = res.contactList.filter(record =>
-                            record.address === request.address)
+                    const result = res.contactList.filter(record =>
+                        record.address === request.address)
 
-                        if (result.length <= 0){
-                            res.contactList.push(newContact)
-                            browser.storage.local.set({"contactList": res.contactList})
-                            sendResponse(true)
-                        } else {
-                            sendResponse("already")
-                        }
-
+                    if (result.length <= 0){
+                        res.contactList.push(newContact)
+                        browser.storage.local.set({"contactList": res.contactList})
+                        sendResponse(true)
+                    } else {
+                        sendResponse("already")
                     }
+
+                }
             })
-           break
+            break
 
         case "deleteContact":
             browser.storage.local.get('contactList').then(function(res) {
@@ -442,7 +525,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
                 if (request.name === '')
                     nameSetter = res.contactList[request.contactIndex].name
-                 else
+                else
                     nameSetter = request.name
 
 
@@ -537,6 +620,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
             break
+            
         case 'tickerFromChainID':
             sendResponse(baseWallet.getChainByID(request.id))
             break
@@ -592,12 +676,38 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "resetAirdrops":
             browser.storage.local.set({"airdropinfos": []})
             break
+            
+        case 'deleteConnectedSite':
+            for (var i=0 ; i < connectedWebsites.length ; i++)
+            {
+                if (connectedWebsites[i] === request.address) {
+                    connectedWebsites.splice(i, 1)
+                    sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
+                    break
+                }
+            }
+            sendResponse(true)
+            break
+
+        case 'setupDone':
+            browser.storage.local.set({"setupDone": true})
+            setupDone = true
+            sendResponse(setupDone)
+            break
+
+        case "setupNot":
+            browser.storage.local.set({"setupDone": false})
+            setupDone = false
+            break
     }
-    //must return true or for some reason message promise will fullfill before sendResponse being called
-    return true
-});
+}
 
 function getBaseInfos(){
+    if (baseWallet.version != VERSION){
+        browser.storage.local.set({"setupDone": true})
+        setupDone = true
+    }
+
     return {
         "wallets": baseWallet.getWalletsJSON(),
         "selectedWallet": baseWallet.selectedWallet,
@@ -606,7 +716,8 @@ function getBaseInfos(){
         "encrypted": baseWallet.isEncrypted(),
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
-        "connectedSites": connectedWebsites
+        "connectedSites": connectedWebsites,
+        "setupDone" : setupDone
     }
 }
 
@@ -826,6 +937,7 @@ function handleWeb3Request(sendResponse, origin, method, params){
             askConnectToWebsite(origin).then(function(result){
                 if(result){
                     connectedWebsites.push(origin)
+                    browser.storage.local.set({"connectedWebsites": connectedWebsites})
                     sendResponse({
                         success: true,
                         data: [baseWallet.getCurrentAddress()]
@@ -1015,7 +1127,6 @@ function sendMessageToTabs(command, data){
 }
 
 async function askConnectToWebsite(origin){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
 
     if(baseWallet === undefined){
         browser.windows.create({
@@ -1023,8 +1134,8 @@ async function askConnectToWebsite(origin){
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1038,8 +1149,8 @@ async function askConnectToWebsite(origin){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingAuthorizations.get(requestID) == null){
@@ -1050,16 +1161,14 @@ async function askConnectToWebsite(origin){
 }
 
 async function signTransaction(origin, from, to, value, data, gas){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-
     if(baseWallet === undefined){
         browser.windows.create({
             url: '/ui/html/notLogged.html',
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1083,8 +1192,6 @@ async function signTransaction(origin, from, to, value, data, gas){
     if(web3.utils.isHexStrict(gas))
         gas = web3.utils.hexToNumberString(gas)
 
-    console.log("beeee " + gas)
-
     pendingTransactions.set(requestID, null)
 
     await browser.windows.create({
@@ -1092,8 +1199,8 @@ async function signTransaction(origin, from, to, value, data, gas){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingTransactions.get(requestID) == null){
@@ -1106,16 +1213,14 @@ async function signTransaction(origin, from, to, value, data, gas){
 }
 
 async function signMessage(origin, data){
-    const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-
     if(baseWallet === undefined){
         browser.windows.create({
             url: '/ui/html/notLogged.html',
             type:'popup',
             height: 600,
             width: 370,
-            top: top,
-            left: left
+            top: 0,
+            left: 0
         })
         return false
     }
@@ -1129,8 +1234,8 @@ async function signMessage(origin, data){
         type:'popup',
         height: 600,
         width: 370,
-        top: top,
-        left: left
+        top: 0,
+        left: 0
     })
 
     while(pendingSigns.get(requestID) == null){
