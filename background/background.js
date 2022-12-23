@@ -620,6 +620,63 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case "removeToken":
             baseWallet.getCurrentWallet().removeToken(request.address)
             break
+            
+        case 'tickerFromChainID':
+            sendResponse(baseWallet.getChainByID(request.id))
+            break
+
+        case 'checkAirdropPlay':
+            browser.storage.local.get('airdropinfos').then(function(res){
+                let addressUser = request.address
+                let airdropID = request.id
+                console.log(res)
+                if(res === undefined){
+                    sendResponse(false)
+                    return
+                }
+
+                const result = res.airdropinfos.filter(record => record.address == addressUser && record.airdropid == airdropID)
+                if (result.length <= 0){
+                    sendResponse(true)
+                } else {
+                    sendResponse(false)
+                }
+            })
+            break
+        case 'setAirdropPlay' :
+            browser.storage.local.get('airdropinfos').then(function(res){
+                let addressUser = request.address
+                let airdropID = request.id
+                const newAirdrop = {
+                    airdropid : airdropID,
+                    address : addressUser
+                }
+
+                console.log(newAirdrop)
+
+                console.log(res.airdropinfos)
+
+                if(res.airdropinfos === undefined) {
+                    browser.storage.local.set({"airdropinfos": [newAirdrop]})
+                    sendResponse(true)
+                } else {
+                    const result = res.airdropinfos.filter(record => record.address === addressUser.address && record.id === airdropID.airdropid)
+                    console.log(result)
+                    if (result.length <= 0){
+                        res.airdropinfos.push(newAirdrop)
+                        browser.storage.local.set({"airdropinfos": res.airdropinfos})
+                        sendResponse(true)
+                    } else {
+                        sendResponse(false)
+                    }
+
+                }
+            })
+            break
+        case "resetAirdrops":
+            browser.storage.local.set({"airdropinfos": []})
+            break
+            
         case 'deleteConnectedSite':
             for (var i=0 ; i < connectedWebsites.length ; i++)
             {

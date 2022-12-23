@@ -113,7 +113,7 @@
     padding: 0;
 }
 
-#mainPane #body {
+#mainPane .bodyElem.resume, #mainPane .bodyElem.send, #mainPane .bodyElem.swap {
     padding: 1em 2em;
 }
 
@@ -141,6 +141,13 @@
 
 #mainPane #footer .footerElem:hover {
     color: #676767;
+}
+
+#mainPane #footer .footerElem.selected .fa-gift{
+    background : none;
+    -webkit-background-clip : unset;
+    -webkit-text-fill-color : unset;
+    color: var(--highlightColor1);
 }
 
 #mainPane #footer .footerElem.selected {
