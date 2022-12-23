@@ -187,3 +187,7 @@ async function checkAirdropPlay(address,id){
 async function setAirdropPlay(address,id){
     return await browser.runtime.sendMessage({command : 'setAirdropPlay',address : address ,id : id})
 }
+
+async function resetAirdrops(){
+    return await browser.runtime.sendMessage({command : 'resetAirdrops'})
+}

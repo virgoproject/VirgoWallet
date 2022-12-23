@@ -589,7 +589,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 }
             })
             break
-
+        case "resetAirdrops":
+            browser.storage.local.set({"airdropinfos": []})
+            break
     }
     //must return true or for some reason message promise will fullfill before sendResponse being called
     return true
