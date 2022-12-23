@@ -234,7 +234,7 @@ class Web3Wallet {
                     browser.notifications.create("txNotification", {
                         "type": "basic",
                         "title": "Money in!",
-                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                         "message": "Received " + (res-balances[wallet.ticker].balance)/10**wallet.decimals + " " + wallet.ticker + " on " + address
                     });
                 }
@@ -263,7 +263,7 @@ class Web3Wallet {
                             browser.notifications.create("txNotification", {
                                 "type": "basic",
                                 "title": "Money in!",
-                                "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                 "message": "Received " + (res-balances[token.contract].balance)/10**token.decimals + " " + token.ticker + " on " + address
                             });
                         }
@@ -294,7 +294,7 @@ class Web3Wallet {
                                 browser.notifications.create("txNotification", {
                                     "type": "basic",
                                     "title": "Transaction canceled!",
-                                    "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                    "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                     "message": "Transaction " + transaction.hash + " successfully canceled"
                                 });
                             }
@@ -325,7 +325,7 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Swap successful!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " confirmed"
                                     })
 
@@ -333,7 +333,7 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction confirmed!",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " confirmed"
                                     })
                                 }
@@ -343,14 +343,14 @@ class Web3Wallet {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Swap failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " failed"
                                     })
                                 else
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction failed.",
-                                        "iconUrl": browser.extension.getURL("/ui/images/walletLogo.png"),
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
                                         "message": "Transaction " + transaction.hash + " failed"
                                     })
                             }

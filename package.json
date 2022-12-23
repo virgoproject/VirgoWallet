@@ -17,17 +17,17 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "web3": "^1.7.1",
-    "@truffle/hdwallet-provider": "2.0.4",
-    "bip39": "^3.0.4",
-    "sjcl": "^1.0.8",
+    "@truffle/hdwallet-provider": "^2.0.4",
     "@uniswap/smart-order-router": "^2.10.0",
     "assert": "^2.0.0",
+    "bip39": "^3.0.4",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
+    "sjcl": "^1.0.8",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "web3": "^1.7.1"
   }
 }

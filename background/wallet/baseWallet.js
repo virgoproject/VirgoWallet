@@ -49,7 +49,6 @@ class BaseWallet {
             this.version = VERSION//To change for VERSION after next update
             this.save()
         }
-
     }
 
     startLoop(){
@@ -475,15 +474,18 @@ class BaseWallet {
             baseWallet = BaseWallet.generateWallet()
             baseWallet.startLoop()
             baseWallet.save()
+            loadedElems["baseWallet"] = true
             return true
         } else {
             let wallet = BaseWallet.fromJSON(res.wallet, password)
             if(wallet){
                 baseWallet = wallet
                 baseWallet.startLoop()
+                loadedElems["baseWallet"] = true
                 return true
             }
         }
+        loadedElems["baseWallet"] = true
         return false
     }
 
