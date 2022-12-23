@@ -70,7 +70,7 @@ class AirdropPane{
                             totalEarnings = res[3][0].earnings
                             earningsDeciaml =  "." + totalEarnings.toString().split('.')[1]
                         }
-                        document.querySelector('.airdropHeader .particpateddrops').innerHTML = airdropParticipated
+                        document.getElementById("airdropsParticipationCount").innerHTML = airdropParticipated
                         document.querySelector('.airdropHeader .wondrops').innerHTML = airdropWon
                         document.querySelector('.airdropHeader .winnedAmmount').innerHTML = totalEarnings.toFixed(0)
                         document.querySelector('.airdropHeader .decimalValue').innerHTML = earningsDeciaml
@@ -148,7 +148,7 @@ class AirdropPane{
                                                         let userNmb = Number(cntJoined)
                                                         elemjoined.innerHTML = userNmb + 1
 
-                                                        let totalParticipated = elem.querySelector('.particpateddrops')
+                                                        let totalParticipated = document.getElementById("airdropsParticipationCount")
                                                         let total = totalParticipated.textContent
                                                         let nmb = Number(total)
                                                         totalParticipated.innerHTML = nmb + 1
