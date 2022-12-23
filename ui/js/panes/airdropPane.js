@@ -21,12 +21,17 @@ class AirdropPane{
         this.loadedAirdrop = false
         this.loadeduppcoming = false
         this.loadedpassed = false
+        this.notyf = new Notyf();
         AirdropPane.airdropCard.claimBn.addEventListener('click', (event) => {
             getBaseInfos().then(function (infos) {
                 fetch('https://airdrops.virgo.net:2053/api/getreward',{
                     method: "POST",
                     body: JSON.stringify({address: infos.addresses[0].address}),
                     headers: {'Content-Type': 'application/json'}
+                }).then( res => {
+                    document.querySelector('.airdropHeader .notifReward').style.display = "none"
+                    AirdropPane.airdropCard.claimBn.disabled = true
+                    notyf.success("Successfully claimed! You'll receive your coins in under 24h!")
                 })
             })
         })
