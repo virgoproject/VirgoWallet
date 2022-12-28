@@ -72,7 +72,6 @@ class SettingsPane {
                 const baseElem = $("#baseAccountRow").clone()
                 SettingsPane.accounts.html("")
                 SettingsPane.accounts.append(baseElem)
-
                 settingsPane.setSettings(data)
             })
         })

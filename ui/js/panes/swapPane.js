@@ -114,7 +114,6 @@ class SwapPane {
                     getGasPrice().then(function(gasPrice){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance) {
                             let feesModifier = 0.5 + SwapPane.review.rangeFees.val() / 100
-
                             SwapPane.review.networkFees.html(Utils.formatAmount(res.gas * Math.round(gasPrice * feesModifier), MAIN_ASSET.decimals))
 
                             _this.gasPrice = Math.round(gasPrice * feesModifier)

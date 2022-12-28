@@ -39,6 +39,7 @@ class TxIdentifier {
 
                 case 'swapExactTokensForTokens':
                     let swapToken = {
+                        "swap": decodedMethod,
                         "hash": hash,
                         "contractAddr": "SWAPTOKENFORTOKEN",
                         "date": date,

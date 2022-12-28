@@ -2,7 +2,6 @@
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
 const VERSION = "0.7.6"
-
 const connectedWebsites = []
 
 const pendingAuthorizations = new Map()
@@ -579,6 +578,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 function getBaseInfos(){
+    console.log(baseWallet.selectedWallet)
     if (baseWallet.version != VERSION){
         browser.storage.local.set({"setupDone": true})
         setupDone = true
@@ -1030,6 +1030,28 @@ async function askConnectToWebsite(origin){
     return pendingAuthorizations.get(requestID)
 }
 
+async function getTokenDetails(request){
+    const tokenContract = new web3.eth.Contract(ERC20_ABI, request, { from: baseWallet.getCurrentAddress()});
+    tokenContract.methods.name().call().then(function(name){
+        tokenContract.methods.decimals().call().then(function(decimals){
+            tokenContract.methods.symbol().call().then(function(symbol){
+                sendResponse({
+                    contract: request.asset,
+                    name: name,
+                    decimals: decimals,
+                    symbol: symbol
+                })
+            }).catch(function(){
+                sendResponse(false)
+            })
+        }).catch(function(){
+            sendResponse(false)
+        })
+    }).catch(function(){
+        sendResponse(false)
+    })
+}
+
 async function signTransaction(origin, from, to, value, data, gas){
     const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
     console.log(data)
@@ -1071,7 +1093,7 @@ async function signTransaction(origin, from, to, value, data, gas){
     switch (dataTx.contractAddr){
         case "APPROVETOKEN":
             await browser.windows.create({
-                url: `/ui/html/approveToken.html?id=${requestID}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+                url: `/ui/html/approveToken.html?id=${requestID}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}`,
                 type:'popup',
                 height: 600,
                 width: 370,

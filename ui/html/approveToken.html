@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="/ui/css/main.css">
   <link rel="stylesheet" href="/ui/css/signTransaction.css">
   <link rel="stylesheet" href="/ui/css/feesManagement.css">
+  <link rel="stylesheet" href="/ui/css/editFees.css">
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
-  <div class="row w-100 p-4 mb-4">
-
+  <div class="row w-100 p-4 mb-4 position-absolute">
       <div  class="d-flex align-items-center justify-content-center col-4">
         <img src="https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png" width="55px" style="margin-right: -60px">
       </div>
@@ -31,15 +31,17 @@
     </p>
     <div class="col-12 mb-2 detail text-left">
       <div class="row">
-        <img src="https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png" width="55px" class="col-3">
-        <p class=" col-9">Account Address</p>
+        <div class="identicon col-3">
+          <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
+        </div>
+        <p class=" col-9 d-flex align-items-center justify-content-center " id="addr">Account Address</p>
       </div>
-
     </div>
     <div class="col-12 mb-2 detail text-left">
       <div class="row">
         <p class="label col-6">Network Fees</p>
-        <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span id="feesTicker"></span></p>
+        <i class="fa-solid fa-pen-to-square col-1 d-flex align-items-center justify-content-center editFees"></i>
+        <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span id="feesTicker"></span></p>
       </div>
     </div>
 
@@ -54,7 +56,39 @@
       </div>
     </div>
   </div>
+
+  <div class="row w-100 p-4 mb-4"  id="editFees" style="display: none">
+    <div class=" d-flex align-items-center mb-2 justify-content-center">
+      <p class="col-6">Edit Network Fees</p>
+    </div>
+    <div class="col-12 mb-4 speed text-left" id="slow">
+      <div class="row">
+        <i class="fa-solid fa-check check col-1 align-items-center justify-content-center" style="display: none"></i>
+        <p class="label col-5">Slow</p>
+        <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesSlow">-</span> <span id="editFeesTickerSlow"></span></p>
+      </div>
+    </div>
+    <div class="col-12 mb-4 speed text-left" id="medium">
+      <div class="row">
+        <i class="fa-solid fa-check check col-1 align-items-center justify-content-center" style="display: none"></i>
+        <p class="label col-5">Medium</p>
+        <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesMedium">-</span> <span id="editFeesTickerMedium"></span></p>
+      </div>
+    </div>
+    <div class="col-12 mb-4 speed text-left" id="fast">
+      <div class="row">
+        <i class="fa-solid fa-check check col-1 align-items-center justify-content-center" style="display: none"></i>
+        <p class="label col-5">Fast</p>
+        <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesFast">-</span> <span id="editFeesTickerFast"></span></p>
+      </div>
+    </div>
+    <div class="col-12 p-0" >
+      <button class="button w-100" id="saveFees">Save</button>
+    </div>
+  </div>
 </div>
+
+
 
 <script src="../js/utils/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
@@ -62,5 +96,6 @@
 <script src="../js/utils/backgroundMessaging.js"></script>
 <script src="../js/approveToken.js"></script>
 <script src="../js/utils/rangeSlider.js"></script>
+<script src="../js/utils/jdenticon.min.js"></script>
 </body>
 </html>

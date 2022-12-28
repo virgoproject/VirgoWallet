@@ -510,7 +510,7 @@
             <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
                         <p class="amount ">Send <span class="ticker">ETH</span></p>
@@ -681,13 +681,102 @@
                     <p class="close"><i class="fas fa-chevron-up"></i></p>
                 </div>
             </div>
+            <div class="listItem mb-2 swapTx" id="transactionsTokenForTokenSwapTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                    </div>
+                    <div class="col-8">
+                        <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0">
+                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
+                        <i class="fas fa-check confirmed" style="display: none"></i>
+                        <i class="fas fa-times refused" style="display: none"></i>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title mt-2">Status</p>
+                            </div>
+                            <p class="body amount text-right col-6"><val> </val> <span class="ticker" style="color:green">Confirme </span></p>
+                        </div>
+                    </div>
+                    <div class="detail mb-3">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title">Amount in</p>
+                            </div>
+                            <div class="col-6 text-right" style="display: none">
+                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
+                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                            </div>
+                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <p class="title col-6">Amount out</p>
+                            <p class="body amountOut col-6 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Price</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="body gasLimit col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="body gasUsed col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <div class="row mt-2 tweakBtns">
+                        <div class="col-6 text-center"><a class="speed-up">Speed up <i class="fas fa-arrow-up" style="transform: rotate(45deg)"></i></a></div>
+                        <div class="col-6 text-center"><a class="cancel">Cancel <i class="fas fa-ban"></i></a></div>
+                    </div>
+                    <p class="close"><i class="fas fa-chevron-up"></i></p>
+                </div>
+            </div>
             <div class="listItem mb-2" id="transactionsApproveTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
                         <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
-                        <p class="title">Approve <span class="ticker">VGO</span></p>
+                        <p class="title">Approve <span class="ticker token" ></span></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
                         <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
@@ -707,7 +796,7 @@
                                 <p class="title">Permission</p>
                             </div>
 
-                            <p class="body amount text-right col-6 bold"><val> </val> <span class="ticker" style="color:green">Confirme </span></p>
+                            <p class="body amount text-right col-6 bold"><val> </val> <span class="ticker" style="color:green">Granted </span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
@@ -985,10 +1074,10 @@
             </div>
             <div class="row mt-4 p-2 pt-0">
                 <div class="col-6 pl-0 pr-1">
-                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i> Settings</button>
+                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i>Settings</button>
                 </div>
                 <div class="col-6 pl-1 pr-0">
-                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i> Support</button>
+                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i>Support</button>
                 </div>
             </div>
         </div>
