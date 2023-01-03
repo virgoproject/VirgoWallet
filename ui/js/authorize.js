@@ -11,18 +11,21 @@ $("#siteLogo img").on("error", function(){
 })
 $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
-$("#allow").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: true})
+$("#allow").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true})
     window.close()
 })
 
-$("#refuse").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: false})
+$("#refuse").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
     window.close()
 })
 
-window.onbeforeunload = function(){
-    browser.runtime.sendMessage({command: 'authorizeWebsiteConnection', id: get("id"), decision: false})
+window.onbeforeunload = () => {
+    const resp = async () => {
+        await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
+    }
+    resp()
 }
 
 window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

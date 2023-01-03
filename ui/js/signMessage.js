@@ -6,18 +6,21 @@ function get(name){
 
 $("#siteName").html(get("origin"))
 
-$("#allow").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeSign', id: get("id"), decision: true})
+$("#allow").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true})
     window.close()
 })
 
-$("#refuse").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeSign', id: get("id"), decision: false})
+$("#refuse").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
     window.close()
 })
 
-window.onbeforeunload = function(){
-    browser.runtime.sendMessage({command: 'authorizeSign', id: get("id"), decision: false})
+window.onbeforeunload = () => {
+    const resp = async () => {
+        await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
+    }
+    resp()
 }
 
 $("#siteLogo img").on("error", function(){
@@ -27,5 +30,4 @@ $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
 $("#data").html(Utils.hexToUtf8(get("data")))
 
-const top = (screen.height - 600) / 4, left = (screen.width - 370) / 2;
-window.moveTo(top, left)
+window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

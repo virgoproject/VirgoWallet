@@ -39,6 +39,7 @@ class Web3Wallet {
                                     .then(function(resp2){
                                         console.log("adding " + ticker + " " + token)
                                         resp2.json().then(function(res2){
+                                            console.log("added " + res2.ticker)
                                             wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
                                         })
                                     })
@@ -118,6 +119,26 @@ class Web3Wallet {
                     feesRate: 0.002
                 }
                 break
+            case 43114:
+                json.swapParams = {
+                "type": "uni2",
+                    "routerAddress": "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
+                    "factoryAddress": "0xefa94DE7a4656D787667C749f7E1223D71E9FD88",
+                    "popularTokens": ["0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E","0xc7198437980c041c805A1EDcbA50c1Ce5db95118","0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB"],
+                    "proxyAddress": "0xF03dc6625D02006cC6421C87A31C466dA0491c8A",
+                    feesRate: 0.003,
+                    "WETH": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+                }
+            case 10001:
+                json.swapParams = {
+                    "type": "uni2",
+                    "routerAddress": "0x48cB0c46d9b72A0eC2f019B68c41fD2C7C924416",
+                    "factoryAddress": "0xD51CFEb0fa23101f67cF62EB02D0a82A4BaD52b7",
+                    "popularTokens": ["0xd955b4fC5F7Bc5D36d826780C1207AB1C4705c9A","0x2ad7868ca212135c6119fd7ad1ce51cfc5702892"],
+                    "proxyAddress": "0x4836d0b887217e92b8506CDCD1e186875B19E9CD",
+                    feesRate: 0
+                }
+                break
             default:
                 json.swapParams = false
                 json.atomicSwapParams = false
@@ -139,7 +160,7 @@ class Web3Wallet {
             json.RPC = "https://http-mainnet.hecochain.com/"
 
         if(json.chainID == 61)
-            json.RPC = "https://geth-de.etc-network.info/"
+            json.RPC = "https://www.ethercluster.com/etc"
       
         return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
@@ -493,7 +514,9 @@ class Web3Wallet {
                     return
                 case 250:
                 case 56:
-                    this.swapUtils = new Uniswap02Utils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate)
+                case 43114:
+                case 10001:
+                    this.swapUtils = new Uniswap02Utils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate, this.swapParams.WETH)
                     return
             }
     }

@@ -3,7 +3,7 @@ window = self
 importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
     "utils/converter.js", "swap/uniswap02Utils.js",
     "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-    "wallet/web3Wallet.js", "wallet/baseWallet.js")
+    "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js")
 
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
@@ -20,9 +20,16 @@ browser.storage.local.get("connectedWebsites").then(function(res){
     loadedElems["connectedWebsites"] = true
 })
 
-const pendingAuthorizations = new Map()
-const pendingTransactions = new Map()
-const pendingSigns = new Map()
+const pendingTransactions = {}
+const pendingSigns = {}
+
+let pendingAuthorizations = {}
+browser.storage.local.get("pendingAuthorizations").then(function(res){
+    if(res.pendingAuthorizations !== undefined)
+        pendingAuthorizations = res.pendingAuthorizations
+
+    loadedElems["pendingAuthorizations"] = true
+})
 
 let backupPopupDate = 0;
 browser.storage.local.get("backupPopupDate").then(function(res){
@@ -99,7 +106,7 @@ browser.runtime.onInstalled.addListener(() => {
 })
 
 browser.alarms.onAlarm.addListener(async a => {
-    while(Object.keys(loadedElems).length < 9){
+    while(Object.keys(loadedElems).length < 10){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -121,6 +128,8 @@ function activityHeartbeat(){
 
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if(sender.id != browser.runtime.id)
+        return false
 
     onBackgroundMessage(request, sender, sendResponse)
 
@@ -129,7 +138,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 9){
+    while(Object.keys(loadedElems).length < 10){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -239,8 +248,6 @@ async function onBackgroundMessage(request, sender, sendResponse){
             }
             break
 
-
-
         case "sendTo":
             sendTo(request, sendResponse)
             break
@@ -330,24 +337,13 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "web3Request":
-            handleWeb3Request(sendResponse, request.origin, request.method, request.params)
+            handleWeb3Request(sendResponse, request.origin, request.method, request.params, request.reqId, sender)
             break
 
-        case "authorizeWebsiteConnection":
-            if(pendingAuthorizations.get(request.id) == null)
-                pendingAuthorizations.set(request.id, request.decision)
-            return false
-
-
-        case "authorizeTransaction":
-            if(pendingTransactions.get(request.id) == null)
-                pendingTransactions.set(request.id, request.decision)
-            return false
-
-        case "authorizeSign":
-            if(pendingSigns.get(request.id) == null)
-                pendingSigns.set(request.id, request.decision)
-            return false
+        case "resolveWeb3Authorization":
+            resolveWeb3Authorization(request)
+            sendResponse(true)
+            break
 
         case "closedBackupPopup":
             backupPopupDate = Date.now() + 604800000
@@ -717,6 +713,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
             setupDone = false
             break
     }
+
+    return true
 }
 
 function getBaseInfos(){
@@ -786,24 +784,6 @@ function sendTo(request, sendResponse){
                     baseWallet.getCurrentWallet().transactions.unshift(txResume)
                     sendResponse(hash)
                     baseWallet.save()
-
-                    //resend if not propagated after 60s
-                    setTimeout(function (){
-                        web3.eth.getTransaction(hash)
-                            .then(function(res){
-                                if(res == null) {
-                                    console.log("transaction not propagated after 60s, resending")
-                                    web3.eth.sendTransaction({
-                                        from: baseWallet.getCurrentAddress(),
-                                        to: request.recipient,
-                                        value: request.amount,
-                                        gas: request.gasLimit,
-                                        gasPrice: request.gasPrice,
-                                        nonce: nonce
-                                    })
-                                }
-                            })
-                    }, 60000)
                 })
                 .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
                     if(txResume.status === undefined){
@@ -871,18 +851,6 @@ function sendTo(request, sendResponse){
                             if(res == null) {
                                 console.log("transaction not propagated after 60s, resending")
                                 transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
-
-                                //still not propagated, reset web3 and resend
-                                setTimeout(function(){
-                                    web3.eth.getTransaction(hash)
-                                        .then(function(res) {
-                                            if (res == null) {
-                                                web3 = new Web3(provider)
-                                                console.log("still not propagated, reset web3 and resend")
-                                                transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
-                                            }
-                                        })
-                                }, 60000)
                             }
                         })
                 }, 60000)
@@ -918,346 +886,10 @@ function sendTo(request, sendResponse){
     })
 }
 
-function handleWeb3Request(sendResponse, origin, method, params){
-    switch(method){
-        case "eth_chainId":
-            web3.currentProvider.send({
-                jsonrpc: "2.0",
-                id: Date.now() + "." + Math.random(),
-                method: method,
-                params: params
-            }, function(error, resp){
-                if(!resp.error){
-                    sendResponse({
-                        success: true,
-                        data: resp.result
-                    })
-                    return
-                }
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: error.message,
-                        code: error.code
-                    }
-                })
-            })
-            return
-        case "eth_requestAccounts":
-            if(connectedWebsites.includes(origin)){
-                sendResponse({
-                    success: true,
-                    data: [baseWallet.getCurrentAddress()]
-                })
-                return
-            }
-            askConnectToWebsite(origin).then(function(result){
-                if(result){
-                    connectedWebsites.push(origin)
-                    browser.storage.local.set({"connectedWebsites": connectedWebsites})
-                    sendResponse({
-                        success: true,
-                        data: [baseWallet.getCurrentAddress()]
-                    })
-                }
-                else
-                    sendResponse({
-                        success: false,
-                        error: {
-                            message: "The user rejected the request.",
-                            code: 4001
-                        }
-                    })
-            })
-            break
-        case "eth_accounts":
-            if(!connectedWebsites.includes(origin)){
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: "The requested method and/or account has not been authorized by the user.",
-                        code: 4100
-                    }
-                })
-                return
-            }
-            sendResponse({
-                success: true,
-                data: [baseWallet.getCurrentAddress()]
-            })
-            break
-        case "eth_signTransaction":
-        case "eth_sendTransaction":
-            if(!connectedWebsites.includes(origin)){
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: "The requested method and/or account has not been authorized by the user.",
-                        code: 4100
-                    }
-                })
-                return
-            }
-            signTransaction(origin, params[0].from, params[0].to, params[0].value, params[0].data, params[0].gas).then(function(result){
-                if(result !== false)
-                    web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
-                        console.log(nonce)
-                        web3.currentProvider.send({
-                            jsonrpc: "2.0",
-                            id: Date.now() + "." + Math.random(),
-                            method: method,
-                            params: [{
-                                from: params[0].from,
-                                to: params[0].to,
-                                value: params[0].value,
-                                data: params[0].data,
-                                gas: params[0].gas,
-                                gasPrice: web3.utils.numberToHex(result),
-                                nonce: nonce
-                            }]
-                        }, function (error, resp) {
-                            if (!resp.error) {
-                                sendResponse({
-                                    success: true,
-                                    data: resp.result
-                                })
-
-                                if (method == "eth_sendTransaction") {
-                                    baseWallet.getCurrentWallet().transactions.unshift({
-                                        "hash": resp.result,
-                                        "contractAddr": "WEB3_CALL",
-                                        "date": Date.now(),
-                                        "recipient": params[0].to,
-                                        "amount": params[0].value,
-                                        "gasPrice": web3.utils.hexToNumber(result),
-                                        "gasLimit": web3.utils.hexToNumber(params[0].gas),
-                                        "nonce": nonce
-                                    })
-                                    baseWallet.save()
-                                }
-                                return
-                            }
-                            sendResponse({
-                                success: false,
-                                error: {
-                                    message: error.message,
-                                    code: error.code
-                                }
-                            })
-                        })
-                    })
-                else
-                    sendResponse({
-                        success: false,
-                        error: {
-                            message: "The user rejected the request.",
-                            code: 4001
-                        }
-                    })
-            })
-            break
-        case "eth_sign":
-            if(!connectedWebsites.includes(origin)){
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: "The requested method and/or account has not been authorized by the user.",
-                        code: 4100
-                    }
-                })
-                return
-            }
-            signMessage(origin, params[1]).then(function(result){
-                if(result)
-                    web3.currentProvider.send({
-                        jsonrpc: "2.0",
-                        id: Date.now() + "." + Math.random(),
-                        method: method,
-                        params: params
-                    }, function(error, resp){
-                        if(!resp.error){
-                            sendResponse({
-                                success: true,
-                                data: resp.result
-                            })
-                            return
-                        }
-                        sendResponse({
-                            success: false,
-                            error: {
-                                message: error.message,
-                                code: error.code
-                            }
-                        })
-                    })
-                else
-                    sendResponse({
-                        success: false,
-                        error: {
-                            message: "The user rejected the request.",
-                            code: 4001
-                        }
-                    })
-            })
-            break
-        default:
-            if(!connectedWebsites.includes(origin)){
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: "The requested method and/or account has not been authorized by the user.",
-                        code: 4100
-                    }
-                })
-                return
-            }
-            web3.currentProvider.send({
-                jsonrpc: "2.0",
-                id: Date.now() + "." + Math.random(),
-                method: method,
-                params: params
-            }, function(error, resp){
-                if(!resp.error){
-                    sendResponse({
-                        success: true,
-                        data: resp.result
-                    })
-                    return
-                }
-                sendResponse({
-                    success: false,
-                    error: {
-                        message: error.message,
-                        code: error.code
-                    }
-                })
-            })
-    }
-}
-
 function sendMessageToTabs(command, data){
     browser.tabs.query({}).then(function(tabs){
         for(let tab of tabs){
             browser.tabs.sendMessage(tab.id, {command: command, data: data})
         }
     })
-}
-
-async function askConnectToWebsite(origin){
-
-    if(baseWallet === undefined){
-        browser.windows.create({
-            url: '/ui/html/notLogged.html',
-            type:'popup',
-            height: 600,
-            width: 370,
-            top: 0,
-            left: 0
-        })
-        return false
-    }
-
-    const requestID = Date.now() + "." + Math.random()
-
-    pendingAuthorizations.set(requestID, null)
-
-    await browser.windows.create({
-        url: '/ui/html/authorize.html?id='+requestID+"&origin="+origin,
-        type:'popup',
-        height: 600,
-        width: 370,
-        top: 0,
-        left: 0
-    })
-
-    while(pendingAuthorizations.get(requestID) == null){
-        await new Promise(r => setTimeout(r, 50));
-    }
-
-    return pendingAuthorizations.get(requestID)
-}
-
-async function signTransaction(origin, from, to, value, data, gas){
-    if(baseWallet === undefined){
-        browser.windows.create({
-            url: '/ui/html/notLogged.html',
-            type:'popup',
-            height: 600,
-            width: 370,
-            top: 0,
-            left: 0
-        })
-        return false
-    }
-
-    const requestID = Date.now() + "." + Math.random()
-
-    if(gas === undefined)
-        gas = await web3.eth.estimateGas({
-            from: from,
-            to: to,
-            value: value,
-            data: data
-        })
-
-    if(value === undefined)
-        value = 0x0
-
-    if(web3.utils.isHexStrict(value))
-        value = web3.utils.hexToNumberString(value)
-
-    if(web3.utils.isHexStrict(gas))
-        gas = web3.utils.hexToNumberString(gas)
-
-    pendingTransactions.set(requestID, null)
-
-    await browser.windows.create({
-        url: `/ui/html/signTransaction.html?id=${requestID}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
-        type:'popup',
-        height: 600,
-        width: 370,
-        top: 0,
-        left: 0
-    })
-
-    while(pendingTransactions.get(requestID) == null){
-        await new Promise(r => setTimeout(r, 50));
-    }
-
-    console.log(pendingTransactions.get(requestID))
-
-    return pendingTransactions.get(requestID)
-}
-
-async function signMessage(origin, data){
-    if(baseWallet === undefined){
-        browser.windows.create({
-            url: '/ui/html/notLogged.html',
-            type:'popup',
-            height: 600,
-            width: 370,
-            top: 0,
-            left: 0
-        })
-        return false
-    }
-
-    const requestID = Date.now() + "." + Math.random()
-
-    pendingSigns.set(requestID, null)
-
-    await browser.windows.create({
-        url: `/ui/html/signMessage.html?id=${requestID}&origin=${origin}&data=${data}`,
-        type:'popup',
-        height: 600,
-        width: 370,
-        top: 0,
-        left: 0
-    })
-
-    while(pendingSigns.get(requestID) == null){
-        await new Promise(r => setTimeout(r, 50));
-    }
-
-    return pendingSigns.get(requestID)
 }

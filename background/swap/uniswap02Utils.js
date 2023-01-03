@@ -1,10 +1,11 @@
 class Uniswap02Utils {
 
-    constructor(proxyAddress, routerAddress, factoryAddress, tokens, feesRate) {
+    constructor(proxyAddress, routerAddress, factoryAddress, tokens, feesRate, WETH) {
         this.proxyAddress = proxyAddress
         this.routerAddress = routerAddress
         this.factoryAddress = factoryAddress
         this.feesRate = feesRate
+        this.WETH = WETH
 
         this.router = new web3.eth.Contract(UNI_ROUTER02, routerAddress)
         this.factory = new web3.eth.Contract(UNI_FACTORY, factoryAddress)
@@ -167,6 +168,9 @@ class Uniswap02Utils {
 
     async estimateSwapFees(amount, route){
         const WETH = await this.getWETH()
+
+        console.log(route)
+        console.log(amount.toString())
 
         if(route[0].toLowerCase() == WETH.toLowerCase())
             return {

@@ -25,10 +25,7 @@ window.addEventListener("message", function(e) {
     const reqId = e.data.reqId
     const origin = e.origin
 
-    browser.runtime.sendMessage({command: 'web3Request', origin: origin, method: method, params: params})
-        .then(function(response){
-            sendEvent(reqId, response)
-        })
+    browser.runtime.sendMessage({command: 'web3Request', origin: origin, method: method, params: params, reqId: reqId})
 });
 
 browser.runtime.sendMessage({command: 'getBaseInfos'})
@@ -45,6 +42,9 @@ browser.runtime.onMessage.addListener(request => {
             break
         case "accountsChanged":
             sendEvent("virgoAccountsChanged", request.data)
+            break
+        case "web3Response":
+            sendEvent(request.id, request.resp)
             break
     }
 })

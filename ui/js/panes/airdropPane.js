@@ -297,7 +297,6 @@ class AirdropPane{
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0)
-                                elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateStart - dateEnd) / day)) + " days left"
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -422,7 +421,6 @@ class AirdropPane{
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0)
-                                elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateStart - dateEnd) / day)) + " days left"
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -516,8 +514,6 @@ class AirdropPane{
                 let noDataElem = document.getElementById('noDropsElems')
                 noDataElem.classList.remove('d-none')
                 noDataElem.classList.add('d-flex')
-
-                console.log("no airdrop")
             }
 
         }
