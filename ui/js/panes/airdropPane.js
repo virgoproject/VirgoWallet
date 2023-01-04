@@ -120,6 +120,7 @@ class AirdropPane{
                             }
                         }).then(results => {
                                 if (results) {
+                                    console.log(results)
                                     const day = 24 * 60 * 60 * 1000;
                                     let dateStart = new Date(res[i].startDate)
                                     let dateEnd = new Date(res[i].endDate)
@@ -131,8 +132,8 @@ class AirdropPane{
                                     elem.classList.remove('airdropExemple')
                                     elem.classList.add('airdropSetter')
                                     elem.querySelector('.coinTicker').innerHTML = results.ticker
-                                    elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0)
-                                    elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateStart - dateEnd) / day)) + " days left"
+                                    elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
+                                    elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateStart - dateEnd) / day))
                                     elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                     elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                     elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -296,7 +297,7 @@ class AirdropPane{
                                 elem.classList.add('airdropSetter')
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
-                                elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0)
+                                elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -420,7 +421,7 @@ class AirdropPane{
                                 elem.classList.add('airdropSetter')
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
-                                elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0)
+                                elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description

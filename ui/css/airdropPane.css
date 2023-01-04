@@ -17,6 +17,7 @@
     width: 90%;
     margin-left: 1em;
 }
+
 #mainPane>.airdrop>.airdropHeader>.stats {
     color: black;
     padding: 1em 0em;
@@ -153,8 +154,8 @@
 }
 
 .airdropActive{
-    padding: 1em 2em;
     overflow: auto;
+    padding: 0 2em 1em;
 }
 
 .airdropActive .airdropCard .airdropGains{
@@ -264,4 +265,18 @@
 
 .airdropCard .fa-chevron-right{
     transition: transform 0.25s ease;
+}
+
+.airdropCard .earningsTitle {
+    color: #777;
+}
+
+.airdropCard .earnCoin {
+    font-size: 1.2em;
+    line-height: 1em;
+}
+
+.loadingAirdrop {
+    margin-top: 75%;
+    font-size: 2em;
 }
