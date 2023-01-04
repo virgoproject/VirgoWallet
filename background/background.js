@@ -8,7 +8,7 @@ importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShi
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.6"
+const VERSION = "0.7.9"
 
 const loadedElems = {}
 
