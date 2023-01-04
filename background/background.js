@@ -1,9 +1,29 @@
-window = self
+if(typeof browser === 'undefined'){
+    window = self
+    importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
+        "utils/converter.js", "swap/uniswap02Utils.js",
+        "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
+        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js")
+}
 
-importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
-    "utils/converter.js", "swap/uniswap02Utils.js",
-    "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-    "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js")
+if(browser.storage.session === undefined){
+    browser.storage.session = {
+        "get": async function(key){
+            const data = window.sessionStorage.getItem(key)
+            const res = {}
+            res[key] = data
+            return res
+        },
+        "set": async function(data){
+            for(let [key, value] of Object.entries(data)){
+                if(typeof value === "object")
+                    value = JSON.stringify(value)
+
+                window.sessionStorage.setItem(key, value)
+            }
+        }
+    }
+}
 
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
