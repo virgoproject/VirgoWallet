@@ -25,6 +25,8 @@ window.addEventListener("message", function(e) {
     const reqId = e.data.reqId
     const origin = e.origin
 
+    if(method === undefined) return
+
     browser.runtime.sendMessage({command: 'web3Request', origin: origin, method: method, params: params, reqId: reqId})
 });
 
@@ -34,6 +36,26 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
         sendEvent("virgoChainChanged", response.wallets[response.selectedWallet].wallet.chainID)
         sendEvent("virgoAccountsChanged", [response.addresses[response.selectedAddress].address])
     })
+
+let web3Ready = null
+
+function checkWeb3State(){
+    browser.runtime.sendMessage({command: 'isWeb3Ready'})
+        .then(function(response){
+            if(response === web3Ready) return
+
+            if(response)
+                sendEvent("virgoConnected", null)
+            else
+                sendEvent("virgoDisonnected", null)
+
+            web3Ready = response
+        })
+}
+setInterval(() => {
+    checkWeb3State()
+}, 5000)
+checkWeb3State()
 
 browser.runtime.onMessage.addListener(request => {
     switch(request.command){

@@ -732,6 +732,15 @@ async function onBackgroundMessage(request, sender, sendResponse){
             browser.storage.local.set({"setupDone": false})
             setupDone = false
             break
+        case "isWeb3Ready":
+            if(baseWallet === undefined){
+                sendResponse(false)
+                break
+            }
+            web3.eth.net.isListening().then(listening => {
+                sendResponse(listening)
+            })
+            break
     }
 
     return true

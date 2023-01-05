@@ -1,7 +1,7 @@
 #! /bin/sh
 
 browserify --standalone bip39 -r bip39 > background/bip39.js \
-&& browserify --standalone HDWalletProvider  -r @truffle/hdwallet-provider:2.0.4 > background/hdwallet.js \
+&& browserify --standalone HDWalletProvider  -r @truffle/hdwallet-provider:2.1.4 > background/hdwallet.js \
 && mkdir build \
 && cp -r background build \
 && cp -r commonJS build \

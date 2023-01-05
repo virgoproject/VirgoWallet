@@ -252,6 +252,7 @@ function isWebsiteAuthorized(origin, tabId, reqId){
 function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
     const tabId = sender.tab.id
     console.log(method)
+    console.log(JSON.stringify(params))
     switch(method){
         case "eth_chainId":
             web3.currentProvider.send({
@@ -277,6 +278,7 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
             })
             break
         case "eth_requestAccounts":
+        case "eth_accounts":
             if(connectedWebsites.includes(origin)){
                 respondToWeb3Request(tabId, reqId, {
                     success: true,
@@ -285,14 +287,6 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
                 return
             }
             askConnectToWebsite(origin, tabId, reqId)
-            break
-        case "eth_accounts":
-            if(!isWebsiteAuthorized(origin, tabId, reqId)) return
-
-            respondToWeb3Request(tabId, reqId, {
-                success: true,
-                data: [baseWallet.getCurrentAddress()]
-            })
             break
         case "eth_signTransaction":
         case "eth_sendTransaction":
@@ -305,6 +299,30 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
 
             signMessage(origin, params, tabId, reqId)
             break
+        case "eth_signTypedData_v4":
+            if(!isWebsiteAuthorized(origin, tabId, reqId)) return
+
+            web3.currentProvider.send({
+                jsonrpc: "2.0",
+                id: Date.now() + "." + Math.random(),
+                method: method,
+                params: [params[0].toLowerCase(), JSON.parse(params[1])]
+            }, function(error, resp){
+                if(!resp.error){
+                    respondToWeb3Request(tabId, reqId, {
+                        success: true,
+                        data: resp.result
+                    })
+                    return
+                }
+                respondToWeb3Request(tabId, reqId, {
+                    success: false,
+                    error: {
+                        message: error.message,
+                        code: error.code
+                    }
+                })
+            })
         default:
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 

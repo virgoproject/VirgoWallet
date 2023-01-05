@@ -17,8 +17,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "2.0.4",
-    "@uniswap/smart-order-router": "^2.10.0",
+    "@truffle/hdwallet-provider": "2.1.4",
     "assert": "^2.0.0",
     "bip39": "^3.0.4",
     "crypto-browserify": "^3.12.0",
