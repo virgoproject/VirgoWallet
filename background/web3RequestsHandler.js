@@ -95,7 +95,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     })
 }
 
-async function signMessage(origin, data, tabId, reqId){
+async function signMessage(origin, data, tabId, reqId, method){
     if(!web3IsLogged(tabId, reqId)) return
 
     const auth = {
@@ -105,14 +105,21 @@ async function signMessage(origin, data, tabId, reqId){
         tabId: tabId,
         origin: origin,
         data: data,
-        expDate: Date.now() + 86400000
+        expDate: Date.now() + 86400000,
+        method: method
     }
 
     pendingAuthorizations[reqId] = auth
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
+    let msg = data[1]
+    if(method == "eth_signTypedData_v4")
+        msg = JSON.stringify(msg.message)
+
+    msg = btoa(msg)
+
     browser.windows.create({
-        url: `/ui/html/signMessage.html?id=${reqId}&origin=${origin}&data=${data[1]}`,
+        url: `/ui/html/signMessage.html?id=${reqId}&origin=${origin}&data=${msg}`,
         type:'popup',
         height: 600,
         width: 370,
@@ -200,27 +207,51 @@ function grantPendingAuthorization(auth, params){
             break
 
         case "signMessage":
-            web3.currentProvider.send({
-                jsonrpc: "2.0",
-                id: Date.now() + "." + Math.random(),
-                method: "eth_sign",
-                params: auth.data
-            }, function(error, resp){
-                if(!resp.error){
-                    respondToWeb3Request(auth.tabId, reqId, {
-                        success: true,
-                        data: resp.result
-                    })
-                    return
-                }
-                respondToWeb3Request(auth.tabId, reqId, {
-                    success: false,
-                    error: {
-                        message: error.message,
-                        code: error.code
+            console.log(auth)
+            if(auth.method == "eth_signTypedData_v4")
+                web3.currentProvider.send({
+                    jsonrpc: "2.0",
+                    id: Date.now() + "." + Math.random(),
+                    method: auth.method,
+                    params: auth.data
+                }, function(error, resp){
+                    if(!resp.error){
+                        respondToWeb3Request(auth.tabId, auth.reqId, {
+                            success: true,
+                            data: resp.result
+                        })
+                        return
                     }
+                    respondToWeb3Request(auth.tabId, auth.reqId, {
+                        success: false,
+                        error: {
+                            message: error.message,
+                            code: error.code
+                        }
+                    })
                 })
-            })
+            else
+                web3.currentProvider.send({
+                    jsonrpc: "2.0",
+                    id: Date.now() + "." + Math.random(),
+                    method: "eth_sign",
+                    params: auth.data
+                }, function(error, resp){
+                    if(!resp.error){
+                        respondToWeb3Request(auth.tabId, auth.reqId, {
+                            success: true,
+                            data: resp.result
+                        })
+                        return
+                    }
+                    respondToWeb3Request(auth.tabId, auth.reqId, {
+                        success: false,
+                        error: {
+                            message: error.message,
+                            code: error.code
+                        }
+                    })
+                })
             break
     }
 }
@@ -251,8 +282,7 @@ function isWebsiteAuthorized(origin, tabId, reqId){
 
 function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
     const tabId = sender.tab.id
-    console.log(method)
-    console.log(JSON.stringify(params))
+
     switch(method){
         case "eth_chainId":
             web3.currentProvider.send({
@@ -297,32 +327,14 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
         case "eth_sign":
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
-            signMessage(origin, params, tabId, reqId)
+            signMessage(origin, params, tabId, reqId, method)
             break
         case "eth_signTypedData_v4":
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
-            web3.currentProvider.send({
-                jsonrpc: "2.0",
-                id: Date.now() + "." + Math.random(),
-                method: method,
-                params: [params[0].toLowerCase(), JSON.parse(params[1])]
-            }, function(error, resp){
-                if(!resp.error){
-                    respondToWeb3Request(tabId, reqId, {
-                        success: true,
-                        data: resp.result
-                    })
-                    return
-                }
-                respondToWeb3Request(tabId, reqId, {
-                    success: false,
-                    error: {
-                        message: error.message,
-                        code: error.code
-                    }
-                })
-            })
+            signMessage(origin, [params[0].toLowerCase(), JSON.parse(params[1])], tabId, reqId, method)
+            break
+
         default:
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 

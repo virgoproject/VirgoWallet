@@ -23,11 +23,24 @@ window.onbeforeunload = () => {
     resp()
 }
 
+function isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)
+
 $("#siteLogo img").on("error", function(){
     $("#siteLogo img").attr("src", get("origin")+"/favicon.png")
 })
 $("#siteLogo img").attr("src", get("origin")+"/favicon.ico")
 
-$("#data").html(Utils.hexToUtf8(get("data")))
-
-window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)
+const data = atob(get("data"))
+if(isJsonString(data))
+    $("#data").html(data)
+else
+    $("#data").html(Utils.hexToUtf8(data))
