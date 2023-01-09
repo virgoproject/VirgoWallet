@@ -883,7 +883,6 @@ function handleWeb3Request(sendResponse, origin, method, params){
                                 if (method == "eth_sendTransaction"){
                                     let amount = params[0].value
                                     let data = TxIdentifier.getDecodeAbi(params[0].data,resp.result,Date.now(),params[0].to,amount,web3.utils.hexToNumber(result),web3.utils.hexToNumber(params[0].gas),nonce)
-                                        console.log(data)
                                         baseWallet.getCurrentWallet().transactions.unshift(data)
                                         baseWallet.save()
                                 }
