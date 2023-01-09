@@ -8,6 +8,7 @@ class Events {
         this.chainChangedListeners = []
         this.addressChangedListeners = []
         this.assetsChangedListeners = []
+        this.addressesChangedListeners = []
 
     }
 
@@ -18,6 +19,11 @@ class Events {
 
     fireAddressChangedEvent(data){
         for(const listener of this.addressChangedListeners)
+            listener(data)
+    }
+
+    fireAddressesChangedEvent(data){
+        for(const listener of this.addressesChangedListeners)
             listener(data)
     }
 
@@ -34,6 +40,7 @@ class Events {
             if(events.oldDataJSON == undefined){
                 events.fireChainChangedEvent(data)
                 events.fireAddressChangedEvent(data)
+                events.fireAddressesChangedEvent(data)
                 events.fireAssetsChanged(data)
             }else{
 
@@ -45,6 +52,9 @@ class Events {
 
                 if(JSON.stringify(events.oldDataJSON.wallets[events.oldDataJSON.selectedWallet].wallet.tokens) != JSON.stringify(data.wallets[data.selectedWallet].wallet.tokens))
                     this.fireAssetsChanged(data)
+
+                if(JSON.stringify(events.oldDataJSON.addresses) != JSON.stringify(data.addresses))
+                    this.fireAddressesChangedEvent(data)
 
             }
 
@@ -60,6 +70,9 @@ class Events {
                 break
             case "addressChanged":
                 this.addressChangedListeners.push(listener)
+                break
+            case "addressesChanged":
+                this.addressesChangedListeners.push(listener)
                 break
             case "assetsChanged":
                 this.assetsChangedListeners.push(listener)
