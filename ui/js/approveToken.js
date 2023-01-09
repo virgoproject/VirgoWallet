@@ -41,6 +41,8 @@ getTokenDetails(get("allowed")).then(function(detail){
 
 $("svg").attr("data-jdenticon-value",get("addr"))
 $("#medium").addClass("selected")
+$("#medium").find('.check').css("display","flex")
+
 let feesModifier
 function estimateFees() {
     $("#allow").attr("disabled", true)
@@ -59,7 +61,7 @@ function estimateFees() {
             }
 
             if (document.getElementById('fast').classList.contains("selected")){
-                 feesModifier = 1.4
+                 feesModifier = 1.2
             }
 
             finalGasPrice = Math.round(gasPrice * feesModifier)
@@ -71,32 +73,51 @@ function estimateFees() {
 
             $("#slow").click(function (){
                 slow.addClass("selected")
+                slow.find('.label').addClass("pl-0")
+                $("#slow").find('.check').css("display","flex")
+
                 if (document.getElementById('medium').classList.contains("selected")){
                     medium.removeClass("selected")
+                    medium.find('.label').removeClass("pl-0")
+                    $("#medium").find('.check').css("display","none")
                 }
+
                 if (document.getElementById('fast').classList.contains("selected")){
                     fast.removeClass("selected")
+                    fast.find('.label').removeClass("pl-0")
+                    $("#fast").find('.check').css("display","none")
                 }
             })
 
             $("#medium").click(function (){
                 medium.addClass("selected")
+                medium.find('.label').addClass("pl-0")
+                $("#medium").find('.check').css("display","flex")
                 if (document.getElementById('slow').classList.contains("selected")){
                     slow.removeClass("selected")
+                    slow.find('.label').removeClass("pl-0")
+                    $("#slow").find('.check').css("display","none")
                 }
                 if (document.getElementById('fast').classList.contains("selected")){
                     fast.removeClass("selected")
+                    fast.find('.label').removeClass("pl-0")
+                    $("#fast").find('.check').css("display","none")
                 }
             })
 
-            $("#fast").click(function (e){
+            $("#fast").click(function (){
                 fast.addClass("selected")
-                e.find('.check').css("display","flex")
+                fast.find('.label').addClass("pl-0")
+                $("#fast").find('.check').css("display","flex")
                 if (document.getElementById('slow').classList.contains("selected")){
                     slow.removeClass("selected")
+                    slow.find('.label').removeClass("pl-0")
+                    $("#slow").find('.check').css("display","none")
                 }
                 if (document.getElementById('medium').classList.contains("selected")){
                     medium.removeClass("selected")
+                    medium.find('.label').removeClass("pl-0")
+                    $("#medium").find('.check').css("display","none")
                 }
             })
 
@@ -140,3 +161,8 @@ $("#rangeFees").on("input", function(){
 })
 
 estimateFees()
+
+
+
+
+
