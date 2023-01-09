@@ -1,7 +1,7 @@
 function web3IsLogged(tabId, reqId){
     if(baseWallet === undefined){
         browser.windows.create({
-            url: '/ui/html/notLogged.html',
+            url: '/ui/html/web3/notLogged.html',
             type:'popup',
             height: 600,
             width: 370,
@@ -36,7 +36,7 @@ function askConnectToWebsite(origin, tabId, reqId){
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
     browser.windows.create({
-        url: '/ui/html/authorize.html?id='+reqId+"&origin="+origin,
+        url: '/ui/html/web3/authorize.html?id='+reqId+"&origin="+origin,
         type:'popup',
         height: 600,
         width: 370,
@@ -86,7 +86,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     console.log("req id: " + reqId)
 
     browser.windows.create({
-        url: `/ui/html/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+        url: `/ui/html/web3/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
         type:'popup',
         height: 600,
         width: 370,
@@ -119,7 +119,7 @@ async function signMessage(origin, data, tabId, reqId, method){
     msg = btoa(msg)
 
     browser.windows.create({
-        url: `/ui/html/signMessage.html?id=${reqId}&origin=${origin}&data=${msg}`,
+        url: `/ui/html/web3/signMessage.html?id=${reqId}&origin=${origin}&data=${msg}`,
         type:'popup',
         height: 600,
         width: 370,
