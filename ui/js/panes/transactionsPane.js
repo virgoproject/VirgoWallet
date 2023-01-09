@@ -8,6 +8,8 @@ class TransactionsPane {
         basicTx: $("#transactionsBasicTx"),
         swapTx: $("#transactionsSwapTx"),
         atomicSwapTx: $("#transactionsAtomicSwapTx"),
+        tokenTx:$("#transactionsTokenForTokenSwapTx"),
+        approveTx: $('#transactionsApproveTx'),
         loading: $("#transactionsPane .loading"),
         wrapper: $("#transactionsPane .listWrap"),
         empty: $("#transactionsPane .listEmpty")
@@ -98,6 +100,26 @@ class TransactionsPane {
             return
         }
         this.showBasicTransaction(selectedWallet, transaction)
+
+        switch (transaction.contractAddr){
+            case "SWAP":
+                this.showSwapTransaction(selectedWallet, transaction)
+                return true
+                break
+            case "APPROVETOKEN":
+                this.showApprovedTransaction(selectedWallet, transaction)
+                break
+            case 'SWAPETHFORTOKEN':
+                this.showSwapEthForTokenTransaction(selectedWallet, transaction)
+                break
+            case 'SWAPTOKENFORTOKEN':
+                this.showSwapTokenForTokenTransaction(selectedWallet, transaction)
+                break
+            default:
+                this.showBasicTransaction(selectedWallet, transaction)
+                break
+        }
+
     }
 
     showAtomicSwapTransaction(transaction){
@@ -163,6 +185,186 @@ class TransactionsPane {
         this.updateAtomicSwapTx(elem, transaction)
     }
 
+    showApprovedTransaction(selecteWallet, transaction){
+        let elem = TransactionsPane.list.approveTx.clone()
+        elem.attr("id", "tx"+transaction.hash)
+
+        elem.find(".details .siteAdress").html(transaction.allowed.address)
+        elem.find(".recipient").html(transaction.recipient)
+
+        elem.find(".details .siteAdress").click(function(){
+            copyToClipboard($(this).get(0))
+            elem.find(".SiteTitle").hide()
+            elem.find(".SiteCopied").show()
+            setTimeout(function (){
+                elem.find(".SiteTitle").show()
+                elem.find(".SiteCopied").hide()
+            }, 2000)
+        })
+
+        getTokenDetails(transaction.recipient).then(function (det){
+            elem.find(".token").html(det.symbol)
+        })
+
+        elem.find(".details .recipient").click(function(){
+            copyToClipboard($(this).get(0))
+            elem.find(".recipientTitle").hide()
+            elem.find(".recipientCopied").show()
+            setTimeout(function (){
+                elem.find(".recipientTitle").show()
+                elem.find(".recipientCopied").hide()
+            }, 2000)
+        })
+
+        elem.attr("data-date", transaction.date)
+        const date = new Date(transaction.date)
+
+        let options = {month: "short", day: "numeric"};
+        elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+        options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+        elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+        elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+        elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selecteWallet.decimals))
+        elem.find(".totalFees span").html(selecteWallet.ticker)
+
+        elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
+
+        if(selecteWallet.explorer === undefined)
+            elem.find("button").hide()
+        else
+            elem.find("button").click(function(){
+                window.open(selecteWallet.explorer + transaction.hash, "_blank")
+            })
+
+        elem.click(function(){
+            if(elem.hasClass("opened")) return
+
+            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+            elem.addClass("opened")
+        })
+
+        elem.find(".close").click(function(){
+            elem.removeClass("opened")
+            return false
+        })
+
+        if(transaction.status !== undefined){
+            elem.find(".tweakBtns").hide()
+            elem.find(".badge-warning").hide()
+            if(!transaction.status && transaction.canceling)
+                elem.find(".badge-secondary").show()
+            else
+                elem.find(".badge-secondary").hide()
+
+        }else{
+            elem.find(".speed-up").click(function(){
+                transactionsPane.confirmSpeedup(transaction, elem)
+            })
+            if(transaction.canceling){
+                elem.find(".cancel").hide()
+                elem.find(".badge-warning").show()
+            } else
+                elem.find(".cancel").click(function(){
+                    transactionsPane.confirmCancel(transaction, elem)
+                })
+        }
+
+
+        TransactionsPane.list.self.append(elem)
+        elem.show()
+    }
+
+    showSwapEthForTokenTransaction(selectWallet, transaction){
+
+    }
+
+    showSwapTokenForTokenTransaction(selectWallet, transaction){
+        if (transaction.swap !== undefined) {
+            let elem = TransactionsPane.list.tokenTx.clone()
+            elem.attr("id", "tx" + transaction.hash)
+            elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
+
+
+            getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
+                elem.find(".ticker.one").html(token1.symbol)
+                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
+            })
+            let tokenAdr = transaction.swap.params[2].value.length - 1
+
+            getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
+                elem.find(".ticker.two").html(token2.symbol)
+
+                if(transaction.swap.params[1].value !== undefined)
+                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
+            })
+
+            elem.attr("data-date", transaction.date)
+            const date = new Date(transaction.date)
+
+
+
+
+
+            let options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice / 1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice * transaction.gasLimit, selectWallet.decimals))
+            elem.find(".totalFees span").html(selectWallet.ticker)
+
+            if (selectWallet.explorer === undefined)
+                elem.find("button").hide()
+            else
+                elem.find("button").click(function () {
+                    window.open(selectWallet.explorer + transaction.hash, "_blank")
+                })
+
+            elem.click(function () {
+                if (elem.hasClass("opened")) return
+
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".close").click(function () {
+                elem.removeClass("opened")
+                return false
+            })
+
+            if (transaction.status !== undefined) {
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if (!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            } else {
+                elem.find(".speed-up").click(function () {
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if (transaction.canceling) {
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function () {
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+            TransactionsPane.list.self.append(elem)
+            elem.show()
+        }
+    }
     showSwapTransaction(selectedWallet, transaction){
         let elem = TransactionsPane.list.swapTx.clone()
         elem.attr("id", "tx"+transaction.hash)

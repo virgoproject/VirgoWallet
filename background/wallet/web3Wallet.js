@@ -15,6 +15,7 @@ class Web3Wallet {
         this.testnet = testnet
         this.atomicSwapParams = atomicSwapParams
 
+
         this.balances = new Map()
         this.prices = new Map()
 

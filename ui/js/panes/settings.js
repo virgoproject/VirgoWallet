@@ -67,16 +67,13 @@ class SettingsPane {
     }
 
     constructor() {
-        events.addListener("addressesChanged", data => {
-            const baseElem = $("#baseAccountRow").clone()
-            SettingsPane.accounts.html("")
-            SettingsPane.accounts.append(baseElem)
-
-            settingsPane.setSettings(data)
-        })
-
         SettingsPane.addAccountBtn.click(function(){
-            addAccount()
+            addAccount().then(function(data){
+                const baseElem = $("#baseAccountRow").clone()
+                SettingsPane.accounts.html("")
+                SettingsPane.accounts.append(baseElem)
+                settingsPane.setSettings(data)
+            })
         })
 
         SettingsPane.accountSelectionHeader.click(function(){
