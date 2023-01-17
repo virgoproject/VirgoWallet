@@ -79,13 +79,15 @@ class SettingsPane {
             addAccount()
         })
 
-        SettingsPane.accountSelectionHeader.click(function(){
+        SettingsPane.accountSelectionHeader.click(function(e){
             if(SettingsPane.settings.hasClass("opened")){
                 SettingsPane.settings.removeClass("opened")
                 SettingsPane.accountSelectionHeader.removeClass("opened")
+                showAddress()
             } else{
                 SettingsPane.settings.addClass("opened")
                 SettingsPane.accountSelectionHeader.addClass("opened")
+                hideAddress()
             }
             //make sure settings is closed
             for(let i = mainSettingsBackLevel; i >= 0; i--){
@@ -99,6 +101,7 @@ class SettingsPane {
 
         SettingsPane.openSettingsBtn.click(function(){
             SettingsPane.main.hide()
+            hideStatsBar()
             SettingsPane.settingsMain.show()
             SettingsPane.settingsTitle.html("Settings")
         })
@@ -118,6 +121,7 @@ class SettingsPane {
             }else{
                 if(mainSettingsBackLevel == 0){
                     SettingsPane.main.show()
+                    showStatsBar()
                     SettingsPane.settingsMain.hide()
                     SettingsPane.settingsTitle.html("My Wallet")
                     return

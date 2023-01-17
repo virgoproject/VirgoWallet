@@ -8,7 +8,6 @@
     height: 151px;
     padding: 0.5em;
     margin-bottom: -0.5em;
-    background-color: #fbf4f8;
 }
 .hr{
     width: 90%;
@@ -41,19 +40,32 @@
 
 #mainPane .header .stats .balance-header{
     align-items: center;
-    justify-content: space-between;
     padding: 0;
-    margin-top: 8px;
 }
 
 #mainPane .header .stats .balanceTitle{
     padding: 0;
 }
 
+#testMachin hr {
+    height: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    margin-bottom: unset !important;
+    margin-top: unset !important;
+}
+
+#mainPane .header .stats .btnAddFunds{
+    font-size: .6em;
+    padding: .2em 1.5em;
+    border-radius: 25px;
+
+}
+
 #mainPane .header .stats .title {
-    font-size: 0.65em;
+    font-size: 1em !important;
     margin: 0 0 0.25rem;
-    font-weight: bold;
 }
 
 #mainPane .header .stats .adress {
@@ -97,24 +109,43 @@
 
 #mainPane .header .stats .values {
     margin-bottom: 0.1rem;
-    font-size: 25px;
-    font-weight: bold;
     padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#mainPane .header .stats .dollars {
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.5em;
+    margin-left: 0.2em;
+}
+
+#mainPane .header .stats .decmialValues {
+    margin-bottom: 0.1rem;
+    padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
+
 }
 
 #mainPane .header .pendingTxs {
-    height: 36px;
-    width: 36px;
-    background: white;
+    height: 28px;
+    width: 28px;
+    background: var(--mainColorLight);
+    color: white;
+    font-size: .9em;
     border-radius: 50%;
-    line-height: 36px;
+    line-height: 28px;
     margin: auto;
     cursor: pointer;
     padding: 0;
 }
 
+
+
 #mainPane .bodyElem.resume, #mainPane .bodyElem.send, #mainPane .bodyElem.swap {
-    padding: 1em 2em;
+    padding: 0em 2em;
 }
 
 #mainPane #footer {
@@ -185,6 +216,7 @@
     background: var(--whiteBackground);
     border-radius: 0.75em;
     padding: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 #testnetFaucet span {

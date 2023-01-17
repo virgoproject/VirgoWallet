@@ -39,6 +39,7 @@ class TransactionsPane {
 
         TransactionsPane.btn.click(function(){
             TransactionsPane.self.show()
+            hideStatsBar()
             transactionsPane.txsCount = 0
             transactionsPane.reachedEnd = false
             transactionsPane.loadTxs()
@@ -46,6 +47,7 @@ class TransactionsPane {
 
         TransactionsPane.back.click(function(){
             TransactionsPane.self.hide()
+            showStatsBar()
             TransactionsPane.list.self.html("")
         })
 
@@ -147,7 +149,6 @@ class TransactionsPane {
 
         elem.click(function(){
             if(elem.hasClass("opened")) return
-
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
         })

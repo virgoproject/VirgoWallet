@@ -17,10 +17,31 @@
     cursor: pointer;
     transform: rotate(0deg);
     transition: transform 0.25s ease;
+    position: absolute;
 }
 
 #accountSelectionHeader.opened svg {
     transform: rotate(-90deg);
+}
+
+#accountSelectionHeader .contentAddress .adress{
+    margin-left: 32px !important;
+    font-size: .7em;
+}
+
+#accountSelectionHeader .contentAddress{
+    background: #f8f4fb;
+    padding: 0.5em;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+#accountSelectionHeader .contentAddress:hover {
+    background: var(--whiteBackground);
+}
+
+#accountSelectionHeader .contentAddress:hover {
+    background: #e6e1e9;
 }
 
 #settings {

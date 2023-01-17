@@ -40,6 +40,7 @@ class SendPane {
         SendPane.btnContacts.click(function() {
             SendPane.sendForm.hide()
             SendPane.contactsList.show()
+            hideStatsBar()
             SendPane.bodyContacts.show()
             SendPane.buttonContacts.show()
 
@@ -49,7 +50,7 @@ class SendPane {
 
         SendPane.btnSubmit.click(function(){
             disableLoadBtn($(this))
-
+            hideStatsBar()
             SendPane.recipient.attr("disabled", true)
             SendPane.amount.attr("disabled", true)
             SendPane.assetSelect.attr("disabled", true)
@@ -58,6 +59,7 @@ class SendPane {
 
             SendPane.estimateFees = function(){
                 getAsset(SendPane.assetSelect.val()).then(function(assetInfos){
+                    console.log(assetInfos)
                     estimateSendFees(SendPane.recipient.val(), Utils.toAtomicString(SendPane.amount.val(), assetInfos.decimals), SendPane.assetSelect.val()).then(function(fees){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance){
 
@@ -231,10 +233,12 @@ class SendPane {
         SendPane.backBtn.attr("disabled", false)
         enableLoadBtn(SendPane.btnSubmit)
         SendPane.backBtn.click()
-
         const selectedAddress = data.addresses[data.selectedAddress]
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
             if(!balance.tracked) return
+            let actualAddress = data.wallets[data.selectedWallet].wallet.ticker
+            let sa = ('https://raw.githubusercontent.com/virgoproject/tokens/main/" + actualAddress + "/" + balance.contract + "/logo.png')
+
 
             let elem = $("<option></option>")
             elem.val(contractAddr)
