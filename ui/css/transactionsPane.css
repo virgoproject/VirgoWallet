@@ -200,14 +200,13 @@
     color: var(--mainColor);
 }
 
-#transactionsPane .listItem.swapTx .logo {
+#transactionsPane .listItem .swapTx .logo {
     height: 26px;
     width: 26px;
-    position: absolute;
     margin-top: -13px;
 }
 
-#transactionsPane .listItem.swapTx .logo.two {
+#transactionsPane .listItem .swapTx .logo.two {
     margin-left: 13px;
 }
 
@@ -215,7 +214,7 @@
     color: var(--mainColorDark10);
 }
 
-#transactionsPane .listItem.swapTx .smallDetails .amount {
+#transactionsPane .listItem .swapTx .smallDetails .amount {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -223,11 +222,11 @@
     vertical-align: top;
 }
 
-#transactionsPane .listItem.swapTx.opened .header .title {
+#transactionsPane .listItem .swapTx.opened .header .title {
     float: left;
 }
 
-#transactionsPane .listItem.swapTx.opened .header {
+#transactionsPane .listItem .swapTx.opened .header {
     margin-top: 10px;
 }
 
@@ -236,4 +235,8 @@
     margin-left: 0;
     margin-right: 0;
     border-radius: 10px;
+}
+
+.selected{
+
 }

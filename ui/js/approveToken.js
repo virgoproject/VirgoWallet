@@ -6,19 +6,21 @@ function get(name){
 
 
 let finalGasPrice = 0
-
-$("#allow").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: finalGasPrice})
+$("#allow").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: finalGasPrice}})
     window.close()
 })
 
-$("#refuse").click(function (){
-    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: false})
+$("#refuse").click(async () => {
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
     window.close()
 })
 
-window.onbeforeunload = function(){
-    browser.runtime.sendMessage({command: 'authorizeTransaction', id: get("id"), decision: false})
+window.onbeforeunload = () => {
+    const resp = async () => {
+        await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
+    }
+    resp()
 }
 
 $("#siteLogo img").on("error", function(){
@@ -153,6 +155,7 @@ $("#closeFees").click(function (){
 
 
 setInterval(function(){
+    console.log(Utils.formatAmount(gas*finalGasPrice,decimals))
     estimateFees()
 }, 2500)
 

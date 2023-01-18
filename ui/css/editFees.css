@@ -1,7 +1,5 @@
 #editFees{
-    z-index: 1;
-    background-color: #dbd9d9;
-    margin-top: 30em;
+    z-index: 10;
     height: 100%;
     border-radius: 30px;
 }
@@ -13,10 +11,43 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+    cursor: pointer;
     padding: 10px;
 }
 
-.check{
-    background: var(--mainColor);
-    border-radius: 0px 10px 10px 0px;
+.selected{
+    background: var(--whiteBackground);
+}
+
+.blackbg{
+    z-index: 2;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    height: 46%;
+    margin-bottom: -35px;
+}
+
+.see{
+    border-radius: 30px 30px 0px 0px;
+    background: white;
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+}
+
+.rule{
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+}
+
+.title{
+    margin-top: -35px;
+}
+
+#editFees .value{
+    margin-left: 40px !important;
 }

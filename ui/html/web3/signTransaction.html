@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="/ui/css/main.css">
     <link rel="stylesheet" href="/ui/css/web3/signTransaction.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
+    <link rel="stylesheet" href="/ui/css/editFees.css">
+
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
-    <div class="row w-100 p-4 mb-4">
+    <div class="row w-100 p-4  mb-4 position-absolute">
         <div id="siteLogo" class="d-flex align-items-center justify-content-center">
             <img src="/ui/images/logoIndigo.png" width="55px">
         </div>
@@ -27,38 +29,12 @@
             <p class="label">Data</p>
             <p class="detail" id="data">0x0</p>
         </div>
-        <div class="col-12 mt-1 mb-4 fees">
-            <div class="col-12 d-flex mb-2">
-                <div class="col-3">
-                    <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
-                </div>
-                <div class="col-9 text-right">
-                    <span class="value" id="fees"></span>
-                    <span class="ticker" data-networkticker></span>
-                </div>
+        <div class="col-12 mb-3 feesdetail text-left">
+            <div class="row">
+                <p class="label col-6">Network Fees</p>
+                <i class="fa-solid fa-pen-to-square col-1 d-flex align-items-center justify-content-center editFees"></i>
+                <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span id="feesTicker"></span></p>
             </div>
-
-            <div class="range">
-                <div class="row steps">
-                    <div class="col-4">
-                        <div class="leftStep">
-                            <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="centerStep">
-                            <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="rightStep">
-                            <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                        </div>
-                    </div>
-                </div>
-                <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
-            </div>
-
         </div>
         <div class="col-12 mt-2">
             <div class="row">
@@ -71,13 +47,20 @@
             </div>
         </div>
     </div>
+        <div class="row w-100  mb-4"  id="editFees" style="display: none">
+        <edit-fees ></edit-fees>
+        </div>
 </div>
-
 <script src="/ui/js/utils/jquery.min.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
 <script src="/ui/js/utils/backgroundMessaging.js"></script>
+<script src="../../js/editFees.js"></script>
 <script src="/ui/js/web3/signTransaction.js"></script>
 <script src="/ui/js/utils/rangeSlider.js"></script>
+
 </body>
 </html>
+
+
+

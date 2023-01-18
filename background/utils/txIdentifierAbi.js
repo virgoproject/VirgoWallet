@@ -1,6 +1,7 @@
 class TxIdentifier {
 
     static getDecodeAbi(param,hash,date,recipient,amount,gasPrice,gasLimit,nonce){
+
         const decodedMethod = abiDecoder.decodeMethod(param)
 
         if (decodedMethod !== undefined){

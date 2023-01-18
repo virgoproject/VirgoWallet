@@ -5,11 +5,12 @@ function get(name){
 }
 
 $("#siteName").html(get("origin"))
+let tag;
+tag = document.querySelector("edit-fees")
 
 let finalGasPrice = 0
-
 $("#allow").click(async () => {
-    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: finalGasPrice}})
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: tag.getGas()}})
     window.close()
 })
 
@@ -34,30 +35,28 @@ let gas = parseInt(get("gas"))
 let ticker = get("ticker")
 let amount = parseInt(get("value"))
 let decimals = get("decimals")
-
+console.log(gas)
 $("#from").html(get("from"))
 $("#to").html(get("to"))
 $("#amount").html(Utils.formatAmount(amount, decimals))
 $("#data").html(get("data"))
 $(".ticker").html(ticker)
 
+
 function estimateFees() {
-    $("#allow").attr("disabled", true)
-    getBalance(ticker).then(function(balance){
-        getGasPrice().then(function(gasPrice){
-            let feesModifier = 0.5 + $("#rangeFees").val()/100
-
-            finalGasPrice = Math.round(gasPrice * feesModifier)
-
-            let nativeTotal = amount + gas * finalGasPrice
-
-            $("#fees").html(Utils.formatAmount(gas * finalGasPrice, decimals))
+    getBalance(ticker).then(function(balance) {
+        getGasPrice().then(function (res) {
+            tag.start(gas, res)
+            console.log()
+            let nativeTotal = gas * tag.getGas()
 
             if(nativeTotal <= balance.balance)
                 $("#allow").attr("disabled", false)
         })
     })
 }
+
+
 
 setInterval(function(){
     estimateFees()

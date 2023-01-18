@@ -69,7 +69,7 @@ class TransactionsPane {
             let transactions = selectedWallet.transactions
 
             let initialCount = transactionsPane.txsCount
-
+                console.log(transactions)
             while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
                 transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
                 transactionsPane.txsCount++
@@ -99,12 +99,10 @@ class TransactionsPane {
             this.showAtomicSwapTransaction(transaction)
             return
         }
-        this.showBasicTransaction(selectedWallet, transaction)
 
         switch (transaction.contractAddr){
             case "SWAP":
                 this.showSwapTransaction(selectedWallet, transaction)
-                return true
                 break
             case "APPROVETOKEN":
                 this.showApprovedTransaction(selectedWallet, transaction)
@@ -229,7 +227,10 @@ class TransactionsPane {
         elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
 
         elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selecteWallet.decimals))
+
         elem.find(".totalFees span").html(selecteWallet.ticker)
+
+        console.log(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selecteWallet.decimals))
 
         elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
 
@@ -614,7 +615,7 @@ class TransactionsPane {
 
                 if(transaction.gasUsed !== undefined){
                     elem.find(".gasUsed").html(transaction.gasUsed.toLocaleString('en-US'))
-                    elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasUsed, selectedWallet.decimals))
+                    elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
                 }
 
                 if(transaction.swapInfos !== undefined && transaction.swapInfos.amountOut !== undefined){
