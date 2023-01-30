@@ -34,14 +34,14 @@
         <div class="identicon col-3">
           <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
         </div>
-        <p class=" col-9 d-flex align-items-center justify-content-center " id="addr">Account Address</p>
+        <p class="col-9" id="addr">Account Address</p>
       </div>
     </div>
     <div class="col-12 mb-2 detail text-left">
       <div class="row">
         <p class="label col-6">Network Fees</p>
-        <i class="fa-solid fa-pen-to-square col-1 d-flex align-items-center justify-content-center editFees"></i>
-        <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span id="feesTicker"></span></p>
+        <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span class="feesTicker" style="margin-right: 5px"></span><span><i class="fa-solid fa-pen-to-square editFees"></i></span></p>
+
       </div>
     </div>
 
@@ -58,7 +58,7 @@
   </div>
 
   <div class="row w-100  mb-4"  id="editFees" style="display: none">
-    <edit-fees ></edit-fees>
+    <edit-fees></edit-fees>
   </div>
 </div>
 
@@ -68,10 +68,11 @@
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
 <script src="../../js/utils/backgroundMessaging.js"></script>
+<script src="../../js/web3/editFees.js"></script>
 <script src="../../js/web3/approveToken.js"></script>
 <script src="../../js/utils/rangeSlider.js"></script>
 <script src="../../js/utils/jdenticon.min.js"></script>
-<script src="../../js/web3/editFees.js"></script>
+
 
 </body>
 </html>

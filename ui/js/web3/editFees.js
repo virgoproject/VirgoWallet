@@ -3,7 +3,8 @@ class EditFees extends HTMLElement {
     static gasPrice = 0
     static feesModifier = 1
     static interval = null
-
+    static onGasChanged = () => {}
+    static onBalance = () => {}
     constructor() {
         super();
 
@@ -38,19 +39,19 @@ class EditFees extends HTMLElement {
             <div class="col-12 mb-4 speed slow text-left"  speed="slow">
                 <div class="row">
                     <p class="label  col-5">Slow</p>
-                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesSlow">-</span> <span id="editFeesTickerSlow"></span></p>
+                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesSlow">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 mb-4 speed medium text-left" speed="medium">
                 <div class="row">
                     <p class="label  col-5">Medium</p>
-                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesMedium">-</span> <span id="editFeesTickerMedium"></span></p>
+                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesMedium">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 mb-4 speed fast text-left" speed="fast">
                 <div class="row">
                     <p class="label  col-5">Fast</p>
-                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesFast">-</span> <span id="editFeesTickerFast"></span></p>
+                    <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="editFeesFast">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 p-0">
@@ -58,7 +59,7 @@ class EditFees extends HTMLElement {
             </div>
         </div>
     `;
-
+        const _this = this
 
         $(".medium").addClass("selected")
 
@@ -73,6 +74,7 @@ class EditFees extends HTMLElement {
             if ($(".fast .selected")){
                 $(".fast").removeClass("selected")
             }
+            _this.onGasChanged()
         })
 
         $(".medium").click(function (){
@@ -85,6 +87,7 @@ class EditFees extends HTMLElement {
             if ($(".fast .selected")){
                 $(".fast").removeClass("selected")
             }
+            _this.onGasChanged()
         })
 
 
@@ -98,6 +101,7 @@ class EditFees extends HTMLElement {
             if ($(".slow .selected")){
                 $(".slow").removeClass("selected")
             }
+            _this.onGasChanged()
         })
 
 
@@ -106,14 +110,29 @@ class EditFees extends HTMLElement {
         })
     }
 
-    start(gasLimit,Price){
-    const _this = this
+    start(gasLimit){
+        this.setFees(gasLimit)
         this.interval = setInterval(() =>{
-            _this.gasPrice = Price
-            finalGasPrice = Math.round(Price * _this.feesModifier)
-            $("#fees").html(Utils.formatAmount(gasLimit * finalGasPrice, decimals))
-
+            this.setFees(gasLimit)
         },5000)
+    }
+
+    setFees(gasLimit){
+        const _this = this
+        getBalance(ticker).then(function(balance) {
+            getGasPrice().then(function (res) {
+                _this.gasPrice = res
+                finalGasPrice = Math.round( _this.gasPrice * _this.feesModifier)
+
+                let nativeTotal = gasLimit * finalGasPrice
+
+                if(nativeTotal <= balance.balance)
+                    _this.onBalance()
+
+                _this.onGasChanged()
+            })
+        })
+
     }
 
     getGas(){

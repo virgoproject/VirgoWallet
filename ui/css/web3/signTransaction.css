@@ -26,7 +26,7 @@
 
 #fees {
     display: inline-block;
-    max-width: 80px;
+    max-width: 95px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
@@ -46,3 +46,11 @@
     transition: transform 0.25s ease;
 }
 
+.editFees{
+    color: var(--mainColor);
+    cursor: pointer;
+}
+
+.feesTicker{
+    color: var(--mainColor);
+}

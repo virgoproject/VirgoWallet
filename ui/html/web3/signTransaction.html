@@ -29,20 +29,17 @@
             <p class="label">Data</p>
             <p class="detail" id="data">0x0</p>
         </div>
-        <div class="col-12 mb-3 feesdetail text-left">
-            <div class="row">
-                <p class="label col-6">Network Fees</p>
-                <i class="fa-solid fa-pen-to-square col-1 d-flex align-items-center justify-content-center editFees"></i>
-                <p class="value col-5 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span id="feesTicker"></span></p>
-            </div>
+        <div class="col-12 mb-3  text-left">
+                <p class="label">Network Fees</p>
+                <p class="value detail"><span id="fees">-</span> <span class="feesTicker" style="margin-right: 5px"></span><i class="fa-solid fa-pen-to-square editFees"></i></p>
         </div>
         <div class="col-12 mt-2">
             <div class="row">
                 <div class="col-6 p-2">
-                    <button class="button success w-100" id="allow" disabled>Approve</button>
+                    <button class="button light w-100" id="refuse">Reject</button>
                 </div>
                 <div class="col-6 p-2">
-                    <button class="button light w-100" id="refuse">Reject</button>
+                    <button class="button success w-100" id="allow" disabled>Approve</button>
                 </div>
             </div>
         </div>
