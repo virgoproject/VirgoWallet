@@ -2,6 +2,7 @@ class AirdropPane{
 
     static div = {
         header: $('#mainPane .header'),
+        airdrop : document.querySelector('#body .airdrop'),
         airdropBody : document.querySelector('.airdropBody'),
         airdropHeader : document.querySelector('.airdrop .airdropHeader'),
         airdropLoadingBody : document.querySelector('.airdropLoadingBody')
@@ -16,12 +17,18 @@ class AirdropPane{
         decimalTotalEarn : document.querySelector('.decimalValue'),
         claimBn : document.querySelector('.claimDropReward')
     }
+
+    static winningModal = {
+        body : document.querySelector('.airdropWinModal'),
+        closeBtn : document.querySelector('.airdropWinModal .closeBtn')
+    }
     constructor() {
         this.userState = false
         this.loadedAirdrop = false
         this.loadeduppcoming = false
         this.loadedpassed = false
         this.notyf = new Notyf();
+
         AirdropPane.airdropCard.claimBn.addEventListener('click', (event) => {
             getBaseInfos().then(function (infos) {
                 fetch('https://airdrops.virgo.net:2053/api/getreward',{
@@ -63,6 +70,7 @@ class AirdropPane{
                 body: JSON.stringify({address: infos.addresses[0].address})
             }).then(response => response.json())
                 .then(res => {
+                    console.log(res)
                     let totalEarnings
                     let earningsDeciaml
                     let airdropParticipated = res[0].length
@@ -75,12 +83,25 @@ class AirdropPane{
                         totalEarnings = res[3][0].earnings
                         earningsDeciaml =  "." + totalEarnings.toString().split('.')[1]
                     }
+
+                    checkClosedModalAirdrop(res).then(res => {
+                        if(res){
+                            AirdropPane.winningModal.body.style.display = "flex"
+                        }
+                    })
+
                     document.getElementById("airdropsParticipationCount").innerHTML = airdropParticipated
                     document.querySelector('.airdropHeader .wondrops').innerHTML = airdropWon
                     document.querySelector('.airdropHeader .winnedAmmount').innerHTML = totalEarnings.toFixed(0)
                     document.querySelector('.airdropHeader .decimalValue').innerHTML = earningsDeciaml
                     airdropPane.userState = true
                     airdropPane.checkLoadingState()
+
+                    AirdropPane.winningModal.closeBtn.addEventListener('click',(e) => {
+                        AirdropPane.winningModal.body.style.display = "none"
+                        changeModalStatus(res)
+                    })
+
                     if (waitingWithdraw > 0) {
                         document.querySelector('.airdropHeader .notifReward').style.display = "flex"
                         document.querySelector('.airdropHeader .notifReward').innerHTML = waitingWithdraw
@@ -123,6 +144,7 @@ class AirdropPane{
                                 const day = 24 * 60 * 60 * 1000;
                                 let dateStart = new Date(res[i].startDate)
                                 let dateEnd = new Date(res[i].endDate)
+                                let endDate = dateEnd.getTime() - new Date(Date.now()).getTime()
                                 let socials = JSON.parse(res[i].socials)
                                 let elem = AirdropPane.airdropCard.airdropExemple.cloneNode(true)
                                 elem.classList.add('d-flex')
@@ -132,7 +154,7 @@ class AirdropPane{
                                 elem.classList.add('airdropSetter')
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
-                                elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateStart - dateEnd) / day))
+                                elem.querySelector('.timeLeft').innerHTML = Math.floor(endDate / (24*60*60*1000)) + 1
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -244,6 +266,7 @@ class AirdropPane{
                                         e.currentTarget.style.transform = 'rotate(0deg)'
                                     }
                                 })
+                                if (AirdropPane.div.airdrop.style.display === "none") return
                                 document.querySelector(".airdropActive").appendChild(elem)
                             }
                         })
@@ -366,6 +389,7 @@ class AirdropPane{
                                         e.currentTarget.style.transform = 'rotate(0deg)'
                                     }
                                 })
+                                if (AirdropPane.div.airdrop.style.display === "none") return
                                 document.querySelector(".upcomingAirdrop").appendChild(elem)
 
                             }
@@ -491,6 +515,7 @@ class AirdropPane{
                                     }
                                 })
                                 document.querySelector(".endedAirdrop").appendChild(elem)
+                                if (AirdropPane.div.airdrop.style.display === "none") return
                                 AirdropPane.airdropCard.endedairdropExemple.classList.add('d-none')
 
                             }
@@ -503,6 +528,9 @@ class AirdropPane{
 
     checkLoadingState(){
         if(airdropPane.loadedAirdrop && airdropPane.userState && airdropPane.loadedpassed && airdropPane.loadeduppcoming){
+
+            console.log(AirdropPane.div.airdrop.style.display)
+
             AirdropPane.div.airdropBody.classList.add('d-flex')
             AirdropPane.div.airdropHeader.classList.remove('d-none')
             AirdropPane.div.airdropBody.classList.remove('d-none')

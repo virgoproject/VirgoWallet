@@ -653,7 +653,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(true)
             })
             break
-            
+
         case 'tickerFromChainID':
             sendResponse(baseWallet.getChainByID(request.id))
             break
@@ -709,7 +709,29 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case "resetAirdrops":
             browser.storage.local.set({"airdropinfos": []})
             break
-            
+
+        case "checkClosedModal":
+            let status = request.infos[0]
+            for (let i = 0; status.length > i; i++){
+                browser.storage.local.get('airdrop' + status[i].airdropID ).then(function(res) {
+                    if (res['airdrop' + status[i].airdropID] === undefined){
+                        sendResponse(true)
+                        return
+                    }
+                })
+            }
+
+            sendResponse(false)
+            break
+
+        case "changeModalStatus":
+                for (let i =0; request.state[0].length > i; i++){
+                    const json = {}
+                    json['airdrop' + request.state[i].airdropID] = true
+                    browser.storage.local.set(json)
+                }
+            break
+
         case 'deleteConnectedSite':
             for (var i=0 ; i < connectedWebsites.length ; i++)
             {
