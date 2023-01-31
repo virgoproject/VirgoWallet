@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
     <link rel="stylesheet" href="/ui/css/atomicSwapPane.css">
     <link rel="stylesheet" href="/ui/css/airdropPane.css">
+    <link rel="stylesheet" href="/ui/css/editFees.css">
 </head>
 <body>
 
@@ -218,32 +219,12 @@
                         </div>
                         <div class="col-9 text-right">
                             <span class="value"></span>
-                            <span class="ticker" data-networkticker></span>
+                            <span class="ticker" data-networkticker></span><i class="fa-solid fa-pen-to-square editFees"></i>
                         </div>
-                    </div>
-
-                    <div class="range">
-                        <div class="row steps">
-                            <div class="col-4">
-                                <div class="leftStep">
-                                    <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="centerStep">
-                                    <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="rightStep">
-                                    <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
                     </div>
 
                 </div>
+
                 <button class="button col-12 submit mt-5" disabled="disabled">
                     <val>Insufficient
                         <val data-networkticker=""></val>
@@ -253,6 +234,7 @@
                 </button>
             </div>
         </div>
+
         <div class="bodyElem swap mt-3" style="display: none" id="swapPane">
             <div id="swapParams">
                 <div class="row inputHeader">
@@ -350,29 +332,10 @@
                         <p class="title">Network fees</p>
                     </div>
                     <div class="col-7">
-                        <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
+                        <p class="value"><span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"> </span> <i class="fa-solid fa-pen-to-square editFees"></i></p>
                     </div>
                 </div>
-                <div class="range">
-                    <div class="row steps">
-                        <div class="col-4">
-                            <div class="leftStep">
-                                <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="centerStep">
-                                <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="rightStep">
-                                <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="range" min="0" max="100" step="10" class="w-100" id="swapRangeFees">
-                </div>
+
                 <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
                     <val>Init swap</val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
@@ -614,6 +577,7 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
         </div>
+        <edit-fees style="display: none" data-decimal="" data-limit="" data-ticker></edit-fees>
     </div>
     <div id="footer" class="row">
         <div class="footerElem col-3 selected" data-target="resume">
@@ -2158,6 +2122,7 @@
             </button>
         </div>
     </div>
+
 </div>
 
 <script src="../js/utils/jquery.min.js"></script>
@@ -2188,5 +2153,6 @@
 <script src="../js/panes/atomicSwapPane.js"></script>
 <script src="../js/panes/airdropPane.js"></script>
 <script src="../js/panes/createPane.js"></script>
+<script src="../js/web3/editFees.js"></script>
 </body>
 </html>

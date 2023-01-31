@@ -11,6 +11,8 @@ let decimals = get("decimals")
 $("#siteName").html(get("origin"))
 let tag;
 tag = document.querySelector("edit-fees")
+const decimal = tag.dataset.decimal = decimals
+const lim = tag.dataset.limit = gas
 tag.start(gas)
 
 let finalGasPrice = 0

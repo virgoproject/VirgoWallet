@@ -18,6 +18,7 @@ class SendPane {
     static maxBtn = $("#body .send .sendForm button.max")
 
 
+
     static btnContacts = $("#body .send .sendForm .contactButton")
     static headerValues = $(".header .stats")
     static topbarValues = $(".header .topbar")
@@ -63,7 +64,23 @@ class SendPane {
 
                             if(fees.gasLimit === undefined || isBtnDisabled(SendPane.btnConfirm)) return
 
-                            let feesModifier = 0.5 + SendPane.confirmFeesRange.val()/100
+                            let gas = fees.gasLimit
+                            let decimals = fees.decimals
+                            let tag;
+                            tag = document.querySelector("edit-fees")
+                            const decimal = tag.dataset.decimal = decimals
+                            const lim = tag.dataset.limit = gas
+                            const tick = tag.dataset.ticker = MAIN_ASSET.ticker
+                            $(".feesTicker").html(ticker)
+                            tag.start(gas)
+
+                            tag.onGasChanged = () => {
+                                $(".fees .value").html(Utils.formatAmount(gas * tag.getGas(), decimals))
+                            }
+                            tag.onBalance = () => {
+                                $(".sendConfirm .button").find("val").html("Send")
+                                $(".sendConfirm .button").attr("disabled", false)
+                            }
 
                             enableLoadBtn(SendPane.btnSubmit)
                             SendPane.recipient.attr("disabled", false)
@@ -74,23 +91,8 @@ class SendPane {
                             SendPane.confirmAmount.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
                             SendPane.confirmRecipient.html(SendPane.recipient.val())
-                            SendPane.confirmFees.html(Utils.formatAmount(fees.gasLimit * Math.round(fees.gasPrice * feesModifier), fees.decimals))
-                            SendPane.confirmFees.attr("gasLimit", fees.gasLimit)
-                            SendPane.confirmFees.attr("gasPrice", Math.round(fees.gasPrice * feesModifier))
                             SendPane.confirmForm.show()
 
-                            let totalForNative = new BN(fees.gasLimit).mul(new BN(Math.round(fees.gasPrice * feesModifier)));
-
-                            if(assetInfos.ticker == MAIN_ASSET.ticker)
-                                totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SendPane.amount.val(), MAIN_ASSET.decimals)))
-
-                            if(totalForNative.lte(new BN(nativeBalance.balance))){
-                                SendPane.btnConfirm.find("val").html("Send")
-                                SendPane.btnConfirm.attr("disabled", false)
-                            }else{
-                                SendPane.btnConfirm.attr("disabled", true)
-                                SendPane.btnConfirm.find("val").html('Insufficient '+MAIN_ASSET.ticker+' balance')
-                            }
 
                         })
                     })
