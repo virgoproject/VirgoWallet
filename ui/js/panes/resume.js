@@ -163,6 +163,7 @@ class MainPane {
     }
 
     displayData(data){
+        console.log(data)
         const selectedAddress = data.addresses[data.selectedAddress]
         $("[data-mainAddress]").html(selectedAddress.address)
 
