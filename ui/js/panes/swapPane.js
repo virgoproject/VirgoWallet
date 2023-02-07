@@ -3,8 +3,10 @@ class SwapPane {
     static inputs = {
         one: {
             input: $("#swapInput1"),
-            select: $("#swapSelect1"),
-            ticker: $("#swapTicker1"),
+            btnSelect: $("#tokenSelectBtn1"),
+            img : $("#selectedTokenImg1"),
+            ticker: $("#selectedTokenTicker1"),
+            contract: $("#sendContract"),
             rateTicker: $("#swapRateTicker1"),
             balance: $("#swapBalance1"),
             btnTicker: $("#swapBtnTicker1"),
@@ -12,13 +14,16 @@ class SwapPane {
         },
         two: {
             input: $("#swapInput2"),
-            select: $("#swapSelect2"),
-            ticker: $("#swapTicker2"),
+            btnSelect: $("#tokenSelectBtn"),
+            img : $("#selectedTokenImg"),
+            ticker: $("#selectedTokenTicker2"),
+            contract: $("#sendContract2"),
             rateTicker: $("#swapRateTicker2"),
             balance: $("#swapBalance2"),
             btnTicker: $("#swapBtnTicker2")
         }
     }
+
     static rate = {
         self: $("#swapRate"),
         loading: $("#swapRateLoading"),
@@ -46,6 +51,7 @@ class SwapPane {
         back: $("#swapReviewBack")
     }
     static comingSoon = $("#swapComing")
+    static header = $(".header")
 
     constructor() {
         this.select1OldElem = ""
@@ -53,43 +59,62 @@ class SwapPane {
 
         const _this = this
 
-        SwapPane.inputs.one.select.change(function(){
-            swapPane.updateSelects(1)
-            _this.updateBalance(SwapPane.inputs.one)
-            SwapPane.inputs.one.input.trigger("input")
-        })
 
-        SwapPane.inputs.two.select.change(function(){
-            swapPane.updateSelects(2)
-            _this.updateBalance(SwapPane.inputs.two)
-            SwapPane.inputs.one.input.trigger("input")
-        })
 
-        SwapPane.inputs.one.input.on("input", function(){
-            _this.checkAmount()
-        })
+
 
         SwapPane.inputs.one.btnMax.click(function(){
-            if(SwapPane.inputs.one.select.val() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
+            if(SwapPane.inputs.one.btnSelect.html() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
             SwapPane.inputs.one.input.val(SwapPane.inputs.one.balance.html())
             SwapPane.inputs.one.input.trigger("input")
         })
 
+        SwapPane.inputs.one.btnSelect.click(function (){
+            $("#tokenSelect").show()
+            SwapPane.inputs.one.btnSelect.attr("class", "row tokenSelect one")
+            displayTokens()
+        })
+
+        SwapPane.inputs.two.btnSelect.click(function (){
+            $("#tokenSelect").show()
+            SwapPane.inputs.two.btnSelect.attr("class", "row tokenSelect two")
+            displayTokens()
+        })
+
+        $("#tokenBack").click(function (){
+            $("#tokenSelect").hide()
+        })
+
+
+
         SwapPane.switchBtn.click(function(){
-            const oneVal = SwapPane.inputs.one.select.val()
-            const twoVal = SwapPane.inputs.two.select.val()
+            const elem = document.getElementById("tokenSelectBtn1")
+            const elem2 = document.getElementById("tokenSelectBtn")
 
-            SwapPane.inputs.one.select.val("")
-            SwapPane.inputs.two.select.val("")
+            const oneVal = SwapPane.inputs.one.ticker.html()
+            const twoVal = SwapPane.inputs.two.ticker.html()
 
-            SwapPane.inputs.one.select.trigger("change")
-            SwapPane.inputs.two.select.trigger("change")
+            const contactOne = SwapPane.inputs.one.contract.html()
+            const contractTwo = SwapPane.inputs.two.contract.html()
 
-            SwapPane.inputs.one.select.val(twoVal)
-            SwapPane.inputs.two.select.val(oneVal)
+            const img1 = elem.getElementsByTagName("img")[0].src
+            const img2 = elem2.getElementsByTagName("img")[0].src
 
-            SwapPane.inputs.one.select.trigger("change")
-            SwapPane.inputs.two.select.trigger("change")
+            const swapTicker1 = $("#swapTicker1").html()
+            const swapTicker2 = $("#swapTicker2").html()
+
+
+            SwapPane.inputs.one.ticker.html(twoVal)
+            SwapPane.inputs.two.ticker.html(oneVal)
+
+            SwapPane.inputs.one.contract.html(contractTwo)
+            SwapPane.inputs.two.contract.html(contactOne)
+
+            elem.getElementsByTagName("img")[0].src = img2
+            elem2.getElementsByTagName("img")[0].src = img1
+
+            $("#swapTicker1").html(swapTicker2)
+            $("#swapTicker2").html(swapTicker1)
         })
 
         SwapPane.initBtn.click(function(){
@@ -111,6 +136,7 @@ class SwapPane {
                 SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
 
                 _this.estimateFees = function(){
+
                     getGasPrice().then(function(gasPrice){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance) {
                             let feesModifier = 0.5 + SwapPane.review.rangeFees.val() / 100
@@ -179,6 +205,17 @@ class SwapPane {
             _this.setSwap(data)
         })
 
+            setInterval(function(){
+                if (SwapPane.inputs.one.ticker.html() !== "Select" ){
+                _this.updateBalance(SwapPane.inputs.one)
+                _this.updateBalance(SwapPane.inputs.two)
+                _this.checkAmount()
+                }
+            },500)
+
+
+
+
     }
 
     setSwap(data){
@@ -194,8 +231,7 @@ class SwapPane {
             return
         }
 
-        this.setSelectOptions(SwapPane.inputs.one, selectedAddress.balances)
-        this.setSelectOptions(SwapPane.inputs.two, selectedAddress.balances)
+
         this.updateSwap(data)
     }
 
@@ -205,103 +241,18 @@ class SwapPane {
         SwapPane.inputs.one.input.trigger("input")
     }
 
-    setSelectOptions(input, balances){
-        input.select.html("")
-
-        this.select1OldElem = ""
-        this.select2OldElem = ""
-
-        Object.entries(balances).map(([contractAddr, balance]) => {
-            let elem = $("<option></option>")
-            elem.val(contractAddr)
-            elem.html(balance.ticker)
-
-            if(MAIN_ASSET.contract == balance.contract)
-                elem.attr("data-content",
-                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+MAIN_ASSET.ticker+'/'+MAIN_ASSET.ticker+'/logo.png);"></div><span class="selectText">'+MAIN_ASSET.ticker+'</span>')
-            else
-                elem.attr("data-content",
-                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+MAIN_ASSET.ticker+'/'+balance.contract+'/logo.png);"></div><span class="selectText">'+balance.ticker+'</span>')
-
-            input.select.append(elem)
-        })
-
-        input.select.selectpicker('refresh');
-    }
-
-    //remove selected token in other list
-    updateSelects(elem){
-        if(elem == 1){
-            if(this.select2OldElem != ""){
-                SwapPane.inputs.two.select.append(this.select2OldElem.elem)
-                this.select2OldElem.elem.insertIndex(this.select2OldElem.index)
-            }
-            if(SwapPane.inputs.one.select.val() == ""){
-                this.select2OldElem = ""
-                SwapPane.inputs.two.select.selectpicker('refresh')
-                return
-            }
-            const oldElem = SwapPane.inputs.two.select.find('[value='+SwapPane.inputs.one.select.val()+']')
-            this.select2OldElem = {
-                elem: oldElem,
-                index: oldElem.index()
-            }
-            this.select2OldElem.elem.remove()
-            SwapPane.inputs.two.select.selectpicker('refresh')
-        }else{
-            if(this.select1OldElem != ""){
-                SwapPane.inputs.one.select.append(this.select1OldElem.elem)
-                this.select1OldElem.elem.insertIndex(this.select1OldElem.index)
-            }
-            if(SwapPane.inputs.two.select.val() == ""){
-                this.select1OldElem = ""
-                SwapPane.inputs.one.select.selectpicker('refresh')
-                return
-            }
-            const oldElem = SwapPane.inputs.one.select.find('[value='+SwapPane.inputs.two.select.val()+']')
-            this.select1OldElem = {
-                elem: oldElem,
-                index: oldElem.index()
-            }
-            this.select1OldElem.elem.remove()
-            SwapPane.inputs.one.select.selectpicker('refresh')
-        }
-
-    }
 
     updateBalance(elem, bypassLoading = false){
-        if(elem.select.val() == ""){
-            elem.ticker.html("")
+        console.log(elem.ticker.html())
 
-            if(elem.select.val() == "") {
-                elem.balance.html("-")
-                elem.btnTicker.html("-")
-                elem.rateTicker.html("-")
-                return
-            }
-            return
-        }
-
-        if(!bypassLoading){
-            elem.ticker.html("")
-
-            if(elem.select.val() == "") {
-                elem.balance.html("-")
-                elem.btnTicker.html("-")
-                elem.rateTicker.html("-")
-                return
-            }
-
-            elem.balance.html("<i class='fas fa-spinner fa-pulse'></i>")
-        }
-
-        getBalance(elem.select.val()).then(function(res){
+        getBalance(elem.contract.html()).then(function(res){
             elem.ticker.html(res.ticker)
             elem.rateTicker.html(res.ticker)
             elem.btnTicker.html(res.ticker)
             elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
         })
     }
+
 
     checkAmount(){
         SwapPane.inputs.two.input.val("")
@@ -313,26 +264,28 @@ class SwapPane {
         const _this = this
 
         const intAmnt = parseFloat(SwapPane.inputs.one.input.val())
-        if(isNaN(intAmnt) || intAmnt <= 0 || SwapPane.inputs.one.select.val() == "" || SwapPane.inputs.two.select.val() == ""){
-            SwapPane.rate.loading.hide()
+        if(isNaN(intAmnt) || intAmnt <= 0 || SwapPane.inputs.one.ticker.html() == "" || SwapPane.inputs.two.ticker.html() == ""){
+            SwapPane.rate.loading.css("visibility", "hidden")
             return
         }
 
         const amount = SwapPane.inputs.one.input.val()
-        const token1 = SwapPane.inputs.one.select.val()
-        const token2 = SwapPane.inputs.two.select.val()
-
-        SwapPane.rate.loading.show()
+        const token1 = SwapPane.inputs.one.contract.html()
+        const token2 = SwapPane.inputs.two.contract.html()
+        console.log(token1)
+        console.log(token2)
+        console.log(amount)
+        SwapPane.rate.loading.css("visibility", "visible")
 
         getSwapRoute(amount, token1, token2).then(function(res){
             getBalance(token2).then(function(t2Bal) {
                 //if entry has changed while calculating route then ignore
-                if (amount != SwapPane.inputs.one.input.val() || token1 != SwapPane.inputs.one.select.val() || token2 != SwapPane.inputs.two.select.val())
+                if (amount != SwapPane.inputs.one.input.val() || token1 !=  SwapPane.inputs.one.contract.html() || token2 != SwapPane.inputs.two.contract.html())
                     return
 
                 _this.route = res
 
-                SwapPane.rate.loading.hide()
+                SwapPane.rate.loading.css("visibility", "hidden")
 
                 if(res === false){
                     SwapPane.rate.notFound.show()

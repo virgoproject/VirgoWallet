@@ -653,7 +653,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(true)
             })
             break
-            
+
         case 'tickerFromChainID':
             sendResponse(baseWallet.getChainByID(request.id))
             break
@@ -709,7 +709,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case "resetAirdrops":
             browser.storage.local.set({"airdropinfos": []})
             break
-            
+
         case 'deleteConnectedSite':
             for (var i=0 ; i < connectedWebsites.length ; i++)
             {
@@ -773,7 +773,7 @@ function forgetWallet() {
 
 async function getBalance(asset){
     const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
-
+console.log(bal)
     if(!bal.tracked){
         const contract = new web3.eth.Contract(ERC20_ABI, asset)
         bal.balance = await contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()

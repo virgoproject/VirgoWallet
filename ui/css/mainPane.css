@@ -228,3 +228,96 @@
 #testnetFaucet span:hover {
     color: var(--mainColorDark10);
 }
+
+
+#swapReview{
+    position: absolute;
+    z-index: 10;
+    background: white;
+    margin-top: -52px;
+    padding:1.5em;
+    height: 40em;
+}
+
+#swapReview .title{
+    padding-left: 65px;
+}
+
+#tokenSelect {
+    background: white;
+    position: absolute;
+    left: 0px;
+    top: 0em;
+    bottom: 0em;
+    z-index: 21;
+    width: 100%;
+
+}
+
+#tokenSelect .asset img {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+}
+
+#tokenSelect .tokenCategory {
+    padding: 0;
+}
+
+#tokenSelect .asset {
+    cursor: pointer;
+    padding: 0.5em 3em !important;
+}
+
+#tokenSelect .asset:hover {
+    background-color: var(--lightGrey);
+}
+
+#tokenSelect .asset .title {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#tokenSelect .asset .desc {
+    font-size: 0.8em;
+    margin-bottom: 0;
+}
+
+#tokenSelect .asset i {
+    font-size: 1em;
+    vertical-align: middle;
+    color: var(--textLight);
+}
+
+#tokenSelect .categoryTitle {
+    padding-left: 2em;
+    margin: 0;
+}
+
+#tokenSelect #categoriesWrapper {
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: calc(100% - 92px);
+    padding-bottom: 1em;
+}
+
+#tokenBack {
+    padding-left: 1em;
+}
+
+#searchBarWrapper {
+    margin: 1em 2em;
+    border-bottom: 1px solid var(--lightGrey);
+    padding-bottom: 0.25em;
+}
+
+#searchBar{
+    border: none;
+    width: 100%;
+    outline: none;
+}
+
+#tokensNotFound {
+    font-size: 1.25em;
+}

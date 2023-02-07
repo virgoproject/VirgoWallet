@@ -4,6 +4,7 @@
 
 #swapPane .inputHeader {
     font-size: 0.8em;
+    padding-bottom: 0.7em;
 }
 
 #swapPane .inputHeader .amount {
@@ -18,10 +19,13 @@
     color: var(--mainColor)
 }
 
+
+
 #swapPane .swapInput {
-    background: var(--whiteBackground);
-    border-radius: 0.5em;
+    background: #F3F3F3;
+    border-radius: 5.5em;
     height: 50px;
+    margin-bottom: 2.5em;
 }
 
 #swapPane .swapInput .amountInput {
@@ -66,8 +70,8 @@
 }
 
 #swapPane .swapInput .selectLogo {
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
     background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
@@ -83,19 +87,25 @@
 }
 
 #swapPane .swapInput .selectCoin {
-    border-left: 2px solid #ece2f3;
+    background: white;
+    border-radius: 55px;
+    width: 33%;
+    margin-left: 20px;
 }
 
 #swapSwitchBtn {
-    height: 36px;
-    width: 36px;
+    height: 50px;
+    width: 50px;
     padding: 0px;
-    background: var(--whiteBackground);
+    background: #F3F3F3;
     border: none;
     margin: auto;
     border-radius: 50%;
     color: var(--mainColorDark10);
     transition: all 0.2s ease-in;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 #swapSwitchBtn:hover {
@@ -164,6 +174,7 @@
 }
 
 #swapParams {
+    padding: 4em 0em;
     margin-top: 1em;
 }
 
@@ -198,6 +209,10 @@
     font-size: 1.25em;
     margin: 0;
 }
+#swapReview .details {
+    background: #F3F3F3;
+    border-radius: 10px;
+}
 
 #swapReview .details p {
     margin: 0;
@@ -211,6 +226,7 @@
 
 #swapReview .details .title, #swapReview .details .value {
     margin: 0.25em 0;
+    padding: 0;
 }
 
 #swapReview .ticker {
@@ -265,3 +281,79 @@
     font-size: 2.5em;
     margin: 0.25em auto;
 }
+
+
+
+.closeBtn, .backBtn, #cancelOrderClose {
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    color: #333;
+}
+
+.closeBtn:hover, .backBtn:hover, #cancelOrderClose:hover {
+    color: black;
+}
+
+.exchangeInput {
+    background-color: var(--lightGrey);
+    padding: 0.5em;
+    border-radius: 100em;
+}
+
+.exchangeInputWrapper {
+    margin: 0.5em !important;
+}
+
+.swapInput input {
+    background: transparent;
+    border: none;
+    font-size: 1.75em;
+    outline: none;
+    width: 100%;
+    line-height: 1em;
+}
+
+.swapInput .tokenSelect {
+    background: white;
+    border-radius: 100em;
+    padding: 0.3em;
+    cursor: pointer;
+    width: 121%;
+    height: 42px;
+}
+
+.swapInput img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+}
+
+.swapInput .ticker {
+    padding-left: 0.5em;
+    font-size: 1.2em;
+    line-height: 1em;
+    margin-bottom: 0em!important;
+    font-weight: 600;
+}
+
+#exchangeIcon {
+    background: var(--lightGrey);
+    color: var(--mainColor);
+    height: 48px;
+    width: 48px;
+    display: inline-block;
+    line-height: 48px;
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+

@@ -56,7 +56,7 @@ $("#footer .footerElem").click(function(){
     $("#body .bodyElem."+$(this).attr("data-target")).show()
     showStatsBar()
 
-    if ($(this).attr("data-target") === "send"){
+    if ($(this).attr("data-target") === "send" || $(this).attr("data-target") === "swap"){
         $(".stats ").hide()
         $(".header").css("height","unset")
     } else {

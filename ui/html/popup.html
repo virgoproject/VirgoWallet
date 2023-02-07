@@ -354,12 +354,23 @@
                         <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
                         <span class="maxBtn" id="swapMaxBtn1">Max</span>
                     </div>
-                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                        <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
+                    <div class="col-5">
+                        <div class="row tokenSelect" id="tokenSelectBtn1">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv2" style="display: none">
+                                <img src="https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true" id="selectedTokenImg1">
+                            </div>
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect2">
+                                <p style="display: none" id="sendContract"></p>
+                                <p class="ticker" id="selectedTokenTicker1">Select</p>
+                            </div>
+                            <div class="col-3 justify-content-center align-self-center">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <button id="swapSwitchBtn"><i class="fas fa-sync-alt"></i></button>
+                <div class="row mt-3" style="padding-bottom: 1em">
+                    <button id="swapSwitchBtn"><i class="fas fa-sync-alt" style="font-size: 22px"></i></button>
                 </div>
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
@@ -373,96 +384,38 @@
                     <div class="col-7 p-0">
                         <input type="text" class="amountInput" placeholder="0.0" id="swapInput2" disabled="disabled">
                     </div>
-                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                        <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                    <div class="col-5">
+                        <div class="row tokenSelect" id="tokenSelectBtn">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv1" style="display: none">
+                                <img src="https://github.com/virgoproject/tokens/blob/main/BNB/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png?raw=true"  id="selectedTokenImg">
+                            </div>
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect1">
+                                <p style="display: none" id="sendContract2"></p>
+                                <p class="ticker" id="selectedTokenTicker2">Select</p>
+                            </div>
+                            <div class="col-3 justify-content-center align-self-center">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-12 p-0" id="swapRate" style="display: none">
-                        <p class="rate">Rate: <span class="amount" id="swapRateAmount"></span> <span class="ticker" id="swapRateTicker2">-</span>/<span class="ticker" id="swapRateTicker1">-</span></p>
-                    </div>
-                    <div class="col-12 text-center" id="swapRateLoading" style="display: none">
+                <div class="row mt-2" >
+                    <div class="col-12 text-center" id="swapRateLoading" style="visibility: hidden">
                         <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
-                    </div>
-                    <div class="route" id="swapRoute" style="display: none">
                     </div>
                     <div class="alert alert-warning align-items-center p-2" role="alert" id="swapRouteNotFound" style="display: none">
                         <div>
                             <i class="far fa-exclamation-circle"></i> Not enough liquidity for this trade
                         </div>
                     </div>
-                    <div class="step" id="swapRouteBaseStep" style="display: none"></div>
-                    <div class="col-12 p-0" style="margin-top: 2.25em;">
-                        <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
+
+                    <div class="col-12 p-0" style="margin-top: 1.25em;">
+                        <button class="button w-100" id="initSwapBtn" disabled="true">NEXT</button>
                     </div>
                 </div>
             </div>
             <div id="swapLoading" style="display: none">
                 <i class="fas fa-spinner fa-pulse"></i>
-            </div>
-            <div id="swapReview" style="display: none">
-                <div class="row">
-                    <div class="col-3">
-                        <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i> back</p>
-                    </div>
-                    <div class="col-9 text-right">
-                        <h5>Payment details</h5>
-                    </div>
-                </div>
-                <div class="receiveAmount">
-                    <p class="m-0">You will receive</p>
-                    <p class="amount">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
-                </div>
-                <div class="row details mt-2">
-                    <div class="col-5">
-                        <p class="title">You transfer</p>
-                    </div>
-                    <div class="col-7">
-                        <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
-                    </div>
-                    <div class="col-4">
-                        <p class="title">Swap fees</p>
-                    </div>
-                    <div class="col-8">
-                        <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
-                    </div>
-                    <div class="col-4">
-                        <p class="title">Slippage</p>
-                    </div>
-                    <div class="col-8">
-                        <p class="value">Auto</p>
-                    </div>
-                    <div class="col-5">
-                        <p class="title">Network fees</p>
-                    </div>
-                    <div class="col-7">
-                        <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
-                    </div>
-                </div>
-                <div class="range">
-                    <div class="row steps">
-                        <div class="col-4">
-                            <div class="leftStep">
-                                <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="centerStep">
-                                <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="rightStep">
-                                <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="range" min="0" max="100" step="10" class="w-100" id="swapRangeFees">
-                </div>
-                <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
-                    <val>Init swap</val>
-                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-                </button>
             </div>
             <div id="swapComing" class="text-center mt-5" style="display: none">
                 <h3>Coming soon!</h3>
@@ -726,6 +679,56 @@
                 <p>Airdrop</p>
             </div>
         </div>
+    </div>
+    <div id="swapReview" style="display: none">
+        <div class="row">
+            <div class="col-1">
+                <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
+            </div>
+            <div class="col-11 title">
+                <h5>Payment details</h5>
+            </div>
+        </div>
+        <div class="row details mt-4 mb-4">
+            <div class="col-5 mt-3 mb-4">
+                <p class="title">You will receive</p>
+            </div>
+            <div class="col-7 mt-3 mb-4">
+                <p class="value">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+            </div>
+            <hr>
+            <div class="col-5 mt-3 mb-4">
+                <p class="title">You transfer</p>
+            </div>
+            <div class="col-7 mt-3 mb-4">
+                <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
+            </div>
+            <hr>
+            <div class="col-4 mt-3 mb-4">
+                <p class="title">Swap fees</p>
+            </div>
+            <div class="col-8 mt-3 mb-4">
+                <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
+            </div>
+            <hr>
+            <div class="col-4 mt-3 mb-4">
+                <p class="title">Slippage</p>
+            </div>
+            <div class="col-8 mt-3 mb-4">
+                <p class="value">Auto</p>
+            </div>
+            <hr>
+            <div class="col-5 mt-3 mb-4">
+                <p class="title">Network fees</p>
+            </div>
+            <div class="col-7 mt-3 mb-4">
+                <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
+            </div>
+        </div>
+        <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
+            <val>Init swap</val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
     </div>
     <div id="chainSelector" class="p-4 pt-0">
         <div class="row gx-2" id="chainsContainer">
@@ -2030,6 +2033,69 @@
             </button>
         </div>
     </div>
+    <div id="tokenSelect" style="display: none;">
+        <div class="row" style="padding-top: 15px">
+            <div class="col-2 justify-content-center align-self-center">
+                <i class="fa-light fa-chevron-left backBtn" id="tokenBack"></i>
+            </div>
+            <div class="col-8 text-center">
+                <h3 class="m-0">Select a currency</h3>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" id="searchBarWrapper">
+            <div class="col-10 p-0">
+                <input type="text" placeholder="Search for a currency" id="searchBar">
+            </div>
+            <div class="col-2 p-0 text-right">
+                <i class="fa-light fa-magnifying-glass"></i>
+            </div>
+        </div>
+        <div id="categoriesWrapper">
+            <div id="categories">
+                <div class="row mb-3 tokenCategory" id="popularTokensCatWrapper">
+                    <div class="col-12">
+                        <p class="categoryTitle">Popular</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="row" id="popularTokensCat">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row tokenCategory" id="allTokensCatWrapper">
+                    <div class="col-12">
+                        <p class="categoryTitle">All</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="row" id="allTokensCat">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tokensLoading" class="text-center" style="display: none">
+            <i class="fa-light fa-loader fa-spin"></i>
+        </div>
+        <div id="tokensNotFound" class="text-center" style="display: none">
+            <p>Nothing found <i class="fal fa-ghost"></i></p>
+        </div>
+        <div class="col-12 asset" id="baseToken" style="display: none">
+            <div class="row">
+                <div class="col-2 justify-content-center align-self-center text-center">
+                    <img src="">
+                </div>
+                <div class="col-8 justify-content-center align-self-center">
+                    <p class="title">Virgo</p>
+                    <p class="desc">VGO • Binance Smart Chain</p>
+                </div>
+                <div class="col-2 justify-content-center align-self-center text-right">
+                    <i class="fa-light fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../js/utils/jquery.min.js"></script>
@@ -2045,6 +2111,7 @@
 <script src="../js/utils/chart.min.js"></script>
 <script src="../js/utils/bootstrap-select.min.js"></script>
 <script src="../js/utils/backgroundMessaging.js"></script>
+<script src="../js/utils/tokensSelect.js"></script>
 <script src="../js/events.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/panes/unlockPane.js"></script>
