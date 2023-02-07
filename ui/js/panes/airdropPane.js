@@ -112,11 +112,12 @@ class AirdropPane{
         })
     }
     loadActiveDrops(){
-        fetch('https://airdrops.virgo.net:2053/api/activedrops', {
+        fetch('http://localhost:3000/api/activedrops', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
         }).then(response => response.json())
             .then(res => {
+                console.log(res)
                 let onGoingSection = document.getElementById('onGoingAirdrop')
                 if (res.length <= 0) {
                     onGoingSection.classList.add('d-none')
@@ -129,6 +130,7 @@ class AirdropPane{
                 airdropPane.checkLoadingState()
                 for (let i = 0; res.length > i; i++){
                     tickerFromChainID(res[i].chainID).then(function (infos) {
+                        console.log(infos)
                         if (!infos) return
                         let chain = infos.ticker
                         if(chain === undefined)
@@ -163,34 +165,131 @@ class AirdropPane{
                                 elem.querySelector('.airdropCoinInfos').classList.add('d-none')
 
                                 elem.querySelector('.joinDrop').addEventListener('click', (e) => {
-                                    let elemClicked = e.currentTarget
-                                    elemClicked.textContent = "Airdrop joined"
-                                    e.currentTarget.disabled = true
-                                    getBaseInfos().then(function (infos) {
-                                        const playAddress = infos.addresses[0].address
-                                        setAirdropPlay(playAddress,elemClicked.id).then(function (infos) {
-                                            if(infos){
-                                                let elemjoined = elem.querySelector('.usersJoined')
-                                                let cntJoined = elemjoined.textContent
-                                                let userNmb = Number(cntJoined)
-                                                elemjoined.innerHTML = userNmb + 1
 
-                                                let totalParticipated = document.getElementById("airdropsParticipationCount")
-                                                let total = totalParticipated.textContent
-                                                let nmb = Number(total)
-                                                totalParticipated.innerHTML = nmb + 1
-                                            }
-                                            let userInfos = {
-                                                airdropID : elemClicked.id,
-                                                address : playAddress
-                                            }
-                                            fetch('https://airdrops.virgo.net:2053/api/airdropsetplay',{
-                                                method : "POST",
-                                                body : JSON.stringify(userInfos),
-                                                headers: {'Content-Type': 'application/json'}
+                                    let aidropID = e.currentTarget.id
+
+                                    if (res[i].conditions === "") {
+                                        let elemClicked = e.currentTarget
+                                        elemClicked.textContent = "Airdrop joined"
+                                        e.currentTarget.disabled = true
+                                        getBaseInfos().then(function (infos) {
+                                            const playAddress = infos.addresses[0].address
+                                            setAirdropPlay(playAddress,elemClicked.id).then(function (infos) {
+                                                if(infos){
+                                                    let elemjoined = elem.querySelector('.usersJoined')
+                                                    let cntJoined = elemjoined.textContent
+                                                    let userNmb = Number(cntJoined)
+                                                    elemjoined.innerHTML = userNmb + 1
+
+                                                    let totalParticipated = document.getElementById("airdropsParticipationCount")
+                                                    let total = totalParticipated.textContent
+                                                    let nmb = Number(total)
+                                                    totalParticipated.innerHTML = nmb + 1
+                                                }
+                                                let userInfos = {
+                                                    airdropID : elemClicked.id,
+                                                    address : playAddress
+                                                }
+                                                fetch('https://airdrops.virgo.net:2053/api/airdropsetplay',{
+                                                    method : "POST",
+                                                    body : JSON.stringify(userInfos),
+                                                    headers: {'Content-Type': 'application/json'}
+                                                })
                                             })
                                         })
-                                    })
+                                    }else {
+
+                                        let airdropConditions = document.querySelector('.airdropConditions')
+                                        let airdropConditionModal = document.querySelector('.airdropModalConditions')
+                                        let airdropConditionVerify = document.querySelector('.airdropModalConditionsVerify')
+                                        let understandBtn = document.querySelector('.buttonModal')
+                                        let inputCheckName = document.querySelector('.checkTwitterNameInput')
+                                        let twitterInfos = res[i].conditions
+                                        let parsedInfos = JSON.parse(twitterInfos)
+                                        let parsedInfosArr = [parsedInfos]
+
+                                        let linkTo = document.getElementById('exempleLink')
+
+                                        for(var obj in parsedInfosArr){
+                                            if(parsedInfosArr.hasOwnProperty(obj)){
+                                                for(var prop in parsedInfosArr[obj]){
+                                                    if(parsedInfosArr[obj].hasOwnProperty(prop)){
+                                                        let clonedLink = linkTo.cloneNode(true)
+                                                        clonedLink.innerHTML = prop
+                                                        clonedLink.setAttribute('id',parsedInfosArr[obj][prop])
+                                                        clonedLink.addEventListener('click', (e) => {
+                                                            browser.windows.create({
+                                                                url: parsedInfosArr[obj][prop]
+                                                            })
+                                                        })
+                                                        clonedLink.setAttribute('href', parsedInfosArr[obj][prop])
+                                                        document.querySelector('.cloneLinkAirdrop').appendChild(clonedLink)
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        airdropConditionModal.style.display = ""
+                                        airdropConditions.style.display = ""
+
+                                        document.querySelector('.chevron1').addEventListener('click',(e) => {
+                                            airdropConditionModal.setAttribute('style','display:none !important')
+                                            airdropConditions.setAttribute('style','display:none !important')
+                                        })
+
+                                        document.querySelector('.chevron2').addEventListener('click',(e) => {
+                                            airdropConditionModal.style.display = ""
+                                            airdropConditionVerify.setAttribute('style','display:none !important')
+                                        })
+
+                                        understandBtn.addEventListener('click', (e) => {
+                                            airdropConditionModal.setAttribute('style','display:none !important')
+                                            airdropConditionVerify.style.display = ""
+
+                                        })
+
+                                        document.querySelector('.BtnCheckTwitter').addEventListener('click',(e)=> {
+                                            let TwitterName = inputCheckName.value
+                                            let elemClicked = e.currentTarget
+                                            if(TwitterName === "") return
+
+                                            airdropConditionModal.setAttribute('style','display:none !important')
+                                            airdropConditionVerify.setAttribute('style','display:none !important')
+                                            airdropConditions.setAttribute('style','display:none !important')
+
+                                            elemClicked.textContent = "Airdrop joined"
+                                            document.querySelector('.joinDrop').innerHTML = "Airdrop joined"
+                                            document.getElementById(aidropID).innerHTML = "Airdrop joined"
+                                            document.getElementById(aidropID).disabled = true
+                                            e.currentTarget.disabled = true
+                                            getBaseInfos().then(function (infos) {
+                                                const playAddress = infos.addresses[0].address
+                                                setAirdropPlay(playAddress,elemClicked.id).then(function (infos) {
+                                                    if(infos){
+                                                        let elemjoined = elem.querySelector('.usersJoined')
+                                                        let cntJoined = elemjoined.textContent
+                                                        let userNmb = Number(cntJoined)
+                                                        elemjoined.innerHTML = userNmb + 1
+
+                                                        let totalParticipated = document.getElementById("airdropsParticipationCount")
+                                                        let total = totalParticipated.textContent
+                                                        let nmb = Number(total)
+                                                        totalParticipated.innerHTML = nmb + 1
+                                                    }
+                                                    let userInfos = {
+                                                        airdropID : aidropID,
+                                                        address : playAddress,
+                                                        username : TwitterName
+                                                    }
+                                                    fetch('http://localhost:3000/api/airdropsetplay',{
+                                                        method : "POST",
+                                                        body : JSON.stringify(userInfos),
+                                                        headers: {'Content-Type': 'application/json'}
+                                                    })
+                                                })
+                                            })
+                                        })
+                                    }
                                 })
 
                                 let socialsLinks = elem.querySelectorAll(".cryptoMedia a")
@@ -276,7 +375,7 @@ class AirdropPane{
             })
     }
     loadUpcomingDrops(){
-        fetch('https://airdrops.virgo.net:2053/api/upcomingairdrop', {
+        fetch('http://localhost:3000/api/upcomingairdrop', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
 
@@ -400,7 +499,7 @@ class AirdropPane{
             })
     }
     loadpassedDrops(){
-        fetch('https://airdrops.virgo.net:2053/api/endedairdrop', {
+        fetch('http://localhost:3000/api/endedairdrop', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
 
