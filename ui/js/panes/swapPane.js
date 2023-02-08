@@ -4,7 +4,7 @@ class SwapPane {
         one: {
             input: $("#swapInput1"),
             btnSelect: $("#tokenSelectBtn1"),
-            img : $("#selectedTokenImg1"),
+            img: $("#selectedTokenImg1"),
             ticker: $("#selectedTokenTicker1"),
             contract: $("#sendContract"),
             rateTicker: $("#swapRateTicker1"),
@@ -15,7 +15,7 @@ class SwapPane {
         two: {
             input: $("#swapInput2"),
             btnSelect: $("#tokenSelectBtn"),
-            img : $("#selectedTokenImg"),
+            img: $("#selectedTokenImg"),
             ticker: $("#selectedTokenTicker2"),
             contract: $("#sendContract2"),
             rateTicker: $("#swapRateTicker2"),
@@ -59,34 +59,30 @@ class SwapPane {
         const _this = this
 
 
-
-
-
-        SwapPane.inputs.one.btnMax.click(function(){
-            if(SwapPane.inputs.one.btnSelect.html() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
+        SwapPane.inputs.one.btnMax.click(function () {
+            if (SwapPane.inputs.one.btnSelect.html() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
             SwapPane.inputs.one.input.val(SwapPane.inputs.one.balance.html())
             SwapPane.inputs.one.input.trigger("input")
         })
 
-        SwapPane.inputs.one.btnSelect.click(function (){
+        SwapPane.inputs.one.btnSelect.click(function () {
             $("#tokenSelect").show()
             SwapPane.inputs.one.btnSelect.attr("class", "row tokenSelect one")
             displayTokens()
         })
 
-        SwapPane.inputs.two.btnSelect.click(function (){
+        SwapPane.inputs.two.btnSelect.click(function () {
             $("#tokenSelect").show()
             SwapPane.inputs.two.btnSelect.attr("class", "row tokenSelect two")
             displayTokens()
         })
 
-        $("#tokenBack").click(function (){
+        $("#tokenBack").click(function () {
             $("#tokenSelect").hide()
         })
 
 
-
-        SwapPane.switchBtn.click(function(){
+        SwapPane.switchBtn.click(function () {
             const elem = document.getElementById("tokenSelectBtn1")
             const elem2 = document.getElementById("tokenSelectBtn")
 
@@ -116,8 +112,8 @@ class SwapPane {
             $("#swapTicker2").html(swapTicker1)
         })
 
-        SwapPane.initBtn.click(function(){
-            if(SwapPane.inputs.one.input.val() == "") return
+        SwapPane.initBtn.click(function () {
+            if (SwapPane.inputs.one.input.val() == "") return
 
             SwapPane.params.hide()
             SwapPane.loading.show()
@@ -128,17 +124,13 @@ class SwapPane {
             SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
             SwapPane.review.outTicker.html(SwapPane.inputs.two.ticker.html())
 
-            estimateSwapFees(SwapPane.inputs.one.input.val(), _this.route.route).then(function(res){
-                SwapPane.review.swapFees.html(Utils.precisionRound(parseFloat(SwapPane.inputs.one.input.val())*res.feesRate, 9))
+            estimateSwapFees(SwapPane.inputs.one.input.val(), _this.route.route).then(function (res) {
+                SwapPane.review.swapFees.html(Utils.precisionRound(parseFloat(SwapPane.inputs.one.input.val()) * res.feesRate, 9))
                 SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
 
                 SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
 
-                _this.estimateFees = function(){
 
-                    getGasPrice().then(function(gasPrice){
-                        getBalance(MAIN_ASSET.ticker).then(function (nativeBalance) {
-                            let feesModifier = 0.5 + SwapPane.review.rangeFees.val() / 100
                 let gas = res.gas
                 let decimals = MAIN_ASSET.decimals
                 let tag;
@@ -158,35 +150,32 @@ class SwapPane {
                 }
 
 
-                            if(SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
-                                SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
+                if (SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
+                    SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
 
-                            SwapPane.loading.hide()
-                            if(!isBtnDisabled(SwapPane.review.confirmBtn) && !SwapPane.params.is(":visible"))
-                                SwapPane.review.self.show()
-
-
-
+                SwapPane.loading.hide()
+                if (!isBtnDisabled(SwapPane.review.confirmBtn) && !SwapPane.params.is(":visible"))
+                    SwapPane.review.self.show()
 
 
             })
 
         })
 
-        SwapPane.review.rangeFees.on("input", function(){
+        SwapPane.review.rangeFees.on("input", function () {
             _this.estimateFees()
         })
 
-        SwapPane.review.back.click(function(){
+        SwapPane.review.back.click(function () {
             clearInterval(_this.feesInterval)
             SwapPane.review.self.hide()
             SwapPane.params.show()
         })
 
-        SwapPane.review.confirmBtn.click(function (){
+        SwapPane.review.confirmBtn.click(function () {
             disableLoadBtn(SwapPane.review.confirmBtn)
             initSwap(SwapPane.review.amountIn.html(), _this.route.route, _this.gasPrice)
-                .then(function(){
+                .then(function () {
                     SwapPane.inputs.one.input.val("")
                     SwapPane.inputs.two.input.val("")
                     SwapPane.inputs.one.input.trigger("input")
@@ -202,136 +191,135 @@ class SwapPane {
             _this.setSwap(data)
         })
 
-            setInterval(function(){
-                if (SwapPane.inputs.one.ticker.html() !== "Select" ){
+        setInterval(function () {
+            if (SwapPane.inputs.one.ticker.html() !== "Select") {
                 _this.updateBalance(SwapPane.inputs.one)
                 _this.updateBalance(SwapPane.inputs.two)
+            }
+        }, 500)
 
-                }
-
-            },500)
-
-        setInterval(function(){
+        setInterval(function () {
             _this.checkAmount()
-        },5000)
-
-
-
-
+        }, 5000)
     }
 
-    setSwap(data){
-        const selectedAddress = data.addresses[data.selectedAddress]
-        const selectedWallet = data.wallets[data.selectedWallet].wallet
+        setSwap(data)
+        {
+            const selectedAddress = data.addresses[data.selectedAddress]
+            const selectedWallet = data.wallets[data.selectedWallet].wallet
 
-        if(selectedWallet.swapParams != false){
-            SwapPane.params.show()
-            SwapPane.comingSoon.hide()
-        }else{
-            SwapPane.params.hide()
-            SwapPane.comingSoon.show()
-            return
+            if (selectedWallet.swapParams != false) {
+                SwapPane.params.show()
+                SwapPane.comingSoon.hide()
+            } else {
+                SwapPane.params.hide()
+                SwapPane.comingSoon.show()
+                return
+            }
+
+
+            this.updateSwap(data)
+        }
+
+        updateSwap(data)
+        {
+            this.updateBalance(SwapPane.inputs.one)
+            this.updateBalance(SwapPane.inputs.two)
+            SwapPane.inputs.one.input.trigger("input")
         }
 
 
-        this.updateSwap(data)
-    }
+        updateBalance(elem, bypassLoading = false)
+        {
+            console.log(elem.ticker.html())
 
-    updateSwap(data){
-        this.updateBalance(SwapPane.inputs.one)
-        this.updateBalance(SwapPane.inputs.two)
-        SwapPane.inputs.one.input.trigger("input")
-    }
-
-
-    updateBalance(elem, bypassLoading = false){
-        console.log(elem.ticker.html())
-
-        getBalance(elem.contract.html()).then(function(res){
-            elem.ticker.html(res.ticker)
-            elem.rateTicker.html(res.ticker)
-            elem.btnTicker.html(res.ticker)
-            elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
-        })
-    }
-
-
-    checkAmount(){
-        SwapPane.inputs.two.input.val("")
-        SwapPane.rate.route.hide()
-        SwapPane.rate.self.hide()
-        SwapPane.rate.notFound.hide()
-        SwapPane.initBtn.attr("disabled", true)
-
-        const _this = this
-
-        const intAmnt = parseFloat(SwapPane.inputs.one.input.val())
-        if(isNaN(intAmnt) || intAmnt <= 0 || SwapPane.inputs.one.ticker.html() == "" || SwapPane.inputs.two.ticker.html() == ""){
-            SwapPane.rate.loading.css("visibility", "hidden")
-            return
-        }
-
-        const amount = SwapPane.inputs.one.input.val()
-        const token1 = SwapPane.inputs.one.contract.html()
-        const token2 = SwapPane.inputs.two.contract.html()
-        console.log(token1)
-        console.log(token2)
-        console.log(amount)
-        SwapPane.rate.loading.css("visibility", "visible")
-
-        getSwapRoute(amount, token1, token2).then(function(res){
-            getBalance(token2).then(function(t2Bal) {
-                //if entry has changed while calculating route then ignore
-                if (amount != SwapPane.inputs.one.input.val() || token1 !=  SwapPane.inputs.one.contract.html() || token2 != SwapPane.inputs.two.contract.html())
-                    return
-
-                _this.route = res
-
-                SwapPane.rate.loading.css("visibility", "hidden")
-
-                if(res === false){
-                    SwapPane.rate.notFound.show()
-                    return
-                }
-
-                SwapPane.rate.route.html("")
-
-                for (const step of res.route) {
-                    const elem = SwapPane.rate.routeBaseStep.clone()
-                    if (step.toLowerCase() == MAIN_ASSET.contract.toLowerCase())
-                        elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + MAIN_ASSET.ticker + "/logo.png)")
-                    else
-                        elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step + "/logo.png), url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step.toLowerCase() + "/logo.png)")
-                    SwapPane.rate.route.append(elem)
-                    elem.show()
-                }
-                SwapPane.rate.route
-                    .removeClass("steps3")
-                    .removeClass("steps4")
-                    .removeClass("steps5")
-                    .addClass("steps" + res.route.length)
-
-                SwapPane.rate.route.show()
-                SwapPane.rate.self.show()
-
-                const amountOut = parseInt(res.amount)
-
-                SwapPane.inputs.two.input.val(amountOut / 10 ** t2Bal.decimals)
-                SwapPane.rate.amount.html((amountOut / 10 ** t2Bal.decimals)/SwapPane.inputs.one.input.val())
-
-                if(parseFloat(SwapPane.inputs.one.input.val()) <= parseFloat(SwapPane.inputs.one.balance.html()))
-                    SwapPane.initBtn.attr("disabled", false)
-
-                if(_this.checkAmountTimeout !== undefined)
-                    clearTimeout(_this.checkAmountTimeout)
-
-                _this.checkAmountTimeout = setTimeout(function(){
-                    _this.checkAmount()
-                }, 10000)
+            getBalance(elem.contract.html()).then(function (res) {
+                elem.ticker.html(res.ticker)
+                elem.rateTicker.html(res.ticker)
+                elem.btnTicker.html(res.ticker)
+                elem.balance.html(Utils.formatAmount(res.balance, res.decimals))
             })
-        })
+        }
+
+
+        checkAmount()
+        {
+            SwapPane.inputs.two.input.val("")
+            SwapPane.rate.route.hide()
+            SwapPane.rate.self.hide()
+            SwapPane.rate.notFound.hide()
+            SwapPane.initBtn.attr("disabled", true)
+
+            const _this = this
+
+            const intAmnt = parseFloat(SwapPane.inputs.one.input.val())
+            if (isNaN(intAmnt) || intAmnt <= 0 || SwapPane.inputs.one.ticker.html() == "" || SwapPane.inputs.two.ticker.html() == "") {
+                SwapPane.rate.loading.css("visibility", "hidden")
+                return
+            }
+
+            const amount = SwapPane.inputs.one.input.val()
+            const token1 = SwapPane.inputs.one.contract.html()
+            const token2 = SwapPane.inputs.two.contract.html()
+            console.log(token1)
+            console.log(token2)
+            console.log(amount)
+            SwapPane.rate.loading.css("visibility", "visible")
+
+            getSwapRoute(amount, token1, token2).then(function (res) {
+                getBalance(token2).then(function (t2Bal) {
+                    //if entry has changed while calculating route then ignore
+                    if (amount != SwapPane.inputs.one.input.val() || token1 != SwapPane.inputs.one.contract.html() || token2 != SwapPane.inputs.two.contract.html())
+                        return
+
+                    _this.route = res
+
+                    SwapPane.rate.loading.css("visibility", "hidden")
+
+                    if (res === false) {
+                        SwapPane.rate.notFound.show()
+                        return
+                    }
+
+                    SwapPane.rate.route.html("")
+
+                    for (const step of res.route) {
+                        const elem = SwapPane.rate.routeBaseStep.clone()
+                        if (step.toLowerCase() == MAIN_ASSET.contract.toLowerCase())
+                            elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + MAIN_ASSET.ticker + "/logo.png)")
+                        else
+                            elem.css("background-image", "url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step + "/logo.png), url(https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + step.toLowerCase() + "/logo.png)")
+                        SwapPane.rate.route.append(elem)
+                        elem.show()
+                    }
+                    SwapPane.rate.route
+                        .removeClass("steps3")
+                        .removeClass("steps4")
+                        .removeClass("steps5")
+                        .addClass("steps" + res.route.length)
+
+                    SwapPane.rate.route.show()
+                    SwapPane.rate.self.show()
+
+                    const amountOut = parseInt(res.amount)
+
+                    SwapPane.inputs.two.input.val(amountOut / 10 ** t2Bal.decimals)
+                    SwapPane.rate.amount.html((amountOut / 10 ** t2Bal.decimals) / SwapPane.inputs.one.input.val())
+
+                    if (parseFloat(SwapPane.inputs.one.input.val()) <= parseFloat(SwapPane.inputs.one.balance.html()))
+                        SwapPane.initBtn.attr("disabled", false)
+
+                    if (_this.checkAmountTimeout !== undefined)
+                        clearTimeout(_this.checkAmountTimeout)
+
+                    _this.checkAmountTimeout = setTimeout(function () {
+                        _this.checkAmount()
+                    }, 10000)
+                })
+            })
+        }
+
     }
 
-}
 
 const swapPane = new SwapPane()

@@ -2,7 +2,7 @@
     z-index: 10;
     height: 100%;
     border-radius: 30px;
-    position: absolute;
+    position: relative;
 }
 
 .speed{
@@ -21,12 +21,14 @@
 }
 
 .blackbg{
-    z-index: 2;
+    z-index: 1;
     display: flex;
     background: black;
     opacity: 0.8;
-    height: 46%;
-    margin-bottom: -35px;
+    position: relative;
+    height: 49%;
+    margin-bottom: -33px;
+    margin-top: -65px;
 }
 
 .see{
@@ -43,6 +45,7 @@
     bottom: 60px;
     color: gray;
     font-size: 35px;
+    left: 120px;
 }
 
 .titleFees{

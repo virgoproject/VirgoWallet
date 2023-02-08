@@ -16,6 +16,7 @@ class EditFees extends HTMLElement {
         $(".editFees").click(function (){
             getGasPrice().then(function(gasPrice) {
                 $("#editfees").css("display", "block")
+                $("#swapReview").css("display", "none")
                 let finalGasPriceSlow;
                 finalGasPriceSlow = Math.round(gasPrice * 0.8)
                 let finalGasPriceMedium;
@@ -113,6 +114,7 @@ class EditFees extends HTMLElement {
 
         $(".saveFees").click(function (){
             $("#editfees").css("display", "none")
+            $("#swapReview").css("display", "block")
         })
     }
 
