@@ -23,7 +23,6 @@ class SwapPane {
             btnTicker: $("#swapBtnTicker2")
         }
     }
-
     static rate = {
         self: $("#swapRate"),
         loading: $("#swapRateLoading"),
@@ -140,22 +139,24 @@ class SwapPane {
                     getGasPrice().then(function(gasPrice){
                         getBalance(MAIN_ASSET.ticker).then(function (nativeBalance) {
                             let feesModifier = 0.5 + SwapPane.review.rangeFees.val() / 100
+                let gas = res.gas
+                let decimals = MAIN_ASSET.decimals
+                let tag;
+                tag = document.querySelector("edit-fees")
+                const decimal = tag.dataset.decimal = decimals
+                const lim = tag.dataset.limit = gas
+                const tick = tag.dataset.ticker = MAIN_ASSET.ticker
+                $(".feesTicker").html(tick)
+                tag.start(gas)
 
-                            SwapPane.review.networkFees.html(Utils.formatAmount(res.gas * Math.round(gasPrice * feesModifier), MAIN_ASSET.decimals))
+                tag.onGasChanged = () => {
+                    $("#swapReviewNetFees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
+                }
+                tag.onBalance = () => {
+                    $("#swapReview .button").find("val").html("Send")
+                    $("#swapReview .button").attr("disabled", false)
+                }
 
-                            _this.gasPrice = Math.round(gasPrice * feesModifier)
-
-                            let totalForNative = new BN(res.gas).mul(new BN(_this.gasPrice))
-                            if (_this.route.route[0] == MAIN_ASSET.contract)
-                                totalForNative = totalForNative.add(new BN(Utils.toAtomicString(SwapPane.inputs.one.input.val(), MAIN_ASSET.decimals)))
-
-                            if (totalForNative.lte(new BN(nativeBalance.balance)) && !isBtnDisabled(SwapPane.review.confirmBtn)){
-                                SwapPane.review.confirmBtn.attr("disabled", false)
-                                SwapPane.review.confirmBtn.find("val").html("Init swap")
-                            }else{
-                                SwapPane.review.confirmBtn.attr("disabled", true)
-                                SwapPane.review.confirmBtn.find("val").html("Insufficient " + MAIN_ASSET.ticker)
-                            }
 
                             if(SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
                                 SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
@@ -163,14 +164,10 @@ class SwapPane {
                             SwapPane.loading.hide()
                             if(!isBtnDisabled(SwapPane.review.confirmBtn) && !SwapPane.params.is(":visible"))
                                 SwapPane.review.self.show()
-                        })
-                    })
-                }
 
-                _this.estimateFees()
-                _this.feesInterval = setInterval(function(){
-                    _this.estimateFees()
-                }, 2500)
+
+
+
 
             })
 
