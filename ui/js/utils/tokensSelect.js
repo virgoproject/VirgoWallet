@@ -1,11 +1,14 @@
 const tokenList = {
 
 }
-const networks = [ "BNB","ETH",  "MATIC"]
+const networks = [ "BNB","ETH",  "MATIC", "FTM","AVAX","ETHW"]
 const networksName = {
     "BNB": "Binance Smart Chain",
     "ETH": "Ethereum",
-    "MATIC": "Polygon"
+    "MATIC": "Polygon",
+    "FTM": "Fantom",
+    "AVAX" : "Avalanche",
+    "ETHW" : "Ether PoW"
 }
 
 const popularTokens = [
@@ -18,7 +21,7 @@ const popularTokens = [
     "0x4Fabb145d64652a948d72533023f6E7A623C7C53"
 ]
 
-let selectedToken = "FIAT.EUR"
+let selectedToken = "BNB.BNB"
 let selectedTokenDecimals = 0
 
 let scrollTokensCount = 0
@@ -26,7 +29,7 @@ let scrollReachedEnd = false
 
 function initList(){
     for(const network of networks){
-        if(network == "FIAT") continue
+
         tokenList[network] = []
 
         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+network+"/"+network+"/infos.json").then(resp => resp.json().then(json => {
@@ -70,7 +73,6 @@ function spawnToken(json, network){
                 $("#tokenSelectBtn1").attr("class", "row tokenSelect")
                 document.getElementById("imgDiv2").style.display = "block"
                 $("#tokenSelect2").attr("class", "col-6 justify-content-center align-self-center p-0")
-                    tokenList = []
             }else if ($("#tokenSelectBtn").hasClass("two")){
                 selectedToken = elem.id
                 selectedTokenDecimals = json.decimals
@@ -83,7 +85,6 @@ function spawnToken(json, network){
                 document.getElementById("selectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + network + "/" + json.contract + "/logo.png?raw=true"
                 document.getElementById("tokenSelect").style.display = "none"
                 $("#tokenSelectBtn").attr("class", "row tokenSelect")
-                tokenList = []
             }
         }
 
@@ -92,17 +93,17 @@ function spawnToken(json, network){
 
 
 
-        console.log(MAIN_ASSET.ticker)
-        console.log(network)
-
-    if(popularTokens.includes(json.contract) && network === MAIN_ASSET.ticker)
-        document.getElementById("popularTokensCat").append(elem)
-    else if (network === MAIN_ASSET.ticker)
+        if (network === MAIN_ASSET.ticker){
         document.getElementById("allTokensCat").append(elem)
+        }else if (network !== MAIN_ASSET.ticker){
+            document.getElementById(network +"." + json.contract).remove()
+        }
+
+
+
 }
 
 function displayTokenSelect(){
-    document.getElementById("popularTokensCat").innerHTML = ""
     document.getElementById("allTokensCat").innerHTML = ""
 
 
@@ -116,7 +117,6 @@ function displayTokens(){
     document.getElementById("tokensNotFound").style.display = "none"
     document.getElementById("tokensLoading").style.display = "none"
     document.getElementById("categoriesWrapper").style.display = "block"
-    document.getElementById("popularTokensCatWrapper").style.display = "block"
     document.getElementById("allTokensCatWrapper").style.display = "block"
 
 
@@ -128,6 +128,7 @@ function displayTokens(){
                         count++
                         continue
                     }
+
 
                     spawnToken(token, network)
                 }
@@ -152,14 +153,12 @@ document.getElementById("searchBar").oninput = e => {
     document.getElementById("tokensNotFound").style.display = "none"
 
 
-    document.getElementById("popularTokensCat").innerHTML = ""
     document.getElementById("allTokensCat").innerHTML = ""
 
     document.getElementById("tokensLoading").style.display = "block"
     document.getElementById("categoriesWrapper").style.display = "none"
 
 
-    document.getElementById("popularTokensCatWrapper").style.display = "block"
     document.getElementById("allTokensCatWrapper").style.display = "block"
 
     if(e.target.value == ""){
@@ -202,8 +201,7 @@ document.getElementById("searchBar").oninput = e => {
         }
     }
 
-    if(document.getElementById("popularTokensCat").innerHTML == "")
-        document.getElementById("popularTokensCatWrapper").style.display = "none"
+
     if(document.getElementById("allTokensCat").innerHTML == "")
         document.getElementById("allTokensCatWrapper").style.display = "none"
 

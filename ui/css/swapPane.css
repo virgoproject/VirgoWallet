@@ -199,20 +199,16 @@
 }
 
 #swapReview .receiveAmount {
-    background: #fbf4f8;
     border-radius: 0.5em;
     text-align: center;
-    padding: 0.5em;
+    padding: 1.5em;
 }
 
 #swapReview .receiveAmount .amount {
-    font-size: 1.25em;
+    font-size: 1.55em;
     margin: 0;
 }
-#swapReview .details {
-    background: #F3F3F3;
-    border-radius: 10px;
-}
+
 
 #swapReview .details p {
     margin: 0;
@@ -240,7 +236,7 @@
 
 #swapReviewAmountIn, #swapReviewNetFees, #swapReviewSwapFees {
     display: inline-block;
-    max-width: 84px;
+    max-width: 85px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
@@ -256,12 +252,12 @@
 }
 
 #swapReviewNetFees {
-    max-width: 78px!important;
+    max-width: 110px!important;
 }
 
 #swapReviewAmountOut {
     display: inline-block;
-    max-width: 14ch;
+    max-width: 10ch;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
@@ -351,8 +347,17 @@
 
 
 
+#swapReview img{
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+}
 
-
+#swapReview .details{
+    background: #F3F3F3;
+    border-radius: 10px;
+    margin-bottom: 150px;
+}
 
 
 

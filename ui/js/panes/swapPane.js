@@ -209,9 +209,14 @@ class SwapPane {
                 if (SwapPane.inputs.one.ticker.html() !== "Select" ){
                 _this.updateBalance(SwapPane.inputs.one)
                 _this.updateBalance(SwapPane.inputs.two)
-                _this.checkAmount()
+
                 }
+
             },500)
+
+        setInterval(function(){
+            _this.checkAmount()
+        },5000)
 
 
 

@@ -681,7 +681,7 @@
         </div>
     </div>
     <div id="swapReview" style="display: none">
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-1">
                 <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
             </div>
@@ -689,42 +689,43 @@
                 <h5>Payment details</h5>
             </div>
         </div>
-        <div class="row details mt-4 mb-4">
-            <div class="col-5 mt-3 mb-4">
-                <p class="title">You will receive</p>
+        <div class="receiveAmount mb-4">
+            <p class="m-0">You will receive</p>
+            <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <p style="font-weight: bold">You transfer</p>
             </div>
-            <div class="col-7 mt-3 mb-4">
-                <p class="value">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+            <div class="col-2 justify-content-center align-self-center text-center">
+                <img src='https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true'>
             </div>
-            <hr>
-            <div class="col-5 mt-3 mb-4">
-                <p class="title">You transfer</p>
+            <div class="col-10 justify-content-center align-self-center">
+                <p class="value" style="top: 7px; position:relative;font-weight: bold"><span id="swapReviewAmountIn" ></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
             </div>
-            <div class="col-7 mt-3 mb-4">
-                <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
-            </div>
-            <hr>
-            <div class="col-4 mt-3 mb-4">
+        </div>
+        <div class="row details mt-2">
+
+            <div class="col-4">
                 <p class="title">Swap fees</p>
             </div>
-            <div class="col-8 mt-3 mb-4">
+            <div class="col-8">
                 <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
             </div>
-            <hr>
-            <div class="col-4 mt-3 mb-4">
+            <div class="col-4">
                 <p class="title">Slippage</p>
             </div>
-            <div class="col-8 mt-3 mb-4">
+            <div class="col-8">
                 <p class="value">Auto</p>
             </div>
-            <hr>
-            <div class="col-5 mt-3 mb-4">
+            <div class="col-5">
                 <p class="title">Network fees</p>
             </div>
-            <div class="col-7 mt-3 mb-4">
+            <div class="col-7">
                 <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
             </div>
         </div>
+
         <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
             <val>Init swap</val>
             <i class="fas fa-spinner fa-pulse" style="display: none"></i>
@@ -2053,16 +2054,6 @@
         </div>
         <div id="categoriesWrapper">
             <div id="categories">
-                <div class="row mb-3 tokenCategory" id="popularTokensCatWrapper">
-                    <div class="col-12">
-                        <p class="categoryTitle">Popular</p>
-                    </div>
-                    <div class="col-12">
-                        <div class="row" id="popularTokensCat">
-
-                        </div>
-                    </div>
-                </div>
                 <div class="row tokenCategory" id="allTokensCatWrapper">
                     <div class="col-12">
                         <p class="categoryTitle">All</p>
