@@ -31,11 +31,11 @@
 }
 
 
-#body .send .sendConfirm .ticker {
+.sendConfirm .ticker {
     color: var(--highlightColor1);
 }
 
-#body .send .sendConfirm .detail {
+.sendConfirm .detail {
     background: #5a009c14;
     border-radius: 0.5em;
     color: #545454;
@@ -45,23 +45,23 @@
     margin: 0;
 }
 
-#body .send .sendConfirm .back {
+.sendConfirm .back {
     cursor: pointer;
     transition: all ease-in 0.1s;
     margin-bottom: 0.25em;
     margin-left: -14px;
 }
 
-#body .send .sendConfirm .back:hover {
+.sendConfirm .back:hover {
     color: #111;
 }
 
-#body .send .sendConfirm .back[disabled] {
+.sendConfirm .back[disabled] {
     color: #111;
     cursor: default;
 }
 
-#body .send .sendConfirm .fees .value {
+.sendConfirm .fees .value {
     max-width: 150px;
     display: inline-block;
     overflow: hidden;

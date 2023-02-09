@@ -5,14 +5,14 @@ class SendPane {
     static balance = $("#body .send .sendForm .sendBal val")
     static btnSubmit = $("#body .send .sendForm .submit")
     static recipient = $("#body .send .sendForm .recipient")
-    static btnConfirm = $("#body .send .sendConfirm .submit")
+    static btnConfirm = $("#sendConfirm .submit")
     static sendForm = $("#body .send .sendForm")
-    static confirmForm = $("#body .send .sendConfirm")
-    static backBtn = $("#body .send .sendConfirm .back")
-    static confirmAmount = $("#body .send .sendConfirm .amount .value")
-    static confirmTicker = $("#body .send .sendConfirm .amount .ticker")
-    static confirmRecipient = $("#body .send .sendConfirm .recipient .value")
-    static confirmFees = $("#body .send .sendConfirm .fees .value")
+    static confirmForm = $("#sendConfirm")
+    static backBtn = $("#sendConfirm .back")
+    static confirmAmount = $("#sendConfirm .amount .value")
+    static confirmTicker = $("#sendConfirm .amount .ticker")
+    static confirmRecipient = $("#sendConfirm .recipient .value")
+    static confirmFees = $("#sendConfirm .fees .value")
     static confirmFeesRange = $("#rangeFees")
     static sendBal = $("#body .send .sendForm .sendBal span")
     static maxBtn = $("#body .send .sendForm button.max")
@@ -50,6 +50,8 @@ class SendPane {
 
 
         SendPane.btnSubmit.click(function(){
+            $(".send").hide()
+            SendPane.confirmForm.show()
             disableLoadBtn($(this))
             hideStatsBar()
             SendPane.recipient.attr("disabled", true)
@@ -93,7 +95,7 @@ class SendPane {
                             SendPane.confirmAmount.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
                             SendPane.confirmRecipient.html(SendPane.recipient.val())
-                            SendPane.confirmForm.show()
+
 
 
                         })

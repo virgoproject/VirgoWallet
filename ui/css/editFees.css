@@ -54,6 +54,8 @@
 
 .editFees{
     cursor: pointer;
+    margin-left: 5px;
+    color: var(--mainColor);
 }
 
 #editFees .value{
