@@ -7,7 +7,7 @@
     text-align: center;
     height: 151px;
     padding: 0.5em;
-    margin-bottom: -0.5em;
+    margin-bottom: 1em;
     background-color: #fbf4f8;
 }
 .hr{
@@ -115,6 +115,7 @@
 
 #mainPane .bodyElem.resume, #mainPane .bodyElem.send, #mainPane .bodyElem.swap {
     padding: 1em 2em;
+    padding-top: 0;
 }
 
 #mainPane #footer {
