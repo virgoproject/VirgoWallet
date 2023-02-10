@@ -145,8 +145,8 @@ class SwapPane {
                     $("#swapReviewNetFees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
                 }
                 tag.onBalance = () => {
-                    $("#swapReview .button").find("val").html("Send")
-                    $("#swapReview .button").attr("disabled", false)
+                    $("#confirmSwapBtn .button").find("val").html("Send")
+                    $("#confirmSwapBtn .button").attr("disabled", false)
                 }
 
 

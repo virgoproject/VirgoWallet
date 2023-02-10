@@ -13,6 +13,8 @@ class EditFees extends HTMLElement {
         this.style.padding = 0;
         this.setAttribute("id","editfees")
 
+
+
         $(".editFees").click(function (){
             getGasPrice().then(function(gasPrice) {
                 $("#editfees").css("display", "block")
@@ -66,6 +68,12 @@ class EditFees extends HTMLElement {
             </div>
         </div>
     `;
+
+        $(".blackbg").click(function (){
+            $("#editfees").css("display", "none")
+            $("#swapReview").css("display", "block")
+        })
+
         const _this = this
 
         $(".medium").addClass("selecteded")
@@ -122,7 +130,7 @@ class EditFees extends HTMLElement {
         this.setFees(gasLimit)
         this.interval = setInterval(() =>{
             this.setFees(gasLimit)
-        },5000)
+        },500)
     }
 
     setFees(gasLimit){

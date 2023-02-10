@@ -16,6 +16,10 @@
     padding: 10px;
 }
 
+.speed:hover{
+    background: #ffe4fc;
+}
+
 .selecteded{
     background: var(--whiteBackground);
 }
@@ -56,6 +60,10 @@
     cursor: pointer;
     margin-left: 5px;
     color: var(--mainColor);
+}
+
+.editFees:hover{
+    color: var(--mainColorDark10);
 }
 
 #editFees .value{

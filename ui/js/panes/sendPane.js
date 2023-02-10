@@ -52,7 +52,7 @@ class SendPane {
 
 
         SendPane.btnSubmit.click(function(){
-            $(".send").hide()
+            $("#body .send .sendForm").hide()
             SendPane.confirmForm.show()
             disableLoadBtn($(this))
             hideStatsBar()
@@ -93,7 +93,7 @@ class SendPane {
                             SendPane.amount.attr("disabled", false)
                             SendPane.assetSelect.attr("disabled", false)
 
-                            SendPane.sendForm.hide()
+                            $("#body .send .sendForm").hide()
                             SendPane.confirmAmount.html(SendPane.amount.val())
                             SendPane.confirmTicker.html(assetInfos.ticker)
                             SendPane.confirmRecipient.html(SendPane.recipient.val())
@@ -120,10 +120,9 @@ class SendPane {
 
         SendPane.backBtn.click(function(){
             if($(this).attr("disabled")) return;
-
+            SendPane.btnSubmit.attr("disabled", false)
             SendPane.confirmForm.hide()
             SendPane.sendForm.show()
-
             clearInterval(confirmInterval)
         })
 
