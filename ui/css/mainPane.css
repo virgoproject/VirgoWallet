@@ -328,3 +328,10 @@
     background: white;
     padding: 1.5em;
 }
+
+#sendConfirmFees{
+    position: absolute;
+    z-index: 10;
+    background: white;
+    padding: 1.5em;
+}

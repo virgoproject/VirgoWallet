@@ -588,39 +588,69 @@
         </button>
     </div>
     <div class="row sendConfirm" id="sendConfirm" style="display: none">
-        <div class="row mt-2 m-0 d-flex align-items-center p-0">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
+        <div class="row mb-5">
+            <div class="col-1 back">
+                <i class=" fas fa-chevron-left"></i>
             </div>
-            <p class="text-center">Confirm</p>
+            <div class="col-11 title d-flex justify-content-center">
+                <h5>Amount</h5>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-12 mb-3 p-0" style="max-width: 30%;margin-left: auto;margin-right: auto;">
+        <div class="row mb-4">
+            <div class="col-12 mb-3 d-flex justify-content-center p-0" style="max-width: 38%;margin-left: auto;margin-right: auto;">
                 <select class="input w-100 assetSelect">
                     <option>Asset</option>
                 </select>
             </div>
         </div>
-    <div class="row">
-        <div class="col-12 mb-4 p-0">
-            <div class="row">
-                <p class="label col-3">Amount</p>
-                <p class="label col-9 text-right sendBal">Balance:
-                    <val>-</val>
-                    <span></span></p>
-            </div>
-            <div class="row w-100 m-0 input inputWButton">
-                <input type="number" class="col-10 amount" placeholder="0.0" data-inputTarget="#body .send .sendForm .submit">
-                <button class="col-2 max">Max</button>
-            </div>
+    <div class="row" style="margin-bottom: 6em">
+        <div class="col-12 d-flex justify-content-center mb-4 p-0">
+            <input type="number" class="inputAmount amount" placeholder="0.0" data-inputTarget="#body .send .sendForm .submit">
         </div>
     </div>
 
         <div class="col-12 d-flex p-0 mt-4">
-            <button class="button col-12">Send</button>
+            <button class="button sendFees col-12">Next</button>
         </div>
-
     </div>
+    <div class="row sendConfirm" id="sendConfirmFees" style="display: none">
+        <div class="row mb-5">
+            <div class="col-1 back">
+                <i class=" fas fa-chevron-left"></i>
+            </div>
+            <div class="col-11 title d-flex justify-content-center">
+                <h5>Confirm</h5>
+            </div>
+        </div>
+        <div class="col-12 mb-3 amount">
+            <p class="label">Sending</p>
+            <p class="detail"><span class="value"></span> <span class="ticker"></span></p>
+        </div>
+        <div class="col-12 mb-3 recipient">
+            <p class="label">To</p>
+            <p class="detail value"></p>
+        </div>
+        <div class="col-12 fees">
+            <div class="col-12 d-flex mb-2">
+                <div class="col-3">
+                    <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
+                </div>
+                <div class="col-9 text-right">
+                    <span class="value"></span>
+                    <span class="ticker" data-networkticker></span>
+                </div>
+            </div>
+        </div>
+        <button class="button col-12 submit mt-5" disabled="disabled">
+            <val>Insufficient
+                <val data-networkticker=""></val>
+                balance
+            </val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
+    </div>
+    </div>
+
     <div id="chainSelector" class="p-4 pt-0">
         <div class="row gx-2" id="chainsContainer">
 

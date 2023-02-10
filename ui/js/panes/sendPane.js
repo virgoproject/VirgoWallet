@@ -1,13 +1,15 @@
 class SendPane {
 
     static amount = $("#body .send .sendForm .amount")
-    static assetSelect = $("#body .send .sendForm .assetSelect")
+    static assetSelect = $("#sendConfirm.assetSelect")
     static balance = $("#body .send .sendForm .sendBal val")
     static btnSubmit = $("#body .send .sendForm .submit")
     static recipient = $("#body .send .sendForm .recipient")
     static btnConfirm = $("#sendConfirm .submit")
     static sendForm = $("#body .send .sendForm")
     static confirmForm = $("#sendConfirm")
+    static confirmFeesForm = $("#sendConfirm .sendFees")
+    static feesForm = $("#sendConfirmFees")
     static backBtn = $("#sendConfirm .back")
     static confirmAmount = $("#sendConfirm .amount .value")
     static confirmTicker = $("#sendConfirm .amount .ticker")
@@ -107,6 +109,12 @@ class SendPane {
             confirmInterval = setInterval(function(){
                 SendPane.estimateFees()
             }, 2500)
+
+        })
+
+        SendPane.confirmFeesForm.click(function (){
+            SendPane.confirmForm.hide()
+            SendPane.feesForm.show()
 
         })
 

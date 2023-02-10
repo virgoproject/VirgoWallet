@@ -236,7 +236,7 @@
 
 #swapReviewAmountIn, #swapReviewNetFees, #swapReviewSwapFees {
     display: inline-block;
-    max-width: 85px;
+    max-width: 130px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;

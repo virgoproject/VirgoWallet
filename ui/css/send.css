@@ -118,3 +118,8 @@
 #body .send .ticketAmmount {
     margin-bottom: -1em !important;
 }
+
+.sendConfirmInfo{
+    display: flex;
+    justify-items: center;
+}

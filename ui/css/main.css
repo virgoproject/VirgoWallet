@@ -100,6 +100,23 @@ body {
     padding: 0.375em 2em 0.375em 0.75em;
 }
 
+#sendConfirm .input {
+    background: #F3F3F3;
+    border: none;
+    color: #545454;
+    padding: 0.8em 0em 0.8em 0.75em;
+    width: 38%;
+}
+
+#sendConfirm  .inputAmount {
+    all: unset;
+    border: none;
+    color: #545454;
+    padding: 1em 0em 1em 2.25em;
+    width: 100%;
+    font-size: 3em;
+}
+
 .input:focus-visible{
     outline: none !important;
 }
