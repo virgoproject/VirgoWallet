@@ -163,6 +163,7 @@ body {
 .inputWButton button {
     background: transparent;
     border: none;
+    all: unset;
     color: var(--highlightColor1)
 }
 

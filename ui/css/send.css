@@ -1,5 +1,5 @@
 #body .sendForm  {
-    padding-top: 2em !important;
+    padding-top: 4em !important;
 }
 
 #body .send .sendForm .sendBal {
@@ -31,18 +31,19 @@
 }
 
 
+
 .sendConfirm .ticker {
     color: var(--highlightColor1);
 }
 
 .sendConfirm .detail {
-    background: #5a009c14;
     border-radius: 0.5em;
     color: #545454;
     padding: 0.375em 2em 0.375em 0.75em;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+    max-width: 287px;
 }
 
 .sendConfirm .back {
@@ -122,4 +123,27 @@
 .sendConfirmInfo{
     display: flex;
     justify-items: center;
+}
+
+.balance{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#sendConfirmFees .sendAmount{
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 1.5em;
+}
+
+#sendConfirmFees .sending{
+    font-size: 1.55em;
+}
+
+#sendConfirmFees .valueSend{
+    display: inline-block;
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
 }

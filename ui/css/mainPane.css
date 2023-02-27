@@ -327,6 +327,7 @@
     z-index: 10;
     background: white;
     padding: 1.5em;
+    height: 100%;
 }
 
 #sendConfirmFees{
@@ -334,4 +335,5 @@
     z-index: 10;
     background: white;
     padding: 1.5em;
+    padding-bottom: 20em;
 }
