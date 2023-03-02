@@ -372,7 +372,17 @@
     background-color: rgba(255,255,255,1) !important;
 }
 
+.airdropConditions .fa-chevron-left:hover{
+    cursor: pointer;
+}
+
+.airdropModalConditionsVerify .fa-chevron-left:hover{
+    cursor: pointer;
+}
+
 .airdropConditions .linkAirdrop {
     color: var(--mainColorLight);
     text-decoration: none !important;
+    margin-left: 3px;
+    margin-right: 3px;
 }

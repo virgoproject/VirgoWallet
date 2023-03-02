@@ -181,6 +181,9 @@ class AirdropPane{
                                                     let userNmb = Number(cntJoined)
                                                     elemjoined.innerHTML = userNmb + 1
 
+                                                    notyf.success("Airdrop successfully joined!")
+
+
                                                     let totalParticipated = document.getElementById("airdropsParticipationCount")
                                                     let total = totalParticipated.textContent
                                                     let nmb = Number(total)
@@ -207,8 +210,17 @@ class AirdropPane{
                                         let twitterInfos = res[i].conditions
                                         let parsedInfos = JSON.parse(twitterInfos)
                                         let parsedInfosArr = [parsedInfos]
+                                        let aidropIDClicked = e.currentTarget.id
 
                                         let linkTo = document.getElementById('exempleLink')
+                                        let activeLinks = document.querySelectorAll('.linkTwitter')
+
+                                        for(let i = 0; activeLinks.length > i; i++){
+                                            activeLinks[i].remove()
+                                        }
+
+                                        console.log(aidropIDClicked)
+                                        
 
                                         for(var obj in parsedInfosArr){
                                             if(parsedInfosArr.hasOwnProperty(obj)){
@@ -217,6 +229,7 @@ class AirdropPane{
                                                         let clonedLink = linkTo.cloneNode(true)
                                                         clonedLink.innerHTML = prop
                                                         clonedLink.setAttribute('id',parsedInfosArr[obj][prop])
+                                                        clonedLink.classList.add("linkTwitter")
                                                         clonedLink.addEventListener('click', (e) => {
                                                             browser.windows.create({
                                                                 url: parsedInfosArr[obj][prop]
@@ -264,12 +277,14 @@ class AirdropPane{
                                             e.currentTarget.disabled = true
                                             getBaseInfos().then(function (infos) {
                                                 const playAddress = infos.addresses[0].address
-                                                setAirdropPlay(playAddress,elemClicked.id).then(function (infos) {
+                                                setAirdropPlay(playAddress,aidropIDClicked).then(function (infos) {
                                                     if(infos){
                                                         let elemjoined = elem.querySelector('.usersJoined')
                                                         let cntJoined = elemjoined.textContent
                                                         let userNmb = Number(cntJoined)
                                                         elemjoined.innerHTML = userNmb + 1
+
+                                                        notyf.success("Airdrop successfully joined!")
 
                                                         let totalParticipated = document.getElementById("airdropsParticipationCount")
                                                         let total = totalParticipated.textContent
@@ -277,7 +292,7 @@ class AirdropPane{
                                                         totalParticipated.innerHTML = nmb + 1
                                                     }
                                                     let userInfos = {
-                                                        airdropID : aidropID,
+                                                        airdropID : aidropIDClicked,
                                                         address : playAddress,
                                                         username : TwitterName
                                                     }
