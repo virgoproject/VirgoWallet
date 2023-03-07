@@ -356,9 +356,9 @@
     margin: 0;
 }
 
-.airdropConditions .fa-period{
+/*.airdropConditions .fa-period{
     color: var(--mainColor);
-}
+}*/
 
 .airdropConditions .buttonModal{
     border-radius: 1em !important;
@@ -381,8 +381,8 @@
 }
 
 .airdropConditions .linkAirdrop {
-    color: var(--mainColorLight);
-    text-decoration: none !important;
+    color: black;
+    text-decoration: underline;
     margin-left: 3px;
     margin-right: 3px;
 }

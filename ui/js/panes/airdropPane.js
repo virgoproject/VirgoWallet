@@ -219,13 +219,12 @@ class AirdropPane{
                                             activeLinks[i].remove()
                                         }
 
-                                        console.log(aidropIDClicked)
-                                        
-
+                                        let stateprop = 0
                                         for(var obj in parsedInfosArr){
                                             if(parsedInfosArr.hasOwnProperty(obj)){
                                                 for(var prop in parsedInfosArr[obj]){
                                                     if(parsedInfosArr[obj].hasOwnProperty(prop)){
+                                                        stateprop = stateprop + 1
                                                         let clonedLink = linkTo.cloneNode(true)
                                                         clonedLink.innerHTML = prop
                                                         clonedLink.setAttribute('id',parsedInfosArr[obj][prop])
@@ -237,6 +236,13 @@ class AirdropPane{
                                                         })
                                                         clonedLink.setAttribute('href', parsedInfosArr[obj][prop])
                                                         document.querySelector('.cloneLinkAirdrop').appendChild(clonedLink)
+
+
+                                                        if (stateprop !== Object.keys(parsedInfosArr[0]).length){
+                                                            let spanElem = document.createElement("span");
+                                                            spanElem.innerHTML = "-";
+                                                            clonedLink.parentNode.insertBefore(spanElem, clonedLink.nextSibling);
+                                                        }
                                                     }
                                                 }
                                             }

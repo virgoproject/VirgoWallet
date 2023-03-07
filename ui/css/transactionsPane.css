@@ -209,10 +209,6 @@
     margin-left: 13px;
 }
 
-#transactionsPane .listItem .ticker {
-    color: var(--mainColorDark10);
-}
-
 #transactionsPane .listItem.swapTx .smallDetails .amount {
     display: inline-block;
     overflow: hidden;
@@ -227,4 +223,16 @@
 
 #transactionsPane .listItem.swapTx.opened .header {
     margin-top: 10px;
+}
+
+#transactionsPane .selectedPane{
+    border-bottom: 2px solid var(--mainColor);
+    padding: 0.4em;
+    cursor: pointer;
+}
+
+#transactionsPane .notSelectedPane{
+    border-bottom: 2px solid rgba(0,0,0,.2);
+    padding: 0.4em;
+    cursor: pointer;
 }

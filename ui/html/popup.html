@@ -644,7 +644,7 @@
                         </div>
                             <p>1 of 2</p>
                         <div class="col-10">
-                            <span>Rules to participate :</span>
+                            <p class="text-center fw-bold">Rules to participate </p>
                             <ul class="rulesDrop mt-3">
                                 <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> Follow on Twitter : </li>
                                 <div class="cloneLinkAirdrop">
@@ -816,17 +816,28 @@
             <div class="back">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <p class="text-center">Transactions</p>
+            <p class="text-center">History</p>
+        </div>
+        <div class="selector">
+            <div class="row d-flex text-center p-0">
+                <div class="col-6 p-0">
+                    <p class="selectedPane">All</p>
+                </div>
+                <div class="col-6 p-0">
+                    <p class="notSelectedPane">Transactions</p>
+                </div>
+            </div>
         </div>
         <div class="content">
+
             <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
                         <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
                     </div>
                     <div class="col-8">
-                        <p class="amount"><val>0.005</val> <span class="ticker">ETH</span></p>
-                        <p class="smallDetails"><val class="date">April 19</val> &#183 To <val class="recipient">0x0000000000000000000000</val></p>
+                        <p class="amount"><val>0.005</val> <span class="ticker fw-bold">ETH</span><val class="date">April 19</val></p>
+                        <p class="smallDetails"> &#183 To <val class="recipient">0x0000000000000000000000</val></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
                         <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
