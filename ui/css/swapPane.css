@@ -217,10 +217,32 @@
 
 #swapReview .details .value {
     text-align: right;
+}
+
+#swapReview .details .valueNet {
+    text-align: right;
     font-weight: bold;
 }
 
 #swapReview .details .title, #swapReview .details .value {
+    margin: 0.25em 0;
+    padding: 0;
+    color: #6e6e6e;
+}
+#swapReview .details .titleNet, #swapReview .details .valueNet {
+    margin: 0.25em 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+#swapReview button{
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+}
+
+#swapReview .details .titleFees{
     margin: 0.25em 0;
     padding: 0;
 }

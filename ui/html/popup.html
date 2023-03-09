@@ -175,8 +175,13 @@
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
+                <div>
+                    <div class="col-12 title d-flex justify-content-center">
+                        <h5>Send To</h5>
+                    </div>
+                </div>
                 <div class="col-12 p-0" style="margin-bottom: 3em">
-                    <p class="label mb-3">To</p>
+                    <p class="label mb-2">To</p>
                     <div class="input-group col-12">
                         <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
                         <input type="text" class="input col-8 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
@@ -185,14 +190,14 @@
                 </div>
                 <div class="col-12 mb-3 p-0">
                     <p class="label">Recent</p>
-                    <div class="text-center mt-3 mb-5 noContactFound" style="">
+                    <div class="text-center mt-5 mb-5 noContactFound" style="">
                         <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="bodyElem swap mt-3" style="display: none" id="swapPane">
+        <div class="bodyElem swap " style="display: none" id="swapPane">
             <div id="swapParams">
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
@@ -561,95 +566,109 @@
         </div>
         <div class="row details mt-2">
 
-            <div class="col-4">
+            <div class="col-4 mt-3 mb-2">
                 <p class="title">Swap fees</p>
             </div>
-            <div class="col-8">
+            <div class="col-8 mt-3 mb-2">
                 <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
             </div>
-            <div class="col-4">
+            <div class="col-4  mb-2">
                 <p class="title">Slippage</p>
             </div>
             <div class="col-8">
                 <p class="value">Auto</p>
             </div>
-            <div class="col-5">
-                <p class="title">Network fees</p>
+            <div class="col-5 mb-2" style="display: inline-flex">
+                <p class="titleNet">Fees<P class="titleFees editFees">Edit</P></p>
             </div>
-            <div class="col-7">
-                <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span><i class="fa-solid fa-pen-to-square editFees"></i></p>
+            <div class="col-7  mb-2">
+                <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
             </div>
         </div>
 
-        <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
+        <button class="button " disabled="disabled" id="confirmSwapBtn">
             <val>Init swap</val>
             <i class="fas fa-spinner fa-pulse" style="display: none"></i>
         </button>
     </div>
-    <div class="row sendConfirm" id="sendConfirm" style="display: none">
+    <div class="sendConfirm" id="sendConfirm" style="display: none">
         <div class="row mb-5">
-            <div class="col-1 back">
+            <div class="col-2 back pl-0">
                 <i class=" fas fa-chevron-left"></i>
             </div>
-            <div class="col-11 title d-flex justify-content-center">
+            <div class="col-8 title d-flex justify-content-center">
                 <h5>Amount</h5>
             </div>
+            <div class="col-2"></div>
         </div>
-        <div class="row mb-4">
-            <div class="col-12 mb-3 d-flex justify-content-center p-0" style="max-width: 38%;margin-left: auto;margin-right: auto;">
-                <select class="input w-100 assetSelect">
-                    <option>Asset</option>
-                </select>
+            <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
+                <div class="justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="sendTo"  data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                </div>
             </div>
-        </div>
-    <div class="row" style="margin-bottom: 4em">
+    <div class="row">
         <div class="col-12 d-flex justify-content-center p-0">
-            <input type="number" class="inputAmount amount" placeholder="0.0" data-inputTarget="#body .send .sendForm .submit">
+            <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
         </div>
         <div class="col-12 d-flex justify-content-center inputWButton">
-            <button class="col-2 max">Max</button>
+            <button class="col-2 max">Use max</button>
+        </div>
+        <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
+            <p class="value labelCost"><span id="showCost"></span> $</p>
         </div>
         <div class="col-12 d-flex justify-content-center ">
-            <p class="balance">balance : <val></val> <span class="ticker" ></span></p>
+            <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker" ></span></p>
         </div>
     </div>
 
-        <div class="col-12 d-flex p-0 mt-4">
-            <button class="button sendFees col-12">Next</button>
-        </div>
+            <button class="button sendBtn">Next</button>
+
     </div>
-    <div class="row sendConfirm" id="sendConfirmFees" style="display: none">
+    <div class="sendConfirm" id="sendConfirmFees" style="display: none">
         <div class="row mb-5">
-            <div class="col-1 back">
+            <div class="col-2 back pl-0">
                 <i class=" fas fa-chevron-left"></i>
             </div>
-            <div class="col-11 title d-flex justify-content-center">
+            <div class="col-8 title d-flex justify-content-center">
                 <h5>Confirm</h5>
             </div>
+            <div class="col-2"></div>
         </div>
-        <div class="sendAmount mb-4 amount">
-            <p class="m-0 label">Sending</p>
-            <p class="detail sending"><span class="value valueSend"></span> <span class="ticker"></span></p>
+        <div class="row sendAmount mb-4 amount">
+            <p class="m-0 ">Sending</p>
+            <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
         </div>
-        <div class="col-12 mb-3 from">
-            <p class="label">From</p>
-            <p class="detail value"></p>
-        </div>
-        <div class="col-12 mb-3 recipient">
-            <p class="label">To</p>
-            <p class="detail value"></p>
-        </div>
-        <div class="col-12 fees">
-            <div class="col-12 d-flex mb-2">
-                <div class="col-3">
-                    <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
+        <div class="row mb-3 from">
+                <p class="labelFromAndTo">From</p>
+                <div class="identicon col-2">
+                    <svg data-jdenticon-value="sesesqqqfse" id="from" width="40" height="40"></svg>
                 </div>
-                <div class="col-9 text-right">
-                    <p class="value">~ <span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span><i class="fa-solid fa-pen-to-square editFees"></i></p>
-                </div>
+                <p class="col-8 detail value labelAdress"><val></val></p>
+                <p class="col-2 more">...</p>
             </div>
+        <div class="row mb-3 recipient">
+            <p class="labelFromAndTo">To</p>
+            <div class="identicon col-2">
+                <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
+            </div>
+            <p class="detail col-8 value labelAdress"><val></val></p>
+            <p class="col-2 more">...</p>
         </div>
-        <button class="button col-12 submit mt-5" id="confirmSendBtn" disabled="disabled">
+        <div class="row fees">
+                <div class="col-3 mt-3 mb-1" style="display: inline-flex">
+                    <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
+                </div>
+                <div class="col-9 text-right mt-3 mb-1">
+                    <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
+                </div>
+                <div class="col-5 mb-3">
+                    <p class="labelCost">Total Cost</p>
+                </div>
+                <div class="col-7 text-right">
+                    <p class="value labelCost"><span id="sendReviewCost"></span> $</p>
+                </div>
+        </div>
+        <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
             <val>Insufficient
                 <val data-networkticker=""></val>
                 balance
@@ -759,25 +778,36 @@
         </div>
     </div>
     <div id="transactionsPane" style="display: none">
-        <div class="row mt-2">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
+        <div class="row mt-2 mb-3">
+            <div class="col-2 back pl-0">
+                <i class=" fas fa-chevron-left"></i>
             </div>
-            <p class="text-center">Transactions</p>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>History</h5>
+            </div>
+            <div class="col-2"></div>
         </div>
-        <div class="content">
+        <div class="row mb-4">
+            <div class="col-6 d-flex justify-content-center pane paneSelected" id="all">
+                <p class="paneTitle" id="paneAll">All</p>
+            </div>
+            <div class="col-6 d-flex justify-content-center pane" id="transac">
+                <p class="paneTitle" id="paneTransac">Transaction</p>
+            </div>
+        </div>
+        <div class="content" id="showAll">
             <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-arrow-right"></i>
+                        <i class="fa-solid fa-arrow-right  circleTransac"></i>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
-                        <p class="amount ">Send <span class="ticker">ETH</span></p>
+                        <p class="amount "><val></val> <span class="ticker">ETH</span> <span class="time"></span></p>
+                        <p class="addr">To <val class="addrRecipient"></val></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
                         <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
-                        <i class="fas fa-check confirmed" style="display: none"></i>
-                        <i class="fas fa-times refused" style="display: none"></i>
+                        <i class="fas fas fa-chevron-right" style="font-weight: 300;font-size: 2em; margin-right: 10px"></i>
                     </div>
                     <div class="row mt-2 tweakBtns">
                         <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>

@@ -235,7 +235,7 @@
     z-index: 10;
     background: white;
     margin-top: -52px;
-    padding:1.5em;
+    padding:4em 2em;
     height: 40em;
 }
 
@@ -326,7 +326,7 @@
     position: absolute;
     z-index: 10;
     background: white;
-    padding: 1.5em;
+    padding: 1em 2em;
     height: 100%;
 }
 
@@ -334,6 +334,7 @@
     position: absolute;
     z-index: 10;
     background: white;
-    padding: 1.5em;
-    padding-bottom: 20em;
+    padding: 1em 2em;
+    height: 100%;
+
 }

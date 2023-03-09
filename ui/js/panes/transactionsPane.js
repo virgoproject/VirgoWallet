@@ -2,6 +2,8 @@ class TransactionsPane {
 
     static btn = $("#mainPane .header .pendingTxs")
     static self = $("#transactionsPane")
+    static All = $("#transactionsPane #paneAll")
+    static Transaction = $("#transactionsPane #paneTransac")
     static back = $("#transactionsPane .back")
     static list = {
         self: $("#transactionsPane .list"),
@@ -45,6 +47,16 @@ class TransactionsPane {
             transactionsPane.txsCount = 0
             transactionsPane.reachedEnd = false
             transactionsPane.loadTxs()
+        })
+
+        TransactionsPane.All.click(function (){
+            $("#all").addClass("paneSelected")
+            $("#transac").removeClass("paneSelected")
+        })
+
+        TransactionsPane.Transaction.click(function (){
+            $("#transac").addClass("paneSelected")
+            $("#all").removeClass("paneSelected")
         })
 
         TransactionsPane.back.click(function(){
@@ -481,8 +493,12 @@ class TransactionsPane {
             elem.find(".amount span").html(tokenInfos.ticker)
             elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
         }
+        const date = new Date(transaction.date)
 
         elem.find(".recipient").html(transaction.recipient)
+        elem.find(".addr val").html(transaction.recipient)
+
+        elem.find(".amount .time").html(date.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"}))
         elem.find(".details .recipient").click(function(){
             copyToClipboard($(this).get(0))
             elem.find(".recipientTitle").hide()
@@ -494,16 +510,17 @@ class TransactionsPane {
         })
 
         elem.attr("data-date", transaction.date)
-        const date = new Date(transaction.date)
+        let options = {hour: "2-digit", minute: "2-digit"}
 
-        let options = {month: "short", day: "numeric"};
+
+        options = {month: "short", day: "numeric"};
         elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
 
         options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
         elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
 
         elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
-        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+        //elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
 
         elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
         elem.find(".totalFees span").html(selectedWallet.ticker)

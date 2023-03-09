@@ -9,16 +9,14 @@ class EditFees extends HTMLElement {
     constructor() {
         super();
 
-        this.style.margin = 0;
-        this.style.padding = 0;
+
         this.setAttribute("id","editfees")
 
 
 
         $(".editFees").click(function (){
             getGasPrice().then(function(gasPrice) {
-                $("#editfees").css("display", "block")
-                $("#swapReview").css("display", "none")
+                $("#editfees").show()
                 let finalGasPriceSlow;
                 finalGasPriceSlow = Math.round(gasPrice * 0.8)
                 let finalGasPriceMedium;
@@ -136,7 +134,7 @@ class EditFees extends HTMLElement {
     setFees(gasLimit){
         const _this = this
 
-        getBalance("BNB").then(function(balance) {
+        getBalance(MAIN_ASSET.ticker).then(function(balance) {
             getGasPrice().then(function (res) {
                 _this.gasPrice = res
                 let finalGasPrice

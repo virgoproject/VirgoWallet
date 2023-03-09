@@ -12,15 +12,10 @@
 
 #transactionsPane .content {
     z-index: 99999;
-    padding: 0 1em;
 }
 
 #transactionsPane .back {
-    position: absolute;
-    top: 0.9em;
-    width: 2em;
     text-align: center;
-    left: 0.5em;
     cursor: pointer;
     color: #545454;
     transition: color ease 0.25s;
@@ -31,7 +26,7 @@
 }
 
 #transactionsPane .back i {
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 #transactionsPane .listWrap {
@@ -52,8 +47,9 @@
 #transactionsPane .listItem {
     background: #F1F1F1;
     border-radius: 0.5em;
-    padding-top: 0.375em;
-    padding-bottom: 0.375em;
+    padding-top: 1.375em;
+    padding-bottom: 1.375em;
+    padding-left: 1em;
     transition: background ease 0.25s;
     cursor: pointer;
 }
@@ -237,6 +233,38 @@
     border-radius: 10px;
 }
 
-.selected{
+#transactionsPane .paneSelected{
+    color: var(--mainColor) !important;
+    border-bottom: solid 2px !important;
+}
 
+#transactionsPane .pane{
+    border-bottom: solid 1px;
+}
+
+#transactionsPane .paneTitle{
+cursor: pointer;
+}
+
+.circleTransac{
+    background: #E3F3E1;
+    border-radius: 50px;
+    padding: 0.7em;
+    color: #84C56F;
+}
+
+.addrRecipient{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+    vertical-align: top;
+}
+
+#transactionsPane .time{
+    margin-left: 39px;
+}
+
+#transactionsPane .addr{
+    color: #6e6e6e;
 }

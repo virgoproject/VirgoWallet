@@ -1,5 +1,5 @@
 #body .sendForm  {
-    padding-top: 4em !important;
+    padding-top: 1em !important;
 }
 
 #body .send .sendForm .sendBal {
@@ -39,7 +39,6 @@
 .sendConfirm .detail {
     border-radius: 0.5em;
     color: #545454;
-    padding: 0.375em 2em 0.375em 0.75em;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
@@ -50,7 +49,6 @@
     cursor: pointer;
     transition: all ease-in 0.1s;
     margin-bottom: 0.25em;
-    margin-left: -14px;
 }
 
 .sendConfirm .back:hover {
@@ -125,15 +123,17 @@
     justify-items: center;
 }
 
-.balance{
-    overflow: hidden;
+.balanceSize{
     text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 110px;
+    vertical-align: top;
 }
 
 #sendConfirmFees .sendAmount{
     border-radius: 0.5em;
     text-align: center;
-    padding: 1.5em;
 }
 
 #sendConfirmFees .sending{
@@ -146,4 +146,103 @@
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
+    font-weight: bold;
+    color: black;
+}
+
+#selectAssetSend {
+    max-width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #f3f3f3;
+    height: 3.4em;
+    padding: 0 1em !important;
+    border-radius: 50vh;
+}
+
+#selectAssetSend button{
+    background: transparent;
+    border: transparent;
+}
+
+.sendBtn{
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+}
+
+#sendReviewNetFees{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 92px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#sendReviewCost{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 60px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.fees{
+    background: #F3F3F3;
+    border-radius: 10px;
+    font-size: 0.9em;
+    margin-top: 3em;
+}
+
+
+#sendConfirm .balance{
+    color: #6e6e6e;
+}
+
+.labelTitle{
+    color: #6e6e6e;
+}
+
+.labelFromAndTo{
+    margin: 0;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.labelCost{
+    margin: 0;
+    font-weight: bold;
+}
+
+.labelAdress{
+    display: flex;
+    align-items: center;
+    max-width: 130px !important;
+    color: #6e6e6e !important;
+}
+
+.more{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#sendConfirm #showCost{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 70px;
+}
+
+#sendConfirm .labelCostBox{
+    background: #F3F3F3;
+    padding: 6px;
+    border-radius: 20px;
+    width: 110px;
+    margin-left: auto;
+    margin-right: auto;
 }
