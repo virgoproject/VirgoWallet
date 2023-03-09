@@ -27,12 +27,13 @@
 
 #transactionsPane .back i {
     font-size: 1em;
+    margin-left: 10px;
 }
 
 #transactionsPane .listWrap {
     overflow: auto;
     max-height: 548px;
-    padding: 0 1em;
+    padding: 0 1.5em;
 }
 
 #transactionsPane .listWrap::-webkit-scrollbar {
@@ -244,6 +245,7 @@
 
 #transactionsPane .paneTitle{
 cursor: pointer;
+    margin-bottom: 0.5em !important;
 }
 
 .circleTransac{
@@ -257,12 +259,12 @@ cursor: pointer;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 170px;
+    max-width: 177px;
     vertical-align: top;
 }
 
 #transactionsPane .time{
-    margin-left: 39px;
+    margin-left: 38px;
 }
 
 #transactionsPane .addr{
