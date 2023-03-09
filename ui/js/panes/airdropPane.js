@@ -156,6 +156,7 @@ class AirdropPane{
                                 elem.classList.add('airdropSetter')
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
+                                elem.querySelector('.earnCoinsDesc').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.timeLeft').innerHTML = Math.floor(endDate / (24*60*60*1000)) + 1
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
@@ -379,10 +380,14 @@ class AirdropPane{
                                     if (infosDom.classList.contains('d-none')) {
                                         infosDom.classList.remove('d-none')
                                         infosDom.classList.add('d-flex')
+                                        elem.querySelector('.airdropGains').classList.remove("visible")
+                                        elem.querySelector('.airdropGains').classList.add("invisible")
                                         e.currentTarget.style.transform = 'rotate(90deg)'
                                     } else {
                                         infosDom.classList.add('d-none')
                                         infosDom.classList.remove('d-flex')
+                                        elem.querySelector('.airdropGains').classList.remove("invisible")
+                                        elem.querySelector('.airdropGains').classList.add("visible")
                                         e.currentTarget.style.transform = 'rotate(0deg)'
                                     }
                                 })
@@ -440,6 +445,7 @@ class AirdropPane{
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
+                                elem.querySelector('.earnCoinsDesc').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -502,10 +508,14 @@ class AirdropPane{
                                     if (infosDom.classList.contains('d-none')) {
                                         infosDom.classList.remove('d-none')
                                         infosDom.classList.add('d-flex')
+                                        elem.querySelector('.airdropGains').classList.remove("visible")
+                                        elem.querySelector('.airdropGains').classList.add("invisible")
                                         e.currentTarget.style.transform = 'rotate(90deg)'
                                     } else {
                                         infosDom.classList.add('d-none')
                                         infosDom.classList.remove('d-flex')
+                                        elem.querySelector('.airdropGains').classList.remove("invisible")
+                                        elem.querySelector('.airdropGains').classList.add("visible")
                                         e.currentTarget.style.transform = 'rotate(0deg)'
                                     }
                                 })
@@ -565,6 +575,7 @@ class AirdropPane{
                                 elem.querySelector('.coinName').innerHTML = results.name
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
+                                elem.querySelector('.earnCoinsDesc').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description
@@ -628,10 +639,14 @@ class AirdropPane{
                                         infosDom.classList.remove('d-none')
                                         infosDom.classList.add('d-flex')
                                         e.currentTarget.style.transform = 'rotate(90deg)'
+                                        elem.querySelector('.airdropGains').classList.remove("visible")
+                                        elem.querySelector('.airdropGains').classList.add("invisible")
                                     } else {
                                         infosDom.classList.add('d-none')
                                         infosDom.classList.remove('d-flex')
                                         e.currentTarget.style.transform = 'rotate(0deg)'
+                                        elem.querySelector('.airdropGains').classList.remove("invisible")
+                                        elem.querySelector('.airdropGains').classList.add("visible")
                                     }
                                 })
                                 document.querySelector(".endedAirdrop").appendChild(elem)
