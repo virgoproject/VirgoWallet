@@ -728,6 +728,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             sendResponse(setupDone)
             break
 
+        case 'tutorialDone':
+            browser.storage.local.set({"tutorialDone": true})
+            tutorialDone = true
+            sendResponse(tutorialDone)
+            break
+
         case "setupNot":
             browser.storage.local.set({"setupDone": false})
             setupDone = false

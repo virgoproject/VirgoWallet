@@ -1909,6 +1909,37 @@
             </div>
         </div>
     </div>
+    <div id="tutorialPopup" class="popup" style="display: none;">
+        <div class="box text-white">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end mb-3 mt-2">
+                    <div class="col-1 d-flex text-white" id="closeTutorial">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex pr-0 pl-0 justify-content-center">
+                    <div id="tutoStep1" class="col-3 steps stepsActive"></div>
+                    <div id="tutoStep2" class="col-3 steps"></div>
+                    <div id="tutoStep3" class="col-3 steps"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="col-6">
+                        <img src="../images/tutorialAssets.png" alt="assets" width="125" id="imgTutorial">
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center justify-content-center">
+                <h2 class="col-10" id="tutorialTitle">Switch quickly to another blockchain</h2>
+                <span class="mt-2 col-11" id="tutorialCenteredText">With Virgo Wallet, you have the ability to browse multiple blockchains with just one click.</span>
+                <span class="mt-2 col-9" id="tutorialBottomText">Start by selecting your favorite blockchain.</span>
+                <button class="button col-8 mt-3 mb-3" id="tutorialButton">I understand</button>
+            </div>
+        </div>
+    </div>
     <div id="updatePopup" class="popup">
         <div class="box">
             <div class="header row">
@@ -2292,5 +2323,6 @@
 <script src="../js/panes/airdropPane.js"></script>
 <script src="../js/panes/createPane.js"></script>
 <script src="../js/web3/editFees.js"></script>
+<script src="../js/panes/tutorialPane.js"></script>
 </body>
 </html>
