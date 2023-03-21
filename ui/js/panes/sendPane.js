@@ -64,7 +64,7 @@ class SendPane {
             SendPane.btnConfirm.attr("disabled", true)
             SendPane.btnConfirm.find("val").html('Insufficient <val data-networkticker=""></val> balance')
 
-            SendPane.estimateFees = function(){
+            $("#sendTo").change(function (){
                 getAsset(SendPane.select.val()).then(function(assetInfos){
                     console.log(assetInfos)
                     let tickerBalance
@@ -73,26 +73,21 @@ class SendPane {
                     }else{
                         tickerBalance = assetInfos.ticker
                     }
-                        getBalance(tickerBalance).then(function (nativeBalance){
-                            const balance =  Utils.formatAmount(nativeBalance.balance, nativeBalance.decimals)
-                            let amount = $("#amountSend").val()
-                            $("#sendConfirm #showCost").html(amount * Number(nativeBalance.price))
-                            SendPane.confirmFormBalance.find("val").html(balance)
-                            $("#sendConfirm .ticker").html(nativeBalance.ticker)
-                            enableLoadBtn(SendPane.btnSubmit)
-                            SendPane.recipient.attr("disabled", false)
-                            SendPane.amount.attr("disabled", false)
-                            SendPane.select.attr("disabled", false)
+                    getBalance(tickerBalance).then(function (nativeBalance){
+                        const balance =  Utils.formatAmount(nativeBalance.balance, nativeBalance.decimals)
+                        let amount = $("#amountSend").val()
+                        $("#sendConfirm #showCost").html(amount * Number(nativeBalance.price))
+                        SendPane.confirmFormBalance.find("val").html(balance)
+                        $("#sendConfirm .ticker").html(nativeBalance.ticker)
+                        enableLoadBtn(SendPane.btnSubmit)
+                        SendPane.recipient.attr("disabled", false)
+                        SendPane.amount.attr("disabled", false)
+                        SendPane.select.attr("disabled", false)
 
-                            $("#body .send .sendForm").hide()
-                        })
+                        $("#body .send .sendForm").hide()
+                    })
                 })
-            }
-
-            SendPane.estimateFees()
-            confirmInterval = setInterval(function(){
-                SendPane.estimateFees()
-            }, 1000)
+            })
 
         })
 
@@ -103,11 +98,13 @@ class SendPane {
             getBaseInfos().then(function(res){
                 const selectedAddress = res.addresses[res.selectedAddress].address
                 getAsset(SendPane.select.val()).then(function(assetInfos){
+                    console.log(assetInfos)
                     SendPane.confirmAmount.html(SendPane.amount.val())
                     SendPane.confirmTicker.html(assetInfos.ticker)
                     SendPane.confirmRecipient.find("val").html(SendPane.recipient.val())
                     SendPane.confirmFrom.html(selectedAddress)
-                    estimateSendFees(SendPane.recipient.val(), Utils.toAtomicString(SendPane.amount.val(), assetInfos.decimals), SendPane.select.val()).then(function(fees){
+                    estimateSendFees(SendPane.recipient.val(), Utils.toAtomicString(SendPane.amount.val(), assetInfos.decimals), MAIN_ASSET.ticker).then(function(fees){
+
                         getBalance(MAIN_ASSET.ticker).then(function (feesBalance) {
                             getBalance(assetInfos.ticker).then(function (sendBalance) {
 
@@ -121,6 +118,8 @@ class SendPane {
 
                             const decimal = tag.dataset.decimal = decimals
                             const lim = tag.dataset.limit = gas
+                            const ticker = tag.dataset.tick = MAIN_ASSET.ticker
+
 
                             document.getElementById("from").setAttribute("data-jdenticon-value",selectedAddress)
                             document.getElementById("to").setAttribute("data-jdenticon-value",SendPane.recipient.val())
@@ -209,7 +208,7 @@ class SendPane {
         })
 
         $("#sendConfirm .max").click(function (){
-            if(SendPane.select.val() == MAIN_ASSET.ticker){
+            if(SendPane.select.val() === MAIN_ASSET.ticker){
                 estimateSendFees("0x6F7AAEa1D07801f9fB0756e1849b9e440eDB25b4", Utils.toAtomicString(SendPane.confirmFormBalance.find("val").html(), MAIN_ASSET.decimals), MAIN_ASSET.ticker).then(function(fees){
                     let maxSendable = new BN(Utils.toAtomicString(SendPane.confirmFormBalance.find("val").html(), MAIN_ASSET.decimals))
                     maxSendable = maxSendable.sub(new BN(fees.gasLimit * fees.gasPrice))

@@ -81,7 +81,7 @@ class TransactionsPane {
         getBaseInfos().then(function(data){
             let selectedWallet = data.wallets[data.selectedWallet].wallet
             let transactions = selectedWallet.transactions
-
+            console.log(transactions)
             let initialCount = transactionsPane.txsCount
                 console.log(transactions)
             while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
@@ -135,7 +135,6 @@ class TransactionsPane {
     }
 
     showAtomicSwapTransaction(transaction){
-        console.log(transaction)
         let elem = TransactionsPane.list.atomicSwapTx.clone()
         elem.attr("id", "tx"+transaction.hash)
 
@@ -395,7 +394,6 @@ class TransactionsPane {
         }else
             token1 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[0])[0]
 
-        elem.find(".logo.one").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + logo1 + "/logo.png')")
 
         let token2;
 
@@ -409,7 +407,12 @@ class TransactionsPane {
         }else
             token2 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[transaction.swapInfos.route.length-1])[0]
 
-        elem.find(".logo.two").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + logo2 + "/logo.png')")
+
+        const dateswap = new Date(transaction.date)
+
+
+
+        elem.find(".title .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
         elem.find(".smallDetails .amount").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
         elem.find(".smallDetails .ticker").html(token1.ticker)
@@ -498,7 +501,7 @@ class TransactionsPane {
         elem.find(".recipient").html(transaction.recipient)
         elem.find(".addr val").html(transaction.recipient)
 
-        elem.find(".amount .time").html(date.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"}))
+        elem.find(".amount .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
         elem.find(".details .recipient").click(function(){
             copyToClipboard($(this).get(0))
             elem.find(".recipientTitle").hide()

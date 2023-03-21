@@ -17,6 +17,7 @@ class EditFees extends HTMLElement {
         $(".editFees").click(function (){
             getGasPrice().then(function(gasPrice) {
                 $("#editfees").show()
+                $("#swapReview").css("display", "none")
                 let finalGasPriceSlow;
                 finalGasPriceSlow = Math.round(gasPrice * 0.8)
                 let finalGasPriceMedium;
@@ -26,6 +27,8 @@ class EditFees extends HTMLElement {
 
                 let dec = parseInt(document.querySelector("edit-fees").dataset.decimal)
                 let lim = parseInt(document.querySelector("edit-fees").dataset.limit)
+                let ticker = parseInt(document.querySelector("edit-fees").dataset.tick)
+
 
 
 
@@ -134,7 +137,7 @@ class EditFees extends HTMLElement {
     setFees(gasLimit){
         const _this = this
 
-        getBalance(MAIN_ASSET.ticker).then(function(balance) {
+        getBalance("BNB").then(function(balance) {
             getGasPrice().then(function (res) {
                 _this.gasPrice = res
                 let finalGasPrice

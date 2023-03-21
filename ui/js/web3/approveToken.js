@@ -11,6 +11,8 @@ let decimals = get("decimals")
 
 let tag;
 tag = document.querySelector("edit-fees")
+const decimal = tag.dataset.decimal = decimals
+const lim = tag.dataset.limit = gas
 tag.start(gas)
 let finalGasPrice = 0
 $("#allow").click(async () => {

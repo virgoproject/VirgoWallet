@@ -33,7 +33,6 @@ class TxIdentifier {
                         "gasPrice": gasPrice,
                         "gasLimit": gasLimit,
                         "nonce": nonce
-
                     }
                     return swapEth
                     break
