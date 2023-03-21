@@ -87,6 +87,7 @@ $(".popup .box").click(function(){
 })
 
 $(".popup").click(function(){
+    if ($(this).attr('id') === 'tutorialPopup') return
     $(this).hide()
 })
 

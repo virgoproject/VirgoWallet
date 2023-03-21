@@ -283,6 +283,37 @@ input[type=number] {
     box-shadow: 0px 1px 5px 2px #0000003b;
 }
 
+.popup .steps {
+    background-color: #6C2559;
+    height: 5px;
+    border-radius: 100em;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.popup .stepsActive{
+    background-color: #B71C8E !important;
+}
+
+#tutorialPopup .box {
+    background-color: #242424 !important;
+    border-radius: 1em !important;
+}
+
+#tutorialPopup .button{
+    border-radius: 1em !important;
+    color: black;
+}
+
+#tutorialPopup .button:hover{
+    color: white;
+}
+
+#tutorialPopup #closeTutorial:hover{
+    cursor: pointer;
+}
+
 .popup .header .close {
     cursor: pointer;
     transition: color ease-in 0.1s;
