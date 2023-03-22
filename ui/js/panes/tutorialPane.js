@@ -28,8 +28,8 @@ class tutorialPane{
             }
         })
 
-        tutorialPane.boxTutorial.chainSelection.css({'position' : 'relative','z-index' : '1000','pointer-events' : 'none'})
-        tutorialPane.boxTutorial.chainSelection.attr('disabled',"disabled");
+        // tutorialPane.boxTutorial.chainSelection.css({'position' : 'relative','z-index' : '1000','pointer-events' : 'none'})
+        // tutorialPane.boxTutorial.chainSelection.attr('disabled',"disabled");
 
 
         tutorialPane.boxTutorial.tutorialBtn.click( (e) => {
