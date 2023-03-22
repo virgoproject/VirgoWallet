@@ -39,6 +39,7 @@ class TransactionsPane {
 
     constructor() {
         this.txsCount = 0
+        this.countDate = 0
         this.reachedEnd = false
 
         TransactionsPane.btn.click(function(){
@@ -83,10 +84,21 @@ class TransactionsPane {
             let transactions = selectedWallet.transactions
             console.log(transactions)
             let initialCount = transactionsPane.txsCount
+            let options = {month: "short", day: "numeric"};
                 console.log(transactions)
             while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
+                    let date = new Date(transactions[transactionsPane.txsCount ].date)
+                      let nextDate = new Date(transactions[transactionsPane.txsCount+1].date)
+                    if (date.toLocaleDateString("en-US", options) === nextDate.toLocaleDateString("en-US", options)){
+                        if (transactions[0]){
+                            console.log(transactionsPane.countDate)
+                            transactionsPane.showDate(transactions[0].date)
+                        }
+
+                    }
                 transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
                 transactionsPane.txsCount++
+
             }
 
             TransactionsPane.list.loading.hide()
@@ -105,14 +117,12 @@ class TransactionsPane {
     }
 
     showTransaction(selectedWallet, transaction){
-        if(transaction.contractAddr == "SWAP"){
-            this.showSwapTransaction(selectedWallet, transaction)
-            return
-        }
+
         if(transaction.contractAddr == "ATOMICSWAP"){
             this.showAtomicSwapTransaction(transaction)
             return
         }
+        console.log(transaction.contractAddr)
 
         switch (transaction.contractAddr){
             case "SWAP":
@@ -122,7 +132,7 @@ class TransactionsPane {
                 this.showApprovedTransaction(selectedWallet, transaction)
                 break
             case 'SWAPETHFORTOKEN':
-                this.showSwapEthForTokenTransaction(selectedWallet, transaction)
+                this.showSwapTokenForTokenTransaction(selectedWallet, transaction)
                 break
             case 'SWAPTOKENFORTOKEN':
                 this.showSwapTokenForTokenTransaction(selectedWallet, transaction)
@@ -132,6 +142,16 @@ class TransactionsPane {
                 break
         }
 
+    }
+
+    showDate(date){
+        let elem = $('#txDate').clone()
+        let options = {month: "short", day: "numeric"};
+        let dateTx = new Date(date)
+        console.log(elem)
+        elem.find('.setUpDate').html(dateTx.toLocaleDateString("en-US", options))
+        TransactionsPane.list.self.append(elem)
+        elem.show()
     }
 
     showAtomicSwapTransaction(transaction){
@@ -226,6 +246,19 @@ class TransactionsPane {
             }, 2000)
         })
 
+        const dateswap = new Date(transaction.date)
+
+        if (transaction.status === false){
+            elem.find(".status").html("Cancel")
+            elem.find("#arrowapprove").addClass('swapLogored').removeClass('swapLogogreen');
+            elem.find("#arrowapprove").addClass('swapLogored').removeClass('swapLogopending');
+        }
+        if (transaction.status === true){
+            elem.find("#arrowapprove").addClass('swapLogogreen').removeClass('swapLogopending');
+        }
+
+        elem.find(".title .timeApprove").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+
         elem.attr("data-date", transaction.date)
         const date = new Date(transaction.date)
 
@@ -292,10 +325,6 @@ class TransactionsPane {
     }
 
     showSwapEthForTokenTransaction(selectWallet, transaction){
-
-    }
-
-    showSwapTokenForTokenTransaction(selectWallet, transaction){
         if (transaction.swap !== undefined) {
             let elem = TransactionsPane.list.tokenTx.clone()
             elem.attr("id", "tx" + transaction.hash)
@@ -318,8 +347,113 @@ class TransactionsPane {
             elem.attr("data-date", transaction.date)
             const date = new Date(transaction.date)
 
+            if (transaction.status === false){
+                elem.find(".status").html("Cancel")
+                elem.find("#arrow").addClass('swapLogored').removeClass('swapLogogreen');
+                elem.find("#arrow").addClass('swapLogored').removeClass('swapLogopending');
+
+            }
+
+            if (transaction.status === true){
+                elem.find("#arrow").addClass('swapLogogreen').removeClass('swapLogopending');
+            }
 
 
+            let options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice / 1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice * transaction.gasLimit, selectWallet.decimals))
+            elem.find(".totalFees span").html(selectWallet.ticker)
+
+            if (selectWallet.explorer === undefined)
+                elem.find("button").hide()
+            else
+                elem.find("button").click(function () {
+                    window.open(selectWallet.explorer + transaction.hash, "_blank")
+                })
+
+            elem.click(function () {
+                if (elem.hasClass("opened")) return
+
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".close").click(function () {
+                elem.removeClass("opened")
+                return false
+            })
+
+            if (transaction.status !== undefined) {
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if (!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            } else {
+                elem.find(".speed-up").click(function () {
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if (transaction.canceling) {
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function () {
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+            TransactionsPane.list.self.append(elem)
+            elem.show()
+        }
+    }
+
+    showSwapTokenForTokenTransaction(selectWallet, transaction){
+        if (transaction.swap !== undefined) {
+            let elem = TransactionsPane.list.tokenTx.clone()
+            elem.attr("id", "tx" + transaction.hash)
+            elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
+
+
+            getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
+                elem.find(".ticker.one").html(token1.symbol)
+                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
+            })
+            let tokenAdr = transaction.swap.params[2].value.length - 1
+
+            getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
+                elem.find(".ticker.two").html(token2.symbol)
+
+                if(transaction.swap.params[1].value !== undefined)
+                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
+            })
+            const dateswap = new Date(transaction.date)
+
+
+
+            elem.find(".title .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+
+            elem.attr("data-date", transaction.date)
+            const date = new Date(transaction.date)
+
+
+            if (transaction.status === false){
+                elem.find(".status").html("Cancel")
+                elem.find("#arrow").addClass('swapLogored').removeClass('swapLogogreen');
+                elem.find("#arrow").addClass('swapLogored').removeClass('swapLogopending');
+            }
+
+            if (transaction.status === true){
+                elem.find("#arrow").addClass('swapLogogreen').removeClass('swapLogopending');
+            }
 
 
             let options = {month: "short", day: "numeric"};
@@ -410,6 +544,17 @@ class TransactionsPane {
 
         const dateswap = new Date(transaction.date)
 
+
+        if (transaction.status === false){
+            elem.find(".status").html("Cancel")
+            elem.find("#arrowswap").addClass('swapLogored').removeClass('swapLogogreen');
+            elem.find("#arrowswap").addClass('swapLogored').removeClass('swapLogopending');
+
+        }
+
+        if (transaction.status === true){
+            elem.find("#arrowswap").addClass('swapLogogreen').removeClass('swapLogopending');
+        }
 
 
         elem.find(".title .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
@@ -515,6 +660,15 @@ class TransactionsPane {
         elem.attr("data-date", transaction.date)
         let options = {hour: "2-digit", minute: "2-digit"}
 
+        if (transaction.status === false){
+            elem.find(".status").html("Cancel")
+            elem.find("#arrowbasic").addClass('circleTransacred').removeClass('circleTransacgreen');
+            elem.find("#arrowbasic").addClass('circleTransacred').removeClass('circleTransacpending');
+        }
+
+        if (transaction.status === true){
+            elem.find("#arrowbasic").addClass('circleTransacgreen').removeClass('circleTransacpending');
+        }
 
         options = {month: "short", day: "numeric"};
         elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))

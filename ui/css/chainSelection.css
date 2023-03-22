@@ -53,6 +53,7 @@
     background: #f8f4fb;
     border-radius: 25px;
     padding: .5em;
+    z-index: 0 !important;
 }
 
 #chainSelectionHeader:hover{

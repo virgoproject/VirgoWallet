@@ -209,7 +209,7 @@ class SendPane {
 
         $("#sendConfirm .max").click(function (){
             if(SendPane.select.val() === MAIN_ASSET.ticker){
-                estimateSendFees("0x6F7AAEa1D07801f9fB0756e1849b9e440eDB25b4", Utils.toAtomicString(SendPane.confirmFormBalance.find("val").html(), MAIN_ASSET.decimals), MAIN_ASSET.ticker).then(function(fees){
+                estimateSendFees("0x92f3D3CDa86dB989252b98b191bE2dB181F7Ded4", Utils.toAtomicString(SendPane.confirmFormBalance.find("val").html(), MAIN_ASSET.decimals), MAIN_ASSET.ticker).then(function(fees){
                     let maxSendable = new BN(Utils.toAtomicString(SendPane.confirmFormBalance.find("val").html(), MAIN_ASSET.decimals))
                     maxSendable = maxSendable.sub(new BN(fees.gasLimit * fees.gasPrice))
                     SendPane.amount.val(Utils.formatAmount(maxSendable.toString(), MAIN_ASSET.decimals))
