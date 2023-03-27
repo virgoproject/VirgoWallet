@@ -138,9 +138,7 @@
     color: black;
 }
 
-#transactionsPane .listItem.opened .smallDetails, #transactionsPane .listItem.opened .header .amount {
-    visibility: hidden;
-}
+
 
 #transactionsPane .listItem.opened .details {
     display: block;
@@ -238,11 +236,11 @@
 
 #transactionsPane .paneSelected{
     color: var(--mainColor) !important;
-    border-bottom: solid 2px !important;
+    border-bottom: solid 3px !important;
 }
 
 #transactionsPane .pane{
-    border-bottom: solid 1px;
+    border-bottom: solid 2px #c7c7c7;
 }
 
 #transactionsPane .paneTitle{
@@ -312,4 +310,8 @@ cursor: pointer;
 }
 #transactionsPane .timeApprove{
     margin-left: 52px;
+}
+
+#transactionsPane .chevronOpened{
+    rotate: 90deg;
 }

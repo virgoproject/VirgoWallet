@@ -795,6 +795,7 @@ class TransactionsPane {
             }, 2000)
         })
 
+
         elem.attr("data-date", transaction.date)
         let options = {hour: "2-digit", minute: "2-digit"}
 
@@ -832,8 +833,11 @@ class TransactionsPane {
         elem.click(function(){
             if(elem.hasClass("opened")) return
 
+
+
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
+
         })
 
         elem.find(".close").click(function(){

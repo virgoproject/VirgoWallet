@@ -163,8 +163,7 @@ class SendPane {
             SendPane.btnSubmit.attr("disabled", false)
             SendPane.confirmForm.hide()
             SendPane.sendForm.show()
-            $("#sendTo").empty()
-                .append('<option selected="selected" value="test">To Asset</option>');
+
             clearInterval(confirmInterval)
         })
 
