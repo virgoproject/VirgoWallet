@@ -98,14 +98,11 @@ class TransactionsPane {
             let transactions = selectedWallet.transactions
             let initialCount = transactionsPane.txsCount
             let options = {month: "short", day: "numeric"};
+
             if ($("#transactionsPane #all").hasClass("paneSelected")){
                 while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
-                    let date = new Date(transactions[transactionsPane.txsCount ].date)
-                    let nextDate = new Date(transactions[transactionsPane.txsCount+1].date)
 
-                    if (date.toLocaleDateString("en-US", options) === nextDate.toLocaleDateString("en-US", options)){
-                            transactionsPane.showDate(date.toLocaleDateString("en-US", options))
-                    }
+                    transactionsPane.showDate(transactions[transactionsPane.txsCount])
                     transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
 
                     transactionsPane.txsCount++
@@ -114,14 +111,13 @@ class TransactionsPane {
             }
 
             if ($("#transactionsPane #transac").hasClass("paneSelected")){
-
-
                    while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
                        let date = new Date(transactions[transactionsPane.txsCount ].date)
                        let nextDate = new Date(transactions[transactionsPane.txsCount+1].date)
                        if (date.toLocaleDateString("en-US", options) === nextDate.toLocaleDateString("en-US", options)){
-                           transactionsPane.showDate(date.toLocaleDateString("en-US", options))
+                           transactionsPane.showDate(transactions[transactionsPane.txsCount])
                        }
+
                        if (transactions[transactionsPane.txsCount].contractAddr !== "NOTIF"){
                            transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
                        }
@@ -158,8 +154,6 @@ class TransactionsPane {
         }
 
         switch (transaction.contractAddr){
-
-
             case "SWAP":
                 this.showSwapTransaction(selectedWallet, transaction)
                 break
@@ -179,18 +173,22 @@ class TransactionsPane {
                 this.showBasicTransaction(selectedWallet, transaction)
                 break
         }
-
     }
 
-    showDate(date){
-            let elem = $('#txDate').clone()
-            elem.find(".setUpDate").addClass("showDate")
+    showDate(tx){
+        let elem = $('#txDate').clone()
+        let options = {month: "short", day: "numeric"};
+        let dates = new Date(tx.date)
 
-        if ($(".setUpDate").text() !== date && !$("#txDate").hasClass("showDate")){
-            elem.find('.setUpDate').html(date)
-            TransactionsPane.list.self.append(elem)
-            elem.show()
-        }
+
+            if( !$("#transactionsPane .list #txDate .setUpDate").hasClass(dates.toLocaleDateString("en-US", options))){
+                elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
+                console.log(dates.toLocaleDateString("en-US", options))
+                elem.find('.setUpDate').html(dates.toLocaleDateString("en-US", options))
+                TransactionsPane.list.self.append(elem)
+
+            }
+        elem.show()
     }
 
     showNotifTransaction(selectedWallet, transaction){

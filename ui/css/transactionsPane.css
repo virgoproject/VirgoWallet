@@ -56,11 +56,12 @@
 }
 
 #transactionsPane .listItem:hover {
-    background: rgba(90, 0, 156, 0.12);
+    background: #e6e1e9;
 }
 
 #transactionsPane .listItem p {
     margin-bottom: 0;
+    margin-left: -3px;
 }
 
 #transactionsPane .listItem .header .amount val {
@@ -310,5 +311,5 @@ cursor: pointer;
     color: #6e6e6e;
 }
 #transactionsPane .timeApprove{
-    margin-left: 42px;
+    margin-left: 52px;
 }

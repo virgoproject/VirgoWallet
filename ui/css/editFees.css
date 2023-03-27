@@ -48,12 +48,33 @@
     left: 0px;
 }
 
+.signTransac .rule{
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+    left: 0px;
+}
+
+.signTransac .blackbg{
+    z-index: 11;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    position: relative;
+    height: 41em;
+    margin-bottom: -33px;
+    margin-top: -43em;
+}
+
 .see{
     border-radius: 30px 30px 0px 0px;
     background: white;
     position: absolute;
     z-index: 15;
+    left: 0;
     width: 100%;
+    bottom: 0;
 }
 
 .rule{
@@ -70,7 +91,7 @@
 
 .editFees{
     cursor: pointer;
-    margin-left: 5px !important;
+    margin-left: 0px !important;
     color: var(--mainColor);
 }
 

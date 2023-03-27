@@ -5,6 +5,7 @@ class EditFees extends HTMLElement {
     static interval = null
     static onGasChanged = () => {}
     static onBalance = () => {}
+    static notBalance = () => {}
 
     constructor() {
         super();
@@ -145,8 +146,10 @@ class EditFees extends HTMLElement {
 
                 let nativeTotal = gasLimit * finalGasPrice
 
-                if(nativeTotal <= balance.balance)
+                if(balance.balance >= nativeTotal){
                     _this.onBalance()
+                }
+
 
                 _this.onGasChanged()
             })

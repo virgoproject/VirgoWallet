@@ -151,7 +151,7 @@ class ContactsPane {
                 ContactsPane.div.formContact.hide()
                 ContactsPane.div.contacts.hide()
                 ContactsPane.extern.payForm.show()
-                showStatsBar()
+                hideStatsBar()
             } else {
                 ContactsPane.div.bodyContacts.show()
                 ContactsPane.extern.payForm.show()
