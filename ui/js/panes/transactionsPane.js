@@ -179,13 +179,22 @@ class TransactionsPane {
         let elem = $('#txDate').clone()
         let options = {month: "short", day: "numeric"};
         let dates = new Date(tx.date)
+        let today = new Date(Date.now())
 
 
             if( !$("#transactionsPane .list #txDate .setUpDate").hasClass(dates.toLocaleDateString("en-US", options))){
-                elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
-                console.log(dates.toLocaleDateString("en-US", options))
-                elem.find('.setUpDate').html(dates.toLocaleDateString("en-US", options))
-                TransactionsPane.list.self.append(elem)
+                if (dates.toLocaleDateString("en-US", options) !== today.toLocaleDateString("en-US", options)){
+                    elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
+                    console.log(dates.toLocaleDateString("en-US", options))
+                    elem.find('.setUpDate').html(dates.toLocaleDateString("en-US", options))
+                    TransactionsPane.list.self.append(elem)
+                }else{
+                    elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
+                    console.log(dates.toLocaleDateString("en-US", options))
+                    elem.find('.setUpDate').html("Today")
+                    TransactionsPane.list.self.append(elem)
+                }
+
 
             }
         elem.show()
