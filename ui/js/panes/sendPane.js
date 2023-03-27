@@ -70,7 +70,7 @@ class SendPane {
 
             $("#sendTo").change(function (){
                 getAsset(SendPane.select.val()).then(function(assetInfos){
-                    console.log(assetInfos)
+
                     let tickerBalance
                     if (assetInfos.ticker !== MAIN_ASSET.ticker){
                         tickerBalance = assetInfos.contract
@@ -102,6 +102,7 @@ class SendPane {
 
             getBaseInfos().then(function(res){
                 const selectedAddress = res.addresses[res.selectedAddress].address
+
                 getAsset(SendPane.select.val()).then(function(assetInfos){
                     SendPane.confirmAmount.html(SendPane.amount.val())
 
@@ -115,7 +116,15 @@ class SendPane {
 
                         getBalance(MAIN_ASSET.ticker).then(function (feesBalance) {
 
-                            getBalance(assetInfos.ticker).then(function (sendBalance) {
+                            let contract
+                            if (assetInfos.ticker === MAIN_ASSET.ticker){
+                                contract = MAIN_ASSET.ticker
+                            }else{
+                                contract = assetInfos.contract
+                            }
+
+                            getBalance(contract).then(function (sendBalance) {
+
 
                             let gas = fees.gasLimit
                             let decimals = MAIN_ASSET.decimals
@@ -141,8 +150,7 @@ class SendPane {
                             tag.onGasChanged = () => {
                                 $("#sendReviewNetFees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
                                 $("#sendReviewCost").html(Number(priceFees)*Number(Utils.formatAmount(gas * tag.getGas(), decimals)) + Number(priceAmount) * Number(amount) )
-                                console.log(amount)
-                                console.log(Number(amount)+Number(Utils.formatAmount(gas * tag.getGas(), decimals)))
+
                             }
                             tag.onBalance = () => {
                                 $("#confirmSendBtn").find("val").html("Send")
@@ -162,6 +170,7 @@ class SendPane {
             if($(this).attr("disabled")) return;
             SendPane.btnSubmit.attr("disabled", false)
             SendPane.confirmForm.hide()
+            $("#sendTo").val('default').selectpicker("refresh");
             SendPane.sendForm.show()
 
             clearInterval(confirmInterval)
@@ -192,7 +201,7 @@ class SendPane {
                         notyf.success("Transaction sent!")
                         SendPane.recipient.val("")
                         SendPane.amount.val(null)
-
+                        $("#sendTo").val('default').selectpicker("refresh");
                         SendPane.confirmForm.hide()
                         SendPane.feesForm.hide()
                         $("#body .send .sendForm").show()

@@ -784,7 +784,7 @@ class TransactionsPane {
         elem.find(".recipient").html(transaction.recipient)
         elem.find(".addr val").html(transaction.recipient)
 
-        elem.find(".amount .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+        elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
         elem.find(".details .recipient").click(function(){
             copyToClipboard($(this).get(0))
             elem.find(".recipientTitle").hide()

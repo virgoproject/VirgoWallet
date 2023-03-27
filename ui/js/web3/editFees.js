@@ -138,7 +138,7 @@ class EditFees extends HTMLElement {
     setFees(gasLimit){
         const _this = this
 
-        getBalance("BNB").then(function(balance) {
+        getBalance(MAIN_ASSET.ticker).then(function(balance) {
             getGasPrice().then(function (res) {
                 _this.gasPrice = res
                 let finalGasPrice
