@@ -315,3 +315,7 @@ cursor: pointer;
 #transactionsPane .chevronOpened{
     rotate: 90deg;
 }
+
+.listDate{
+    margin-top: 11px;
+}
