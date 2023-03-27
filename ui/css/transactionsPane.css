@@ -2,7 +2,7 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
+    background: #ffffff;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
@@ -48,8 +48,8 @@
 #transactionsPane .listItem {
     background: #F1F1F1;
     border-radius: 0.5em;
-    padding-top: 1.375em;
-    padding-bottom: 1.375em;
+    padding-top: 1.1em;
+    padding-bottom: 1.1em;
     padding-left: 1em;
     transition: background ease 0.25s;
     cursor: pointer;
