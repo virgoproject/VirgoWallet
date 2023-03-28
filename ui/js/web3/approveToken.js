@@ -8,11 +8,13 @@ let gas = parseInt(get("gas"))
 let ticker = get("ticker")
 let amount = parseInt(get("value"))
 let decimals = get("decimals")
+let mainAssetTicker = get("ticker")
 
 let tag;
 tag = document.querySelector("edit-fees")
 const decimal = tag.dataset.decimal = decimals
 const lim = tag.dataset.limit = gas
+const MainTicker = tag.dataset.ticker = mainAssetTicker
 tag.start(gas)
 let finalGasPrice = 0
 $("#allow").click(async () => {

@@ -137,20 +137,20 @@ class SendPane {
 
                             const decimal = tag.dataset.decimal = decimals
                             const lim = tag.dataset.limit = gas
-                            const ticker = tag.dataset.tick = MAIN_ASSET.ticker
+                            const ticker = tag.dataset.ticker = MAIN_ASSET.ticker
 
 
                             document.getElementById("from").setAttribute("data-jdenticon-value",selectedAddress)
                             document.getElementById("to").setAttribute("data-jdenticon-value",SendPane.recipient.val())
 
-                            const tick = tag.dataset.ticker = MAIN_ASSET.ticker
-                            $("#sendReviewNetFeesTicker").html(tick)
+                            $("#sendReviewNetFeesTicker").html(ticker)
                             tag.start(gas)
+
+
 
                             tag.onGasChanged = () => {
                                 $("#sendReviewNetFees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
-                                $("#sendReviewCost").html(Number(priceFees)*Number(Utils.formatAmount(gas * tag.getGas(), decimals)) + Number(priceAmount) * Number(amount) )
-
+                                $("#sendReviewCost").html(Number(priceFees)*Number(Utils.formatAmount(gas * tag.getGas(), decimals)) + Number(priceAmount) * Number(amount))
                             }
                             tag.onBalance = () => {
                                 $("#confirmSendBtn").find("val").html("Send")

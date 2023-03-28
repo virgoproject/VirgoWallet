@@ -90,7 +90,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     switch (dataTx.contractAddr){
         case "APPROVETOKEN":
             await browser.windows.create({
-                url: `/ui/html/web3/approveToken.html?id=${reqId}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}`,
+                url: `/ui/html/web3/approveToken.html?id=${reqId}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}}`,
                 type:'popup',
                 height: 600,
                 width: 370,

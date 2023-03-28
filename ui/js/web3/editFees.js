@@ -28,7 +28,6 @@ class EditFees extends HTMLElement {
 
                 let dec = parseInt(document.querySelector("edit-fees").dataset.decimal)
                 let lim = parseInt(document.querySelector("edit-fees").dataset.limit)
-                let ticker = parseInt(document.querySelector("edit-fees").dataset.tick)
 
 
 
@@ -137,8 +136,18 @@ class EditFees extends HTMLElement {
 
     setFees(gasLimit){
         const _this = this
+        let ticker = document.querySelector("edit-fees").dataset.ticker
+        let MainAsset
 
-        getBalance(MAIN_ASSET.ticker).then(function(balance) {
+
+
+
+            MainAsset = ticker
+
+
+
+
+        getBalance(MainAsset).then(function(balance) {
             getGasPrice().then(function (res) {
                 _this.gasPrice = res
                 let finalGasPrice

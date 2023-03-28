@@ -210,7 +210,7 @@ class TransactionsPane {
         elem.find(".recipient").html(transaction.recipient)
         elem.find(".addr val").html(transaction.recipient)
 
-        elem.find(".amount .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+        elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
         elem.find(".details .recipient").click(function(){
             copyToClipboard($(this).get(0))
             elem.find(".recipientTitle").hide()
@@ -396,7 +396,7 @@ class TransactionsPane {
             elem.find("#arrowapprove").addClass('swapLogogreen').removeClass('swapLogopending');
         }
 
-        elem.find(".title .timeApprove").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+        elem.find(" .timeApprove").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
         elem.attr("data-date", transaction.date)
         const date = new Date(transaction.date)
@@ -577,7 +577,7 @@ class TransactionsPane {
 
 
 
-            elem.find(".title .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+            elem.find(" .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
             elem.attr("data-date", transaction.date)
             const date = new Date(transaction.date)
@@ -695,7 +695,7 @@ class TransactionsPane {
         }
 
 
-        elem.find(".title .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+        elem.find(" .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
         elem.find(".smallDetails .amount").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
         elem.find(".smallDetails .ticker").html(token1.ticker)

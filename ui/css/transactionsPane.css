@@ -46,7 +46,7 @@
 }
 
 #transactionsPane .listItem {
-    background: #F1F1F1;
+    background: #f9f9f9;
     border-radius: 0.5em;
     padding-top: 1.1em;
     padding-bottom: 1.1em;
@@ -70,7 +70,7 @@
     overflow: hidden;
     display: inline-block;
     vertical-align: bottom;
-    min-width: 65px;
+    min-width: 133px;
 }
 
 #transactionsPane .listItem .smallDetails .amount val {
@@ -253,6 +253,8 @@ cursor: pointer;
     border-radius: 50px;
     padding: 0.7em;
     color: #84C56F;
+    width: 39px;
+    height: 39px;
 }
 
 .swapLogogreen{
@@ -293,16 +295,14 @@ cursor: pointer;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 177px;
+    max-width: 111px;
     vertical-align: top;
 }
 
-#transactionsPane .time{
-    margin-left: 42px;
-}
+
 
 #transactionsPane .timeSwap{
-    margin-left: 6px;
+    margin-left: 23px;
 }
 
 #transactionsPane .addr{
