@@ -25,7 +25,6 @@
 }
 
 #accountSelectionHeader .contentAddress .adress{
-    margin-left: 32px !important;
     font-size: .7em;
 }
 
@@ -34,6 +33,14 @@
     padding: 0.5em;
     border-radius: 25px;
     cursor: pointer;
+    width: 9em;
+}
+#accountSelectionHeader .copy{
+    margin-left: 38px;
+}
+
+.contentAddress .fa-copy{
+    font-size: 12px !important;
 }
 
 #accountSelectionHeader .contentAddress:hover {

@@ -8,6 +8,7 @@
     height: 151px;
     padding: 0.5em;
     margin-bottom: -0.5em;
+    margin-top: 0.5em;
 }
 .hr{
     width: 90%;
@@ -19,7 +20,7 @@
     position: absolute;
     left: 2em;
     right: 2em;
-    top: 46px;
+    top: 55px;
     border-radius: 0.5em;
 }
 
@@ -140,6 +141,7 @@
     margin: auto;
     cursor: pointer;
     padding: 0;
+    margin-left: 17px;
 }
 
 
@@ -337,4 +339,8 @@
     padding: 1em 2em;
     height: 100%;
 
+}
+
+.chainSelectionChevron{
+    margin-left: 10px;
 }
