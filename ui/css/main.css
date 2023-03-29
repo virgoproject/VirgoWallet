@@ -46,7 +46,7 @@ body {
     --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
     --whiteBackground: #F2EBF7;
-    font-family: "Ubuntu";
+    font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     overflow: hidden;
 }
@@ -62,6 +62,15 @@ body {
 
 .button:hover {
     background: var(--mainColorDark10);
+}
+
+.buttonEmpty {
+    color: var(--mainColor);
+    font-weight: bold;
+    background-color: unset;
+    border: none;
+    padding: .375em .75em;
+    transition: all ease-in 0.1s;
 }
 
 .button:disabled {

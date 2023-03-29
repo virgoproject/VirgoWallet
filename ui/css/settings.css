@@ -134,6 +134,19 @@
     background: #00000025;
 }
 
+#settings .settingsPane .securityPane{
+    padding: 1em 2em;
+}
+
+#settings .settingsPane .securitytitles{
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#settings .settingsPane .securitydesc {
+    font-size: .85em;
+}
+
 #settings .settingsPane .tab p {
     font-size: 0.9em;
 }

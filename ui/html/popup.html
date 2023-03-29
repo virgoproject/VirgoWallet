@@ -1173,32 +1173,57 @@
             </div>
         </div>
         <div class="mt-4 settingsPane" style="display: none">
-            <div class="back">
+            <div class="back" id="settingsBack">
                 <i class="fas fa-chevron-left"></i>
             </div>
             <div class="mainSettings">
                 <div class="row tab" data-target="security">
-                    <div class="col-10">
-                        <h4 class="m-0">Security</h4>
-                        <p class="m-0">Secure and backup your wallet</p>
+                    <div class="col-10 d-flex align-items-center">
+                        <i class="fa-solid fa-lock-keyhole me-3 col-2"></i>
+                        <h5 class="m-0 col-10">Security & Privacy</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
 
-                <div class="row tab" data-target="connectedWebsites">
-                    <div class="col-10">
-                        <h4 class="m-0">Connected websites</h4>
-                        <p class="m-0">Check which website has access to your wallet</p>
+                <div class="row tab" data-target="connectedWebsites" id="connectedWebsites">
+                    <div class="col-10 d-flex align-items-center">
+                        <i class="fa-solid fa-sitemap me-3 col-2"></i>
+                        <h5 class="m-0 col-10">Networks</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
             </div>
-            <div class="settingsCat" data-settingId="security" data-title="Security" data-settingsLevel="1">
-                <div class="row tab" data-target="setupPassword">
+            <div class="settingsCat" data-settingId="security" data-title="Security & Privacy" data-settingsLevel="1">
+
+                <div class="row securityPane">
+                    <h5 class="securitytitles">Protect Your Wallet</h5>
+                    <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
+                    <button class="button">Reveal Seed Phrase</button>
+                </div>
+                <div class="row securityPane">
+                    <h5 class="securitytitles">Protect Your Wallet</h5>
+                    <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
+                    <button class="buttonEmpty" id="getMnemonic">Setup/Change password</button>
+                </div>
+                <div class="row securityPane">
+                    <h5 class="securitytitles">Auto-Lock</h5>
+                    <p class="securitydesc">Choose the amount of time before the application automatically locks.</p>
+                    <select class="form-select">
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="60" selected="">1 hour</option>
+                        <option value="120">2 hours</option>
+                        <option value="360">6 hours</option>
+                        <option value="720">12 hours</option>
+                        <option value="1440">1 day</option>
+                    </select>
+                </div>
+<!--                <div class="row tab" data-target="setupPassword">
                     <div class="col-10">
                         <h4 class="m-0">Password</h4>
                         <p class="m-0">Setup and change your password</p>
@@ -1207,7 +1232,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
-                <div class="row tab" data-target="getMnemonic">
+                <div class="row tab">
                     <div class="col-10">
                         <h4 class="m-0">Reveal recovery phrase</h4>
                         <p class="m-0">Show your secret recovery phrase</p>
@@ -1233,11 +1258,11 @@
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword"
                  data-settingsLevel="2">
-                <div class="writeMnemonic" style="display: none">
+                <div class="writeMnemonic" id="writeMnemonic" style="display: none">
                     <h3>Write down your Secret Recovery Phrase</h3>
                     <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down
                         on paper and keep it safe</b>, away from regard.</p>
@@ -1350,13 +1375,13 @@
                 </div>
             </div>
             <div class="settingsCat p-3 text-center getMnemonic" data-settingId="getMnemonic" data-settingsLevel="2">
-                <div class="getPassword">
+                <div class="getPassword" id="getPassword">
                     <h4>Unveal your phrase</h4>
                     <div class="mt-3">
                         <p class="label text-left">Current password</p>
-                        <input type="password" class="input col-12" placeholder="Enter your current password" data-inputTarget="#settings .getMnemonic .getPassword button">
+                        <input type="password" class="input col-12" id="getPasswordInput" placeholder="Enter your current password" data-inputTarget="#settings .getMnemonic .getPassword button">
                     </div>
-                    <button class="button w-100 mt-4" disabled="disabled">
+                    <button class="button w-100 mt-4" disabled="disabled" id="getPasswordBtn">
                         <val>Continue</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                     </button>
