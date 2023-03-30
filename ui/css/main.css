@@ -46,6 +46,10 @@ body {
     --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
     --whiteBackground: #F2EBF7;
+    --greenBackground:#E3F3E1;
+    --greenArrow: #84C56F;
+    --blueBackground:#DFF0FF;
+    --blueArrow:#70a6dd;
     font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     overflow: hidden;

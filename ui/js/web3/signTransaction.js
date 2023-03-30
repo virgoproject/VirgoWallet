@@ -6,18 +6,18 @@ function get(name){
 let gas = parseInt(get("gas"))
 let ticker = get("ticker")
 let amount = parseInt(get("value"))
+console.log(get("value"))
 let decimals = get("decimals")
 
 $("#siteName").html(get("origin"))
-let tag;
-tag = document.querySelector("edit-fees")
-const decimal = tag.dataset.decimal = decimals
-const lim = tag.dataset.limit = gas
-tag.start(gas)
+let editFees = document.querySelector("edit-fees")
+const decimal = editFees.dataset.decimal = decimals
+const lim = editFees.dataset.limit = gas
+editFees.start(gas)
 
 let finalGasPrice = 0
 $("#allow").click(async () => {
-    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: tag.getGas()}})
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: editFees.getGas()}})
     window.close()
 })
 
@@ -43,13 +43,25 @@ console.log(gas)
 $("#from").html(get("from"))
 $("#to").html(get("to"))
 $("#amount").html(Utils.formatAmount(amount, decimals))
+console.log(amount, decimals)
 $("#data").html(get("data"))
 $(".feesTicker").html(ticker)
-tag.onGasChanged = () => {
-    $("#fees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
-}
-tag.onBalance = () => {
-    $("#allow").attr("disabled", false)
-}
+
+getAsset(ticker).then(function(assetInfos){
+    editFees.onGasChanged = (gasPrice, gasLimit) => {
+        let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+
+        if (ticker == assetInfos.ticker)
+            totalNativ += Number(amount)
+
+        if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
+            $("#allow").attr("disabled", false)
+        }
+
+        $("#fees").html(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+
+    }
+})
+
 
 window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

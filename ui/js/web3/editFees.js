@@ -1,6 +1,7 @@
 class EditFees extends HTMLElement {
 
     static gasPrice = 0
+    static gasLimit = 0
     static feesModifier = 1
     static interval = null
     static onGasChanged = () => {}
@@ -82,6 +83,8 @@ class EditFees extends HTMLElement {
             if ($(".fast .selectedFees")){
                 $(".fast").removeClass("selectedFees")
             }
+
+            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
         })
 
         $(".medium").click(function (){
@@ -94,6 +97,8 @@ class EditFees extends HTMLElement {
             if ($(".fast .selectedFees")){
                 $(".fast").removeClass("selectedFees")
             }
+
+            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
         })
 
 
@@ -107,17 +112,22 @@ class EditFees extends HTMLElement {
             if ($(".slow .selectedFees")){
                 $(".slow").removeClass("selectedFees")
             }
+
+            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
         })
 
 
         $(".saveFees").click(function (){
             $("#editfees").css("display", "none")
             $("#swapReview").css("display", "block")
+
+            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
         })
     }
 
     start(gasLimit){
         this.gasPrice = 0
+        this.gasLimit = gasLimit
         this.setFees(gasLimit)
         this.interval = setInterval(() =>{
             this.setFees(gasLimit)

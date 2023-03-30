@@ -15,7 +15,7 @@
     background: #ffe4fc;
 }
 
-.see .selected{
+.see .selectedFees{
     background: var(--whiteBackground);
 }
 
@@ -34,6 +34,7 @@
     opacity: 0.8;
     position: relative;
     height: 51%;
+    cursor: pointer;
     margin-bottom: -33px;
 }
 
@@ -46,6 +47,7 @@
     height: 41em;
     margin-bottom: -33px;
     margin-top: -43em;
+    cursor: pointer;
 }
 
 .approve .rule{
@@ -72,6 +74,7 @@
     position: relative;
     height: 41em;
     margin-bottom: -33px;
+    cursor: pointer;
     margin-top: -43em;
 }
 
@@ -131,6 +134,7 @@
     position: relative;
     margin-bottom: -88px;
     margin-top: -487px;
+    cursor: pointer;
 }
 
 #body .see{

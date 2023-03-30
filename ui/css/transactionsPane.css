@@ -258,31 +258,31 @@ cursor: pointer;
 }
 
 .swapLogogreen{
-    background: #E3F3E1;
+    background: var(--blueBackground) ;
     border-radius: 50px;
     padding: 0.7em;
-    color: #84C56F;
+    color: var(--blueArrow);
 }
 
 .circleTransacred{
-    background:#F1E3E3;
+    background: var(--greenBackground) ;
     border-radius: 50px;
     padding: 0.7em;
-    color: #B71C1C;
+    color: var(--greenArrow);
 }
 
 .swapLogored{
-    background:#F1E3E3;
+    background: var(--greenBackground) ;
     border-radius: 50px;
     padding: 0.7em;
-    color: #B71C1C ;
+    color: var(--greenArrow);
 }
 
 .swapLogopending{
-    background:#E9EBEC;
+    background: var(--greenBackground);
     border-radius: 50px;
     padding: 0.7em;
-    color: #9FA4B2 ;
+    color: var(--greenArrow);
 }
 
 .circleTransacpending{
@@ -309,7 +309,7 @@ cursor: pointer;
     color: #6e6e6e;
 }
 #transactionsPane .timeApprove{
-    margin-left: 52px;
+    margin-left: 41px;
 }
 
 #transactionsPane .chevronOpened{

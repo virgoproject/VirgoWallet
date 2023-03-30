@@ -10,15 +10,14 @@ let amount = parseInt(get("value"))
 let decimals = get("decimals")
 let mainAssetTicker = get("ticker")
 
-let tag;
-tag = document.querySelector("edit-fees")
-const decimal = tag.dataset.decimal = decimals
-const lim = tag.dataset.limit = gas
-const MainTicker = tag.dataset.ticker = mainAssetTicker
-tag.start(gas)
+let editFees = document.querySelector("edit-fees")
+const decimal = editFees.dataset.decimal = decimals
+const lim = editFees.dataset.limit = gas
+const MainTicker = editFees.dataset.ticker = mainAssetTicker
+editFees.start(gas)
 let finalGasPrice = 0
 $("#allow").click(async () => {
-    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: tag.getGas()}})
+    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: editFees.getGas()}})
     window.close()
 })
 
@@ -48,11 +47,17 @@ getTokenDetails(get("allowed")).then(function(detail){
     $("#siteName").html(detail.symbol)
     console.log(detail)
 })
-tag.onGasChanged = () => {
-    $("#fees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
-}
-tag.onBalance = () => {
-    $("#allow").attr("disabled", false)
+editFees.onGasChanged = (gasPrice, gasLimit) => {
+    let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+
+    if (MAIN_ASSET.ticker == assetInfos.ticker)
+        totalNativ += Number(amount)
+
+    if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
+        $("#allow").attr("disabled", false)
+    }
+
+    $("#fees").html(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
 }
 $("svg").attr("data-jdenticon-value",get("addr"))
 

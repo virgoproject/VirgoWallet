@@ -344,3 +344,13 @@
 .chainSelectionChevron{
     margin-left: 10px;
 }
+
+
+#sendConfirm .max  {
+    background: transparent;
+    border: none;
+    all: unset;
+    cursor: pointer;
+    color: var(--highlightColor1) !important;
+    text-decoration: none;
+}

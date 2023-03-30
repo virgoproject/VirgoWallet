@@ -77,22 +77,37 @@ class SendPane {
                     tickerBalance = assetInfos.ticker
                 }
                 getBalance(tickerBalance).then(function (nativeBalance){
-                    const balance =  Utils.formatAmount(nativeBalance.balance, nativeBalance.decimals)
                     let amount = $("#amountSend").val()
-                    $("#sendConfirm #showCost").html(amount * Number(nativeBalance.price))
+                    const balance =  Utils.formatAmount(nativeBalance.balance, nativeBalance.decimals)
+
                     SendPane.confirmFormBalance.find("val").html(balance)
                     $("#sendConfirm .ticker").html(nativeBalance.ticker)
-
-                    if (balance <= amount){
-                        $('#sendNextStep').attr("disabled", false)
-                    }
 
                 })
             })
         })
 
-        $('#sendNextStep').change(function (){
-            console.log("cc")
+        $(':input').bind('keyup mouseup',function (){
+            getAsset(SendPane.select.val()).then(function(assetInfos2){
+
+                let tickerBalance2
+                if (assetInfos2.ticker !== MAIN_ASSET.ticker){
+                    tickerBalance2 = assetInfos2.contract
+                }else{
+                    tickerBalance2 = assetInfos2.ticker
+                }
+                getBalance(tickerBalance2).then(function (nativeBalance2){
+                    const balance =  Utils.formatAmount(nativeBalance2.balance, nativeBalance2.decimals)
+                    let amount = $("#amountSend").val()
+
+                    $("#sendConfirm #showCost").html(Number(amount) * Number(nativeBalance2.price))
+
+                    if (Number(balance) >= Number(amount) && Number(amount) != 0)
+                        $('#sendNextStep').attr("disabled", false)
+                    else
+                        $('#sendNextStep').attr("disabled", true)
+                })
+            })
         })
 
         SendPane.confirmFeesForm.click(function (){
@@ -143,7 +158,7 @@ class SendPane {
                             editFees.start(gas);
 
                             editFees.onGasChanged = (gasPrice, gasLimit) => {
-                                let totalNativ = Number(Utils.formatAmount(gas * editFees.getGas(), decimals))
+                                let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
 
                                 if (MAIN_ASSET.ticker == assetInfos.ticker)
                                         totalNativ += Number(amount)
@@ -153,7 +168,7 @@ class SendPane {
                                     $("#confirmSendBtn").attr("disabled", false)
                                 }
 
-                                $("#sendReviewNetFees").html(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+                                $("#sendReviewNetFees").html(Utils.formatAmount(gas * editFees.getGas(), decimals))
                                 $("#sendReviewCost").html(totalNativ)
                                 $("#sendReviewCostTicker").html(MAIN_ASSET.ticker)
                             }

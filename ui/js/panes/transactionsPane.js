@@ -389,11 +389,11 @@ class TransactionsPane {
 
         if (transaction.status === false){
             elem.find(".status").html("Cancel")
-            elem.find("#arrowapprove").addClass('swapLogored').removeClass('swapLogogreen');
-            elem.find("#arrowapprove").addClass('swapLogored').removeClass('swapLogopending');
+            elem.find("#arrowapprove").addClass('circleTransacred').removeClass('circleTransacgreen');
+            elem.find("#arrowapprove").addClass('circleTransacgreen').removeClass('circleTransacpending');
         }
         if (transaction.status === true){
-            elem.find("#arrowapprove").addClass('swapLogogreen').removeClass('swapLogopending');
+            elem.find("#arrowapprove").addClass('circleTransacgreen').removeClass('circleTransacpending');
         }
 
         elem.find(" .timeApprove").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
