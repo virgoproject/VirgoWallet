@@ -1,4 +1,4 @@
-class passwordsetup
+class PasswordSetup
 {
 
     constructor() {
@@ -146,4 +146,4 @@ class passwordsetup
 }
 
 
-const passwordSetup = new passwordSetup()
+const passwordSetup = new PasswordSetup()

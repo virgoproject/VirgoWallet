@@ -1,8 +1,10 @@
-$('#connectedWebsites').click(function () {
 
-    document.getElementById('settingsBack').click(function() {
-        $('.listSite').html('')
-    })
+
+document.getElementById('settingsBack').click(function() {
+    $('.listSite').html('')
+})
+
+$('#connectedWebsites').click(function () {
 
     getBaseInfos().then(res => {
         res = res.connectedSites
@@ -10,7 +12,6 @@ $('#connectedWebsites').click(function () {
             $(".settingsPane .noTracked").show()
         }
         for(let l = 0; l < res.length; l++){
-            console.log(l)
             const element = $("#trakeExemple").clone()
             element.attr('id','')
             const siteUrl = res[l].replace(/(^\w+:|^)\/\//, '')
