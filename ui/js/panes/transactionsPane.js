@@ -817,7 +817,7 @@ class TransactionsPane {
 
         elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
         //elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
-
+        console.log(transaction)
         elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
         elem.find(".totalFees span").html(selectedWallet.ticker)
 

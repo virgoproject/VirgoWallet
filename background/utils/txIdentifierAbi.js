@@ -52,8 +52,6 @@ class TxIdentifier {
                     return swapToken
                 break
             }
-        }else{
-
         }
 
 

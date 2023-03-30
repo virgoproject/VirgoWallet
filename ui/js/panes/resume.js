@@ -205,7 +205,8 @@ class MainPane {
                 elem.find(".title").html(balance.name)
                 elem.find(".ticker").html(balance.ticker)
                 elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
-                elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png')");
+                elem.find(".logo").attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
+                elem.find(".logo").attr("id",data.wallets[data.selectedWallet].wallet.ticker);
                 elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
 
                 elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
@@ -288,6 +289,12 @@ class MainPane {
         }
 
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
+
+
+
+
+
+
     }
 
     setResume(data){

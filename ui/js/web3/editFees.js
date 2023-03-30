@@ -4,17 +4,11 @@ class EditFees extends HTMLElement {
     static feesModifier = 1
     static interval = null
     static onGasChanged = () => {}
-    static onBalance = () => {}
-    static notBalance = () => {}
 
     constructor() {
         super();
 
-
         this.setAttribute("id","editfees")
-
-
-
         $(".editFees").click(function (){
             getGasPrice().then(function(gasPrice) {
                 $("#editfees").show()
@@ -28,16 +22,15 @@ class EditFees extends HTMLElement {
 
                 let dec = parseInt(document.querySelector("edit-fees").dataset.decimal)
                 let lim = parseInt(document.querySelector("edit-fees").dataset.limit)
+                let ticker = document.querySelector("edit-fees").dataset.ticker
 
-
-
+                $(".feesTicker").html(ticker)
 
                 $("#editFeesSlow").html(Utils.formatAmount(lim * finalGasPriceSlow, dec))
                 $("#editFeesMedium").html(Utils.formatAmount(lim * finalGasPriceMedium, dec))
                 $("#editFeesFast").html(Utils.formatAmount(lim * finalGasPriceFast, dec))
             })
         })
-
 
         this.innerHTML = `
         <div class="blackbg"></div>
@@ -49,19 +42,19 @@ class EditFees extends HTMLElement {
             <div class="col-12 mb-4 speed slow text-left"  speed="slow">
                 <div class="row">
                     <p class="label  col-4">Slow</p>
-                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="editFeesSlow">-</span> <span class="feesTicker"></span></p>
+                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span class="editFeesSpeed " id="editFeesSlow">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 mb-4 speed medium text-left" speed="medium">
                 <div class="row">
                     <p class="label  col-4">Medium</p>
-                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="editFeesMedium">-</span> <span class="feesTicker"></span></p>
+                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span class="editFeesSpeed" id="editFeesMedium">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 mb-4 speed fast text-left" speed="fast">
                 <div class="row">
                     <p class="label  col-4">Fast</p>
-                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="editFeesFast">-</span> <span class="feesTicker"></span></p>
+                    <p class="value col-6 text-right" style="margin: 0;padding: 0"><span class="editFeesSpeed" id="editFeesFast">-</span> <span class="feesTicker"></span></p>
                 </div>
             </div>
             <div class="col-12 p-0">
@@ -77,47 +70,43 @@ class EditFees extends HTMLElement {
 
         const _this = this
 
-        $(".medium").addClass("selecteded")
+        $(".medium").addClass("selectedFees")
 
         $(".slow").click(function (){
-            $(".slow").addClass("selecteded")
-            let elem = this.getAttribute("speed")
+            $(".slow").addClass("selectedFees")
 
-            if ($(".medium .selecteded")){
-                $(".medium").removeClass("selecteded")
+            if ($(".medium .selectedFees")){
+                $(".medium").removeClass("selectedFees")
             }
 
-            if ($(".fast .selecteded")){
-                $(".fast").removeClass("selecteded")
+            if ($(".fast .selectedFees")){
+                $(".fast").removeClass("selectedFees")
             }
-            _this.onGasChanged()
         })
 
         $(".medium").click(function (){
-            $(".medium").addClass("selecteded")
+            $(".medium").addClass("selectedFees")
 
-            if ($(".slow .selecteded")){
-                $(".slow").removeClass("selecteded")
+            if ($(".slow .selectedFees")){
+                $(".slow").removeClass("selectedFees")
             }
 
-            if ($(".fast .selecteded")){
-                $(".fast").removeClass("selecteded")
+            if ($(".fast .selectedFees")){
+                $(".fast").removeClass("selectedFees")
             }
-            _this.onGasChanged()
         })
 
 
         $(".fast").click(function (){
-            $(".fast").addClass("selecteded")
+            $(".fast").addClass("selectedFees")
 
-            if  ($(".medium .selecteded")){
-                $(".medium").removeClass("selecteded")
+            if  ($(".medium .selectedFees")){
+                $(".medium").removeClass("selectedFees")
             }
 
-            if ($(".slow .selecteded")){
-                $(".slow").removeClass("selecteded")
+            if ($(".slow .selectedFees")){
+                $(".slow").removeClass("selectedFees")
             }
-            _this.onGasChanged()
         })
 
 
@@ -128,47 +117,36 @@ class EditFees extends HTMLElement {
     }
 
     start(gasLimit){
+        this.gasPrice = 0
         this.setFees(gasLimit)
         this.interval = setInterval(() =>{
             this.setFees(gasLimit)
-        },500)
+        },5000)
     }
 
     setFees(gasLimit){
         const _this = this
-        let ticker = document.querySelector("edit-fees").dataset.ticker
-        let MainAsset
+        getGasPrice().then(function (res) {
+            if(_this.gasPrice == res) return
 
+            let finalGasPriceSlow = Math.round(res * 0.8)
+            let finalGasPriceMedium = Math.round(res * 1)
+            let finalGasPriceFast = Math.round(res * 1.2)
 
+            let dec = parseInt(document.querySelector("edit-fees").dataset.decimal)
 
+            $("#editFeesSlow").html(Utils.formatAmount(gasLimit * finalGasPriceSlow, dec))
+            $("#editFeesMedium").html(Utils.formatAmount(gasLimit * finalGasPriceMedium, dec))
+            $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, dec))
 
-            MainAsset = ticker
-
-
-
-
-        getBalance(MainAsset).then(function(balance) {
-            getGasPrice().then(function (res) {
-                _this.gasPrice = res
-                let finalGasPrice
-                finalGasPrice = Math.round( _this.gasPrice * _this.feesModifier)
-
-                let nativeTotal = gasLimit * finalGasPrice
-
-                if(balance.balance >= nativeTotal){
-                    _this.onBalance()
-                }
-
-
-                _this.onGasChanged()
-            })
+            _this.gasPrice = res
+            _this.onGasChanged(_this.gasPrice,gasLimit)
         })
-
     }
 
     getGas(){
         const _this = this
-            let elem = $(".selecteded").attr("speed")
+            let elem = $(".selectedFees").attr("speed")
 
             switch (elem) {
                 case "slow" :

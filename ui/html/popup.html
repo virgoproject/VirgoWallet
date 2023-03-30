@@ -152,7 +152,7 @@
                         <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
                             <div class="row">
                                 <div class="col-2 justify-content-center align-self-center">
-                                    <div class="logo"></div>
+                                    <img class="logo" crossorigin="anonymous"/>
                                 </div>
                                 <div class="col-6">
                                     <p class="title">Bitcoin</p>
@@ -621,7 +621,7 @@
         </div>
     </div>
 
-            <button class="button sendBtn">Next</button>
+            <button class="button sendBtn" id="sendNextStep" disabled="disabled" >Next</button>
 
     </div>
     <div class="sendConfirm" id="sendConfirmFees" style="display: none">
@@ -665,7 +665,7 @@
                     <p class="labelCost">Total Cost</p>
                 </div>
                 <div class="col-7 text-right">
-                    <p class="value labelCost"><span id="sendReviewCost"></span> $</p>
+                    <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
                 </div>
         </div>
         <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
@@ -2393,6 +2393,7 @@
 <script src="../js/utils/bootstrap-select.min.js"></script>
 <script src="../js/utils/backgroundMessaging.js"></script>
 <script src="../js/utils/tokensSelect.js"></script>
+<script src="../js/utils/getDominantColor.js"></script>
 <script src="../js/events.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/panes/unlockPane.js"></script>

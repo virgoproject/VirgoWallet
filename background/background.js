@@ -790,6 +790,7 @@ console.log(bal)
 
 function sendTo(request, sendResponse){
     let txResume = null;
+    console.log(request)
     //send native asset
     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
         if (request.asset == baseWallet.getCurrentWallet().ticker) {

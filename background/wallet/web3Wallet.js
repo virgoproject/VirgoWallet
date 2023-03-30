@@ -420,6 +420,7 @@ class Web3Wallet {
             fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
                 .then(function (resp) {
                     resp.json().then(function (res) {
+                        console.log(res)
                         const price = {
                             price: parseFloat(res[token.contract.toLowerCase()].usd),
                             change: parseFloat(res[token.contract.toLowerCase()].usd_24h_change)
@@ -427,7 +428,7 @@ class Web3Wallet {
                         _this.prices.set(token.contract, price)
                     })
                 }).catch(function (e) {
-
+                    console.log(e)
             })
         }
     }

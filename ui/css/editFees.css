@@ -15,8 +15,16 @@
     background: #ffe4fc;
 }
 
-.selecteded{
+.see .selected{
     background: var(--whiteBackground);
+}
+
+.editFeesSpeed{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+    vertical-align: top;
 }
 
 .blackbg{
@@ -138,4 +146,8 @@
     color: gray;
     font-size: 35px;
     left: 120px;
+}
+
+.feesTicker{
+    color: var(--highlightColor1);
 }
