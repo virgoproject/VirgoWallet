@@ -19,8 +19,6 @@
     color: var(--mainColor)
 }
 
-
-
 #swapPane .swapInput {
     background: #F3F3F3;
     border-radius: 5.5em;
@@ -31,7 +29,7 @@
 #swapPane .swapInput .amountInput {
     width: 3ch;
     min-width: 4.5ch;
-    max-width: 12ch;
+    max-width: 10ch;
     background: transparent;
     border: none;
     outline: none;
@@ -174,8 +172,7 @@
 }
 
 #swapParams {
-    padding: 4em 0em;
-    margin-top: 1em;
+    padding: 1em 0em 4em;
 }
 
 #swapReview .confirmRoute {
