@@ -135,21 +135,29 @@ class SwapPane {
 
                 let gas = res.gas
                 let decimals = MAIN_ASSET.decimals
-                let tag;
-                tag = document.querySelector("edit-fees")
-                const decimal = tag.dataset.decimal = decimals
-                const lim = tag.dataset.limit = gas
-                const tick = tag.dataset.ticker = MAIN_ASSET.ticker
+                let editFees = document.querySelector("edit-fees")
+                const decimal = editFees.dataset.decimal = decimals
+                const lim = editFees.dataset.limit = gas
+                const tick = editFees.dataset.ticker = MAIN_ASSET.ticker
                 $(".feesTicker").html(tick)
-                tag.start(gas)
+                editFees.start(gas)
 
-                tag.onGasChanged = () => {
-                    $("#swapReviewNetFees").html(Utils.formatAmount(gas * tag.getGas(), decimals))
+                getAsset(SwapPane.inputs.one.input.val()).then(function(assetInfos){
+                editFees.onGasChanged = (gasPrice, gasLimit) => {
+                    let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+
+                    if (MAIN_ASSET.ticker == assetInfos.ticker)
+                        totalNativ += Number(amount)
+
+                    if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
+                        $("#confirmSwapBtn").find("val").html("Send")
+                        $("#confirmSwapBtn").attr("disabled", false)
+                    }
+
+
+                    $("#swapReviewNetFees").html(Utils.formatAmount(gas * editFees.getGas(), decimals))
                 }
-                tag.onBalance = () => {
-                    $("#confirmSwapBtn .button").find("val").html("Send")
-                    $("#confirmSwapBtn .button").attr("disabled", false)
-                }
+                })
 
 
                 if (SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
