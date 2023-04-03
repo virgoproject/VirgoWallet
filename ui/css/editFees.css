@@ -102,7 +102,7 @@
 
 .editFees{
     cursor: pointer;
-    margin-left: 0px !important;
+    margin-left: 5px !important;
     color: var(--mainColor);
 }
 

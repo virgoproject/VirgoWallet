@@ -112,7 +112,7 @@ class SendPane {
 
         SendPane.confirmFeesForm.click(function (){
             SendPane.confirmForm.hide()
-            SendPane.feesForm.show()
+            $("#sendConfirmFeesLoading").show()
 
             getBaseInfos().then(function(res){
                 const selectedAddress = res.addresses[res.selectedAddress].address
@@ -172,6 +172,9 @@ class SendPane {
                                 $("#sendReviewCost").html(totalNativ)
                                 $("#sendReviewCostTicker").html(MAIN_ASSET.ticker)
                             }
+
+                                $("#sendConfirmFeesLoading").hide()
+                                SendPane.feesForm.show()
                         })
                         })
                         })
@@ -185,6 +188,8 @@ class SendPane {
             SendPane.btnSubmit.attr("disabled", false)
             SendPane.confirmForm.hide()
             $("#sendTo").val('default').selectpicker("refresh");
+            $('#amountSend').val("")
+            $('#sendNextStep').attr("disabled", true)
             SendPane.sendForm.show()
 
             clearInterval(confirmInterval)

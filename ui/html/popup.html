@@ -175,7 +175,7 @@
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
-                <div>
+                <div class="mb-4">
                     <div class="col-12 title d-flex justify-content-center">
                         <h5>Send To</h5>
                     </div>
@@ -191,7 +191,7 @@
                 <div class="col-12 mb-3 p-0">
                     <p class="label">Recent</p>
                     <div class="text-center mt-5 mb-5 noContactFound" style="">
-                        <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact">
+                        <img src="/ui/images/sendPaneRecent.png" class="img-fluid" alt="nocontact">
                     </div>
                 </div>
             </div>
@@ -620,13 +620,16 @@
         <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
             <p class="value labelCost"><span id="showCost"></span> $</p>
         </div>
-        <div class="col-12 d-flex justify-content-center ">
+        <div class="col-12 d-flex justify-content-center inputWButton">
             <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker" ></span></p>
         </div>
     </div>
 
             <button class="button sendBtn" id="sendNextStep" disabled="disabled" >Next</button>
 
+    </div>
+    <div id="sendConfirmFeesLoading" style="display: none">
+        <i class="fas fa-spinner fa-pulse"></i>
     </div>
     <div class="sendConfirm" id="sendConfirmFees" style="display: none">
         <div class="row mb-5">
@@ -682,7 +685,7 @@
     </div>
 
     <div id="chainSelector" class="p-4 pt-0">
-        <div class="row gx-2" id="chainsContainer">
+        <div class="row gx-2 mt-2" id="chainsContainer">
 
         </div>
         <div class="text-center mt-5"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
@@ -808,6 +811,7 @@
             <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
+                        <progress-ring stroke="4" radius="25" progress="10" data-progress="" style="margin-right: -17px;margin-left: -2.8px;margin-bottom: -53.9px;"></progress-ring>
                         <i class="fa-solid fa-arrow-right  circleTransacpending " id="arrowbasic"></i>
                     </div>
                     <div class="col-9 justify-content-center align-self-center">
@@ -1489,10 +1493,15 @@
         </div>
     </div>
     <div id="settings" class="pt-2">
-        <p class="text-center title">My Wallet</p>
+        <div class="mt-2">
+            <div class="col-12 title d-flex justify-content-center mt-2 settingTitle">
+                <p class="text-center ">My Wallet</p>
+            </div>
+        </div>
+
         <div class="mt-4 p-4 pt-0 mainPane">
             <div class="row p-2 pb-0">
-                <p class="col-6 mb-0">Accounts <i class="fas fa-chevron-right"></i></p>
+                <p class="col-6 mb-0"></p>
                 <div class="col-6"><p class="mb-0 addAccount"><i class="fas fa-plus"></i> Add</p></div>
             </div>
             <div class="accounts p-2 pb-0 pt-0 row d-flex justify-content-center">
@@ -1517,10 +1526,10 @@
             </div>
             <div class="row mt-4 p-2 pt-0">
                 <div class="col-6 pl-0 pr-1">
-                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i>Settings</button>
+                    <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
                 </div>
                 <div class="col-6 pl-1 pr-0">
-                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i>Support</button>
+                    <button class="button w-100 openSupport"><i class="fas fa-headset settingLogo"></i>Support</button>
                 </div>
             </div>
         </div>
@@ -2113,11 +2122,14 @@
         </div>
     </div>
     <div id="contacts" style="display: none">
-        <div class="row mt-2">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
+        <div class="row mb-2">
+            <div class="col-2 back p-0">
+                <i class=" fas fa-chevron-left"></i>
             </div>
-            <p class="text-center title">Contacts</p>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>Contacts</h5>
+            </div>
+            <div class="col-2"></div>
         </div>
         <div id="contactDiv">
         <div class="row text-center justify-content-center contactList mb-2">
