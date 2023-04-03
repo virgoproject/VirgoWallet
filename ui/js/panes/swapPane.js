@@ -58,6 +58,9 @@ class SwapPane {
 
         const _this = this
 
+        SwapPane.inputs.one.input.on("input", function(){
+            _this.checkAmount()
+        })
 
         SwapPane.inputs.one.btnMax.click(function () {
             if (SwapPane.inputs.one.btnSelect.html() == "" || isNaN(SwapPane.inputs.one.balance.html())) return
@@ -66,15 +69,30 @@ class SwapPane {
         })
 
         SwapPane.inputs.one.btnSelect.click(function () {
-            $("#tokenSelect").show()
-            SwapPane.inputs.one.btnSelect.attr("class", "row tokenSelect one")
-            tokenSelect.displayTokenSelect()
+            tokenSelect.displayTokenSelect(json => {
+                document.getElementById("selectedTokenTicker1").innerHTML = json.ticker
+                document.getElementById("swapTicker1").innerHTML = json.ticker
+                document.getElementById("sendContract").innerHTML = json.contract
+                document.getElementById("selectedTokenImg1").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
+                document.getElementById("swapReviewSelectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
+                document.getElementById("tokenSelect").style.display = "none"
+                document.getElementById("imgDiv2").style.display = "block"
+                $("#tokenSelect2").attr("class", "col-6 justify-content-²   center align-self-center p-0")
+                _this.checkAmount()
+            }, document.getElementById("sendContract2").innerHTML)
         })
 
         SwapPane.inputs.two.btnSelect.click(function () {
-            $("#tokenSelect").show()
-            SwapPane.inputs.two.btnSelect.attr("class", "row tokenSelect two")
-            tokenSelect.displayTokenSelect()
+            tokenSelect.displayTokenSelect(json => {
+                document.getElementById("selectedTokenTicker2").innerHTML = json.ticker
+                document.getElementById("swapTicker2").innerHTML = json.ticker
+                document.getElementById("sendContract2").innerHTML = json.contract
+                document.getElementById("imgDiv1").style.display = "block"
+                document.getElementById("selectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
+                document.getElementById("tokenSelect").style.display = "none"
+                $("#tokenSelect1").attr("class", "col-6 justify-content-center align-self-center p-0")
+                _this.checkAmount()
+            }, document.getElementById("sendContract").innerHTML)
         })
 
         $("#tokenBack").click(function () {
@@ -105,13 +123,11 @@ class SwapPane {
 
             elem.getElementsByTagName("img")[0].src = img2
             elem2.getElementsByTagName("img")[0].src = img1
+            document.getElementById("swapReviewSelectedTokenImg").src = img2
 
             $("#swapTicker1").html(swapTicker2)
             $("#swapTicker2").html(swapTicker1)
 
-            const selectedTokens = tokenSelect.selectedTokens1
-            tokenSelect.selectedTokens1 = tokenSelect.selectedTokens2
-            tokenSelect.selectedTokens2 = selectedTokens
         })
 
         SwapPane.initBtn.click(function () {
@@ -131,7 +147,6 @@ class SwapPane {
                 SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
 
                 SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
-
 
                 let gas = res.gas
                 let decimals = MAIN_ASSET.decimals
@@ -159,7 +174,6 @@ class SwapPane {
                 }
                 })
 
-
                 if (SwapPane.review.amountOut.html() != SwapPane.inputs.two.input.val() && SwapPane.inputs.two.input.val() != "")
                     SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
 
@@ -167,13 +181,8 @@ class SwapPane {
                 if (!isBtnDisabled(SwapPane.review.confirmBtn) && !SwapPane.params.is(":visible"))
                     SwapPane.review.self.show()
 
-
             })
 
-        })
-
-        SwapPane.review.rangeFees.on("input", function () {
-            _this.estimateFees()
         })
 
         SwapPane.review.back.click(function () {

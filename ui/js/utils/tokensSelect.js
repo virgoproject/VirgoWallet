@@ -19,8 +19,7 @@ class TokensSelect {
         let scrollTokensCount = 0
         let scrollReachedEnd = false
         let tokenList = []
-        let selectedTokens1 = []
-        let selectedTokens2 = []
+        let toIgnore = null
 
         document.getElementById("categoriesWrapper").onscroll = e => {
             if(_this.scrollReachedEnd) return
@@ -82,8 +81,7 @@ class TokensSelect {
 
     initList(){
         this.tokenList = []
-        this.selectedTokens1 = []
-        this.selectedTokens2 = []
+        this.toIgnore = null
 
         this.tokenList.push({
             contract: MAIN_ASSET.ticker,
@@ -98,14 +96,8 @@ class TokensSelect {
     }
 
     spawnToken(json){
-        if($("#tokenSelectBtn").hasClass("two") && this.selectedTokens1.includes(json.contract)){
-            return
-        }
 
-        if($("#tokenSelectBtn1").hasClass("one") && this.selectedTokens2.includes(json.contract)){
-            return
-        }
-
+        if(this.toIgnore == json.contract) return
 
         const elem = document.getElementById("baseToken").cloneNode(true)
 
@@ -120,44 +112,22 @@ class TokensSelect {
         const _this = this
 
         elem.onclick = () => {
-            if ($("#tokenSelectBtn1").hasClass("one")) {
-
-                _this.selectedTokens1.push(json.contract)
-
-                document.getElementById("selectedTokenTicker1").innerHTML = json.ticker
-                document.getElementById("swapTicker1").innerHTML = json.ticker
-                document.getElementById("sendContract").innerHTML = json.contract
-                document.getElementById("selectedTokenImg1").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
-                document.getElementById("tokenSelect").style.display = "none"
-                $("#tokenSelectBtn1").attr("class", "row tokenSelect")
-                document.getElementById("imgDiv2").style.display = "block"
-                $("#tokenSelect2").attr("class", "col-6 justify-content-center align-self-center p-0")
-
-            }else if ($("#tokenSelectBtn").hasClass("two")){
-
-                _this.selectedTokens2.push(json.contract)
-
-                document.getElementById("selectedTokenTicker2").innerHTML = json.ticker
-                document.getElementById("swapTicker2").innerHTML = json.ticker
-                document.getElementById("sendContract2").innerHTML = json.contract
-                document.getElementById("imgDiv1").style.display = "block"
-                $("#tokenSelect1").attr("class", "col-6 justify-content-center align-self-center p-0")
-                document.getElementById("selectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
-                document.getElementById("tokenSelect").style.display = "none"
-                $("#tokenSelectBtn").attr("class", "row tokenSelect")
-
-            }
+            _this.callback(json)
         }
 
         document.getElementById("allTokensCat").append(elem)
 
     }
 
-    displayTokenSelect(){
+    displayTokenSelect(callback, toIgnore = null){
+        $("#tokenSelect").show()
         document.getElementById("allTokensCat").innerHTML = ""
 
         this.scrollTokensCount = 0
         this.scrollReachedEnd = false
+
+        this.callback = callback
+        this.toIgnore = toIgnore
 
         this.displayTokens()
 

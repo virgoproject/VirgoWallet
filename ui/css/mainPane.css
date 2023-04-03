@@ -231,20 +231,6 @@
     color: var(--mainColorDark10);
 }
 
-
-#swapReview{
-    position: absolute;
-    z-index: 10;
-    background: white;
-    margin-top: -52px;
-    padding:4em 2em;
-    height: 40em;
-}
-
-#swapReview .title{
-    padding-left: 65px;
-}
-
 #tokenSelect {
     background: white;
     position: absolute;

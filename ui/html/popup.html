@@ -197,7 +197,7 @@
             </div>
         </div>
 
-        <div class="bodyElem swap " style="display: none" id="swapPane">
+        <div class="bodyElem swap" style="display: none" id="swapPane">
             <div id="swapParams">
                 <h5 class="text-center mb-4">Swap</h5>
                 <div class="row inputHeader">
@@ -280,6 +280,60 @@
                 <h3>Coming soon!</h3>
                 <div><i class="fas fa-retweet"></i></div>
                 <p>Swaps are not available for this network yet</p>
+            </div>
+            <div id="swapReview" style="display: none">
+                <div class="row mb-2">
+                    <div class="col-1">
+                        <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
+                    </div>
+                    <div class="col-10 title">
+                        <h5>Swap details</h5>
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                </div>
+                <div class="receiveAmount mb-4">
+                    <p class="m-0">You will receive</p>
+                    <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <p style="font-weight: bold">You transfer</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-center">
+                        <img src='https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true' id="swapReviewSelectedTokenImg">
+                    </div>
+                    <div class="col-10 justify-content-center align-self-center">
+                        <p class="value" style="top: 7px; position:relative;font-weight: bold"><span id="swapReviewAmountIn" ></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
+                    </div>
+                </div>
+                <div class="row details mt-2">
+
+                    <div class="col-4 mt-3 mb-2">
+                        <p class="title">Swap fees</p>
+                    </div>
+                    <div class="col-8 mt-3 mb-2">
+                        <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
+                    </div>
+                    <div class="col-4  mb-2">
+                        <p class="title">Slippage</p>
+                    </div>
+                    <div class="col-8">
+                        <p class="value">Auto</p>
+                    </div>
+                    <div class="col-5 mb-2" style="display: inline-flex">
+                        <p class="titleNet">Fees <span class="titleFees editFees">Edit</span></p>
+                    </div>
+                    <div class="col-7  mb-2">
+                        <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
+                    </div>
+                </div>
+
+                <button class="button " disabled="disabled" id="confirmSwapBtn">
+                    <val>Init swap</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
             </div>
         </div>
         <div class="bodyElem airdrop" style="display: none;">
@@ -541,60 +595,6 @@
         </div>
     </div>
     <edit-fees style="display: none" data-decimal="" data-limit="" data-ticker></edit-fees>
-    <div id="swapReview" style="display: none">
-        <div class="row mb-2">
-            <div class="col-1">
-                <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
-            </div>
-            <div class="col-10 title">
-                <h5>Swap details</h5>
-            </div>
-            <div class="col-1">
-
-            </div>
-        </div>
-        <div class="receiveAmount mb-4">
-            <p class="m-0">You will receive</p>
-            <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
-        </div>
-        <div class="row mb-4">
-            <div class="col-12">
-                <p style="font-weight: bold">You transfer</p>
-            </div>
-            <div class="col-2 justify-content-center align-self-center text-center">
-                <img src='https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true'>
-            </div>
-            <div class="col-10 justify-content-center align-self-center">
-                <p class="value" style="top: 7px; position:relative;font-weight: bold"><span id="swapReviewAmountIn" ></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
-            </div>
-        </div>
-        <div class="row details mt-2">
-
-            <div class="col-4 mt-3 mb-2">
-                <p class="title">Swap fees</p>
-            </div>
-            <div class="col-8 mt-3 mb-2">
-                <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
-            </div>
-            <div class="col-4  mb-2">
-                <p class="title">Slippage</p>
-            </div>
-            <div class="col-8">
-                <p class="value">Auto</p>
-            </div>
-            <div class="col-5 mb-2" style="display: inline-flex">
-                <p class="titleNet">Fees<P class="titleFees editFees">Edit</P></p>
-            </div>
-            <div class="col-7  mb-2">
-                <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
-            </div>
-        </div>
-
-        <button class="button " disabled="disabled" id="confirmSwapBtn">
-            <val>Init swap</val>
-            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-        </button>
-    </div>
     <div class="sendConfirm" id="sendConfirm" style="display: none">
         <div class="row mb-5">
             <div class="col-2 back pl-0">

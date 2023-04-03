@@ -198,7 +198,7 @@
 #swapReview .receiveAmount {
     border-radius: 0.5em;
     text-align: center;
-    padding: 1.5em;
+    padding: 1.5em 0;
 }
 
 #swapReview .receiveAmount .amount {
@@ -206,6 +206,15 @@
     margin: 0;
 }
 
+#swapReview {
+    background: white;
+    height: calc(100% - 3em);
+    padding-top: 1em;
+}
+
+#swapReview .title{
+    padding-left: 65px;
+}
 
 #swapReview .details p {
     margin: 0;
@@ -228,13 +237,12 @@
 }
 #swapReview .details .titleNet, #swapReview .details .valueNet {
     margin: 0.25em 0;
-    padding: 0;
     font-weight: bold;
 }
 
 #swapReview button{
     position: absolute;
-    bottom: 1em;
+    bottom: 4em;
     left: 1em;
     right: 1em;
 }
