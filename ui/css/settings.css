@@ -292,3 +292,11 @@
     max-height: 555px;
     overflow: auto;
 }
+
+#settings .settingTitle{
+    font-size: 1.25rem;
+}
+
+.settingLogo{
+    margin-right: 10px;
+}

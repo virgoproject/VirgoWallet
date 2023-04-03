@@ -246,3 +246,10 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#sendConfirmFeesLoading{
+    text-align: center;
+    margin-top: 8em;
+    font-size: 2em;
+    height: 100%;
+}

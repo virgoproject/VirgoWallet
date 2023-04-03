@@ -110,20 +110,20 @@
 
 #mainPane .header .stats .values {
     margin-bottom: 0.1rem;
-    padding-bottom: 10px;
     font-size: 30px;
     font-weight: bold;
 }
 
 #mainPane .header .stats .dollars {
     color: rgba(0, 0, 0, 0.5);
-    margin-bottom: 1.5em;
+    margin-bottom: 1.3em;
+    padding-top: 0.5em;
+    font-weight: bold;
     margin-left: 0.2em;
 }
 
 #mainPane .header .stats .decmialValues {
     margin-bottom: 0.1rem;
-    padding-bottom: 10px;
     font-size: 30px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.5);
