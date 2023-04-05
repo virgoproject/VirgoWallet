@@ -215,10 +215,10 @@
                     </div>
                     <div class="col-5">
                         <div class="row tokenSelect" id="tokenSelectBtn1">
-                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv2" style="display: none">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv1" style="display: none">
                                 <img src="https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true" id="selectedTokenImg1">
                             </div>
-                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect2">
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect1">
                                 <p style="display: none" id="sendContract"></p>
                                 <p class="ticker" id="selectedTokenTicker1">Select</p>
                             </div>
@@ -244,11 +244,11 @@
                         <input type="text" class="amountInput" placeholder="0.0" id="swapInput2" disabled="disabled">
                     </div>
                     <div class="col-5">
-                        <div class="row tokenSelect" id="tokenSelectBtn">
-                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv1" style="display: none">
+                        <div class="row tokenSelect" id="tokenSelectBtn2">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv2" style="display: none">
                                 <img src="https://github.com/virgoproject/tokens/blob/main/BNB/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png?raw=true"  id="selectedTokenImg">
                             </div>
-                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect1">
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect2">
                                 <p style="display: none" id="sendContract2"></p>
                                 <p class="ticker" id="selectedTokenTicker2">Select</p>
                             </div>
@@ -322,10 +322,10 @@
                     <div class="col-8">
                         <p class="value">Auto</p>
                     </div>
-                    <div class="col-5 mb-2" style="display: inline-flex">
+                    <div class="col-4 mb-2" style="display: inline-flex">
                         <p class="titleNet">Fees <span class="titleFees editFees">Edit</span></p>
                     </div>
-                    <div class="col-7  mb-2">
+                    <div class="col-8  mb-2">
                         <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
                     </div>
                 </div>
@@ -605,28 +605,26 @@
             </div>
             <div class="col-2"></div>
         </div>
-            <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
-                <div class="justify-content-center align-self-center">
-                    <select class="selectpicker w-100" id="sendTo"  data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
-                </div>
+        <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
+            <div class="justify-content-center align-self-center">
+                <select class="selectpicker w-100" id="sendTo" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
             </div>
-    <div class="row">
-        <div class="col-12 d-flex justify-content-center p-0">
-            <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
         </div>
-        <div class="col-12 d-flex justify-content-center inputWButton">
-            <a class="col-2 max">Use max</a>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center p-0">
+                <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
+            </div>
+            <div class="col-12 d-flex justify-content-center inputWButton">
+                <a class="col-2 max">Use max</a>
+            </div>
+            <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
+                <p class="value labelCost"><span id="showCost"></span> $</p>
+            </div>
+            <div class="col-12 d-flex justify-content-center inputWButton">
+                <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
+            </div>
         </div>
-        <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
-            <p class="value labelCost"><span id="showCost"></span> $</p>
-        </div>
-        <div class="col-12 d-flex justify-content-center inputWButton">
-            <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker" ></span></p>
-        </div>
-    </div>
-
-            <button class="button sendBtn" id="sendNextStep" disabled="disabled" >Next</button>
-
+        <button class="button sendBtn" id="sendNextStep" disabled="disabled">Next</button>
     </div>
     <div id="sendConfirmFeesLoading" style="display: none">
         <i class="fas fa-spinner fa-pulse"></i>

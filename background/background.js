@@ -779,7 +779,7 @@ function forgetWallet() {
 
 async function getBalance(asset){
     const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
-console.log(bal)
+
     if(!bal.tracked){
         const contract = new web3.eth.Contract(ERC20_ABI, asset)
         bal.balance = await contract.methods.balanceOf(baseWallet.getCurrentAddress()).call()

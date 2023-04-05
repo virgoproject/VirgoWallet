@@ -1,6 +1,10 @@
+edit-fees {
+    z-index: 1000000;
+    position: absolute;
+    inset: 0px;
+}
 
-
-.speed{
+.speed {
     background: #F1F1F1;
     border-radius: 0.5em;
     color: #545454;
@@ -11,15 +15,15 @@
     padding: 10px;
 }
 
-.speed:hover{
+.speed:hover {
     background: #ffe4fc;
 }
 
-.see .selectedFees{
+.see .selectedFees {
     background: var(--whiteBackground);
 }
 
-.editFeesSpeed{
+.editFeesSpeed {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -27,7 +31,7 @@
     vertical-align: top;
 }
 
-.blackbg{
+.blackbg {
     z-index: 11;
     display: flex;
     background: black;
@@ -38,7 +42,7 @@
     margin-bottom: -33px;
 }
 
-.approve .blackbg{
+.approve .blackbg {
     z-index: 11;
     display: flex;
     background: black;
@@ -50,7 +54,7 @@
     cursor: pointer;
 }
 
-.approve .rule{
+.approve .rule {
     position: relative;
     bottom: 60px;
     color: gray;
@@ -58,7 +62,7 @@
     left: 0px;
 }
 
-.signTransac .rule{
+.signTransac .rule {
     position: relative;
     bottom: 60px;
     color: gray;
@@ -66,7 +70,7 @@
     left: 0px;
 }
 
-.signTransac .blackbg{
+.signTransac .blackbg {
     z-index: 11;
     display: flex;
     background: black;
@@ -78,7 +82,7 @@
     margin-top: -43em;
 }
 
-.see{
+.see {
     border-radius: 30px 30px 0px 0px;
     background: white;
     position: absolute;
@@ -88,7 +92,7 @@
     bottom: 0;
 }
 
-.rule{
+.rule {
     position: relative;
     bottom: 60px;
     color: gray;
@@ -96,26 +100,26 @@
     left: 120px;
 }
 
-.titleFees{
+.titleFees {
     margin-top: -35px;
 }
 
-.editFees{
+.editFees {
     cursor: pointer;
     margin-left: 5px !important;
     color: var(--mainColor);
 }
 
-.editFees:hover{
+.editFees:hover {
     color: var(--mainColorDark10);
 }
 
-#editFees .value{
+#editFees .value {
     margin-left: 40px !important;
 }
 
 
-#body #editfees{
+#editfees {
     display: block;
     margin: 0px;
     padding: 0px;
@@ -125,7 +129,7 @@
 
 }
 
-#body .blackbg{
+#body .blackbg {
     z-index: -1;
     display: flex;
     background: black;
@@ -137,14 +141,14 @@
     cursor: pointer;
 }
 
-#body .see{
+#body .see {
     border-radius: 30px 30px 0px 0px;
     background: white;
     height: 100%;
     width: 100%;
 }
 
-#body .rule{
+#body .rule {
     position: relative;
     bottom: 60px;
     color: gray;
@@ -152,6 +156,6 @@
     left: 120px;
 }
 
-.feesTicker{
+.feesTicker {
     color: var(--highlightColor1);
 }

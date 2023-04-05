@@ -70,7 +70,6 @@
     overflow: hidden;
     display: inline-block;
     vertical-align: bottom;
-    min-width: 133px;
 }
 
 #transactionsPane .listItem .smallDetails .amount val {
