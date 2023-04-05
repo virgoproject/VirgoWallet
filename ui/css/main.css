@@ -22,6 +22,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     overflow: hidden;
+    font-size: 14px;
 }
 
 .button {

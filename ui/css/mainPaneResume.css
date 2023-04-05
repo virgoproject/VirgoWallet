@@ -50,9 +50,12 @@ display: block;
 #mainPane .resume .assets .asset .logo {
     height: 32px;
     width: 32px;
-    background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
+}
+
+#mainPane .resume .assets .asset svg {
+    border-radius: 50%;
 }
 
 #mainPane .resume .assets .asset .title {

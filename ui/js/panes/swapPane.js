@@ -15,7 +15,7 @@ class SwapPane {
         two: {
             input: $("#swapInput2"),
             btnSelect: $("#tokenSelectBtn2"),
-            img: $("#selectedTokenImg"),
+            img: $("#selectedTokenImg2"),
             ticker: $("#selectedTokenTicker2"),
             contract: $("#sendContract2"),
             rateTicker: $("#swapRateTicker2"),
@@ -71,8 +71,28 @@ class SwapPane {
                 document.getElementById("selectedTokenTicker1").innerHTML = json.ticker
                 document.getElementById("swapTicker1").innerHTML = json.ticker
                 document.getElementById("sendContract").innerHTML = json.contract
-                document.getElementById("selectedTokenImg1").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
-                document.getElementById("swapReviewSelectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
+
+                $("#selectedTokenSvg1").show()
+                $("#selectedTokenImg1").hide()
+
+                $("#selectedTokenImg1").on('load', function() {
+                    $("#selectedTokenSvg1").hide()
+                    $("#selectedTokenImg1").show()
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+
+                $("#selectedTokenSvg1").attr("data-jdenticon-value", json.contract)
+
+                $("#swapReviewSelectedTokenSvg").show()
+                $("#swapReviewSelectedTokenImg").hide()
+
+                $("#swapReviewSelectedTokenImg").on('load', function() {
+                    $("#swapReviewSelectedTokenSvg").hide()
+                    $("#swapReviewSelectedTokenImg").show()
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+
+                $("#swapReviewSelectedTokenSvg").attr("data-jdenticon-value", json.contract)
+                jdenticon()
+
                 document.getElementById("tokenSelect").style.display = "none"
                 document.getElementById("imgDiv1").style.display = "block"
                 $("#tokenSelect1").attr("class", "col-6 justify-content-center align-self-center p-0")
@@ -87,7 +107,18 @@ class SwapPane {
                 document.getElementById("swapTicker2").innerHTML = json.ticker
                 document.getElementById("sendContract2").innerHTML = json.contract
                 document.getElementById("imgDiv2").style.display = "block"
-                document.getElementById("selectedTokenImg").src = "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true"
+
+                $("#selectedTokenSvg2").show()
+                $("#selectedTokenImg2").hide()
+
+                $("#selectedTokenImg2").on('load', function() {
+                    $("#selectedTokenSvg2").hide()
+                    $("#selectedTokenImg2").show()
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+
+                $("#selectedTokenSvg2").attr("data-jdenticon-value", json.contract)
+                jdenticon()
+
                 document.getElementById("tokenSelect").style.display = "none"
                 $("#tokenSelect2").attr("class", "col-6 justify-content-center align-self-center p-0")
                 _this.updateBalance(SwapPane.inputs.two)
@@ -109,6 +140,13 @@ class SwapPane {
             const contactOne = SwapPane.inputs.one.contract.html()
             const contractTwo = SwapPane.inputs.two.contract.html()
 
+            const img1Disp = document.getElementById("selectedTokenImg1").style.display
+            const img2Disp = document.getElementById("selectedTokenImg2").style.display
+
+            document.getElementById("selectedTokenImg1").style.display = img2Disp
+            document.getElementById("swapReviewSelectedTokenImg").style.display = img2Disp
+            document.getElementById("selectedTokenImg2").style.display = img1Disp
+
             const img1 = elem.getElementsByTagName("img")[0].src
             const img2 = elem2.getElementsByTagName("img")[0].src
 
@@ -128,6 +166,19 @@ class SwapPane {
             $("#swapTicker1").html(swapTicker2)
             $("#swapTicker2").html(swapTicker1)
 
+            const svg1 = document.getElementById("selectedTokenSvg1").innerHTML
+            const svg2 = document.getElementById("selectedTokenSvg2").innerHTML
+
+            const svg1Disp = document.getElementById("selectedTokenSvg1").style.display
+            const svg2Disp = document.getElementById("selectedTokenSvg2").style.display
+
+            document.getElementById("selectedTokenSvg1").innerHTML = svg2
+            document.getElementById("swapReviewSelectedTokenSvg").innerHTML = svg2
+            document.getElementById("selectedTokenSvg2").innerHTML = svg1
+
+            document.getElementById("selectedTokenSvg1").style.display = svg2Disp
+            document.getElementById("swapReviewSelectedTokenSvg").style.display = svg2Disp
+            document.getElementById("selectedTokenSvg2").style.display = svg1Disp
         })
 
         SwapPane.initBtn.click(function () {

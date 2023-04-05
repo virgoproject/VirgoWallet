@@ -346,7 +346,7 @@
     height: 42px;
 }
 
-.swapInput img {
+.swapInput img, .swapInput svg {
     height: 32px;
     width: 32px;
     border-radius: 50%;
@@ -374,9 +374,9 @@
 
 
 
-#swapReview img{
-    height: 36px;
-    width: 36px;
+#swapReview img, #swapReview svg {
+    height: 32px;
+    width: 32px;
     border-radius: 50%;
 }
 

@@ -68,6 +68,8 @@ class TokensSelect {
                 _this.spawnToken(token)
             }
 
+            jdenticon()
+
             if(document.getElementById("allTokensCat").innerHTML == "")
                 document.getElementById("allTokensCatWrapper").style.display = "none"
 
@@ -105,7 +107,14 @@ class TokensSelect {
 
         elem.getElementsByClassName("title")[0].innerHTML = json.name
         elem.getElementsByClassName("desc")[0].innerHTML = json.ticker + "<span style='font-weight: bold'> &middot; </span>" + MAIN_ASSET.name
-        elem.getElementsByTagName("img")[0].src = "https://github.com/virgoproject/tokens/blob/main/"+MAIN_ASSET.ticker+"/"+json.contract+"/logo.png?raw=true"
+
+        $(elem).find("svg").attr("data-jdenticon-value", json.contract)
+        jdenticon()
+
+        $(elem).find("img").on('load', function() {
+            $(elem).find("svg").hide()
+            $(elem).find("img").show()
+        }).attr("src", "https://github.com/virgoproject/tokens/blob/main/"+MAIN_ASSET.ticker+"/"+json.contract+"/logo.png?raw=true")
 
         elem.style.display = "block"
 
