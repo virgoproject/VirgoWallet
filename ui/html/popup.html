@@ -181,18 +181,48 @@
                         <h5>Send To</h5>
                     </div>
                 </div>
-                <div class="col-12 p-0" style="margin-bottom: 3em">
+                <div class="col-12 p-0 mb-4">
                     <p class="label mb-2">To</p>
-                    <div class="input-group col-12">
+                    <div class="input-group col-12" style="font-size: 1.2em">
                         <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
                         <input type="text" class="input col-8 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
-                        <i class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit"></i>
+                        <button class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit" disabled="disabled"></button>
                     </div>
                 </div>
                 <div class="col-12 mb-3 p-0">
                     <p class="label">Recent</p>
-                    <div class="text-center mt-5 mb-5 noContactFound" style="">
+                    <div class="text-center mt-5 mb-5" style="" id="sendRecentNotfound">
                         <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact">
+                    </div>
+                    <div class="row" id="sendRecentElems">
+
+                    </div>
+                    <div class="col-12 text-center mt-2 sendRecentElem sendRecentContact" id="sendRecentSampleContact" style="display: none">
+                        <div class="row">
+                            <div class="col-2 align-self-center pe-0">
+                                <svg data-jdenticon-value="" width="36" height="36"></svg>
+                            </div>
+                            <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
+                                <span class="contactName">Contact name</span>
+                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+                            </div>
+                            <div class="col-2 align-self-center">
+                                <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mt-2 sendRecentElem" id="sendRecentSample" style="display: none">
+                        <div class="row">
+                            <div class="col-2 align-self-center pe-0">
+                                <svg data-jdenticon-value="" width="36" height="36"></svg>
+                            </div>
+                            <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
+                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+                            </div>
+                            <div class="col-2 align-self-center">
+                                <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -579,7 +609,7 @@
                 <p>Home</p>
             </div>
         </div>
-        <div class="footerElem col-3" data-target="send">
+        <div class="footerElem col-3" data-target="send" id="footerBtnSend">
             <div>
                 <i class="fas fa-dollar-sign"></i>
                 <p>Pay</p>
@@ -611,7 +641,7 @@
         </div>
         <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
             <div class="justify-content-center align-self-center">
-                <select class="selectpicker w-100" id="sendTo" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
+                <select class="selectpicker w-100" id="sendAssetSelect" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
             </div>
         </div>
         <div class="row">
@@ -622,7 +652,7 @@
                 <a class="col-2 max">Use max</a>
             </div>
             <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
-                <p class="value labelCost"><span id="showCost"></span> $</p>
+                <p class="value labelCost"><span id="showCost">-</span> $</p>
             </div>
             <div class="col-12 d-flex justify-content-center inputWButton">
                 <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>

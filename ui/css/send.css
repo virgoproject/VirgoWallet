@@ -37,12 +37,10 @@
 }
 
 .sendConfirm .detail {
-    border-radius: 0.5em;
     color: #545454;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
-    max-width: 287px;
 }
 
 .sendConfirm .back {
@@ -76,6 +74,12 @@
     background: var(--mainColorLight);
     color: white !important;
     justify-content: center;
+    border: none;
+}
+
+#body .send .sendForm .nextBtn:disabled {
+    background: #545454 !important;
+    cursor: unset;
 }
 
 #body .send .sendForm .recipient::placeholder{
@@ -252,4 +256,42 @@
     margin-top: 8em;
     font-size: 2em;
     height: 100%;
+}
+
+.sendRecentElem {
+    background: #f8f4fb;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+.sendRecentElem:hover {
+    background: var(--whiteBackground);
+}
+
+.sendRecentElem .addressWrapper {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.sendRecentElem svg {
+    border-radius: 50%;
+}
+
+#sendRecentElems {
+    padding: 0 1em;
+}
+
+.sendRecentContact {
+    line-height: 1em;
+}
+
+.sendRecentContact .contactName {
+    color: var(--highlightColor1);
+}
+
+.sendRecentContact .textAddress {
+    font-size: 10px;
 }

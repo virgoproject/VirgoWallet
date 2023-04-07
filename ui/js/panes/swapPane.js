@@ -200,12 +200,12 @@ class SwapPane {
 
                     SwapPane.review.networkFeesTicker.html(MAIN_ASSET.ticker)
 
-                    let decimals = MAIN_ASSET.decimals
                     let editFees = document.querySelector("edit-fees")
 
                     editFees.onGasChanged = (gasPrice, gasLimit) => {
                         getBalance(MAIN_ASSET.ticker).then(function(mainBal){
-                            let totalNative = Number(Utils.formatAmount(gasLimit * editFees.getGasPrice(), decimals))
+                            console.log(gasPrice)
+                            let totalNative = Number(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
 
                             if (MAIN_ASSET.ticker == SwapPane.inputs.one.contract.html())
                                 totalNative += Number(amount)
@@ -218,7 +218,7 @@ class SwapPane {
                                 $("#confirmSwapBtn").attr("disabled", true)
                             }
 
-                            $("#swapReviewNetFees").html(Utils.formatAmount(gasLimit * editFees.getGasPrice(), decimals))
+                            $("#swapReviewNetFees").html(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
                         })
                     }
 

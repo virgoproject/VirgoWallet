@@ -118,17 +118,6 @@ edit-fees {
     margin-left: 40px !important;
 }
 
-
-#editfees {
-    display: block;
-    margin: 0px;
-    padding: 0px;
-    z-index: 2;
-    width: 100%;
-    position: absolute;
-
-}
-
 #body .blackbg {
     z-index: -1;
     display: flex;

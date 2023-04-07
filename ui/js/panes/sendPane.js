@@ -5,44 +5,37 @@ class SendPane {
     static balance = $("#body .send .sendForm .sendBal val")
     static btnSubmit = $("#body .send .sendForm .submit")
     static recipient = $("#body .send .sendForm .recipient")
-    static btnConfirm = $("#sendConfirm .submit")
     static sendForm = $("#body .send .sendForm")
     static confirmForm = $("#sendConfirm")
     static confirmFormBalance = $("#sendConfirm .balance")
     static confirmFeesForm = $("#sendConfirm .sendBtn")
     static feesForm = $("#sendConfirmFees")
-    static feesFormBack = $("#sendConfirmFees .back")
     static backBtn = $("#sendConfirm .back")
     static confirmAmount = $("#sendConfirmFees .amount .value")
     static confirmTicker = $("#sendConfirmFees .amount .ticker")
     static confirmRecipient = $("#sendConfirmFees .recipient .value")
     static confirmFrom = $("#sendConfirmFees .from .value")
     static confirmFees = $("#sendConfirmFees .fees .value")
-    static confirmFeesRange = $("#rangeFees")
     static sendBal = $("#body .send .sendForm .sendBal span")
-    static maxBtn = $("#sendConfirm .max")
-    static select = $(" #sendConfirm #sendTo")
-
-
+    static select = $(" #sendConfirm #sendAssetSelect")
 
     static btnContacts = $("#body .send .sendForm .contactButton")
     static headerValues = $(".header .stats")
-    static topbarValues = $(".header .topbar")
     static contactsList = $("#contacts ")
-    static contactsBack = $("#contacts .back")
     static bodyContacts = $('#contacts #contactDiv')
     static buttonContacts = $('#contacts .addContact')
     static divContactClone = $('#contacts .contactUser')
     static divContactList = $('#contacts .contactsList')
-    static contactExemple = $('#contactEx')
-
 
     static estimateFees = null;
 
     constructor() {
         const _this = this
-        let addrFrom
         let confirmInterval;
+
+        $("#footerBtnSend").click(() => {
+            _this.displayRecentRecipients()
+        })
 
         SendPane.divContactList.html("")
 
@@ -55,11 +48,6 @@ class SendPane {
 
             ContactsPane.loadContacts()
         })
-        SendPane.contactsBack.click(function() {
-
-        })
-
-
 
         SendPane.btnSubmit.click(function(){
             $("#body .send .sendForm").hide()
@@ -67,7 +55,7 @@ class SendPane {
             hideStatsBar()
         })
 
-        $("#sendTo").change(function (){
+        $("#sendAssetSelect").change(function (){
             getAsset(SendPane.select.val()).then(function(assetInfos){
 
                 let tickerBalance
@@ -96,11 +84,15 @@ class SendPane {
                 }else{
                     tickerBalance2 = assetInfos2.ticker
                 }
+
                 getBalance(tickerBalance2).then(function (nativeBalance2){
                     const balance =  Utils.formatAmount(nativeBalance2.balance, nativeBalance2.decimals)
                     let amount = $("#amountSend").val()
 
-                    $("#sendConfirm #showCost").html(Number(amount) * Number(nativeBalance2.price))
+                    if(amount == "")
+                        $("#sendConfirm #showCost").html("-")
+                    else
+                        $("#sendConfirm #showCost").html(Number(amount) * Number(nativeBalance2.price))
 
                     if (Number(balance) >= Number(amount) && Number(amount) != 0)
                         $('#sendNextStep').attr("disabled", false)
@@ -127,67 +119,62 @@ class SendPane {
 
                     SendPane.confirmFrom.html(selectedAddress)
 
+                    let editFees = document.querySelector("edit-fees");
+
+                    const ticker = editFees.dataset.ticker = MAIN_ASSET.ticker
+
                     let contract
                     if (assetInfos.ticker === MAIN_ASSET.ticker)
                         contract = MAIN_ASSET.ticker
                     else
                         contract = assetInfos.contract
 
+                    document.getElementById("from").setAttribute("data-jdenticon-value",selectedAddress)
+                    document.getElementById("to").setAttribute("data-jdenticon-value",SendPane.recipient.val())
+
+                    $("#sendReviewNetFeesTicker").html(ticker);
                     estimateSendFees(SendPane.recipient.val(), Utils.toAtomicString(SendPane.amount.val(), assetInfos.decimals), contract).then(function(fees){
 
-                        getBalance(MAIN_ASSET.ticker).then(function (feesBalance) {
+                        editFees.onGasChanged = (gasPrice, gasLimit) => {
 
-                            getBalance(contract).then(function (sendBalance) {
+                            getBalance(MAIN_ASSET.ticker).then(function (mainBal) {
+                                let totalNative = Number(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
 
-                            let gas = fees.gasLimit
-                            let decimals = MAIN_ASSET.decimals
-                            let amount  = SendPane.amount.val()
-                            let editFees = document.querySelector("edit-fees");
-                            let priceFees = feesBalance.price;
-                            let priceAmount = sendBalance.price
+                                if (MAIN_ASSET.ticker == SendPane.select.val())
+                                    totalNative += Number(amount)
 
-                            const decimal = editFees.dataset.decimal = decimals
-                            const lim = editFees.dataset.limit = gas
-                            const ticker = editFees.dataset.ticker = MAIN_ASSET.ticker
-
-
-                            document.getElementById("from").setAttribute("data-jdenticon-value",selectedAddress)
-                            document.getElementById("to").setAttribute("data-jdenticon-value",SendPane.recipient.val())
-
-                            $("#sendReviewNetFeesTicker").html(ticker);
-                            editFees.start(gas);
-
-                            editFees.onGasChanged = (gasPrice, gasLimit) => {
-                                let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
-
-                                if (MAIN_ASSET.ticker == assetInfos.ticker)
-                                        totalNativ += Number(amount)
-
-                                if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
-                                    $("#confirmSendBtn").find("val").html("Send")
+                                if (totalNative <= Utils.formatAmount(mainBal.balance, mainBal.decimals)) {
+                                    $("#confirmSendBtn").find("val").html("Init swap")
                                     $("#confirmSendBtn").attr("disabled", false)
+                                } else {
+                                    $("#confirmSendBtn").find("val").html("Insufficient " + MAIN_ASSET.ticker + " balance")
+                                    $("#confirmSendBtn").attr("disabled", true)
                                 }
 
-                                $("#sendReviewNetFees").html(Utils.formatAmount(gas * editFees.getGas(), decimals))
-                                $("#sendReviewCost").html(totalNativ)
+                                $("#sendReviewNetFees").html(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
+                                $("#sendReviewCost").html(totalNative)
                                 $("#sendReviewCostTicker").html(MAIN_ASSET.ticker)
-                            }
+                            })
 
-                                $("#sendConfirmFeesLoading").hide()
-                                SendPane.feesForm.show()
-                        })
-                        })
-                        })
+                        }
+
+                        editFees.start(fees.gasLimit);
+                        editFees.onGasChanged(fees.gasPrice, fees.gasLimit)
+
+                        $("#sendConfirmFeesLoading").hide()
+                        SendPane.feesForm.show()
                     })
+
+                })
             })
 
         })
 
         SendPane.backBtn.click(function(){
             if($(this).attr("disabled")) return;
-            SendPane.btnSubmit.attr("disabled", false)
+            SendPane.recipient.val("")
             SendPane.confirmForm.hide()
-            $("#sendTo").val('default').selectpicker("refresh");
+            $("#sendAssetSelect").val('default').selectpicker("refresh");
             $('#amountSend').val("")
             $('#sendNextStep').attr("disabled", true)
             SendPane.sendForm.show()
@@ -203,9 +190,7 @@ class SendPane {
             $("#swapReview").hide()
             SendPane.confirmForm.show()
             clearInterval(confirmInterval)
-            })
-
-
+        })
 
         $("#confirmSendBtn").click(function(){
             clearInterval(confirmInterval)
@@ -220,7 +205,7 @@ class SendPane {
                     notyf.success("Transaction sent!")
                     SendPane.recipient.val("")
                     SendPane.amount.val(null)
-                    $("#sendTo").val('default').selectpicker("refresh");
+                    $("#sendAssetSelect").val('default').selectpicker("refresh");
                     SendPane.confirmForm.hide()
                     SendPane.feesForm.hide()
                     $("#body .send .sendForm").show()
@@ -230,7 +215,6 @@ class SendPane {
         })
 
         SendPane.select.change(function(){
-            SendPane.btnSubmit.attr("disabled", true)
             SendPane.amount.val("")
             getAsset($(this).val()).then(function(asset){
                 SendPane.sendBal.html(asset.ticker)
@@ -265,19 +249,12 @@ class SendPane {
         SendPane.recipient.on("input", function(){
             const input = $(this);
             if(input.val().length < 42){
-                input.removeClass("is-invalid")
                 SendPane.btnSubmit.attr("disabled", true)
                 return
             }
             validateAddress(input.val()).then(function(res){
-                if(!res){
-                    input.addClass("is-invalid")
-                    SendPane.btnSubmit.attr("disabled", true)
-                    return
-                }
-
-                input.removeClass("is-invalid")
-                sendPane.checkSendFormValues()
+                console.log("nnnoooooo")
+                SendPane.btnSubmit.attr("disabled", !res)
             })
         })
 
@@ -287,18 +264,15 @@ class SendPane {
 
             if(isNaN(amount) || amount == 0){
                 $(this).removeClass("is-invalid")
-                SendPane.btnSubmit.attr("disabled", true)
                 return
             }
 
             if(amount < 0 || amount > max){
                 $(this).addClass("is-invalid")
-                SendPane.btnSubmit.attr("disabled", true)
                 return
             }
 
             $(this).removeClass("is-invalid")
-            sendPane.checkSendFormValues()
         })
 
         events.addListener("assetsChanged", function (data){
@@ -307,7 +281,6 @@ class SendPane {
 
         events.addListener("addressChanged", () => {
             SendPane.recipient.val("")
-            SendPane.btnSubmit.attr("disabled", true)
             SendPane.amount.val("")
         })
 
@@ -317,15 +290,15 @@ class SendPane {
         SendPane.select.html("")
         SendPane.recipient.val("")
         SendPane.amount.val("")
+        document.getElementById("showCost").innerHTML = "-"
         SendPane.backBtn.attr("disabled", false)
-        enableLoadBtn(SendPane.btnSubmit)
         SendPane.backBtn.click()
         const selectedAddress = data.addresses[data.selectedAddress]
+
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
             if(!balance.tracked) return
             let actualAddress = data.wallets[data.selectedWallet].wallet.ticker
             let sa = ('https://raw.githubusercontent.com/virgoproject/tokens/main/" + actualAddress + "/" + balance.contract + "/logo.png')
-
 
             let elem = $("<option></option>")
             elem.val(contractAddr)
@@ -343,17 +316,63 @@ class SendPane {
         SendPane.select.selectpicker('refresh');
     }
 
-    checkSendFormValues(){
-        const recipient = SendPane.recipient;
-        if(recipient.val() < 42 || recipient.hasClass("is-invalid"))
-            return
+    async displayRecentRecipients(){
+        let i = 0
 
-        let amountVal = parseFloat(SendPane.amount.val())
+        const container = document.getElementById("sendRecentElems")
+        const sample = document.getElementById("sendRecentSample")
+        const sampleContact = document.getElementById("sendRecentSampleContact")
+        const notFound = document.getElementById("sendRecentNotfound")
 
-        if(isNaN(amountVal) || amountVal <= 0 || SendPane.amount.hasClass("is-invalid"))
-            return
+        const added = []
 
-        SendPane.btnSubmit.attr("disabled", false)
+        container.innerHTML = ""
+
+        const contacts = await getContacts()
+        const contactsByAddress = new Map()
+
+        for(const contact of contacts){
+            contactsByAddress.set(contact.address, contact)
+        }
+
+        for(const tx of MAIN_ASSET.transactions){
+            if(i > 5) break
+            if(added.includes(tx.recipient)) continue
+
+            if(tx.contractAddr == MAIN_ASSET.ticker || await validateAddress(tx.contractAddr)){
+                let elem
+
+                if(contactsByAddress.has(tx.recipient)){
+                    elem = sampleContact.cloneNode(true)
+                    elem.querySelector(".contactName").innerHTML = contactsByAddress.get(tx.recipient).name
+                }else{
+                    elem = sample.cloneNode(true)
+                }
+
+                delete elem.id
+                elem.querySelector(".textAddress").innerHTML = tx.recipient
+                elem.querySelector("svg").dataset.jdenticonValue = tx.recipient
+                elem.style.display = "block"
+
+                elem.onclick = () => {
+                    SendPane.recipient.val(tx.recipient)
+                    SendPane.btnSubmit.click()
+                }
+
+                container.appendChild(elem)
+                added.push(tx.recipient)
+                i++
+            }
+
+        }
+
+        if(i == 0)
+            notFound.style.display = "block"
+        else{
+            jdenticon()
+            notFound.style.display = "none"
+        }
+
     }
 }
 

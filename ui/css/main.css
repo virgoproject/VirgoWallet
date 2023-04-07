@@ -113,8 +113,7 @@ body {
     border-radius: 50%;
     background-size: cover;
     display: inline-block;
-    margin-top: 4px;
-    margin-right: 7px;
+    vertical-align: middle;
 }
 
 #sendConfirmFees svg{
@@ -122,10 +121,10 @@ border-radius: 50%;
 }
 
 #sendConfirm .selectText{
-    vertical-align: top;
     display: inline-block;
-    padding-top: 8px;
+    padding-top: 2px;
     padding-left: 6px;
+    vertical-align: middle;
 }
 
 .input:focus-visible{

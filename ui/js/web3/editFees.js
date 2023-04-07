@@ -61,7 +61,7 @@ class EditFees extends HTMLElement {
                 $(".fast").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
+            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
         })
 
         $(".medium").click(function (){
@@ -75,7 +75,7 @@ class EditFees extends HTMLElement {
                 $(".fast").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
+            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
         })
 
 
@@ -90,7 +90,7 @@ class EditFees extends HTMLElement {
                 $(".slow").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
+            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
         })
 
 
@@ -98,12 +98,14 @@ class EditFees extends HTMLElement {
             $("#editfees").css("display", "none")
             $("#swapReview").css("display", "block")
 
-            _this.onGasChanged(_this.gasPrice,_this.gasLimit)
+            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
         })
     }
 
     start(gasLimit){
-        this.querySelector(".feesTicker").innerHTML = MAIN_ASSET.ticker
+        this.querySelectorAll(".feesTicker").forEach(elem => {
+            elem.innerHTML = MAIN_ASSET.ticker
+        })
         this.gasPrice = 0
         this.gasLimit = gasLimit
         this.setFees(gasLimit)
@@ -132,7 +134,7 @@ class EditFees extends HTMLElement {
             $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, MAIN_ASSET.decimals))
 
             _this.gasPrice = res
-            _this.onGasChanged(_this.gasPrice, gasLimit)
+            _this.onGasChanged(_this.getGasPrice(), gasLimit)
         })
     }
 
