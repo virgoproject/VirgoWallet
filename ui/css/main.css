@@ -1,38 +1,7 @@
 @font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-Medium.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-Light.ttf) format('truetype');
-    font-weight: 100;
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-Bold.ttf) format('truetype');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-MediumItalic.ttf) format('truetype');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-LightItalic.ttf) format('truetype');
-    font-weight: 100;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(/ui/fonts/Ubuntu-BoldItalic.ttf) format('truetype');
-    font-weight: bold;
-    font-style: italic;
+    font-family: 'Montserrat';
+    src: url('/ui/fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
 }
 
 body {
@@ -46,9 +15,14 @@ body {
     --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
     --whiteBackground: #F2EBF7;
-    font-family: "Ubuntu";
+    --greenBackground:#E3F3E1;
+    --greenArrow: #84C56F;
+    --blueBackground:#DFF0FF;
+    --blueArrow:#70a6dd;
+    font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     overflow: hidden;
+    font-size: 14px;
 }
 
 .button {
@@ -94,11 +68,67 @@ body {
 }
 
 .input {
-    background: #5a009c14;
-    border-radius: 0.5em;
+    background: #F3F3F3;
     border: none;
     color: #545454;
     padding: 0.375em 2em 0.375em 0.75em;
+}
+
+#sendConfirm .input {
+    background: #F3F3F3;
+    border: none;
+    color: #545454;
+    padding: 0.8em 0em 0.8em 1.75em;
+    width: 38%;
+    border-radius: 40px;
+}
+
+#sendConfirm select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#sendConfirm select.assetSelect {
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%);
+    background-position: calc(100% - 30px) calc(1em + 7px), calc(100% - 25px) calc(1em + 7px);
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+#sendConfirm  .inputAmount {
+    all: unset;
+    border: none;
+    color: #545454;
+    font-size: 3em;
+    width: 2ch;
+    text-align: center;
+    min-width: 4ch;
+    max-width: 11ch;
+}
+
+#sendConfirm .selectLogo{
+    height: 32px;
+    width: 32px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    background-size: cover;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#sendConfirmFees svg{
+border-radius: 50%;
+}
+
+#sendConfirm .selectText{
+    display: inline-block;
+    padding-top: 2px;
+    padding-left: 6px;
+    vertical-align: middle;
+}
+
+.input:focus-visible{
+    outline: none !important;
 }
 
 .input.is-invalid {
@@ -108,10 +138,6 @@ body {
     background-repeat: no-repeat;
     background-position: right calc(0.375em + 0.1875rem) center;
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.input:focus {
-    outline: 2px solid #545454;
 }
 
 .input.outline {
@@ -147,6 +173,7 @@ body {
 .inputWButton button {
     background: transparent;
     border: none;
+    all: unset;
     color: var(--highlightColor1)
 }
 
@@ -227,6 +254,37 @@ input[type=number] {
     bottom: 50%;
     border-radius: 0.5em;
     box-shadow: 0px 1px 5px 2px #0000003b;
+}
+
+.popup .steps {
+    background-color: #6C2559;
+    height: 5px;
+    border-radius: 100em;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.popup .stepsActive{
+    background-color: #B71C8E !important;
+}
+
+#tutorialPopup .box {
+    background-color: #242424 !important;
+    border-radius: 1em !important;
+}
+
+#tutorialPopup .button{
+    border-radius: 1em !important;
+    color: black;
+}
+
+#tutorialPopup .button:hover{
+    color: white;
+}
+
+#tutorialPopup #closeTutorial:hover{
+    cursor: pointer;
 }
 
 .popup .header .close {
@@ -326,4 +384,16 @@ input[type=number] {
 
 #loadingPane i {
     vertical-align: text-top;
+}
+
+.feesBtn{
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+}
+
+.filter-option-inner-inner{
+    overflow: hidden;
+    margin-right: 7px;
 }

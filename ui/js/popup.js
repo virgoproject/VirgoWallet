@@ -14,13 +14,33 @@ function isBtnDisabled(elem){
     return elem.is(":visible") && !elem.find("val").is(":visible")
 }
 
-function copyToClipboard(element) {
+function copyToClipboard(data) {
     let temp = $("<input>")
     temp.css("position", "absolute")
     $("body").append(temp)
-    temp.val($(element).html()).select()
+    temp.val(data).select()
     document.execCommand("copy")
     temp.remove()
+}
+
+function hideStatsBar(){
+    let statBar = document.querySelector('.header')
+    statBar.classList.add("d-none")
+}
+
+function showStatsBar(){
+    let statBar = document.querySelector('.header')
+    statBar.classList.remove("d-none")
+}
+
+function hideAddress(){
+    let adressBar = document.querySelector('.contentAddress')
+    adressBar.classList.add("d-none")
+}
+
+function showAddress(){
+    let adressBar = document.querySelector('.contentAddress')
+    adressBar.classList.remove("d-none")
 }
 
 $("#footer .footerElem").click(function(){
@@ -34,6 +54,16 @@ $("#footer .footerElem").click(function(){
     airdropPane.checkAirdropPane($(this))
 
     $("#body .bodyElem."+$(this).attr("data-target")).show()
+    showStatsBar()
+
+    if ($(this).attr("data-target") === "send" || $(this).attr("data-target") === "swap"){
+        $(".stats ").hide()
+        hideStatsBar()
+        $(".header").css("height","unset")
+    } else {
+        $(".stats ").show()
+        $(".header").css("height","")
+    }
 
     return false
 })
@@ -57,6 +87,7 @@ $(".popup .box").click(function(){
 })
 
 $(".popup").click(function(){
+    if ($(this).attr('id') === 'tutorialPopup') return
     $(this).hide()
 })
 

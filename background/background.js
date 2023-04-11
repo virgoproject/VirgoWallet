@@ -3,7 +3,7 @@ if(typeof browser === 'undefined'){
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
         "utils/converter.js", "swap/uniswap02Utils.js",
         "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js")
+        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
 }
 
 if(browser.storage.session === undefined){
@@ -661,7 +661,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(true)
             })
             break
-            
+
         case 'tickerFromChainID':
             sendResponse(baseWallet.getChainByID(request.id))
             break
@@ -717,7 +717,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case "resetAirdrops":
             browser.storage.local.set({"airdropinfos": []})
             break
-            
+
         case 'deleteConnectedSite':
             for (var i=0 ; i < connectedWebsites.length ; i++)
             {
@@ -734,6 +734,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             browser.storage.local.set({"setupDone": true})
             setupDone = true
             sendResponse(setupDone)
+            break
+
+        case 'tutorialDone':
+            browser.storage.local.set({"tutorialDone": true})
+            tutorialDone = true
+            sendResponse(tutorialDone)
             break
 
         case "setupNot":
@@ -792,6 +798,7 @@ async function getBalance(asset){
 
 function sendTo(request, sendResponse){
     let txResume = null;
+    console.log(request)
     //send native asset
     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
         if (request.asset == baseWallet.getCurrentWallet().ticker) {

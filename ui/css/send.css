@@ -1,5 +1,5 @@
-#body .send  {
-    padding-top: 2em !important;
+#body .sendForm  {
+    padding-top: 1em !important;
 }
 
 #body .send .sendForm .sendBal {
@@ -31,37 +31,34 @@
 }
 
 
-#body .send .sendConfirm .ticker {
+
+.sendConfirm .ticker {
     color: var(--highlightColor1);
 }
 
-#body .send .sendConfirm .detail {
-    background: #5a009c14;
-    border-radius: 0.5em;
+.sendConfirm .detail {
     color: #545454;
-    padding: 0.375em 2em 0.375em 0.75em;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
 }
 
-#body .send .sendConfirm .back {
+.sendConfirm .back {
     cursor: pointer;
     transition: all ease-in 0.1s;
     margin-bottom: 0.25em;
-    margin-left: -14px;
 }
 
-#body .send .sendConfirm .back:hover {
+.sendConfirm .back:hover {
     color: #111;
 }
 
-#body .send .sendConfirm .back[disabled] {
+.sendConfirm .back[disabled] {
     color: #111;
     cursor: default;
 }
 
-#body .send .sendConfirm .fees .value {
+.sendConfirm .fees .value {
     max-width: 150px;
     display: inline-block;
     overflow: hidden;
@@ -69,3 +66,232 @@
     vertical-align: bottom;
 }
 
+#body .send .sendForm .nextBtn {
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    padding: 0.375rem 0.9rem;
+    cursor: pointer;
+    background: var(--mainColorLight);
+    color: white !important;
+    justify-content: center;
+    border: none;
+}
+
+#body .send .sendForm .nextBtn:disabled {
+    background: #545454 !important;
+    cursor: unset;
+}
+
+#body .send .sendForm .recipient::placeholder{
+    color: rgba(84, 84, 84, .7) !important;
+}
+
+#body .send .sendConfirm .editFees {
+    text-decoration: unset !important;
+    color: var(--mainColor);
+}
+
+#body .send .sendConfirm .box-infos{
+    background: #F3F3F3;
+    border-radius: 10px;
+}
+
+#body .send .back {
+    position: absolute;
+    width: 2em;
+    text-align: center;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #545454;
+    transition: color ease 0.25s;
+}
+
+#body .send .bold-light {
+    font-weight: 400 !important;
+}
+
+#body .send .hr-separation {
+    opacity: .3 !important;
+}
+
+#body .send .fs-25{
+    font-size: 2.5em !important;
+}
+
+#body .send .ticketAmmount {
+    margin-bottom: -1em !important;
+}
+
+.sendConfirmInfo{
+    display: flex;
+    justify-items: center;
+}
+
+.balanceSize{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 110px;
+    vertical-align: top;
+}
+
+#sendConfirmFees .sendAmount{
+    border-radius: 0.5em;
+    text-align: center;
+}
+
+#sendConfirmFees .sending{
+    font-size: 1.55em;
+}
+
+#sendConfirmFees .valueSend{
+    display: inline-block;
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    font-weight: bold;
+    color: black;
+}
+
+#selectAssetSend {
+    max-width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #f3f3f3;
+    height: 3.4em;
+    padding: 0 1em !important;
+    border-radius: 50vh;
+}
+
+#selectAssetSend button{
+    background: transparent;
+    border: transparent;
+}
+
+.sendBtn{
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+}
+
+#sendReviewNetFees{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 92px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#sendReviewCost{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 60px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.fees{
+    background: #F3F3F3;
+    border-radius: 10px;
+    font-size: 0.9em;
+    margin-top: 3em;
+}
+
+
+#sendConfirm .balance{
+    color: #6e6e6e;
+}
+
+.labelTitle{
+    color: #6e6e6e;
+}
+
+.labelFromAndTo{
+    margin: 0;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.labelCost{
+    margin: 0;
+    font-weight: bold;
+}
+
+.labelAdress{
+    display: flex;
+    align-items: center;
+    max-width: 220px !important;
+    color: #6e6e6e !important;
+}
+
+.more{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#sendConfirm #showCost{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 70px;
+}
+
+#sendConfirm .labelCostBox{
+    background: #F3F3F3;
+    padding: 6px;
+    border-radius: 20px;
+    width: 110px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sendConfirmFeesLoading{
+    text-align: center;
+    margin-top: 8em;
+    font-size: 2em;
+    height: 100%;
+}
+
+.sendRecentElem {
+    background: #f8f4fb;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
+.sendRecentElem:hover {
+    background: var(--whiteBackground);
+}
+
+.sendRecentElem .addressWrapper {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.sendRecentElem svg {
+    border-radius: 50%;
+}
+
+#sendRecentElems {
+    padding: 0 1em;
+}
+
+.sendRecentContact {
+    line-height: 1em;
+}
+
+.sendRecentContact .contactName {
+    color: var(--highlightColor1);
+}
+
+.sendRecentContact .textAddress {
+    font-size: 10px;
+}

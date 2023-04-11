@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Approve Token - Virgo Wallet</title>
+  <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
+  <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/ui/css/main.css">
+  <link rel="stylesheet" href="/ui/css/web3/signTransaction.css">
+  <link rel="stylesheet" href="/ui/css/feesManagement.css">
+  <link rel="stylesheet" href="/ui/css/editFees.css">
+</head>
+<body class="text-center w-100">
+<div class="h-100 d-flex align-items-center justify-content-center">
+  <div class="row w-100 p-4 mb-4 position-absolute">
+      <div  class="d-flex align-items-center justify-content-center col-4">
+        <img src="https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png" width="55px" style="margin-right: -60px">
+      </div>
+      <div class="col-4 d-flex align-items-center justify-content-center" style="font-size: 10px">
+        <i class="fa-duotone fa-circle col-3"></i>
+        <i class="fa-duotone fa-circle col-3"></i>
+        <i class="fa-duotone fa-circle col-3"></i>
+      </div>
+      <div id="" class="d-flex align-items-center justify-content-center col-4">
+        <img src="/ui/images/walletLogo.png" width="55px" style="margin-left: -60px;border-radius: 30px">
+      </div>
+
+
+    <h2 class="col-12 mt-2" style="padding-top: 40px;margin-bottom: 10px">Give this site permission to access your
+      <val id="siteName"></val> ?</h2>
+    <p style="font-size: 13px;margin-bottom: 30px">By granting this permission, you're allowing this site to access your funds.
+    </p>
+    <div class="col-12 mb-2 detail text-left">
+      <div class="row">
+        <div class="identicon col-3">
+          <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
+        </div>
+        <p class="col-9" id="addr">Account Address</p>
+      </div>
+    </div>
+    <div class="col-12 mb-2 detail text-left">
+      <div class="row">
+        <p class="label col-6">Network Fees</p>
+        <p class="value col-6 text-right" style="margin: 0;padding: 0"><span id="fees">-</span> <span class="feesTicker" style="margin-right: 5px"></span><span><i class="fa-solid fa-pen-to-square editFees"></i></span></p>
+
+      </div>
+    </div>
+
+    <div class="col-12 mt-2" style="padding-top: 50px">
+      <div class="row">
+        <div class="col-6 p-2">
+          <button class="button light w-100" id="refuse">Reject</button>
+        </div>
+        <div class="col-6 p-2">
+          <button class="button success w-100" id="allow" disabled>Approve</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <edit-fees class="w-100 approve" style="display: none"></edit-fees>
+</div>
+
+
+
+<script src="../../js/utils/jquery.min.js"></script>
+<script src="/commonJS/utils.js"></script>
+<script src="/commonJS/browser-polyfill.js"></script>
+<script src="../../js/utils/backgroundMessaging.js"></script>
+<script src="../../js/web3/editFees.js"></script>
+<script src="../../js/web3/approveToken.js"></script>
+<script src="../../js/utils/rangeSlider.js"></script>
+<script src="../../js/utils/jdenticon.min.js"></script>
+
+
+</body>
+</html>

@@ -4,8 +4,8 @@ class MainPane {
 
     static self = $("#mainPane")
     static resume = $("#body .bodyElem.resume")
-    static address = $("#mainPane .header .address")
-    static addressTitle = $("#mainPane .header .address .title")
+    static address = $("#walletAddress")
+    static addressDiv = $(".contentAddress")
     static addAsset = {
         pane: $("#body .bodyElem.addAsset"),
         contract: $("#body .bodyElem.addAsset .assetContract"),
@@ -45,12 +45,16 @@ class MainPane {
 
     constructor() {
 
-        MainPane.address.click(function(){
-            copyToClipboard(document.querySelector("[data-mainAddress]"));
-            MainPane.addressTitle.html("Copied! (")
+        MainPane.addressDiv.click(function(e){
+            e.stopPropagation()
+            let address = document.getElementById('walletAddress').textContent
+            console.log(MainPane.address.address)
+            copyToClipboard(MainPane.address.address);
+
+            MainPane.address.html("Copied!")
 
             setTimeout(function(){
-                MainPane.addressTitle.html("Wallet Address (")
+                MainPane.address.html(address)
             }, 2500)
         })
 
@@ -167,6 +171,9 @@ class MainPane {
         const selectedAddress = data.addresses[data.selectedAddress]
         $("[data-mainAddress]").html(selectedAddress.address)
 
+        MainPane.address.html(selectedAddress.address.replace(selectedAddress.address.substring(4,38),"..."))
+        MainPane.address.address = selectedAddress.address
+
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 
         if(selectedWallet.testnet)
@@ -199,8 +206,14 @@ class MainPane {
                 elem.find(".title").html(balance.name)
                 elem.find(".ticker").html(balance.ticker)
                 elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
-                elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png')");
+
+                elem.find(".logo").on('load', function() {
+                    elem.find("svg").hide()
+                    elem.find(".logo").show()
+                }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
+
                 elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
+                elem.find("svg").attr("data-jdenticon-value", contractAddr)
 
                 elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
                 if(balance.change >= 0)
@@ -251,7 +264,16 @@ class MainPane {
 
         if(!hasChanged) return
 
-        $("[data-fiatTotal]").html("$" + Utils.beautifyAmount(totalBalance))
+        let fixedValue = Utils.beautifyAmount(totalBalance)
+        $(".values").html(fixedValue.toString().split(".")[0])
+
+        if (Utils.beautifyAmount(totalBalance).toString().split('.')[1] === undefined){
+            $('.decmialValues').html("." + 0)
+        } else {
+            $('.decmialValues').html("." + Utils.beautifyAmount(totalBalance).toString().split('.')[1])
+        }
+
+
 
         let totalChange = 0;
 
@@ -273,6 +295,12 @@ class MainPane {
         }
 
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
+
+
+
+
+
+
     }
 
     setResume(data){

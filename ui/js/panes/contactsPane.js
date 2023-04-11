@@ -58,6 +58,7 @@ class ContactsPane {
 
         })
 
+
         ContactsPane.buttons.addItNow.click(function (e) {
             ContactsPane.buttons.addContact.click()
         })
@@ -150,12 +151,14 @@ class ContactsPane {
                 ContactsPane.div.formContact.hide()
                 ContactsPane.div.contacts.hide()
                 ContactsPane.extern.payForm.show()
+                hideStatsBar()
             } else {
                 ContactsPane.div.bodyContacts.show()
                 ContactsPane.extern.payForm.show()
                 ContactsPane.buttons.addContact.show()
                 ContactsPane.div.formContact.hide()
                 ContactsPane.text.title.html('Contacts')
+                hideStatsBar()
             }
         })
     }
