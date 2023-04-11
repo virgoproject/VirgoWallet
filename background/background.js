@@ -167,6 +167,9 @@ async function onBackgroundMessage(request, sender, sendResponse){
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
+                while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                    await new Promise(r => setTimeout(r, 10));
+                }
                 sendResponse(getBaseInfos())
                 activityHeartbeat()
             }
@@ -174,9 +177,14 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "unlockWallet":
             activityHeartbeat()
-            BaseWallet.loadFromJSON(request.password).then(function(res){
+            BaseWallet.loadFromJSON(request.password).then(async function(res){
                 if(res){
                     browser.storage.session.set({"unlockPassword": request.password})
+
+                    while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                        await new Promise(r => setTimeout(r, 10));
+                    }
+
                     sendResponse(getBaseInfos())
                 }
                 else sendResponse(false)

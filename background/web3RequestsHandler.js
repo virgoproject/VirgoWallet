@@ -164,9 +164,11 @@ function respondToWeb3Request(tabId, reqId, response){
 function grantPendingAuthorization(auth, params){
     switch(auth.type){
         case "connect":
-            connectedWebsites.push(auth.origin)
-            browser.storage.local.set({"connectedWebsites": connectedWebsites})
-            respondToWeb3Request(auth.tabId, reqId, {
+            if(!connectedWebsites.includes(auth.origin)){
+                connectedWebsites.push(auth.origin)
+                browser.storage.local.set({"connectedWebsites": connectedWebsites})
+            }
+            respondToWeb3Request(auth.tabId, auth.reqId, {
                 success: true,
                 data: [baseWallet.getCurrentAddress()]
             })
@@ -219,50 +221,29 @@ function grantPendingAuthorization(auth, params){
 
         case "signMessage":
             console.log(auth)
-            if(auth.method == "eth_signTypedData_v4")
-                web3.currentProvider.send({
-                    jsonrpc: "2.0",
-                    id: Date.now() + "." + Math.random(),
-                    method: auth.method,
-                    params: auth.data
-                }, function(error, resp){
-                    if(!resp.error){
-                        respondToWeb3Request(auth.tabId, auth.reqId, {
-                            success: true,
-                            data: resp.result
-                        })
-                        return
-                    }
+            web3.currentProvider.send({
+                jsonrpc: "2.0",
+                id: Date.now() + "." + Math.random(),
+                method: auth.method,
+                params: auth.data
+            }, function(error, resp){
+                console.log(error)
+                console.log(resp)
+                if(!resp.error){
                     respondToWeb3Request(auth.tabId, auth.reqId, {
-                        success: false,
-                        error: {
-                            message: error.message,
-                            code: error.code
-                        }
+                        success: true,
+                        data: resp.result
                     })
-                })
-            else
-                web3.currentProvider.send({
-                    jsonrpc: "2.0",
-                    id: Date.now() + "." + Math.random(),
-                    method: "eth_sign",
-                    params: auth.data
-                }, function(error, resp){
-                    if(!resp.error){
-                        respondToWeb3Request(auth.tabId, auth.reqId, {
-                            success: true,
-                            data: resp.result
-                        })
-                        return
+                    return
+                }
+                respondToWeb3Request(auth.tabId, auth.reqId, {
+                    success: false,
+                    error: {
+                        message: error.message,
+                        code: error.code
                     }
-                    respondToWeb3Request(auth.tabId, auth.reqId, {
-                        success: false,
-                        error: {
-                            message: error.message,
-                            code: error.code
-                        }
-                    })
                 })
+            })
             break
     }
 }
@@ -293,6 +274,9 @@ function isWebsiteAuthorized(origin, tabId, reqId){
 
 function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
     const tabId = sender.tab.id
+
+    console.log(method)
+    console.log(params)
 
     switch(method){
         case "eth_chainId":
@@ -343,7 +327,7 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
         case "eth_signTypedData_v4":
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
-            signMessage(origin, [params[0].toLowerCase(), JSON.parse(params[1])], tabId, reqId, method)
+            signMessage(origin, [params[0], params[1]], tabId, reqId, method)
             break
 
         default:

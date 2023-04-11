@@ -54,7 +54,6 @@ class BaseWallet {
     }
 
     startLoop(){
-        baseWallet.getCurrentWallet().update(true)
         const timer = setInterval(function(){
             if(baseWallet === undefined){
                 clearInterval(timer)
@@ -62,6 +61,12 @@ class BaseWallet {
             }
             baseWallet.getCurrentWallet().update()
         }, 2500)
+
+        const startupWait = setInterval(() => {
+            if(baseWallet.getCurrentWallet().getAddressesJSON().length == 0) return
+            baseWallet.getCurrentWallet().update(true)
+            clearInterval(startupWait)
+        }, 50)
 
         const priceTimer = setInterval(function(){
             if(baseWallet === undefined){
