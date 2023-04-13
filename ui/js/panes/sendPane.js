@@ -75,24 +75,24 @@ class SendPane {
             })
         })
 
-        $(':input').bind('keyup mouseup',function (){
-            getAsset(SendPane.select.val()).then(function(assetInfos2){
+        document.getElementById("amountSend").oninput = event => {
+            getAsset(SendPane.select.val()).then(function(assetInfos){
 
-                let tickerBalance2
-                if (assetInfos2.ticker !== MAIN_ASSET.ticker){
-                    tickerBalance2 = assetInfos2.contract
+                let tickerBalance
+                if (assetInfos.ticker !== MAIN_ASSET.ticker){
+                    tickerBalance = assetInfos.contract
                 }else{
-                    tickerBalance2 = assetInfos2.ticker
+                    tickerBalance = assetInfos.ticker
                 }
 
-                getBalance(tickerBalance2).then(function (nativeBalance2){
-                    const balance =  Utils.formatAmount(nativeBalance2.balance, nativeBalance2.decimals)
+                getBalance(tickerBalance).then(function (nativeBalance){
+                    const balance =  Utils.formatAmount(nativeBalance.balance, nativeBalance.decimals)
                     let amount = $("#amountSend").val()
 
                     if(amount == "")
                         $("#sendConfirm #showCost").html("-")
                     else
-                        $("#sendConfirm #showCost").html(Number(amount) * Number(nativeBalance2.price))
+                        $("#sendConfirm #showCost").html(Number(amount) * Number(nativeBalance.price))
 
                     if (Number(balance) >= Number(amount) && Number(amount) != 0)
                         $('#sendNextStep').attr("disabled", false)
@@ -100,7 +100,7 @@ class SendPane {
                         $('#sendNextStep').attr("disabled", true)
                 })
             })
-        })
+        }
 
         SendPane.confirmFeesForm.click(function (){
             SendPane.confirmForm.hide()
@@ -137,14 +137,17 @@ class SendPane {
 
                         editFees.onGasChanged = (gasPrice, gasLimit) => {
 
+                            _this.gasLimit = gasLimit
+                            _this.gasPrice = gasPrice
+
                             getBalance(MAIN_ASSET.ticker).then(function (mainBal) {
                                 let totalNative = Number(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
 
                                 if (MAIN_ASSET.ticker == SendPane.select.val())
-                                    totalNative += Number(amount)
+                                    totalNative += Number(SendPane.amount.val())
 
                                 if (totalNative <= Utils.formatAmount(mainBal.balance, mainBal.decimals)) {
-                                    $("#confirmSendBtn").find("val").html("Init swap")
+                                    $("#confirmSendBtn").find("val").html("Send " + assetInfos.ticker)
                                     $("#confirmSendBtn").attr("disabled", false)
                                 } else {
                                     $("#confirmSendBtn").find("val").html("Insufficient " + MAIN_ASSET.ticker + " balance")
@@ -157,6 +160,9 @@ class SendPane {
                             })
 
                         }
+
+                        _this.gasLimit = fees.gasLimit
+                        _this.gasPrice = fees.gasPrice
 
                         editFees.start(fees.gasLimit);
                         editFees.onGasChanged(fees.gasPrice, fees.gasLimit)
@@ -194,13 +200,14 @@ class SendPane {
 
         $("#confirmSendBtn").click(function(){
             clearInterval(confirmInterval)
-            console.log(SendPane.confirmFees.attr("gasLimit"))
-            console.log(SendPane.confirmFees.attr("gasPrice"))
+
+            disableLoadBtn($(this))
+
             sendTo(SendPane.recipient.val(),
                 SendPane.amount.val(),
                 SendPane.select.val(),
-                SendPane.confirmFees.attr("gasLimit"),
-                SendPane.confirmFees.attr("gasPrice"))
+                _this.gasLimit,
+                _this.gasPrice)
                 .then(function(res){
                     notyf.success("Transaction sent!")
                     SendPane.recipient.val("")
@@ -209,7 +216,7 @@ class SendPane {
                     SendPane.confirmForm.hide()
                     SendPane.feesForm.hide()
                     $("#body .send .sendForm").show()
-
+                    enableLoadBtn($("#confirmSendBtn"))
                 })
 
         })

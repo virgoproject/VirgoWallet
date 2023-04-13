@@ -202,9 +202,13 @@ class SwapPane {
 
                     let editFees = document.querySelector("edit-fees")
 
+                    _this.gasPrice = gp
+
                     editFees.onGasChanged = (gasPrice, gasLimit) => {
                         getBalance(MAIN_ASSET.ticker).then(function(mainBal){
-                            console.log(gasPrice)
+
+                            _this.gasPrice = gasPrice
+
                             let totalNative = Number(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
 
                             if (MAIN_ASSET.ticker == SwapPane.inputs.one.contract.html())

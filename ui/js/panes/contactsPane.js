@@ -9,7 +9,7 @@ class ContactsPane {
         setRecipentAddress: $('#body .send .sendForm .recipient'),
         changeContactName: $('#contacts .inputNameContact'),
         changeContactNote: $('#contacts .changeNote'),
-        searchContact: $('#contacts #contactDiv .inputSearch')
+        searchContact: $('#contactsSearch')
     }
 
     static div = {

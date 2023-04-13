@@ -61,11 +61,10 @@
 
 #transactionsPane .listItem p {
     margin-bottom: 0;
-    margin-left: -3px;
 }
 
 #transactionsPane .listItem .header .amount val {
-    max-width: 65px;
+    max-width: 12ch;
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
@@ -115,6 +114,7 @@
 
 #transactionsPane .listItem .detail .title {
     font-size: 0.85em;
+    padding-top: 0.15em;
     font-weight: bold;
 }
 
@@ -137,14 +137,12 @@
     color: black;
 }
 
-
-
 #transactionsPane .listItem.opened .details {
     display: block;
 }
 
 #transactionsPane .listItem.opened {
-    background: #F1F1F1;
+    background: #F9F9F9;
     cursor: default;
 }
 
@@ -250,44 +248,60 @@ cursor: pointer;
 .circleTransacgreen{
     background: #E3F3E1;
     border-radius: 50px;
-    padding: 0.7em;
     color: #84C56F;
-    width: 39px;
-    height: 39px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
 }
 
 .swapLogogreen{
     background: var(--blueBackground) ;
     border-radius: 50px;
-    padding: 0.7em;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
     color: var(--blueArrow);
 }
 
 .circleTransacred{
     background: var(--greenBackground) ;
     border-radius: 50px;
-    padding: 0.7em;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
     color: var(--greenArrow);
 }
 
 .swapLogored{
     background: var(--greenBackground) ;
     border-radius: 50px;
-    padding: 0.7em;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
     color: var(--greenArrow);
 }
 
 .swapLogopending{
     background: var(--greenBackground);
     border-radius: 50px;
-    padding: 0.7em;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
     color: var(--greenArrow);
 }
 
 .circleTransacpending{
     background: #E9EBEC;
     border-radius: 50px;
-    padding: 0.7em;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
     color: #9FA4B2;
 }
 .addrRecipient{
@@ -304,9 +318,21 @@ cursor: pointer;
     margin-left: 23px;
 }
 
-#transactionsPane .addr{
+#transactionsPane .addr, #transactionsPane .closeChevron {
     color: #6e6e6e;
 }
+
+#transactionsPane .closeChevron {
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 1.5em;
+    margin-right: 16px;
+}
+
+#transactionsPane .closeChevron:hover {
+    color: var(--bs-body-color);
+}
+
 #transactionsPane .timeApprove{
     margin-left: 41px;
 }

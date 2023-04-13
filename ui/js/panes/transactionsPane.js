@@ -226,11 +226,9 @@ class TransactionsPane {
 
         if (transaction.status === false){
             elem.find(".status").html("Cancel")
-            elem.find("#arrowbasic").addClass('circleTransacred').removeClass('circleTransacgreen');
+            elem.find(".").addClass('circleTransacred').removeClass('circleTransacgreen');
             elem.find("#arrowbasic").addClass('circleTransacred').removeClass('circleTransacpending');
-        }
-
-        if (transaction.status === true){
+        }else{
             elem.find("#arrowbasic").addClass('circleTransacgreen').removeClass('circleTransacpending');
         }
 
@@ -257,13 +255,15 @@ class TransactionsPane {
 
         elem.click(function(){
             if(elem.hasClass("opened")) return
-
+            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
         })
 
-        elem.find(".close").click(function(){
+        elem.find(".closeChevron").click(function(){
+            if(!elem.hasClass("opened")) return
             elem.removeClass("opened")
+            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
             return false
         })
 
@@ -339,12 +339,15 @@ class TransactionsPane {
 
         elem.click(function(){
             if(elem.hasClass("opened")) return
+            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
         })
 
-        elem.find(".close").click(function(){
+        elem.find(".closeChevron").click(function(){
+            if(!elem.hasClass("opened")) return
             elem.removeClass("opened")
+            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
             return false
         })
 
@@ -414,7 +417,6 @@ class TransactionsPane {
 
         elem.find(".totalFees span").html(selecteWallet.ticker)
 
-
         elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
 
         if(selecteWallet.explorer === undefined)
@@ -427,12 +429,15 @@ class TransactionsPane {
         elem.click(function(){
             if(elem.hasClass("opened")) return
 
+            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
         })
 
-        elem.find(".close").click(function(){
+        elem.find(".closeChevron").click(function(){
+            if(!elem.hasClass("opened")) return
             elem.removeClass("opened")
+            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
             return false
         })
 
@@ -456,19 +461,19 @@ class TransactionsPane {
                     transactionsPane.confirmCancel(transaction, elem)
                 })
         }
-
-
+        
         TransactionsPane.list.self.append(elem)
         elem.show()
     }
 
     showSwapEthForTokenTransaction(selectWallet, transaction){
+        
         if (transaction.swap !== undefined) {
+            
             let elem = TransactionsPane.list.tokenTx.clone()
             elem.attr("id", "tx" + transaction.hash)
             elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
-
-
+            
             getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
                 elem.find(".ticker.one").html(token1.symbol)
                 elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
@@ -495,8 +500,7 @@ class TransactionsPane {
             if (transaction.status === true){
                 elem.find("#arrow").addClass('swapLogogreen').removeClass('swapLogopending');
             }
-
-
+            
             let options = {month: "short", day: "numeric"};
             elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
 
@@ -519,12 +523,14 @@ class TransactionsPane {
             elem.click(function () {
                 if (elem.hasClass("opened")) return
 
-                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
                 elem.addClass("opened")
             })
 
-            elem.find(".close").click(function () {
+            elem.find(".closeChevron").click(function(){
                 elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
                 return false
             })
 
@@ -555,16 +561,18 @@ class TransactionsPane {
     }
 
     showSwapTokenForTokenTransaction(selectWallet, transaction){
+        
         if (transaction.swap !== undefined) {
+            
             let elem = TransactionsPane.list.tokenTx.clone()
             elem.attr("id", "tx" + transaction.hash)
             elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
-
-
+            
             getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
                 elem.find(".ticker.one").html(token1.symbol)
                 elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
             })
+            
             let tokenAdr = transaction.swap.params[2].value.length - 1
 
             getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
@@ -573,16 +581,14 @@ class TransactionsPane {
                 if(transaction.swap.params[1].value !== undefined)
                     elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
             })
+            
             const dateswap = new Date(transaction.date)
-
-
-
+            
             elem.find(" .timeSwap").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
             elem.attr("data-date", transaction.date)
             const date = new Date(transaction.date)
-
-
+            
             if (transaction.status === false){
                 elem.find(".status").html("Cancel")
                 elem.find("#arrow").addClass('swapLogored').removeClass('swapLogogreen');
@@ -592,8 +598,7 @@ class TransactionsPane {
             if (transaction.status === true){
                 elem.find("#arrow").addClass('swapLogogreen').removeClass('swapLogopending');
             }
-
-
+            
             let options = {month: "short", day: "numeric"};
             elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
 
@@ -616,12 +621,14 @@ class TransactionsPane {
             elem.click(function () {
                 if (elem.hasClass("opened")) return
 
-                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
                 elem.addClass("opened")
             })
 
-            elem.find(".close").click(function () {
+            elem.find(".closeChevron").click(function(){
                 elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
                 return false
             })
 
@@ -733,12 +740,15 @@ class TransactionsPane {
         elem.click(function(){
             if(elem.hasClass("opened")) return
 
+            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
         })
 
-        elem.find(".close").click(function(){
+        elem.find(".closeChevron").click(function(){
+            if(!elem.hasClass("opened")) return
             elem.removeClass("opened")
+            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
             return false
         })
 
@@ -832,16 +842,17 @@ class TransactionsPane {
 
         elem.click(function(){
             if(elem.hasClass("opened")) return
-
-
-
+            
+            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
             $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
             elem.addClass("opened")
 
         })
 
-        elem.find(".close").click(function(){
+        elem.find(".closeChevron").click(function(){
+            if(!elem.hasClass("opened")) return
             elem.removeClass("opened")
+            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
             return false
         })
 

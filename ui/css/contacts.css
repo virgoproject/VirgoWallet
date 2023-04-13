@@ -25,17 +25,10 @@
     padding-left: 1em !important;
 }
 
-
-
 #contacts .adressContact {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 10px;
-}
-
-#contacts .searchIcon{
-    cursor: pointer;
-    padding-right: 0.5em;
 }
 
 #contacts svg {
@@ -148,10 +141,18 @@
     cursor: pointer;
 }
 
-.inputSearch::placeholder{
-    margin-right: -10px;
-}
-
 #contacts .title{
     font-size: 1.25rem;
+}
+
+#contactsSearchWrapper {
+    margin: 1em 0;
+    border-bottom: 1px solid var(--lightGrey);
+    padding-bottom: 0.25em;
+}
+
+#contactsSearch {
+    border: none;
+    width: 100%;
+    outline: none;
 }
