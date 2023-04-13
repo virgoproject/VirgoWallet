@@ -212,7 +212,7 @@ class SwapPane {
                             let totalNative = Number(Utils.formatAmount(gasLimit * gasPrice, mainBal.decimals))
 
                             if (MAIN_ASSET.ticker == SwapPane.inputs.one.contract.html())
-                                totalNative += Number(amount)
+                                totalNative += Number(SwapPane.inputs.one.input.val())
 
                             if (totalNative <=  Utils.formatAmount(mainBal.balance, mainBal.decimals)){
                                 $("#confirmSwapBtn").find("val").html("Init swap")
