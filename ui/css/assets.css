@@ -2,7 +2,7 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
+    background: white;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
@@ -15,23 +15,15 @@
     padding: 0 1em;
 }
 
-#assetsPane .searchIcon {
-    cursor: pointer;
-    color: #545454;
-    position: relative;
-    right: 30px;
+#assetsListSearchWrapper {
+    margin: 1em;
+    border-bottom: 1px solid var(--lightGrey);
+    padding-bottom: 0.25em;
 }
 
-
- .inputSearch {
-    background: transparent;
-    border-radius: 0.5em;
+#assetsListSearch {
     border: none;
-    color: #545454;
-    padding: 0.375em 5em 0.375em 0.75em;
-}
-
- .inputSearch:focus-visible{
+    width: 100%;
     outline: none;
 }
 
@@ -161,7 +153,7 @@
 }
 
 #assetsPane .listItem {
-    background: #5a009c14;
+    background: #f8f4fb;
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -200,4 +192,8 @@
 
 #assetsPane .listEnd span:hover, #assetsPane .searchNotFound span:hover {
     color: var(--mainColorLight30);
+}
+
+#assetListTitle {
+    margin-top: 0.1em;
 }

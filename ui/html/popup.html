@@ -36,7 +36,7 @@
         <div>
             <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span
                     id="unlockPanePasswordWrong">Wrong password</span></p>
-            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;"
+            <input type="password" id="unlockPanePassword" class="input w-100"
                    placeholder="Password" data-inputTarget="#unlockPanePasswordSubmit">
         </div>
         <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
@@ -330,7 +330,7 @@
                     <p class="m-0">You will receive</p>
                     <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
                 </div>
-                <div class="row mb-4">
+                <div class="row mb-4" id="swapReviewTransferAmount">
                     <div class="col-12">
                         <p style="font-weight: bold">You transfer</p>
                     </div>
@@ -742,12 +742,16 @@
             <div class="back">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <p class="text-center" id="assetListTitle">My Assets</p>
+            <h5 class="text-center" id="assetListTitle">My Assets</h5>
         </div>
-        <label class="text-center searchLabel mt-3" id="assetsListSearch">
-            <input type="text" class="inputSearch" placeholder="Search for an asset">
-            <i class="fas fa-search searchIcon"></i>
-        </label>
+        <div class="row" id="assetsListSearchWrapper">
+            <div class="col-10 p-0">
+                <input type="text" placeholder="Search for an asset" id="assetsListSearch">
+            </div>
+            <div class="col-2 p-0 text-right">
+                <i class="fa-light fa-magnifying-glass"></i>
+            </div>
+        </div>
         <div class="content">
             <div class="listItem mb-2" id="assetsListBaseAsset" style="display: none !important;">
                 <div class="row">

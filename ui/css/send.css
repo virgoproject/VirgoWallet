@@ -49,6 +49,10 @@
     margin-bottom: 0.25em;
 }
 
+.sendConfirm .back i {
+    font-size: 1.5em;
+}
+
 .sendConfirm .back:hover {
     color: #111;
 }

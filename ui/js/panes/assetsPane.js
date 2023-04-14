@@ -30,8 +30,8 @@ class AssetsPane {
         }
     }
     static search = {
-        self: $("#assetsListSearch"),
-        input: $("#assetsListSearch input"),
+        self: $("#assetsListSearchWrapper"),
+        input: $("#assetsListSearch"),
         notFound: $("#assetsPane .searchNotFound")
     }
 

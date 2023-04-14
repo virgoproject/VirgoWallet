@@ -147,8 +147,12 @@
 
 
 
-#mainPane .bodyElem.resume, #mainPane .bodyElem.send, #mainPane .bodyElem.swap {
+#mainPane .bodyElem.resume, #mainPane .bodyElem.send {
     padding: 0em 2em;
+}
+
+#mainPane .bodyElem.swap {
+    padding: 0em 1em;
 }
 
 #mainPane #footer {

@@ -274,6 +274,10 @@
     transition: all 0.2s ease-in;
 }
 
+#swapReviewBack i {
+    font-size: 1.5em;
+}
+
 #swapReviewBack:hover {
     color: black;
 }
@@ -372,20 +376,20 @@
     margin-top: 1em;
 }
 
-
-
 #swapReview img, #swapReview svg {
     height: 32px;
     width: 32px;
     border-radius: 50%;
 }
 
-#swapReview .details{
+#swapReview .details {
     background: #F3F3F3;
     border-radius: 10px;
-    margin-bottom: 150px;
+    margin: 0;
 }
 
-
+#swapReviewTransferAmount {
+    padding: 0 1em;
+}
 
 
