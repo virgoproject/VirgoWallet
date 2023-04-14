@@ -838,17 +838,17 @@
                     <input class="dateInput" type="hidden" value="">
                 </div>
             </div>
-            <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
+            <div class="listItem mb-2 basicTx pendingTx" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <progress-ring stroke="4" radius="25" progress="10" data-progress="" style="margin-right: -17px;margin-left: -2.8px;margin-bottom: -53.9px;"></progress-ring>
-                        <i class="fa-solid fa-arrow-right circleTransacpending "></i>
+                        <i class="fa-solid fa-arrow-right  statusColor"><progress-ring stroke="4" radius="25" progress="10" data-progress="" style="margin-right: -17px;margin-left: -2.8px;margin-bottom: -53.9px;"></progress-ring>
+                        </i>
                     </div>
-                    <div class="col-9 justify-content-center align-self-center">
+                    <div class="col-8 justify-content-center align-self-center">
                         <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
                         <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
                     </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" style="margin-left: -5px">
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -917,16 +917,16 @@
                     <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
-            <div class="listItem mb-2" id="transactionsNotifTx" style="display: none">
+            <div class="listItem mb-2 notifTx pendingTx" id="transactionsNotifTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-arrow-right  circleTransacpending " id="arrownotif"></i>
+                        <i class="fa-solid fa-arrow-right statusColor" ></i>
                     </div>
-                    <div class="col-9 justify-content-center align-self-center">
+                    <div class="col-8 justify-content-center align-self-center">
                         <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
                         <p class="addr">To <val class="addrRecipient"></val></p>
                     </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" style="margin-left: -5px">
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fas fa-chevron-right addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
                     </div>
                     <div class="col-12">
@@ -996,20 +996,17 @@
                     <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
-            <div class="listItem mb-2 swapTx" id="transactionsAtomicSwapTx" style="display: none">
+            <div class="listItem mb-2 atomicSwapTx pendingTx" id="transactionsAtomicSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                        <div class="logo one" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
-                        <div class="logo two" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                        <i class="fa-thin fa-regular fa-atom fa-lg statusColor"></i>
                     </div>
                     <div class="col-8">
-                        <p class="title">Atomic Swap</p>
-                        <p class="smallDetails"><val class="date">April 19</val> &#183 <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
+                        <p class="title">Swap <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
+                        <p class="addr">With Atomic Swap <span class="time"></span></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
-                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
-                        <i class="fas fa-check confirmed" style="display: none"></i>
-                        <i class="fas fa-times refused" style="display: none"></i>
+                        <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
@@ -1024,59 +1021,71 @@
                             <div class="col-6">
                                 <p class="title">Amount in</p>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-right" style="display: none">
                                 <span class="badge badge-secondary" style="display: none">Canceled by user</span>
                                 <span class="badge badge-warning" style="display: none">Canceling..</span>
                             </div>
-                        </div>
-                        <p class="body amountIn"><val>-</val> <span class="ticker one">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Amount out</p>
-                        <p class="body amountOut"><val>-</val> <span class="ticker two">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Date</p>
-                        <p class="body date">-</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Price</p>
-                                <p class="body gasPrice"><val>-</val> <span class="ticker">Gwei</span></p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Limit</p>
-                                <p class="body gasLimit">-</p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Used</p>
-                                <p class="body gasUsed">-</p>
-                            </div>
+                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
                         </div>
                     </div>
                     <div class="detail">
-                        <p class="title">Total fees</p>
-                        <p class="body totalFees"><val>-</val> <span class="ticker">ETH</span></p>
+                        <div class="row">
+                            <p class="title col-4">Amount out</p>
+                            <p class="body amountOut col-8 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <p class="title col-6">Date</p>
+                            <p class="body date col-6">-</p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Price</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="body gasLimit col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="body gasUsed col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="listItem mb-2 swapTx" id="transactionsSwapTx" style="display: none">
+            <div class="listItem mb-2 swapTx pendingTx" id="transactionsSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                        <div class="">
-                            <i class="fa-solid fa-right-left swapLogopending" id="arrowswap"></i>
-                        </div>
+                            <i class="fa-solid fa-right-left statusColor"></i>
                     </div>
-                    <div class="col-9">
+                    <div class="col-8">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="addr">On VirgoWallet <span class="timeSwap"></span></p>
+                        <p class="addr">On VirgoWallet <span class="time"></span></p>
                     </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" style="margin-left: -5px">
+                    <div class="col-2 text-right justify-content-center align-self-center p-0">
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -1156,16 +1165,16 @@
                     <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
-            <div class="listItem mb-2 swapTx" id="transactionsTokenForTokenSwapTx" style="display: none">
+            <div class="listItem mb-2 swapTokenForTokenTx pendingTx" id="transactionsTokenForTokenSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-right-left swapLogopending" id="arrow"></i>
+                        <i class="fa-solid fa-right-left statusColor"></i>
                     </div>
-                    <div class="col-9">
+                    <div class="col-8">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="addr">On DEX <span class="timeSwap"></span></p>
+                        <p class="addr">On DEX <span class="time"></span></p>
                     </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" style="margin-left: -5px">
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -1245,16 +1254,16 @@
                     <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
-            <div class="listItem mb-2" id="transactionsApproveTx" style="display: none">
+            <div class="listItem mb-2 approvedTx pendingTx" id="transactionsApproveTx" style="display: none" >
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-check circleTransacpending" id="arrowapprove"></i>
+                        <i class="fa-solid fa-check statusColor"></i>
                     </div>
-                    <div class="col-9 justify-content-center align-self-center">
+                    <div class="col-8 justify-content-center align-self-center">
                         <p class="title">Approve <span class="ticker token" ></span></p>
                         <p class="addr">On DEX <span class="timeApprove"></span></p>
                     </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" style="margin-left: -5px">
+                    <div class="col-é text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">

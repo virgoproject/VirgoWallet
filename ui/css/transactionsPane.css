@@ -245,47 +245,7 @@ cursor: pointer;
     margin-bottom: 0.5em !important;
 }
 
-.circleTransacgreen{
-    background: #E3F3E1;
-    border-radius: 50px;
-    color: #84C56F;
-    width: 38px;
-    height: 38px;
-    text-align: center;
-    line-height: 38px;
-}
-
-.swapLogogreen{
-    background: var(--blueBackground) ;
-    border-radius: 50px;
-    width: 38px;
-    height: 38px;
-    text-align: center;
-    line-height: 38px;
-    color: var(--blueArrow);
-}
-
-.circleTransacred{
-    background: var(--greenBackground) ;
-    border-radius: 50px;
-    width: 38px;
-    height: 38px;
-    text-align: center;
-    line-height: 38px;
-    color: var(--greenArrow);
-}
-
-.swapLogored{
-    background: var(--greenBackground) ;
-    border-radius: 50px;
-    width: 38px;
-    height: 38px;
-    text-align: center;
-    line-height: 38px;
-    color: var(--greenArrow);
-}
-
-.swapLogopending{
+.confirmedTx .statusColor{
     background: var(--greenBackground);
     border-radius: 50px;
     width: 38px;
@@ -295,7 +255,37 @@ cursor: pointer;
     color: var(--greenArrow);
 }
 
-.circleTransacpending{
+
+.atomicSwapTx.confirmedTx .statusColor{
+    background: #E8D0FF;
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #B668FF;
+}
+.swapTx.confirmedTx .statusColor, .swapTokenForTokenTx.confirmedTx .statusColor{
+    background: var(--blueBackground);
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: var(--blueArrow);
+}
+
+.refusedTx .statusColor{
+    background: var(--greenBackground) ;
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: var(--greenArrow);
+}
+
+.pendingTx .statusColor{
     background: #E9EBEC;
     border-radius: 50px;
     width: 38px;
@@ -304,18 +294,13 @@ cursor: pointer;
     line-height: 38px;
     color: #9FA4B2;
 }
+
 .addrRecipient{
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 111px;
     vertical-align: top;
-}
-
-
-
-#transactionsPane .timeSwap{
-    margin-left: 23px;
 }
 
 #transactionsPane .addr, #transactionsPane .closeChevron {
@@ -335,6 +320,10 @@ cursor: pointer;
 
 #transactionsPane .timeApprove{
     margin-left: 41px;
+}
+
+#transactionsPane .time{
+    float: right;
 }
 
 #transactionsPane .chevronOpened{

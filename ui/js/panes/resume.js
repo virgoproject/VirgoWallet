@@ -207,6 +207,7 @@ class MainPane {
                 elem.find(".ticker").html(balance.ticker)
                 elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
 
+                elem.find(".logo").attr("id", 'logo'+contractAddr)
                 elem.find(".logo").on('load', function() {
                     elem.find("svg").hide()
                     elem.find(".logo").show()
@@ -296,12 +297,9 @@ class MainPane {
 
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
 
-
-
-
-
-
     }
+
+
 
     setResume(data){
         this.displayData(data)
