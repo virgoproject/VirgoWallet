@@ -33,6 +33,7 @@ class Web3Wallet {
             fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
                 .then(function(resp){
                     resp.json().then(function(res){
+                        console.log(res)
                         wallet.CG_Platform = res.CG_Platform
                         for(let token of res.tokens){
                             if(!wallet.hasToken(token)){
@@ -48,7 +49,9 @@ class Web3Wallet {
                         }
                     })
                 })
-        }catch(e){}
+        }catch(e){
+                console.log(e)
+        }
     }
 
     static fromJSON(json){

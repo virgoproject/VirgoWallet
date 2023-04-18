@@ -86,7 +86,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     console.log("req id: " + reqId)
 
     let dataTx = TxIdentifier.getDecodeAbi(data)
-    console.log(auth,data)
+    console.log(dataTx)
     switch (dataTx.contractAddr){
         case "APPROVETOKEN":
             await browser.windows.create({
