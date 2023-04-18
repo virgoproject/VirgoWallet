@@ -83,10 +83,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     pendingAuthorizations[reqId] = auth
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
-    console.log("req id: " + reqId)
-
     let dataTx = TxIdentifier.getDecodeAbi(data)
-    console.log(dataTx)
     switch (dataTx.contractAddr){
         case "APPROVETOKEN":
             await browser.windows.create({

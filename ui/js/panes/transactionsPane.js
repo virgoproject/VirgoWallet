@@ -712,6 +712,7 @@ class TransactionsPane {
             elem.find(".amount span").html(selectedWallet.ticker)
         } else {
             let tokenInfos = selectedWallet.tokens.filter(record => record.contract == transaction.contractAddr)[0]
+            console.log(tokenInfos)
             elem.find(".amount span").html(tokenInfos.ticker)
             elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
         }

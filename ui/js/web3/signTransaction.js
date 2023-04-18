@@ -16,10 +16,7 @@ const lim = editFees.dataset.limit = gas
 editFees.start(gas)
 
 let finalGasPrice = 0
-$("#allow").click(async () => {
-    await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: editFees.getGas()}})
-    window.close()
-})
+
 
 $("#refuse").click(async () => {
     await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: false})
@@ -49,16 +46,21 @@ $(".feesTicker").html(ticker)
 
 getAsset(ticker).then(function(assetInfos){
     editFees.onGasChanged = (gasPrice, gasLimit) => {
-        let totalNativ = Number(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+        $("#allow").click(async () => {
+            await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: gasPrice}})
+            window.close()
+        })
+
+        let totalNativ = Number(Utils.formatAmount(gasLimit * gasPrice, decimals))
 
         if (ticker == assetInfos.ticker)
             totalNativ += Number(amount)
 
-        if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
+        if (Utils.formatAmount(totalNativ,decimals) <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
             $("#allow").attr("disabled", false)
         }
 
-        $("#fees").html(Utils.formatAmount(gasLimit * editFees.getGas(), decimals))
+        $("#fees").html(Utils.formatAmount(gasLimit * gasPrice, decimals))
 
     }
 })
