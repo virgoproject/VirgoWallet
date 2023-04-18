@@ -104,8 +104,12 @@ class EditFees extends HTMLElement {
 
     start(gasLimit){
         this.querySelectorAll(".feesTicker").forEach(elem => {
-            elem.innerHTML = MAIN_ASSET.ticker
+            getBaseInfos().then(function (info){
+                console.log(info.wallets[info.selectedWallet].wallet.ticker)
+                elem.innerHTML = info.wallets[info.selectedWallet].wallet.ticker
+            })
         })
+
         this.gasPrice = 0
         this.gasLimit = gasLimit
         this.setFees(gasLimit)
@@ -129,9 +133,11 @@ class EditFees extends HTMLElement {
             let finalGasPriceMedium = Math.round(res * 1)
             let finalGasPriceFast = Math.round(res * 1.2)
 
-            $("#editFeesSlow").html(Utils.formatAmount(gasLimit * finalGasPriceSlow, MAIN_ASSET.decimals))
-            $("#editFeesMedium").html(Utils.formatAmount(gasLimit * finalGasPriceMedium, MAIN_ASSET.decimals))
-            $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, MAIN_ASSET.decimals))
+        getBaseInfos().then(function (info){
+            $("#editFeesSlow").html(Utils.formatAmount(gasLimit * finalGasPriceSlow, info.wallets[info.selectedWallet].wallet.decimals))
+            $("#editFeesMedium").html(Utils.formatAmount(gasLimit * finalGasPriceMedium, info.wallets[info.selectedWallet].wallet.decimals))
+            $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, info.wallets[info.selectedWallet].wallet.decimals))
+        })
 
             _this.gasPrice = res
             _this.onGasChanged(_this.getGasPrice(), gasLimit)
