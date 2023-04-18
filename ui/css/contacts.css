@@ -25,6 +25,11 @@
     padding-left: 1em !important;
 }
 
+#contacts .back i {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
 #contacts .adressContact {
     overflow: hidden;
     text-overflow: ellipsis;
