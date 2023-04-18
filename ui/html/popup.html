@@ -436,6 +436,13 @@
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 userEntered d-flex justify-content-between">
+                                    <p class="m-0">Earn</p>
+                                    <p class="m-0 fw-bold earnCoinsDesc"></p>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="mt-2 mb-2">
+                                </div>
+                                <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
@@ -493,6 +500,13 @@
                             <i class="fa-regular fa-chevron-right"></i>
                         </div>
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
+                            <div class="col-12 userEntered d-flex justify-content-between">
+                                <p class="m-0">Earn</p>
+                                <p class="m-0 fw-bold earnCoinsDesc"></p>
+                            </div>
+                            <div class="col-12">
+                                <hr class="mt-2 mb-2">
+                            </div>
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
@@ -554,6 +568,13 @@
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
+                                    <p class="m-0">Earn</p>
+                                    <p class="m-0 fw-bold earnCoinsDesc"></p>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="mt-2 mb-2">
+                                </div>
+                                <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
@@ -598,6 +619,77 @@
             </div>
             <div class="loadingAirdrop airdropLoadingBody text-center">
                 <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="row airdropWinModal m-0" style="display: none;">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-9 d-flex justify-content-center align-items-center bg-light flex-column rounded-1">
+                        <img src="/ui/images/Virgo_win.png" alt="win" height="250px" class="winImg">
+                        <p class="m-0 p-0 wonText">You won</p>
+                        <h1 class="mb-4 winAmmount">100 VGO</h1>
+                        <a  href="https://twitter.com/intent?text=This%20photo%20is%20awesome!%20Check%20it%20out:%20pic.twitter.com/9Ee63f7aVp" class="button mb-2 rounded-1 twitter-btn">Share it on Twitter</a>
+                        <a class="mb-2 closeBtn" href="#">Close</a>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row airdropConditions m-0" style="display: none">
+                <div class="col-12 airdropWinningsConditions d-flex justify-content-center align-items-center">
+                    <div style="display: none !important;" class="col-12 d-flex justify-content-center align-items-center flex-column rounded-3 airdropModalConditions">
+                        <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                            <div class="col-1 align-items-center">
+                                <div class="back chevron1">
+                                    <i class="fas fa-chevron-left "></i>
+                                </div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepActive"></div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step"></div>
+                            </div>
+                        </div>
+                            <p>1 of 2</p>
+                        <div class="col-10">
+                            <p class="text-center fw-bold">Rules to participate </p>
+                            <ul class="rulesDrop mt-3">
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> Follow on Twitter : </li>
+                                <div class="cloneLinkAirdrop">
+                                    <a href="#" id="exempleLink" class="linkAirdrop"></a>
+                                </div>
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> RT the airdrop tweet</li>
+                            </ul>
+
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="button buttonModal mt-4 mb-3"> I understand</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="display: none !important;" class="col-12 d-flex justify-content-center align-items-center flex-column rounded-3 airdropModalConditionsVerify">
+                        <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                            <div class="col-1 align-items-center">
+                                <div class="back chevron2">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepPassed"></div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepActive"></div>
+                            </div>
+                        </div>
+                        <p>2 of 2</p>
+                        <div class="col-10">
+                            <span>Enter your Twitter Username to verify your eligibility</span>
+                            <input type="text" class="input checkTwitterNameInput col-12" placeholder="Twitter Username" maxlength="42">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="button buttonModal mt-4 mb-3 BtnCheckTwitter">Join Airdrop</button>
+                            </div>
+
+                        </div>
+                    </div>
             </div>
         </div>
 

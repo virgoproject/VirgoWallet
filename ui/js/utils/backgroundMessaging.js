@@ -200,6 +200,14 @@ async function resetAirdrops(){
     return await browser.runtime.sendMessage({command : 'resetAirdrops'})
 }
 
+async function checkClosedModalAirdrop(infos){
+    return await browser.runtime.sendMessage({command : 'checkClosedModal',infos : infos})
+}
+
+async function changeModalStatus(state){
+    return await browser.runtime.sendMessage({command : 'changeModalStatus',state : state})
+}
+
 async function deleteConnectedSite(address){
     return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
 }
