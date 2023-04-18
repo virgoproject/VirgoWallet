@@ -83,16 +83,29 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     pendingAuthorizations[reqId] = auth
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
-    console.log("req id: " + reqId)
+    let dataTx = TxIdentifier.getDecodeAbi(data)
+    switch (dataTx.contractAddr){
+        case "APPROVETOKEN":
+            await browser.windows.create({
+                url: `/ui/html/web3/approveToken.html?id=${reqId}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: 0,
+                left: 0
+            })
+            break
+        default:
+            await browser.windows.create({
+                url: `/ui/html/web3/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: 0,
+                left: 0
+            })
+    }
 
-    browser.windows.create({
-        url: `/ui/html/web3/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
-        type:'popup',
-        height: 600,
-        width: 370,
-        top: 0,
-        left: 0
-    })
 }
 
 async function signMessage(origin, data, tabId, reqId, method){
@@ -175,24 +188,19 @@ function grantPendingAuthorization(auth, params){
                         gasPrice: web3.utils.numberToHex(params.gasPrice),
                         nonce: nonce
                     }]
-                }, function (error, resp) {
+                }, async function (error, resp) {
                     if (!resp.error) {
                         respondToWeb3Request(auth.tabId, auth.reqId, {
                             success: true,
                             data: resp.result
                         })
 
-                        if (auth.method == "eth_sendTransaction") {
-                            baseWallet.getCurrentWallet().transactions.unshift({
-                                "hash": resp.result,
-                                "contractAddr": "WEB3_CALL",
-                                "date": Date.now(),
-                                "recipient": auth.to,
-                                "amount": auth.value,
-                                "gasPrice": params.gasPrice,
-                                "gasLimit": auth.gas,
-                                "nonce": nonce
-                            })
+                        if (auth.method === "eth_sendTransaction") {
+                            console.log(auth)
+                            let amount = auth.value
+                            let data =  TxIdentifier.getDecodeAbi(auth.data, resp.result, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce)
+                            console.log(data)
+                            baseWallet.getCurrentWallet().transactions.unshift(data)
                             baseWallet.save()
                         }
                         return

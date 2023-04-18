@@ -3,7 +3,7 @@ if(typeof browser === 'undefined'){
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
         "utils/converter.js", "swap/uniswap02Utils.js",
         "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js")
+        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
 }
 
 if(browser.storage.session === undefined){
@@ -167,6 +167,9 @@ async function onBackgroundMessage(request, sender, sendResponse){
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
+                while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                    await new Promise(r => setTimeout(r, 10));
+                }
                 sendResponse(getBaseInfos())
                 activityHeartbeat()
             }
@@ -174,9 +177,14 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "unlockWallet":
             activityHeartbeat()
-            BaseWallet.loadFromJSON(request.password).then(function(res){
+            BaseWallet.loadFromJSON(request.password).then(async function(res){
                 if(res){
                     browser.storage.session.set({"unlockPassword": request.password})
+
+                    while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                        await new Promise(r => setTimeout(r, 10));
+                    }
+
                     sendResponse(getBaseInfos())
                 }
                 else sendResponse(false)
@@ -750,6 +758,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             sendResponse(setupDone)
             break
 
+        case 'tutorialDone':
+            browser.storage.local.set({"tutorialDone": true})
+            tutorialDone = true
+            sendResponse(tutorialDone)
+            break
+
         case "setupNot":
             browser.storage.local.set({"setupDone": false})
             setupDone = false
@@ -806,6 +820,7 @@ async function getBalance(asset){
 
 function sendTo(request, sendResponse){
     let txResume = null;
+    console.log(request)
     //send native asset
     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
         if (request.asset == baseWallet.getCurrentWallet().ticker) {

@@ -157,7 +157,7 @@ class AirdropPane{
                                 elem.querySelector('.coinTicker').innerHTML = results.ticker
                                 elem.querySelector('.earnCoin').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
                                 elem.querySelector('.earnCoinsDesc').innerHTML = (res[i].reward / res[i].winnersCount).toFixed(0) + " " + results.ticker
-                                elem.querySelector('.timeLeft').innerHTML = Math.floor(endDate / (24*60*60*1000)) + 1
+                                elem.querySelector('.timeLeft').innerHTML = Math.round(Math.abs((dateEnd.getTime() - Date.now()) / day))
                                 elem.querySelector('.winnersCount').innerHTML = res[i].winnersCount
                                 elem.querySelector('.usersJoined').innerHTML = res[i].userJoined
                                 elem.querySelector('.airdropDesc').innerHTML = res[i].description

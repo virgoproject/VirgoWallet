@@ -1,7 +1,8 @@
 #mainPane .resume .carousel-wallet {
     padding: 0.8em 0em;
-    top: 5px;
+    top: -5px;
     border-radius: 0.5em;
+    padding-top: 0.5em;
 }
 
 #mainPane .resume .carousel-wallet-inner {
@@ -50,9 +51,12 @@ display: block;
 #mainPane .resume .assets .asset .logo {
     height: 32px;
     width: 32px;
-    background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
+}
+
+#mainPane .resume .assets .asset svg {
+    border-radius: 50%;
 }
 
 #mainPane .resume .assets .asset .title {

@@ -64,6 +64,7 @@ class AtomicSwapPane {
 
         AtomicSwapPane.back.click(() => {
             AtomicSwapPane.self.hide()
+            showStatsBar()
         })
 
         AtomicSwapPane.inputs.one.select.change(function(){
@@ -181,6 +182,7 @@ class AtomicSwapPane {
 
         AtomicSwapPane.accessOne.click(() => {
             SelectChains.header.click()
+            hideStatsBar()
             AtomicSwapPane.self.show()
         })
 

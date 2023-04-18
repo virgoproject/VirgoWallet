@@ -2083,3 +2083,10 @@ const ATOMIC_LOCKER = [
         "type": "function"
     }
 ]
+
+abiDecoder.addABI(ERC20_ABI)
+abiDecoder.addABI(UNI_ROUTER02)
+abiDecoder.addABI(UNI_FACTORY)
+abiDecoder.addABI(UNI_FACTORY03)
+abiDecoder.addABI(UNI_QUOTERV2)
+

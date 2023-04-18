@@ -40,8 +40,11 @@ class Uniswap02Utils {
                     return -1
                 })
 
-                if(routes.length == 0)
-                    return false
+                if(routes.length == 0){
+                    resolve(false)
+                    return
+                }
+
 
                 resolve(routes[0])
             }

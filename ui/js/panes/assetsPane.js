@@ -30,8 +30,8 @@ class AssetsPane {
         }
     }
     static search = {
-        self: $("#assetsListSearch"),
-        input: $("#assetsListSearch input"),
+        self: $("#assetsListSearchWrapper"),
+        input: $("#assetsListSearch"),
         notFound: $("#assetsPane .searchNotFound")
     }
 
@@ -41,6 +41,7 @@ class AssetsPane {
 
         AssetsPane.addAssetBtn.click(function(){
             AssetsPane.self.show()
+            hideStatsBar()
             assetsPane.tokensCount = 0
             assetsPane.reachedEnd = false
             AssetsPane.search.input.val("")
@@ -51,6 +52,7 @@ class AssetsPane {
             if(AssetsPane.list.self.is(":visible")){
                 AssetsPane.self.hide()
                 AssetsPane.list.self.html("")
+                showStatsBar()
             }else{
                 AssetsPane.list.self.show()
                 AssetsPane.search.self.show()

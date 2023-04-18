@@ -15,6 +15,7 @@ class Web3Wallet {
         this.testnet = testnet
         this.atomicSwapParams = atomicSwapParams
 
+
         this.balances = new Map()
         this.prices = new Map()
 
@@ -32,6 +33,7 @@ class Web3Wallet {
             fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
                 .then(function(resp){
                     resp.json().then(function(res){
+                        console.log(res)
                         wallet.CG_Platform = res.CG_Platform
                         for(let token of res.tokens){
                             if(!wallet.hasToken(token)){
@@ -47,7 +49,9 @@ class Web3Wallet {
                         }
                     })
                 })
-        }catch(e){}
+        }catch(e){
+                console.log(e)
+        }
     }
 
     static fromJSON(json){
@@ -419,6 +423,7 @@ class Web3Wallet {
             fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
                 .then(function (resp) {
                     resp.json().then(function (res) {
+                        console.log(res)
                         const price = {
                             price: parseFloat(res[token.contract.toLowerCase()].usd),
                             change: parseFloat(res[token.contract.toLowerCase()].usd_24h_change)
@@ -426,7 +431,7 @@ class Web3Wallet {
                         _this.prices.set(token.contract, price)
                     })
                 }).catch(function (e) {
-
+                    console.log(e)
             })
         }
     }

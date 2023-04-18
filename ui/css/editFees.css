@@ -1,0 +1,150 @@
+edit-fees {
+    z-index: 1000000;
+    position: absolute;
+    inset: 0px;
+}
+
+.speed {
+    background: #F1F1F1;
+    border-radius: 0.5em;
+    color: #545454;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.speed:hover {
+    background: #ffe4fc;
+}
+
+.see .selectedFees {
+    background: var(--whiteBackground);
+}
+
+.editFeesSpeed {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+    vertical-align: top;
+}
+
+.blackbg {
+    z-index: 11;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    position: relative;
+    height: 51%;
+    cursor: pointer;
+    margin-bottom: -33px;
+}
+
+.approve .blackbg {
+    z-index: 11;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    position: relative;
+    height: 41em;
+    margin-bottom: -33px;
+    margin-top: -43em;
+    cursor: pointer;
+}
+
+.approve .rule {
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+    left: 0px;
+}
+
+.signTransac .rule {
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+    left: 0px;
+}
+
+.signTransac .blackbg {
+    z-index: 11;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    position: relative;
+    height: 41em;
+    margin-bottom: -33px;
+    cursor: pointer;
+    margin-top: -43em;
+}
+
+.see {
+    border-radius: 30px 30px 0px 0px;
+    background: white;
+    position: absolute;
+    z-index: 15;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+}
+
+.rule {
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+    left: 120px;
+}
+
+.titleFees {
+    margin-top: -35px;
+}
+
+.editFees {
+    cursor: pointer;
+    margin-left: 5px !important;
+    color: var(--mainColor);
+}
+
+.editFees:hover {
+    color: var(--mainColorDark10);
+}
+
+#editFees .value {
+    margin-left: 40px !important;
+}
+
+#body .blackbg {
+    z-index: -1;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    height: 60%;
+    position: relative;
+    margin-bottom: -88px;
+    margin-top: -487px;
+    cursor: pointer;
+}
+
+#body .see {
+    border-radius: 30px 30px 0px 0px;
+    background: white;
+    height: 100%;
+    width: 100%;
+}
+
+#body .rule {
+    position: relative;
+    bottom: 60px;
+    color: gray;
+    font-size: 35px;
+    left: 120px;
+}
+
+.feesTicker {
+    color: var(--highlightColor1);
+}
