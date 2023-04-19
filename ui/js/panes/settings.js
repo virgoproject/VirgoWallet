@@ -163,6 +163,12 @@ class SettingsPane {
         SettingsPane.autolock.delay.change(function(){
             setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
         })
+
+
+        document.getElementById('revealSeed').addEventListener('click' , () => {
+            console.log("eeee")
+        })
+
     }
 
     setSettings(data){

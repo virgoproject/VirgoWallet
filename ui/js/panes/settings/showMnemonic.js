@@ -1,17 +1,17 @@
 /** -- Show mnemonic -- **/
-$("#getMnemonic").click(function(){
+$("#revealSeed").click(function(){
     //reset forms
-    document.getElementById("writeMnemonic").hide()
+    $("#writeMnemonic").hide()
 
-    document.getElementById("getPassword").hide()
-    document.getElementById('getPasswordInput').val("")
+    $("#getPassword").hide()
+    $("#getPasswordInput").val("")
 
-    document.getElementById('getPasswordBtn').attr("disabled", true)
-    document.getElementById('getPasswordInput').attr("disabled", false)
+    $("#getPasswordBtn").attr("disabled", true)
+    $("#getPasswordInput").attr("disabled", false)
 
     isEncrypted().then(function(isEncrypted){
         if(isEncrypted){
-            document.getElementById("getPassword").show()
+            $('#getPassword').show()
         }else{
             getMnemonic().then(function(mnemonic){
                 const mnemonicArray = mnemonic.split(" ")
@@ -19,7 +19,7 @@ $("#getMnemonic").click(function(){
                 $("#settings .getMnemonic .writeMnemonic .word").each(function(index){
                     $(this).find("val").html(mnemonicArray[index])
                 })
-                document.getElementById('writeMnemonic').show()
+                $("#writeMnemonic").show()
             })
         }
     })
