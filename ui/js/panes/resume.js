@@ -190,13 +190,20 @@ class MainPane {
         let hasChanged = false
 
         //display tokens balances
-        Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
-            if(!balance.tracked) return;
+
+        const tokensFiatAmounts = []
+
+        for(const contractAddr of Object.keys(selectedAddress.balances)){
+            const balance = selectedAddress.balances[contractAddr]
+
+            if(!balance.tracked) continue;
 
             let elem = $("#bal"+contractAddr);
 
             const bal = Utils.formatAmount(balance.balance, balance.decimals)
-            const fiatBal = "$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals)
+            const fiat = Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals)
+
+            const fiatBal = "$" + fiat
 
             if(!elem.length){
                 //create row for this asset
@@ -211,6 +218,18 @@ class MainPane {
                 elem.find(".logo").on('load', function() {
                     elem.find("svg").hide()
                     elem.find(".logo").show()
+
+                    if(fiat != "0"){
+                        const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
+                        elem.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
+                        elem.style.width = parseInt(parseFloat(fiat)*10000) + "%"
+                        elem.style.display = "block"
+                        elem.id = "bar"+contractAddr
+                        elem.setAttribute("data-sort", parseInt(fiat))
+                        document.getElementById("resumeTokenBar").append(elem)
+                        tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
+                    }
+
                 }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
 
                 elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
@@ -243,6 +262,22 @@ class MainPane {
                     else
                         elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
 
+                    const bar = document.getElementById("bar"+contractAddr)
+
+                    if(bar != null){
+                        bar.style.width = parseInt(parseFloat(fiat)*10000)  + "%"
+                    }else if(fiat != "0"){
+                        const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
+                        elem.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
+                        elem.style.width = parseInt(parseFloat(fiat)*10000) + "%"
+                        elem.style.display = "block"
+                        elem.id = "bar"+contractAddr
+                        elem.setAttribute("data-sort", parseInt(fiat))
+                        document.getElementById("resumeTokenBar").append(elem)
+                    }
+
+                    tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
+
                     hasChanged = true
                 }
                 elem.find(".balance").html(bal)
@@ -261,7 +296,8 @@ class MainPane {
 
             //permits to display dynamic price anywhere without fetching again background
             $('[data-bal="'+balance.contract+'"]').html(Utils.formatAmount(balance.balance, balance.decimals))
-        })
+
+        }
 
         if(!hasChanged) return
 
@@ -273,8 +309,6 @@ class MainPane {
         } else {
             $('.decmialValues').html("." + Utils.beautifyAmount(totalBalance).toString().split('.')[1])
         }
-
-
 
         let totalChange = 0;
 
@@ -296,7 +330,6 @@ class MainPane {
         }
 
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
-
     }
 
 

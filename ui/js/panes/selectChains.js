@@ -52,6 +52,8 @@ class SelectChains {
                         MainPane.walletAssets.html("")
                         MainPane.walletAssets.append(baseAssetRow)
 
+                        document.getElementById("resumeTokenBar").innerHTML = ""
+
                         $("[data-networkname]").html(wallet.name + " Testnet")
                         $("[data-networkticker]").html(wallet.ticker)
 

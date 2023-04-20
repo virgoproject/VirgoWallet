@@ -556,6 +556,7 @@ class SettingsPane {
                     elem.addClass("selected")
                     SettingsPane.accountSelectionHeader.click()
                     SettingsPane.accountSelectionHeaderSvg.attr("data-jdenticon-value", address)
+                    document.getElementById("resumeTokenBar").innerHTML = ""
                     jdenticon()
                 })
             })

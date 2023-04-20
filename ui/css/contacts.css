@@ -113,10 +113,6 @@
     background: #5a009c14;
 }
 
-#contacts .contactFormContent{
-    padding: 0 1em;
-}
-
 #contacts .contactFormContent .form-text{
     margin-top: 0.25rem;
     font-size: .675em;

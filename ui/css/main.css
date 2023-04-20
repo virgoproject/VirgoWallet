@@ -73,6 +73,7 @@ body {
     border: none;
     color: #545454;
     padding: 0.375em 2em 0.375em 0.75em;
+    border-radius: 1em;
 }
 
 #sendConfirm .input {
