@@ -204,7 +204,13 @@ class AssetsPane {
         let elem = AssetsPane.list.base.clone()
         elem.find(".name").html(token.name)
         elem.find(".ticker").html(token.ticker)
-        elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + infos.wallets[infos.selectedWallet].wallet.ticker + "/" + token.contract + "/logo.png')");
+
+        elem.find(".logo").on('load', function() {
+            elem.find("svg").hide()
+            elem.find(".logo").show()
+        }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + infos.wallets[infos.selectedWallet].wallet.ticker + "/" + token.contract + "/logo.png");
+
+        elem.find("svg").attr("data-jdenticon-value", token.contract)
 
         if(token.tracked)
             elem.find(".stateCoin").addClass("activated")

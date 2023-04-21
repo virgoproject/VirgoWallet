@@ -12,7 +12,7 @@ let mainAssetTicker = get("ticker")
 
 let editFees = document.querySelector("edit-fees")
 const decimal = editFees.dataset.decimal = decimals
-const lim = editFees.dataset.limit = gas
+editFees.dataset.limit = gas
 const MainTicker = editFees.dataset.ticker = mainAssetTicker
 editFees.start(gas)
 let finalGasPrice = 0

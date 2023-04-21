@@ -174,10 +174,13 @@
 #assetsPane .listItem .logo {
     height: 32px;
     width: 32px;
-    background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
     margin: auto;
+}
+
+#assetsPane .listItem svg {
+    border-radius: 50%;
 }
 
 #assetsListAdd .resume .ticker {

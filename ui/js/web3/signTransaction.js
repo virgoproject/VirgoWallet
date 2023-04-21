@@ -12,7 +12,7 @@ let decimals = get("decimals")
 $("#siteName").html(get("origin"))
 let editFees = document.querySelector("edit-fees")
 const decimal = editFees.dataset.decimal = decimals
-const lim = editFees.dataset.limit = gas
+editFees.dataset.limit = gas
 editFees.start(gas)
 
 let finalGasPrice = 0

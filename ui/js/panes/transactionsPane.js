@@ -120,8 +120,6 @@ class TransactionsPane {
                 }
             }
 
-
-
             TransactionsPane.list.loading.hide()
 
             if(transactionsPane.txsCount == transactions.length)
@@ -420,8 +418,6 @@ class TransactionsPane {
         })
 
         const dateswap = new Date(transaction.date)
-
-
 
         elem.find(" .timeApprove").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
