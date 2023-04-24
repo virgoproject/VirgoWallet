@@ -13,7 +13,8 @@ class SettingsPane {
     static openSettingsBtn = $("#settings .mainPane .openSettings")
     static openSupportBtn = $("#settings .mainPane .openSupport")
     static setupPassword = {
-        mnemonic: $("#settings .setupPassword .writeMnemonic"),
+        mnemonic: $("#writeMnemonic"),
+        self: $("#settings_setuppassword"),
         test: $("#settings .setupPassword .mnemonicTest"),
         testText: $("#settings .setupPassword .mnemonicTest textarea"),
         testBtn: $("#settings .setupPassword .mnemonicTest button"),
@@ -165,9 +166,10 @@ class SettingsPane {
         })
 
 
-        document.getElementById('revealSeed').addEventListener('click' , () => {
-            console.log("eeee")
-        })
+/*        document.getElementById('revealSeed').addEventListener('click' , () => {
+            console.log(SettingsPane.setupPassword.mnemonic)
+
+        })*/
 
     }
 
