@@ -143,10 +143,7 @@ class TransactionsPane {
             case "APPROVETOKEN":
                 this.showApprovedTransaction(selectedWallet, transaction)
                 break
-            case 'SWAPETHFORTOKEN':
-                this.showSwapTokenForTokenTransaction(selectedWallet, transaction)
-                break
-            case 'SWAPTOKENFORTOKEN':
+            case 'WEB3_SWAP':
                 this.showSwapTokenForTokenTransaction(selectedWallet, transaction)
                 break
             case 'NOTIF':
@@ -487,7 +484,7 @@ class TransactionsPane {
     }
 
     showSwapTokenForTokenTransaction(selectWallet, transaction){
-
+        console.log(transaction)
         if (transaction.swap !== undefined) {
 
             let elem = TransactionsPane.list.tokenTx.clone()
@@ -503,18 +500,18 @@ class TransactionsPane {
                 elem.addClass('confirmedTx').removeClass('pendingTx');
             }
 
-            getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
+            getTokenDetails(transaction.swap.params[0].value[1]).then(function (token1) {
                 elem.find(".ticker.one").html(token1.symbol)
-                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
+                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[2], token1.decimals))
             })
 
-            let tokenAdr = transaction.swap.params[2].value.length - 1
+            let tokenAdr = transaction.swap.params[0].value.length - 1
 
-            getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
+            getTokenDetails(transaction.swap.params[0].value[0]).then(function (token2){
                 elem.find(".ticker.two").html(token2.symbol)
 
-                if(transaction.swap.params[1].value !== undefined)
-                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
+                if(transaction.swap.params[0].value !== undefined)
+                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.amount, token2.decimals))
             })
 
             const dateswap = new Date(transaction.date)
