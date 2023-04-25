@@ -1202,12 +1202,12 @@
                 <div class="row securityPane">
                     <h5 class="securitytitles">Protect Your Wallet</h5>
                     <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
-                    <button class="button" id="revealSeed">Reveal Seed Phrase</button>
+                    <button class="button tab" id="revealSeed" data-target="setupPassword">Reveal Seed Phrase</button>
                 </div>
                 <div class="row securityPane">
                     <h5 class="securitytitles">Protect Your Wallet</h5>
                     <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
-                    <button class="buttonEmpty" id="getMnemonic">Setup/Change password</button>
+                    <button class="buttonEmpty" id="change_password" data-target="setupPassword">Setup/Change password</button>
                 </div>
                 <div class="row securityPane">
                     <h5 class="securitytitles">Auto-Lock</h5>
@@ -1374,7 +1374,7 @@
                     <p class="error mt-2 text-danger" style="display: none">Passwords don't match</p>
                 </div>
             </div>
-            <div class="settingsCat p-3 text-center getMnemonic" data-settingId="getMnemonic" data-settingsLevel="2">
+            <div class="settingsCat p-3 text-center getMnemonic" id="get_mnemonic" data-settingId="getMnemonic" data-settingsLevel="2">
                 <div class="getPassword" id="getPassword">
                     <h4>Unveal your phrase</h4>
                     <div class="mt-3">

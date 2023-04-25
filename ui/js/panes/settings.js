@@ -33,6 +33,7 @@ class SettingsPane {
         err: $("#settings .setupPassword .getOldPassword .error")
     }
     static getMnemonic = {
+        self : $("#get_mnemonic"),
         write: $("#settings .getMnemonic .writeMnemonic"),
         password: $("#settings .getMnemonic .getPassword"),
         passwordInput: $("#settings .getMnemonic .getPassword input"),
@@ -164,12 +165,6 @@ class SettingsPane {
         SettingsPane.autolock.delay.change(function(){
             setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
         })
-
-
-/*        document.getElementById('revealSeed').addEventListener('click' , () => {
-            console.log(SettingsPane.setupPassword.mnemonic)
-
-        })*/
 
     }
 

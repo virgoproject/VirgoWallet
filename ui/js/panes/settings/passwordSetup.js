@@ -3,13 +3,14 @@ class PasswordSetup
 
     constructor() {
         /** -- Password setup and mnemonic -- **/
-        $("#revealSeed").click(function(){
-            console.log(SettingsPane.setupPassword.mnemonic)
+        $("#change_password").click(function(){
+
             //reset forms
-            SettingsPane.setupPassword.mnemonic.show()
+            SettingsPane.setupPassword.mnemonic.hide()
             SettingsPane.setupPassword.test.hide()
-            SettingsPane.setupPassword.self.show()
+            SettingsPane.setupPassword.setup.hide()
             SettingsPane.setupPassword.oldPassword.hide()
+            SettingsPane.setupPassword.self.show()
 
             SettingsPane.setupPassword.testText.val("")
             SettingsPane.setupPassword.setupInput.val("")
@@ -22,7 +23,7 @@ class PasswordSetup
 
             isEncrypted().then(function(isEncrypted){
                 if(isEncrypted){
-                    SettingsPane.setupPassword.mnemonic.show()
+                    SettingsPane.setupPassword.oldPassword.show()
                 }else{
                     getMnemonic().then(function(mnemonic){
                         const mnemonicArray = mnemonic.split(" ")
@@ -83,11 +84,6 @@ class PasswordSetup
             setPassword(input1.val(), SettingsPane.setupPassword.oldPasswordInput.val()).then(function(){
                 enableLoadBtn(btn)
                 notyf.success("Password changed!")
-                SettingsPane.setupPassword.mnemonic.hide()
-                SettingsPane.setupPassword.test.hide()
-                SettingsPane.setupPassword.self.hide()
-                $('#setupPassword').hide()
-                SettingsPane.setupPassword.oldPassword.hide()
                 SettingsPane.accountSelectionHeader.click()
             })
         })

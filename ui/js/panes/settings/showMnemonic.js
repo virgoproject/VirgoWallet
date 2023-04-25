@@ -1,25 +1,25 @@
 /** -- Show mnemonic -- **/
 $("#revealSeed").click(function(){
-    //reset forms
-    $("#writeMnemonic").hide()
+    SettingsPane.getMnemonic.write.hide()
 
-    $("#getPassword").hide()
-    $("#getPasswordInput").val("")
+    SettingsPane.getMnemonic.password.hide()
+    SettingsPane.getMnemonic.self.show()
+    SettingsPane.getMnemonic.passwordInput.val("")
 
-    $("#getPasswordBtn").attr("disabled", true)
-    $("#getPasswordInput").attr("disabled", false)
+    SettingsPane.getMnemonic.passwordBtn.attr("disabled", true)
+    SettingsPane.getMnemonic.passwordInput.attr("disabled", false)
 
     isEncrypted().then(function(isEncrypted){
         if(isEncrypted){
-            $('#getPassword').show()
+            SettingsPane.getMnemonic.password.show()
         }else{
             getMnemonic().then(function(mnemonic){
                 const mnemonicArray = mnemonic.split(" ")
-                if(mnemonicArray.length === 24) $('#settings .getMnemonic .writeMnemonic .additionalLength').show()
-                $("#settings .getMnemonic .writeMnemonic .word").each(function(index){
+                if(mnemonicArray.length === 24) SettingsPane.getMnemonic.additionalWords.show()
+                SettingsPane.getMnemonic.words.each(function(index){
                     $(this).find("val").html(mnemonicArray[index])
                 })
-                $("#writeMnemonic").show()
+                SettingsPane.getMnemonic.write.show()
             })
         }
     })
