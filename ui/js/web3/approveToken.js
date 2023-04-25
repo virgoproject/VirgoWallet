@@ -57,7 +57,7 @@ getAsset(ticker).then(function(assetInfos){
         if (ticker == assetInfos.ticker)
             totalNativ += Number(amount)
 
-        if (totalNativ <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
+        if (Utils.formatAmount(totalNativ,decimals) <=  Utils.formatAmount(assetInfos.balance, assetInfos.decimals)){
             $("#allow").attr("disabled", false)
         }
 
