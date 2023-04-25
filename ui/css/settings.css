@@ -125,12 +125,12 @@
     display: flex;
 }
 
-#settings .settingsPane .tab {
+#settings .mainSettings .tab {
     padding: 1em 2em;
     cursor: pointer;
 }
 
-#settings .settingsPane .tab:hover {
+#settings .mainSettings .tab:hover {
     background: #00000025;
 }
 
