@@ -137,6 +137,12 @@
     color: black;
 }
 
+#transactionsPane .listItem progress-ring {
+    display: block;
+    position: absolute;
+    transform: translate(-6px, -44px);
+}
+
 #transactionsPane .listItem.opened .details {
     display: block;
 }
@@ -144,6 +150,14 @@
 #transactionsPane .listItem.opened {
     background: #F9F9F9;
     cursor: default;
+}
+
+#transactionsPane .listItem.confirmedTx .status {
+    color: green;
+}
+
+#transactionsPane .listItem.refusedTx .status {
+    color: red;
 }
 
 #transactionsPane .listItem .confirmed, #transactionsPane .listItem .refused {
@@ -277,13 +291,13 @@ cursor: pointer;
 }
 
 .refusedTx .statusColor{
-    background: var(--greenBackground) ;
+    background: var(--redBackground);
     border-radius: 50px;
     width: 38px;
     height: 38px;
     text-align: center;
     line-height: 38px;
-    color: var(--greenArrow);
+    color: var(--redArrow);
 }
 
 .pendingTx .statusColor{

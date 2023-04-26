@@ -185,11 +185,12 @@ class TransactionsPane {
         elem.attr("id", "tx"+transaction.hash)
 
         if (transaction.status === false){
-            elem.find(".status").html("Cancel")
+            elem.find(".status").html("Canceled")
             elem.addClass('refusedTx').removeClass('pendingTx');
         }
 
         if (transaction.status === true){
+            elem.find(".status").html("Confirmed")
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
@@ -280,14 +281,12 @@ class TransactionsPane {
         elem.attr("id", "tx"+transaction.hash)
 
         if (transaction.swapInfos.status === -1){
-            elem.find(".status").html("Cancel")
+            elem.find(".status").html("Canceled")
             elem.addClass('refusedTx').removeClass('pendingTx');
         }
 
-        console.log(transaction)
-
         if (transaction.swapInfos.status === 3){
-            console.log("cc")
+            elem.find(".status").html("Confirmed")
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
@@ -379,11 +378,12 @@ class TransactionsPane {
         elem.attr("id", "tx"+transaction.hash)
 
         if (transaction.status === false){
-            elem.find(".status").html("Cancel")
+            elem.find(".status").html("Canceled")
             elem.addClass('refusedTx').removeClass('pendingTx');
         }
 
         if (transaction.status === true){
+            elem.find(".status").html("Granted")
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
@@ -492,11 +492,12 @@ class TransactionsPane {
             elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
 
             if (transaction.status === false){
-                elem.find(".status").html("Cancel")
+                elem.find(".status").html("Canceled")
                 elem.addClass('refusedTx').removeClass('pendingTx');
             }
 
             if (transaction.status === true){
+                elem.find(".status").html("Confirmed")
                 elem.addClass('confirmedTx').removeClass('pendingTx');
             }
 
@@ -587,11 +588,12 @@ class TransactionsPane {
         let token1;
 
         if (transaction.status === false){
-            elem.find(".status").html("Cancel")
+            elem.find(".status").html("Canceled")
             elem.addClass('refusedTx').removeClass('pendingTx');
         }
 
         if (transaction.status === true){
+            elem.find(".status").html("Confirmed")
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
@@ -730,11 +732,12 @@ class TransactionsPane {
         let options = {hour: "2-digit", minute: "2-digit"}
 
         if (transaction.status === false){
-            elem.find(".status").html("Cancel")
+            elem.find(".status").html("Canceled")
             elem.addClass('refusedTx').removeClass('pendingTx');
         }
 
         if (transaction.status === true){
+            elem.find(".status").html("Confirmed")
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
@@ -840,7 +843,8 @@ class TransactionsPane {
                     elem.find(".badge-warning").hide()
                     if(!transaction.status){
                         elem.find("progress-ring").hide()
-                        elem.find(".refused").show()
+                        elem.find(".status").html("Canceled")
+                        elem.addClass('refusedTx').removeClass('pendingTx');
 
                         if(transaction.canceling)
                             elem.find(".badge-secondary").show()
@@ -850,7 +854,8 @@ class TransactionsPane {
                     }else {
                         if(transaction.confirmations >= 12){
                             elem.find("progress-ring").hide()
-                            elem.find(".confirmed").show()
+                            elem.find(".status").html("Confirmed")
+                            elem.addClass('confirmedTx').removeClass('pendingTx');
                         }else
                             elem.find("progress-ring").attr("progress", Math.min(100, (transaction.confirmations+1)/13*100))
                     }

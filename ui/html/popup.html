@@ -935,8 +935,8 @@
             <div class="listItem mb-2 basicTx pendingTx" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-arrow-right  statusColor">
-                        </i>
+                        <i class="fa-solid fa-arrow-right statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
                         <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
@@ -958,7 +958,7 @@
                             <div class="col-6">
                                 <p class="title">Send</p>
                             </div>
-                            <p class="body amount text-right col-6 bold"><val> </val> <span class="ticker" >Confirmed</span></p>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
@@ -1015,6 +1015,7 @@
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
                         <i class="fa-solid fa-arrow-right statusColor" ></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
                         <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
@@ -1037,7 +1038,7 @@
                                 <p class="title">Send</p>
                             </div>
 
-                            <p class="body amount text-right col-6 bold"><val> </val> <span class="ticker" >Confirme </span></p>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
@@ -1094,6 +1095,7 @@
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
                         <i class="fa-thin fa-regular fa-atom fa-lg statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
                         <p class="title">Swap <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
@@ -1173,7 +1175,8 @@
             <div class="listItem mb-2 swapTx pendingTx" id="transactionsSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                            <i class="fa-solid fa-right-left statusColor"></i>
+                        <i class="fa-solid fa-right-left statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
@@ -1193,9 +1196,9 @@
                     <div class="detail">
                         <div class="row">
                             <div class="col-6">
-                                <p class="title mt-2">Status</p>
+                                <p class="title">Status</p>
                             </div>
-                            <p class="body amount text-right col-6"><val> </val> <span class="ticker" style="color:green">Confirmed</span></p>
+                            <p class="body amount text-right col-6"><val> </val> <span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail mb-3">
@@ -1263,6 +1266,7 @@
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
                         <i class="fa-solid fa-right-left statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
@@ -1282,9 +1286,9 @@
                     <div class="detail">
                         <div class="row">
                             <div class="col-6">
-                                <p class="title mt-2">Status</p>
+                                <p class="title">Status</p>
                             </div>
-                        <p class="body amount text-right col-6"><val> </val> <span class="ticker" style="color:green"><span class="status">Confirmed</span></span></p>
+                        <p class="body amount text-right col-6"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail mb-3">
@@ -1352,6 +1356,7 @@
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
                         <i class="fa-solid fa-check statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
                         <p class="title">Approve <span class="ticker token" ></span></p>
@@ -1373,8 +1378,7 @@
                             <div class="col-6">
                                 <p class="title">Permission</p>
                             </div>
-
-                            <p class="body amount text-right col-6 bold"><val> </val> <span class="ticker" style="color:green">Granted </span></p>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
