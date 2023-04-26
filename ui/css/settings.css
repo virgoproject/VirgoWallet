@@ -153,13 +153,26 @@
     display: flex;
 }
 
-#settings .settingsPane .tab {
+#settings .mainSettings .tab {
     padding: 1em 2em;
     cursor: pointer;
 }
 
-#settings .settingsPane .tab:hover {
+#settings .mainSettings .tab:hover {
     background: #00000025;
+}
+
+#settings .settingsPane .securityPane{
+    padding: 1em 2em;
+}
+
+#settings .settingsPane .securitytitles{
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#settings .settingsPane .securitydesc {
+    font-size: .85em;
 }
 
 #settings .settingsPane .tab p {

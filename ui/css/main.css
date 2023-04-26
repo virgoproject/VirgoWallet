@@ -41,6 +41,15 @@ body {
     background: var(--mainColorDark10);
 }
 
+.buttonEmpty {
+    color: var(--mainColor);
+    font-weight: bold;
+    background-color: unset;
+    border: none;
+    padding: .375em .75em;
+    transition: all ease-in 0.1s;
+}
+
 .button:disabled {
     background: #545454 !important;
 }
