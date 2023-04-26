@@ -17,10 +17,38 @@
     cursor: pointer;
     transform: rotate(0deg);
     transition: transform 0.25s ease;
+    position: absolute;
 }
 
 #accountSelectionHeader.opened svg {
     transform: rotate(-90deg);
+}
+
+#accountSelectionHeader .contentAddress .adress{
+    font-size: .7em;
+}
+
+#accountSelectionHeader .contentAddress {
+    background: #f8f4fb;
+    padding: 0.5em;
+    border-radius: 25px;
+    cursor: pointer;
+    padding-right: 1em;
+}
+#accountSelectionHeader .copy{
+    margin-left: 38px;
+}
+
+.contentAddress .fa-copy{
+    font-size: 12px !important;
+}
+
+#accountSelectionHeader .contentAddress:hover {
+    background: var(--whiteBackground);
+}
+
+#accountSelectionHeader .contentAddress:hover {
+    background: #e6e1e9;
 }
 
 #settings {
@@ -276,4 +304,12 @@
 #settings .mnemonicAsk {
     max-height: 555px;
     overflow: auto;
+}
+
+#settings .settingTitle{
+    font-size: 1.25rem;
+}
+
+.settingLogo{
+    margin-right: 10px;
 }

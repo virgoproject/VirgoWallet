@@ -21,7 +21,7 @@ class ProgressRing extends HTMLElement {
            stroke-dasharray="${this._circumference} ${this._circumference}"
            style="stroke-dashoffset:${this._circumference}"
            stroke-width="${stroke}"
-           fill="#5a009c14"
+           fill="none"
            r="${normalizedRadius}"
            cx="${radius}"
            cy="${radius}"

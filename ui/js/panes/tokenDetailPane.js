@@ -6,6 +6,7 @@ class TokenDetailPane {
     static simplePane = {
         self: $("#tokenDetailsSimple"),
         name: $("#tokenDetailsSimple .name"),
+        logo: $("#tokenDetailsSimple .logo"),
         symbol: $("#tokenDetailsSimple .symbol"),
         decimals: $("#tokenDetailsSimple .decimals"),
         address: $("#tokenDetailsSimple .address"),
@@ -107,6 +108,9 @@ class TokenDetailPane {
             TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + data.ticker + "/logo.png')");
         else
             TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + data.contract + "/logo.png')");
+
+        TokenDetailPane.simplePane.logo.attr("data-jdenticon-value", data.contract)
+        jdenticon()
 
         TokenDetailPane.detailedPane.chartInfos.changeVal.html(Math.abs(data.change).toFixed(2))
         if(data.change >= 0)

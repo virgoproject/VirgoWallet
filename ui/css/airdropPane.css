@@ -280,3 +280,109 @@
     margin-top: 75%;
     font-size: 2em;
 }
+
+.airdropWinModal{
+    background: rgb(0 0 0 / 20%);
+    height: 600px;
+    width: 56.25vh;
+    position: absolute;
+    top: 0;
+    z-index: 5;
+}
+
+.airdropWinModal .winImg{
+    margin-top: -100px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    margin-left: 48px;
+}
+
+.airdropWinModal .wonText{
+    margin-top: -25px !important;
+}
+
+.airdropWinModal .rounded-1{
+    border-radius: 1em !important;
+}
+
+.airdropWinModal .closeBtn {
+    color: #545454 !important;
+}
+
+.airdropWinModal .winAmmount{
+    font-weight: bold;
+    font-size: 2em;
+    color: var(--mainColor);
+}
+
+.airdropWinModal .button {
+    padding: 0.375em 1.5em !important;
+    text-decoration: unset !important;
+}
+
+.airdropWinModal a:hover{
+    color: white; !important;
+}
+
+.airdropConditions{
+    background: rgb(0 0 0 / 20%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 5;
+}
+
+.airdropConditions .step {
+    background-color: #A1A1A1;
+    height: 5px;
+    border-radius: 100em;
+    margin-bottom: 5px;
+}
+
+.airdropConditions .step.stepActive {
+    background-color: var(--mainColor) !important;
+}
+
+.airdropConditions .step.stepPassed {
+    background-color: var(--mainColorLight30) !important;
+}
+
+.rulesDrop {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/*.airdropConditions .fa-period{
+    color: var(--mainColor);
+}*/
+
+.airdropConditions .buttonModal{
+    border-radius: 1em !important;
+    padding: 0.375em 2em !important;
+}
+
+.airdropModalConditions{
+    background-color: rgba(255,255,255,1) !important;
+}
+.airdropModalConditionsVerify{
+    background-color: rgba(255,255,255,1) !important;
+}
+
+.airdropConditions .fa-chevron-left:hover{
+    cursor: pointer;
+}
+
+.airdropModalConditionsVerify .fa-chevron-left:hover{
+    cursor: pointer;
+}
+
+.airdropConditions .linkAirdrop {
+    color: black;
+    text-decoration: underline;
+    margin-left: 3px;
+    margin-right: 3px;
+}

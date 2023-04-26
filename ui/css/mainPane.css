@@ -1,14 +1,15 @@
 #mainPane {
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 #mainPane>.header {
     text-align: center;
     height: 151px;
     padding: 0.5em;
-    margin-bottom: 1em;
-    background-color: #fbf4f8;
+    margin-bottom: -0.5em;
+    margin-top: 0.5em;
 }
 .hr{
     width: 90%;
@@ -20,7 +21,7 @@
     position: absolute;
     left: 2em;
     right: 2em;
-    top: 46px;
+    top: 55px;
     border-radius: 0.5em;
 }
 
@@ -41,19 +42,32 @@
 
 #mainPane .header .stats .balance-header{
     align-items: center;
-    justify-content: space-between;
     padding: 0;
-    margin-top: 8px;
 }
 
 #mainPane .header .stats .balanceTitle{
     padding: 0;
 }
 
+#resumeTokenBar hr {
+    height: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    margin-bottom: unset !important;
+    margin-top: unset !important;
+}
+
+#mainPane .header .stats .btnAddFunds{
+    font-size: .6em;
+    padding: .2em 1.5em;
+    border-radius: 25px;
+
+}
+
 #mainPane .header .stats .title {
-    font-size: 0.65em;
+    font-size: 1em !important;
     margin: 0 0 0.25rem;
-    font-weight: bold;
 }
 
 #mainPane .header .stats .adress {
@@ -97,25 +111,48 @@
 
 #mainPane .header .stats .values {
     margin-bottom: 0.1rem;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
-    padding-bottom: 10px;
+}
+
+#mainPane .header .stats .dollars {
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.3em;
+    padding-top: 0.5em;
+    font-weight: bold;
+    margin-left: 0.2em;
+}
+
+#mainPane .header .stats .decmialValues {
+    margin-bottom: 0.1rem;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
+
 }
 
 #mainPane .header .pendingTxs {
-    height: 36px;
-    width: 36px;
-    background: white;
+    height: 28px;
+    width: 28px;
+    background: var(--mainColorLight);
+    color: white;
+    font-size: .9em;
     border-radius: 50%;
-    line-height: 36px;
+    line-height: 28px;
     margin: auto;
     cursor: pointer;
     padding: 0;
+    margin-left: 17px;
 }
 
-#mainPane .bodyElem.resume, #mainPane .bodyElem.send, #mainPane .bodyElem.swap {
-    padding: 1em 2em;
-    padding-top: 0;
+
+
+#mainPane .bodyElem.resume, #mainPane .bodyElem.send {
+    padding: 0em 2em;
+}
+
+#mainPane .bodyElem.swap {
+    padding: 0em 1em;
 }
 
 #mainPane #footer {
@@ -186,6 +223,7 @@
     background: var(--whiteBackground);
     border-radius: 0.75em;
     padding: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 #testnetFaucet span {
@@ -196,4 +234,114 @@
 
 #testnetFaucet span:hover {
     color: var(--mainColorDark10);
+}
+
+#tokenSelect {
+    background: white;
+    position: absolute;
+    left: 0px;
+    top: 0em;
+    bottom: 0em;
+    z-index: 21;
+    width: 100%;
+
+}
+
+#tokenSelect .asset img, #tokenSelect .asset svg {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+}
+
+#tokenSelect .tokenCategory {
+    padding: 0;
+}
+
+#tokenSelect .asset {
+    cursor: pointer;
+    padding: 0.5em 3em !important;
+}
+
+#tokenSelect .asset:hover {
+    background-color: var(--lightGrey);
+}
+
+#tokenSelect .asset .title {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#tokenSelect .asset .desc {
+    font-size: 0.8em;
+    margin-bottom: 0;
+}
+
+#tokenSelect .asset i {
+    font-size: 1em;
+    vertical-align: middle;
+    color: var(--textLight);
+}
+
+#tokenSelect .categoryTitle {
+    padding-left: 2em;
+    margin: 0;
+}
+
+#tokenSelect #categoriesWrapper {
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: calc(100% - 92px);
+    padding-bottom: 1em;
+}
+
+#tokenBack {
+    padding-left: 1em;
+}
+
+#searchBarWrapper {
+    margin: 1em 2em;
+    border-bottom: 1px solid var(--lightGrey);
+    padding-bottom: 0.25em;
+}
+
+#searchBar{
+    border: none;
+    width: 100%;
+    outline: none;
+}
+
+#tokensNotFound {
+    font-size: 1.25em;
+}
+
+#sendConfirm{
+    position: absolute;
+    z-index: 10;
+    background: white;
+    padding: 1em 2em;
+    height: 100%;
+}
+
+#sendConfirmFees{
+    position: absolute;
+    z-index: 10;
+    background: white;
+    padding: 1em 2em;
+    height: 100%;
+
+}
+
+.chainSelectionChevron{
+    margin-left: 10px;
+}
+
+
+#sendConfirm .max  {
+    background: transparent;
+    border: none;
+    all: unset;
+    cursor: pointer;
+    color: var(--highlightColor1) !important;
+    text-decoration: none;
 }

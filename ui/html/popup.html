@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
     <link rel="stylesheet" href="/ui/css/atomicSwapPane.css">
     <link rel="stylesheet" href="/ui/css/airdropPane.css">
+    <link rel="stylesheet" href="/ui/css/editFees.css">
 </head>
 <body>
 
@@ -35,7 +36,7 @@
         <div>
             <p class="label text-left"><span id="unlockPanePasswordBase">Enter your password</span><span
                     id="unlockPanePasswordWrong">Wrong password</span></p>
-            <input type="password" id="unlockPanePassword" class="input w-100" style="padding: 0.5em 2em 0.5em 0.75em;"
+            <input type="password" id="unlockPanePassword" class="input w-100"
                    placeholder="Password" data-inputTarget="#unlockPanePasswordSubmit">
         </div>
         <button class="button w-100" id="unlockPanePasswordSubmit" disabled>
@@ -73,42 +74,42 @@
 </div>
 <div id="mainPane" style="display: none">
     <div class="header">
-        <div class="topbar row">
-            <div class="col-3 pendingTxs">
-                <p><i class="fas fa-list-ul"></i></p>
-            </div>
-            <div class="col-6" id="chainSelectionHeader">
-                <p class="mb-0">
-                    <val id="mainPaneCurrentChain" data-networkname>Smart Chain</val>
-                    <i class="fas fa-chevron-down"></i></p>
-            </div>
-            <div class="col-3" id="accountSelectionHeader">
+        <div class="topbar row d-flex align-items-center">
+            <div class="col-6 d-flex align-items-center address wallet-address" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
-            </div>
-        </div>
-        <div class="stats row">
-            <div class="d-inline-flex balanceTitle">
-                <h1 class="title">Current Wallet Balance</h1>
-            </div>
-            <div class="d-inline-flex balance-header">
-                <h1 class="values" data-fiatTotal>$0</h1>
-                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                    <val>0</val>
-                    %
-                </p>
-            </div>
-            <div class="address-div">
-                <div class="address wallet-address">
-                    <div class="d-inline-flex address-bloc">
-                        <p class="title m-0">Wallet Address (</p>
-                        <p id="walletAddress" class="value adress m-0" data-mainAddress>0x0000000000000000000000000000000000000000</p>
-                        <p class="adress m-0">)</p>
-                    </div>
-                    <div class="d-inline-flex copy">
-                        <i class="fal fa-copy "></i>
+                <div class="contentAddress">
+                    <div class="d-flex align-items-center copy">
+                        <p id="walletAddress" class="value adress m-0" data-address>0x0000000000000000000000000000000000000000</p>
+                        <i class="ms-2 fal fa-copy"></i>
                     </div>
                 </div>
+
             </div>
+            <div class="col-4" id="chainSelectionHeader">
+                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
+            </div>
+            <div class="col-2 pendingTxs">
+                <p><i class="fa-solid fa-clock-rotate-left"></i></p>
+            </div>
+
+        </div>
+        <div class="stats row">
+            <div class="d-flex balanceTitle align-items-center">
+                <h1 class="title m-0">Available Balance</h1>
+                <button class="button btnAddFunds ms-2">Add funds</button>
+            </div>
+            <div class="d-inline-flex balance-header">
+                <h1 class="values" data-fiatTotal>0</h1>
+                <h1 class="decmialValues" data-fiatTotal>0</h1>
+                <span class="dollars">$</span>
+<!--                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
+                    <val>0</val>
+                    %
+                </p>-->
+            </div>
+            <div class="d-flex justify-content-center align-items-center p-0" id="resumeTokenBar">
+            </div>
+            <hr style="display: none" id="resumeTokenBarSample">
         </div>
     </div>
     <div class="carousel-item d-none" id="carousel-image">
@@ -134,12 +135,12 @@
             <div id="testnetFaucet" style="display: none">
                 <p class="mb-0">Need test HPN? <span>Claim some!</span><i class="fas fa-spinner fa-pulse" style="display: none"></i></p>
             </div>
-            <div class="assets row p-2">
-                <div class="title col-12 m-0">
+            <div class="assets row">
+                <div class="title col-12 m-0 p-0">
                     <div class="row">
                         <p class="col-6 mb-0">Assets</p>
                         <div class="col-6">
-                            <p class="mb-0 addAsset">More <i class="fas fa-plus"></i></p>
+                            <p class="mb-0 addAsset">Manage Tokens</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +149,8 @@
                         <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
                             <div class="row">
                                 <div class="col-2 justify-content-center align-self-center">
-                                    <div class="logo"></div>
+                                    <img class="logo" crossorigin="anonymous" style="display: none"/>
+                                    <svg data-jdenticon-value="" width="32" height="32" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet"></svg>
                                 </div>
                                 <div class="col-6">
                                     <p class="title">Bitcoin</p>
@@ -171,90 +173,61 @@
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
-                <div class="col-12 mb-3 p-0">
-                    <p class="label">Send to</p>
-                    <div class="input-group ">
+                <div class="mb-4">
+                    <div class="col-12 title d-flex justify-content-center">
+                        <h5>Send To</h5>
+                    </div>
+                </div>
+                <div class="col-12 p-0 mb-4">
+                    <p class="label mb-2">To</p>
+                    <div class="input-group col-12" style="font-size: 1.2em">
                         <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
-                        <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
-
+                        <input type="text" class="input col-8 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
+                        <button class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit" disabled="disabled"></button>
                     </div>
                 </div>
                 <div class="col-12 mb-3 p-0">
-                    <p class="label">Asset</p>
-                    <select class="input w-100 assetSelect">
-                    </select>
-                </div>
-                <div class="col-12 mb-4 p-0">
-                    <div class="row">
-                        <p class="label col-3">Amount</p>
-                        <p class="label col-9 text-right sendBal">Balance:
-                            <val>-</val>
-                            <span></span></p>
+                    <p class="label">Recent</p>
+                    <div class="text-center mt-5 mb-5" style="" id="sendRecentNotfound">
+                        <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact">
                     </div>
-                    <div class="row w-100 m-0 input inputWButton">
-                        <input type="number" class="col-10 amount" placeholder="0.0" data-inputTarget="#body .send .sendForm .submit">
-                        <button class="col-2 max">Max</button>
-                    </div>
-                </div>
-                <button class="button col-12 submit" disabled="disabled">
-                    <val>Next</val>
-                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-                </button>
-            </div>
-            <div class="row sendConfirm" style="display: none">
-                <p class="back"><i class="fas fa-chevron-left"></i> Edit</p>
-                <div class="col-12 mb-3 amount">
-                    <p class="label">Sending</p>
-                    <p class="detail"><span class="value"></span> <span class="ticker"></span></p>
-                </div>
-                <div class="col-12 mb-3 recipient">
-                    <p class="label">To</p>
-                    <p class="detail value"></p>
-                </div>
-                <div class="col-12 fees">
-                    <div class="col-12 d-flex mb-2">
-                        <div class="col-3">
-                            <p class="label">Fees<i class="fas fa-question-circle questionSection ms-1"></i></p>
-                        </div>
-                        <div class="col-9 text-right">
-                            <span class="value"></span>
-                            <span class="ticker" data-networkticker></span>
-                        </div>
-                    </div>
+                    <div class="row" id="sendRecentElems">
 
-                    <div class="range">
-                        <div class="row steps">
-                            <div class="col-4">
-                                <div class="leftStep">
-                                    <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                                </div>
+                    </div>
+                    <div class="col-12 text-center mt-2 sendRecentElem sendRecentContact" id="sendRecentSampleContact" style="display: none">
+                        <div class="row">
+                            <div class="col-2 align-self-center pe-0">
+                                <svg data-jdenticon-value="" width="36" height="36"></svg>
                             </div>
-                            <div class="col-4">
-                                <div class="centerStep">
-                                    <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                                </div>
+                            <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
+                                <span class="contactName">Contact name</span>
+                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
                             </div>
-                            <div class="col-4">
-                                <div class="rightStep">
-                                    <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                                </div>
+                            <div class="col-2 align-self-center">
+                                <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
                             </div>
                         </div>
-                        <input type="range" min="0" max="100" step="10" class="w-100" id="rangeFees">
                     </div>
-
+                    <div class="col-12 text-center mt-2 sendRecentElem" id="sendRecentSample" style="display: none">
+                        <div class="row">
+                            <div class="col-2 align-self-center pe-0">
+                                <svg data-jdenticon-value="" width="36" height="36"></svg>
+                            </div>
+                            <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
+                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+                            </div>
+                            <div class="col-2 align-self-center">
+                                <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button class="button col-12 submit mt-5" disabled="disabled">
-                    <val>Insufficient
-                        <val data-networkticker=""></val>
-                        balance
-                    </val>
-                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-                </button>
             </div>
         </div>
-        <div class="bodyElem swap mt-3" style="display: none" id="swapPane">
+
+        <div class="bodyElem swap" style="display: none" id="swapPane">
             <div id="swapParams">
+                <h5 class="text-center mb-4">Swap</h5>
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
                         <p class="m-0">You send</p>
@@ -268,12 +241,24 @@
                         <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
                         <span class="maxBtn" id="swapMaxBtn1">Max</span>
                     </div>
-                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                        <select class="selectpicker w-100" id="swapSelect1" data-live-search="true" data-width="200px" data-size="6" title="From asset"></select>
+                    <div class="col-5">
+                        <div class="row tokenSelect" id="tokenSelectBtn1">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv1" style="display: none">
+                                <img src="https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true" id="selectedTokenImg1" style="display: none">
+                                <svg id="selectedTokenSvg1" data-jdenticon-value="" width="32" height="32"></svg>
+                            </div>
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect1">
+                                <p style="display: none" id="sendContract"></p>
+                                <p class="ticker" id="selectedTokenTicker1">Select</p>
+                            </div>
+                            <div class="col-3 justify-content-center align-self-center">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <button id="swapSwitchBtn"><i class="fas fa-sync-alt"></i></button>
+                <div class="row mt-3" style="padding-bottom: 1em">
+                    <button id="swapSwitchBtn"><i class="fas fa-sync-alt" style="font-size: 22px"></i></button>
                 </div>
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
@@ -287,101 +272,99 @@
                     <div class="col-7 p-0">
                         <input type="text" class="amountInput" placeholder="0.0" id="swapInput2" disabled="disabled">
                     </div>
-                    <div class="col-5 p-0 selectCoin justify-content-center align-self-center">
-                        <select class="selectpicker w-100" id="swapSelect2" data-live-search="true" data-width="200px" data-size="6" title="To asset"></select>
+                    <div class="col-5">
+                        <div class="row tokenSelect" id="tokenSelectBtn2">
+                            <div class="col-3 justify-content-center align-self-center p-0" id="imgDiv2" style="display: none">
+                                <img src="https://github.com/virgoproject/tokens/blob/main/BNB/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png?raw=true" id="selectedTokenImg2" style="display: none">
+                                <svg id="selectedTokenSvg2" data-jdenticon-value="" width="32" height="32"></svg>
+                            </div>
+                            <div class="col-9 justify-content-center align-self-center p-0" id="tokenSelect2">
+                                <p style="display: none" id="sendContract2"></p>
+                                <p class="ticker" id="selectedTokenTicker2">Select</p>
+                            </div>
+                            <div class="col-3 justify-content-center align-self-center">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-12 p-0" id="swapRate" style="display: none">
-                        <p class="rate">Rate: <span class="amount" id="swapRateAmount"></span> <span class="ticker" id="swapRateTicker2">-</span>/<span class="ticker" id="swapRateTicker1">-</span></p>
-                    </div>
-                    <div class="col-12 text-center" id="swapRateLoading" style="display: none">
+                <div class="row mt-2" >
+                    <div class="col-12 text-center" id="swapRateLoading" style="visibility: hidden">
                         <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
-                    </div>
-                    <div class="route" id="swapRoute" style="display: none">
                     </div>
                     <div class="alert alert-warning align-items-center p-2" role="alert" id="swapRouteNotFound" style="display: none">
                         <div>
                             <i class="far fa-exclamation-circle"></i> Not enough liquidity for this trade
                         </div>
                     </div>
-                    <div class="step" id="swapRouteBaseStep" style="display: none"></div>
-                    <div class="col-12 p-0" style="margin-top: 2.25em;">
-                        <button class="button w-100" id="initSwapBtn" disabled="true">Swap <span id="swapBtnTicker1">-</span> for <span id="swapBtnTicker2">-</span></button>
+
+                    <div class="col-12 p-0" style="margin-top: 1.25em;">
+                        <button class="button w-100" id="initSwapBtn" disabled="true">NEXT</button>
                     </div>
                 </div>
             </div>
             <div id="swapLoading" style="display: none">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
+            <div id="swapComing" class="text-center mt-5" style="display: none">
+                <h3>Coming soon!</h3>
+                <div><i class="fas fa-retweet"></i></div>
+                <p>Swaps are not available for this network yet</p>
+            </div>
             <div id="swapReview" style="display: none">
-                <div class="row">
-                    <div class="col-3">
-                        <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i> back</p>
+                <div class="row mb-2">
+                    <div class="col-1">
+                        <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
                     </div>
-                    <div class="col-9 text-right">
-                        <h5>Payment details</h5>
+                    <div class="col-10 title">
+                        <h5>Swap details</h5>
+                    </div>
+                    <div class="col-1">
+
                     </div>
                 </div>
-                <div class="receiveAmount">
+                <div class="receiveAmount mb-4">
                     <p class="m-0">You will receive</p>
-                    <p class="amount">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+                    <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
+                </div>
+                <div class="row mb-4" id="swapReviewTransferAmount">
+                    <div class="col-12">
+                        <p style="font-weight: bold">You transfer</p>
+                    </div>
+                    <div class="col-2 justify-content-center align-self-center text-center">
+                        <img src='https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true' id="swapReviewSelectedTokenImg" style="display: none">
+                        <svg id="swapReviewSelectedTokenSvg" data-jdenticon-value="" width="32" height="32"></svg>
+                    </div>
+                    <div class="col-10 justify-content-center align-self-center">
+                        <p class="value" style="top: 7px; position:relative;font-weight: bold"><span id="swapReviewAmountIn" ></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
+                    </div>
                 </div>
                 <div class="row details mt-2">
-                    <div class="col-5">
-                        <p class="title">You transfer</p>
-                    </div>
-                    <div class="col-7">
-                        <p class="value"><span id="swapReviewAmountIn"></span> <span class="ticker" id="swapReviewTickerIn"></span></p>
-                    </div>
-                    <div class="col-4">
+
+                    <div class="col-4 mt-3 mb-2">
                         <p class="title">Swap fees</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 mt-3 mb-2">
                         <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4  mb-2">
                         <p class="title">Slippage</p>
                     </div>
                     <div class="col-8">
                         <p class="value">Auto</p>
                     </div>
-                    <div class="col-5">
-                        <p class="title">Network fees</p>
+                    <div class="col-4 mb-2" style="display: inline-flex">
+                        <p class="titleNet">Fees <span class="titleFees editFees">Edit</span></p>
                     </div>
-                    <div class="col-7">
-                        <p class="value">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
+                    <div class="col-8  mb-2">
+                        <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
                     </div>
                 </div>
-                <div class="range">
-                    <div class="row steps">
-                        <div class="col-4">
-                            <div class="leftStep">
-                                <span class="position-absolute mt-4 leftStepLabel">Slow</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="centerStep">
-                                <span class="position-absolute mt-4 centerStepLabel">Normal</span>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="rightStep">
-                                <span class="position-absolute mt-4 rightStepLabel">Fast</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="range" min="0" max="100" step="10" class="w-100" id="swapRangeFees">
-                </div>
-                <button class="button w-100" disabled="disabled" id="confirmSwapBtn">
+
+                <button class="button " disabled="disabled" id="confirmSwapBtn">
                     <val>Init swap</val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
-            </div>
-            <div id="swapComing" class="text-center mt-5" style="display: none">
-                <h3>Coming soon!</h3>
-                <div><i class="fas fa-retweet"></i></div>
-                <p>Swaps are not available for this network yet</p>
             </div>
         </div>
         <div class="bodyElem airdrop" style="display: none;">
@@ -450,6 +433,13 @@
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 userEntered d-flex justify-content-between">
+                                    <p class="m-0">Earn</p>
+                                    <p class="m-0 fw-bold earnCoinsDesc"></p>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="mt-2 mb-2">
+                                </div>
+                                <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
@@ -507,6 +497,13 @@
                             <i class="fa-regular fa-chevron-right"></i>
                         </div>
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
+                            <div class="col-12 userEntered d-flex justify-content-between">
+                                <p class="m-0">Earn</p>
+                                <p class="m-0 fw-bold earnCoinsDesc"></p>
+                            </div>
+                            <div class="col-12">
+                                <hr class="mt-2 mb-2">
+                            </div>
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
@@ -568,6 +565,13 @@
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
+                                    <p class="m-0">Earn</p>
+                                    <p class="m-0 fw-bold earnCoinsDesc"></p>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="mt-2 mb-2">
+                                </div>
+                                <div class="col-12 userEntered d-flex justify-content-between">
                                     <p class="m-0">Winners</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
@@ -613,7 +617,79 @@
             <div class="loadingAirdrop airdropLoadingBody text-center">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
+            <div class="row airdropWinModal m-0" style="display: none;">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-9 d-flex justify-content-center align-items-center bg-light flex-column rounded-1">
+                        <img src="/ui/images/Virgo_win.png" alt="win" height="250px" class="winImg">
+                        <p class="m-0 p-0 wonText">You won</p>
+                        <h1 class="mb-4 winAmmount">100 VGO</h1>
+                        <a  href="https://twitter.com/intent?text=This%20photo%20is%20awesome!%20Check%20it%20out:%20pic.twitter.com/9Ee63f7aVp" class="button mb-2 rounded-1 twitter-btn">Share it on Twitter</a>
+                        <a class="mb-2 closeBtn" href="#">Close</a>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row airdropConditions m-0" style="display: none">
+                <div class="col-12 airdropWinningsConditions d-flex justify-content-center align-items-center">
+                    <div style="display: none !important;" class="col-12 d-flex justify-content-center align-items-center flex-column rounded-3 airdropModalConditions">
+                        <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                            <div class="col-1 align-items-center">
+                                <div class="back chevron1">
+                                    <i class="fas fa-chevron-left "></i>
+                                </div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepActive"></div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step"></div>
+                            </div>
+                        </div>
+                            <p>1 of 2</p>
+                        <div class="col-10">
+                            <p class="text-center fw-bold">Rules to participate </p>
+                            <ul class="rulesDrop mt-3">
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> Follow on Twitter : </li>
+                                <div class="cloneLinkAirdrop">
+                                    <a href="#" id="exempleLink" class="linkAirdrop"></a>
+                                </div>
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> RT the airdrop tweet</li>
+                            </ul>
+
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="button buttonModal mt-4 mb-3"> I understand</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="display: none !important;" class="col-12 d-flex justify-content-center align-items-center flex-column rounded-3 airdropModalConditionsVerify">
+                        <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                            <div class="col-1 align-items-center">
+                                <div class="back chevron2">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepPassed"></div>
+                            </div>
+                            <div class="col-4 justify-content-center align-items-center ms-2 me-2">
+                                <div class="step stepActive"></div>
+                            </div>
+                        </div>
+                        <p>2 of 2</p>
+                        <div class="col-10">
+                            <span>Enter your Twitter Username to verify your eligibility</span>
+                            <input type="text" class="input checkTwitterNameInput col-12" placeholder="Twitter Username" maxlength="42">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="button buttonModal mt-4 mb-3 BtnCheckTwitter">Join Airdrop</button>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
         </div>
+
     </div>
     <div id="footer" class="row">
         <div class="footerElem col-3 selected" data-target="resume">
@@ -622,7 +698,7 @@
                 <p>Home</p>
             </div>
         </div>
-        <div class="footerElem col-3" data-target="send">
+        <div class="footerElem col-3" data-target="send" id="footerBtnSend">
             <div>
                 <i class="fas fa-dollar-sign"></i>
                 <p>Pay</p>
@@ -641,8 +717,94 @@
             </div>
         </div>
     </div>
+    <edit-fees style="display: none" data-decimal="" data-limit="" data-ticker></edit-fees>
+    <div class="sendConfirm" id="sendConfirm" style="display: none">
+        <div class="row mb-5">
+            <div class="col-2 back pl-0">
+                <i class=" fas fa-chevron-left"></i>
+            </div>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>Amount</h5>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
+            <div class="justify-content-center align-self-center">
+                <select class="selectpicker w-100" id="sendAssetSelect" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center p-0">
+                <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
+            </div>
+            <div class="col-12 d-flex justify-content-center inputWButton">
+                <a class="col-2 max">Use max</a>
+            </div>
+            <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
+                <p class="value labelCost"><span id="showCost">-</span> $</p>
+            </div>
+            <div class="col-12 d-flex justify-content-center inputWButton">
+                <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
+            </div>
+        </div>
+        <button class="button sendBtn" id="sendNextStep" disabled="disabled">Next</button>
+    </div>
+    <div id="sendConfirmFeesLoading" style="display: none">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
+    <div class="sendConfirm" id="sendConfirmFees" style="display: none">
+        <div class="row mb-5">
+            <div class="col-2 back pl-0">
+                <i class=" fas fa-chevron-left"></i>
+            </div>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>Confirm</h5>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row sendAmount mb-4 amount">
+            <p class="m-0 ">Sending</p>
+            <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
+        </div>
+        <div class="row mb-3 from">
+                <p class="labelFromAndTo">From</p>
+                <div class="identicon col-2">
+                    <svg data-jdenticon-value="sesesqqqfse" id="from" width="40" height="40"></svg>
+                </div>
+                <p class="col-9 detail value labelAdress"><val></val></p>
+                <p class="col-1 more">...</p>
+            </div>
+        <div class="row mb-3 recipient">
+            <p class="labelFromAndTo">To</p>
+            <div class="identicon col-2">
+                <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
+            </div>
+            <p class="detail col-9 value labelAdress"><val></val></p>
+            <p class="col-1 more">...</p>
+        </div>
+        <div class="row fees">
+                <div class="col-3 mt-3 mb-1" style="display: inline-flex">
+                    <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
+                </div>
+                <div class="col-9 text-right mt-3 mb-1">
+                    <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
+                </div>
+                <div class="col-5 mb-3">
+                    <p class="labelCost">Total Cost</p>
+                </div>
+                <div class="col-7 text-right">
+                    <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
+                </div>
+        </div>
+        <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
+            <val></val>
+            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+        </button>
+    </div>
+    </div>
+
     <div id="chainSelector" class="p-4 pt-0">
-        <div class="row gx-2" id="chainsContainer">
+        <div class="row gx-2 mt-2" id="chainsContainer">
 
         </div>
         <div class="text-center mt-5"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
@@ -669,17 +831,22 @@
             <div class="back">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <p class="text-center" id="assetListTitle">My Assets</p>
+            <h5 class="text-center" id="assetListTitle">My Assets</h5>
         </div>
-        <label class="text-center searchLabel mt-3" id="assetsListSearch">
-            <input type="text" class="inputSearch" placeholder="Search for an asset">
-            <i class="fas fa-search searchIcon"></i>
-        </label>
+        <div class="row" id="assetsListSearchWrapper">
+            <div class="col-10 p-0">
+                <input type="text" placeholder="Search for an asset" id="assetsListSearch">
+            </div>
+            <div class="col-2 p-0 text-right">
+                <i class="fa-light fa-magnifying-glass"></i>
+            </div>
+        </div>
         <div class="content">
             <div class="listItem mb-2" id="assetsListBaseAsset" style="display: none !important;">
                 <div class="row">
                     <div class="col-2 justify-content-center align-self-center">
-                        <div class="logo"></div>
+                        <img class="logo" src="" style="display: none">
+                        <svg data-jdenticon-value="" width="32" height="32"></svg>
                     </div>
                     <div class="col-6">
                         <p class="name">Ethereum</p>
@@ -741,96 +908,207 @@
         </div>
     </div>
     <div id="transactionsPane" style="display: none">
-        <div class="row mt-2">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
+        <div class="row mt-3 mb-3">
+            <div class="col-2 back pl-0">
+                <i class=" fas fa-chevron-left"></i>
             </div>
-            <p class="text-center">Transactions</p>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>History</h5>
+            </div>
+            <div class="col-2"></div>
         </div>
-        <div class="content">
-            <div class="listItem mb-2" id="transactionsBasicTx" style="display: none">
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center pane paneSelected" id="all">
+                <p class="paneTitle" id="paneAll">All</p>
+            </div>
+            <div class="col-6 d-flex justify-content-center pane" id="transac">
+                <p class="paneTitle" id="paneTransac">Transactions</p>
+            </div>
+        </div>
+        <div class="content" id="showAll">
+            <div class="listDate" id="txDate" style="display: none">
+                <div class="row">
+                    <p class="setUpDate"></p>
+                    <input class="dateInput" type="hidden" value="">
+                </div>
+            </div>
+            <div class="listItem mb-2 basicTx pendingTx" id="transactionsBasicTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <div class="logo" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                        <i class="fa-solid fa-arrow-right statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
-                    <div class="col-8">
-                        <p class="amount"><val>0.005</val> <span class="ticker">ETH</span></p>
-                        <p class="smallDetails"><val class="date">April 19</val> &#183 To <val class="recipient">0x0000000000000000000000</val></p>
+                    <div class="col-8 justify-content-center align-self-center">
+                        <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
+                        <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
                     </div>
-                    <div class="col-2 text-right justify-content-center align-self-center p-0">
-                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
-                        <i class="fas fa-check confirmed" style="display: none"></i>
-                        <i class="fas fa-times refused" style="display: none"></i>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                    <div class="row mt-2 tweakBtns">
+                        <div class="col-6 text-center"><a class="speed-up">Speed Up</a></div>
+                        <div class="col-6 text-center"><a class="cancel">Cancel</a></div>
+                    </div>
                     </div>
                 </div>
                 <div class="details">
                     <div class="detail">
-                        <div class="row">
+                        <div class="row" style="margin-bottom: -7px">
                             <div class="col-6">
-                                <p class="title">Amount</p>
+                                <p class="title">Send</p>
                             </div>
-                            <div class="col-6 text-right">
-                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
-                                <span class="badge badge-warning" style="display: none">Canceling..</span>
-                            </div>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
-                        <p class="body amount"><val>-</val> <span class="ticker">ETH</span></p>
                     </div>
-                    <div class="detail">
-                        <p class="title">Date</p>
-                        <p class="body date">-</p>
+                    <div class="detail" style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 bold text-right">-</p>
+                        </div>
                     </div>
-                    <div class="detail">
-                        <p class="title recipientTitle">Recipient <i class="far fa-copy copy"></i></p>
-                        <p class="title recipientCopied" style="display: none">Copied!</p>
-                        <p class="body recipient">-</p>
+                    <div class="detail " style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                            <p class="body recipient bold col-8 text-right">-</p>
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-4 text-center">
+                    <div class="row fees">
+                        <div class="col-12 text-center">
                             <div class="detail">
-                                <p class="title">Gas Price</p>
-                                <p class="body gasPrice"><val>-</val> <span class="ticker">Gwei</span></p>
+                                <div class="row">
+                                    <p class="title text-left col-6">Gas Price</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4 text-center">
+                        <div class="col-12 text-center">
                             <div class="detail">
-                                <p class="title">Gas Limit</p>
-                                <p class="body gasLimit">-</p>
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="body text-right  gasLimit col-6">-</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4 text-center">
+                        <div class="col-12 text-center">
                             <div class="detail">
-                                <p class="title">Gas Used</p>
-                                <p class="body gasUsed">-</p>
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="body text-right  gasUsed col-6">-</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Total fees</p>
-                        <p class="body totalFees"><val>-</val> <span class="ticker">ETH</span></p>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title bold text-left col-5">Total fees</p>
+                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="button w-100 mt-1">Open in explorer</button>
-                    <div class="row mt-2 tweakBtns">
-                        <div class="col-6 text-center"><a class="speed-up">Speed up <i class="fas fa-arrow-up" style="transform: rotate(45deg)"></i></a></div>
-                        <div class="col-6 text-center"><a class="cancel">Cancel <i class="fas fa-ban"></i></a></div>
-                    </div>
-                    <p class="close"><i class="fas fa-chevron-up"></i></p>
                 </div>
             </div>
-            <div class="listItem mb-2 swapTx" id="transactionsAtomicSwapTx" style="display: none">
+            <div class="listItem mb-2 notifTx pendingTx" id="transactionsNotifTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <i class="fa-solid fa-arrow-right statusColor" ></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
+                    </div>
+                    <div class="col-8 justify-content-center align-self-center">
+                        <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
+                        <p class="addr">To <val class="addrRecipient"></val></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                        <i class="fas fas fa-chevron-right addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <div class="row" style="margin-bottom: -7px">
+                            <div class="col-6">
+                                <p class="title">Send</p>
+                            </div>
+
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
+                        </div>
+                    </div>
+                    <div class="detail" style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 bold text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail " style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                            <p class="body recipient bold col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="row fees">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title text-left col-6">Gas Price</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="body text-right  gasLimit col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="body text-right  gasUsed col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title bold text-left col-5">Total fees</p>
+                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                </div>
+            </div>
+            <div class="listItem mb-2 atomicSwapTx pendingTx" id="transactionsAtomicSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                        <div class="logo one" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
-                        <div class="logo two" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                        <i class="fa-thin fa-regular fa-atom fa-lg statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
-                        <p class="title">Atomic Swap</p>
-                        <p class="smallDetails"><val class="date">April 19</val> &#183 <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
+                        <p class="title">Swap <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
+                        <p class="addr">With Atomic Swap <span class="time"></span></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
-                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
-                        <i class="fas fa-check confirmed" style="display: none"></i>
-                        <i class="fas fa-times refused" style="display: none"></i>
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                        </div>
                     </div>
                 </div>
                 <div class="details">
@@ -839,115 +1117,323 @@
                             <div class="col-6">
                                 <p class="title">Amount in</p>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-right" style="display: none">
                                 <span class="badge badge-secondary" style="display: none">Canceled by user</span>
                                 <span class="badge badge-warning" style="display: none">Canceling..</span>
                             </div>
-                        </div>
-                        <p class="body amountIn"><val>-</val> <span class="ticker one">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Amount out</p>
-                        <p class="body amountOut"><val>-</val> <span class="ticker two">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Date</p>
-                        <p class="body date">-</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Price</p>
-                                <p class="body gasPrice"><val>-</val> <span class="ticker">Gwei</span></p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Limit</p>
-                                <p class="body gasLimit">-</p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Used</p>
-                                <p class="body gasUsed">-</p>
-                            </div>
+                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
                         </div>
                     </div>
                     <div class="detail">
-                        <p class="title">Total fees</p>
-                        <p class="body totalFees"><val>-</val> <span class="ticker">ETH</span></p>
+                        <div class="row">
+                            <p class="title col-4">Amount out</p>
+                            <p class="body amountOut col-8 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                        </div>
                     </div>
-                    <p class="close"><i class="fas fa-chevron-up"></i></p>
+                    <div class="detail">
+                        <div class="row">
+                            <p class="title col-6">Date</p>
+                            <p class="body date col-6">-</p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Price</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="body gasLimit col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="body gasUsed col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="listItem mb-2 swapTx" id="transactionsSwapTx" style="display: none">
+            <div class="listItem mb-2 swapTx pendingTx" id="transactionsSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                        <div class="logo one" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
-                        <div class="logo two" style="background-image: url('https://raw.githubusercontent.com/virgoproject/tokens/main/ETH/ETH/logo.png');"></div>
+                        <i class="fa-solid fa-right-left statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="smallDetails"><val class="date">April 19</val> &#183 <val class="amount"></val> <val class="ticker">BNB</val></p>
+                        <p class="addr">On VirgoWallet <span class="time"></span></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
-                        <progress-ring stroke="4" radius="22" progress="10" data-progress="" style="margin-right: 6px"></progress-ring>
-                        <i class="fas fa-check confirmed" style="display: none"></i>
-                        <i class="fas fa-times refused" style="display: none"></i>
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                        </div>
                     </div>
                 </div>
                 <div class="details">
                     <div class="detail">
                         <div class="row">
                             <div class="col-6">
+                                <p class="title">Status</p>
+                            </div>
+                            <p class="body amount text-right col-6"><val> </val> <span class="status"></span></p>
+                        </div>
+                    </div>
+                    <div class="detail mb-3">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <div class="col-6">
                                 <p class="title">Amount in</p>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-right" style="display: none">
                                 <span class="badge badge-secondary" style="display: none">Canceled by user</span>
                                 <span class="badge badge-warning" style="display: none">Canceling..</span>
                             </div>
-                        </div>
-                        <p class="body amountIn"><val>-</val> <span class="ticker one">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Amount out</p>
-                        <p class="body amountOut"><val>-</val> <span class="ticker two">ETH</span></p>
-                    </div>
-                    <div class="detail">
-                        <p class="title">Date</p>
-                        <p class="body date">-</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Price</p>
-                                <p class="body gasPrice"><val>-</val> <span class="ticker">Gwei</span></p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Limit</p>
-                                <p class="body gasLimit">-</p>
-                            </div>
-                        </div>
-                        <div class="col-4 text-center">
-                            <div class="detail">
-                                <p class="title">Gas Used</p>
-                                <p class="body gasUsed">-</p>
-                            </div>
+                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
                         </div>
                     </div>
                     <div class="detail">
-                        <p class="title">Total fees</p>
-                        <p class="body totalFees"><val>-</val> <span class="ticker">ETH</span></p>
+                        <div class="row">
+                            <p class="title col-6">Amount out</p>
+                            <p class="body amountOut col-6 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Price</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="body gasLimit col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="body gasUsed col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="button w-100 mt-1">Open in explorer</button>
-                    <div class="row mt-2 tweakBtns">
-                        <div class="col-6 text-center"><a class="speed-up">Speed up <i class="fas fa-arrow-up" style="transform: rotate(45deg)"></i></a></div>
-                        <div class="col-6 text-center"><a class="cancel">Cancel <i class="fas fa-ban"></i></a></div>
+                </div>
+            </div>
+            <div class="listItem mb-2 swapTokenForTokenTx pendingTx" id="transactionsTokenForTokenSwapTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <i class="fa-solid fa-right-left statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
-                    <p class="close"><i class="fas fa-chevron-up"></i></p>
+                    <div class="col-8">
+                        <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
+                        <p class="addr">On DEX <span class="time"></span></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title">Status</p>
+                            </div>
+                        <p class="body amount text-right col-6"><span class="status"></span></p>
+                        </div>
+                    </div>
+                    <div class="detail mb-3">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="title">Amount in</p>
+                            </div>
+                            <div class="col-6 text-right" style="display: none">
+                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
+                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                            </div>
+                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="row">
+                            <p class="title col-6">Amount out</p>
+                            <p class="body amountOut col-6 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Price</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="body gasLimit col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="body gasUsed col-6 text-right">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title col-6 text-left">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                </div>
+            </div>
+            <div class="listItem mb-2 approvedTx pendingTx" id="transactionsApproveTx" style="display: none" >
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <i class="fa-solid fa-check statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
+                    </div>
+                    <div class="col-8 justify-content-center align-self-center">
+                        <p class="title">Approve <span class="ticker token" ></span></p>
+                        <p class="addr">On DEX <span class="timeApprove"></span></p>
+                    </div>
+                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <div class="row" style="margin-bottom: -7px">
+                            <div class="col-6">
+                                <p class="title">Permission</p>
+                            </div>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
+                        </div>
+                    </div>
+                    <div class="detail" style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 bold text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail " style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title SiteTitle col-7">Spender address <i class="far fa-copy copy"></i></p>
+                            <p class="title SiteCopied col-7" style="display: none">Copied!</p>
+                            <p class="body siteAdress bold col-5 text-right">-</p>
+                        </div>
+                        <div class="row">
+                            <p class="title recipientTitle col-7">Token address <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-7" style="display: none">Copied!</p>
+                            <p class="body recipient bold col-5 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="row fees">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title text-left col-6">Gas Price</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="body text-right  gasLimit col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="body text-right  gasUsed col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title bold text-left col-5">Total fees</p>
+                                    <p class="body totalFees bold col-7"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
             <div class="listWrap mt-1">
@@ -976,7 +1462,7 @@
         <div id="tokenDetailsSimple" style="display: none">
             <div class="row infos">
                 <div class="col-2 justify-content-center align-self-center">
-                    <div class="logo"></div>
+                    <svg data-jdenticon-value="" width="32" height="32" class="logo"></svg>
                 </div>
                 <div class="col-6 pl-1 justify-content-center align-self-center pr-0">
                     <p class="name" style="padding: 8px 0;"></p>
@@ -1137,10 +1623,15 @@
         </div>
     </div>
     <div id="settings" class="pt-2">
-        <p class="text-center title">My Wallet</p>
+        <div class="mt-2">
+            <div class="col-12 title d-flex justify-content-center mt-2 settingTitle">
+                <p class="text-center ">My Wallet</p>
+            </div>
+        </div>
+
         <div class="mt-4 p-4 pt-0 mainPane">
             <div class="row p-2 pb-0">
-                <p class="col-6 mb-0">Accounts <i class="fas fa-chevron-right"></i></p>
+                <p class="col-6 mb-0"></p>
                 <div class="col-6"><p class="mb-0 addAccount"><i class="fas fa-plus"></i> Add</p></div>
             </div>
             <div class="accounts p-2 pb-0 pt-0 row d-flex justify-content-center">
@@ -1165,10 +1656,10 @@
             </div>
             <div class="row mt-4 p-2 pt-0">
                 <div class="col-6 pl-0 pr-1">
-                    <button class="button w-100 openSettings"><i class="fas fa-cog"></i> Settings</button>
+                    <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
                 </div>
                 <div class="col-6 pl-1 pr-0">
-                    <button class="button w-100 openSupport"><i class="fas fa-headset"></i> Support</button>
+                    <button class="button w-100 openSupport"><i class="fas fa-headset settingLogo"></i>Support</button>
                 </div>
             </div>
         </div>
@@ -1620,6 +2111,37 @@
             </div>
         </div>
     </div>
+    <div id="tutorialPopup" class="popup" style="display: none;">
+        <div class="box text-white">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end mb-3 mt-2">
+                    <div class="col-1 d-flex text-white" id="closeTutorial">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex pr-0 pl-0 justify-content-center">
+                    <div id="tutoStep1" class="col-3 steps stepsActive"></div>
+                    <div id="tutoStep2" class="col-3 steps"></div>
+                    <div id="tutoStep3" class="col-3 steps"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="col-6">
+                        <img src="../images/tutorialAssets.png" alt="assets" width="125" id="imgTutorial">
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center justify-content-center">
+                <h2 class="col-10" id="tutorialTitle">Switch quickly to another blockchain</h2>
+                <span class="mt-2 col-11" id="tutorialCenteredText">With Virgo Wallet, you have the ability to browse multiple blockchains with just one click.</span>
+                <span class="mt-2 col-9" id="tutorialBottomText">Start by selecting your favorite blockchain.</span>
+                <button class="button col-8 mt-3 mb-3" id="tutorialButton">I understand</button>
+            </div>
+        </div>
+    </div>
     <div id="updatePopup" class="popup">
         <div class="box">
             <div class="header row">
@@ -1703,19 +2225,24 @@
         </div>
     </div>
     <div id="contacts" style="display: none">
-        <div class="row mt-2">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
+        <div class="row mb-2">
+            <div class="col-2 back p-0">
+                <i class=" fas fa-chevron-left"></i>
             </div>
-            <p class="text-center title">Contacts</p>
+            <div class="col-8 title d-flex justify-content-center">
+                <h5>Contacts</h5>
+            </div>
+            <div class="col-2"></div>
         </div>
         <div id="contactDiv">
-        <div class="row text-center justify-content-center contactList mb-2">
-            <label class="text-center searchLabel mt-3" id="d">
-                <input type="text" class="inputSearch" placeholder="Search for name or address">
-                <i class="fas fa-search searchIcon"></i>
-            </label>
-        </div>
+            <div class="row" id="contactsSearchWrapper">
+                <div class="col-10 p-0">
+                    <input type="text" placeholder="Search for name or address" id="contactsSearch">
+                </div>
+                <div class="col-2 p-0 text-right">
+                    <i class="fa-light fa-magnifying-glass"></i>
+                </div>
+            </div>
             <div class="loading text-center mt-2 mb-2" style="display: none">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
@@ -1917,6 +2444,61 @@
             </button>
         </div>
     </div>
+    <div id="tokenSelect" style="display: none;">
+        <div class="row" style="padding-top: 15px">
+            <div class="col-2 justify-content-center align-self-center">
+                <i class="fa-light fa-chevron-left backBtn" id="tokenBack"></i>
+            </div>
+            <div class="col-8 text-center">
+                <h3 class="m-0">Select a currency</h3>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" id="searchBarWrapper">
+            <div class="col-10 p-0">
+                <input type="text" placeholder="Search for a currency" id="searchBar">
+            </div>
+            <div class="col-2 p-0 text-right">
+                <i class="fa-light fa-magnifying-glass"></i>
+            </div>
+        </div>
+        <div id="categoriesWrapper">
+            <div id="categories">
+                <div class="row tokenCategory" id="allTokensCatWrapper">
+                    <!--<div class="col-12">
+                        <p class="categoryTitle">All</p>
+                    </div> -->
+                    <div class="col-12">
+                        <div class="row" id="allTokensCat">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tokensLoading" class="text-center" style="display: none">
+            <i class="fa-light fa-loader fa-spin"></i>
+        </div>
+        <div id="tokensNotFound" class="text-center" style="display: none">
+            <p>Nothing found <i class="fal fa-ghost"></i></p>
+        </div>
+        <div class="col-12 asset" id="baseToken" style="display: none">
+            <div class="row">
+                <div class="col-2 justify-content-center align-self-center text-center">
+                    <img src="" style="display: none">
+                    <svg data-jdenticon-value="" width="32" height="32"></svg>
+                </div>
+                <div class="col-8 justify-content-center align-self-center">
+                    <p class="title">Virgo</p>
+                    <p class="desc">VGO • Binance Smart Chain</p>
+                </div>
+                <div class="col-2 justify-content-center align-self-center text-right">
+                    <i class="fa-light fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="../js/utils/jquery.min.js"></script>
@@ -1932,6 +2514,8 @@
 <script src="../js/utils/chart.min.js"></script>
 <script src="../js/utils/bootstrap-select.min.js"></script>
 <script src="../js/utils/backgroundMessaging.js"></script>
+<script src="../js/utils/tokensSelect.js"></script>
+<script src="../js/utils/getDominantColor.js"></script>
 <script src="../js/events.js"></script>
 <script src="../js/popup.js"></script>
 <script src="../js/panes/selectChains.js"></script>
@@ -1946,6 +2530,8 @@
 <script src="../js/panes/atomicSwapPane.js"></script>
 <script src="../js/panes/airdropPane.js"></script>
 <script src="../js/panes/createPane.js"></script>
+<script src="../js/web3/editFees.js"></script>
+<script src="../js/panes/tutorialPane.js"></script>
 <script src="../js/panes/unlockPane.js"></script>
 <script src="../js/panes/settings/connectedWebsites.js"></script>
 <script src="../js/panes/settings/importMnemonic.js"></script>

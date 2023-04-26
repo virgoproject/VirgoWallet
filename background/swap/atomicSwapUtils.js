@@ -152,12 +152,7 @@ class AtomicSwapUtils {
     static async initAtomicSwap(amount, chainIdA, chainIdB, gasPrice){
         const chainA = baseWallet.getChainByID(chainIdA)
         const chainB = baseWallet.getChainByID(chainIdB)
-        const tempWeb3 = new Web3(chainA.rpcURL)
-
-        const pKey = "0x" + Converter.bytesToHex(web3._provider.wallets[baseWallet.getCurrentAddress()].privateKey)
-
-        const account = tempWeb3.eth.accounts.privateKeyToAccount(pKey)
-        tempWeb3.eth.accounts.wallet.add(account)
+        const tempWeb3 = baseWallet.getWeb3ByID(chainIdA)
 
         const lockContract = new tempWeb3.eth.Contract(ATOMIC_LOCKER, chainA.atomicSwapParams.lockerAddress)
 

@@ -4,6 +4,7 @@
 
 #swapPane .inputHeader {
     font-size: 0.8em;
+    padding-bottom: 0.7em;
 }
 
 #swapPane .inputHeader .amount {
@@ -19,15 +20,16 @@
 }
 
 #swapPane .swapInput {
-    background: var(--whiteBackground);
-    border-radius: 0.5em;
+    background: #F3F3F3;
+    border-radius: 5.5em;
     height: 50px;
+    margin-bottom: 2.5em;
 }
 
 #swapPane .swapInput .amountInput {
     width: 3ch;
     min-width: 4.5ch;
-    max-width: 12ch;
+    max-width: 10ch;
     background: transparent;
     border: none;
     outline: none;
@@ -66,8 +68,8 @@
 }
 
 #swapPane .swapInput .selectLogo {
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
     background-color: var(--mainColor);
     border-radius: 50%;
     background-size: cover;
@@ -83,19 +85,25 @@
 }
 
 #swapPane .swapInput .selectCoin {
-    border-left: 2px solid #ece2f3;
+    background: white;
+    border-radius: 55px;
+    width: 33%;
+    margin-left: 20px;
 }
 
 #swapSwitchBtn {
-    height: 36px;
-    width: 36px;
+    height: 50px;
+    width: 50px;
     padding: 0px;
-    background: var(--whiteBackground);
+    background: #F3F3F3;
     border: none;
     margin: auto;
     border-radius: 50%;
     color: var(--mainColorDark10);
     transition: all 0.2s ease-in;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 #swapSwitchBtn:hover {
@@ -164,7 +172,7 @@
 }
 
 #swapParams {
-    margin-top: 1em;
+    padding: 1em 1em 4em;
 }
 
 #swapReview .confirmRoute {
@@ -188,15 +196,24 @@
 }
 
 #swapReview .receiveAmount {
-    background: #fbf4f8;
     border-radius: 0.5em;
     text-align: center;
-    padding: 0.5em;
+    padding: 1.5em 0;
 }
 
 #swapReview .receiveAmount .amount {
-    font-size: 1.25em;
+    font-size: 1.55em;
     margin: 0;
+}
+
+#swapReview {
+    background: white;
+    height: calc(100% - 3em);
+    padding-top: 1em;
+}
+
+#swapReview .title{
+    padding-left: 65px;
 }
 
 #swapReview .details p {
@@ -206,11 +223,33 @@
 
 #swapReview .details .value {
     text-align: right;
+}
+
+#swapReview .details .valueNet {
+    text-align: right;
     font-weight: bold;
 }
 
 #swapReview .details .title, #swapReview .details .value {
     margin: 0.25em 0;
+    padding: 0;
+    color: #6e6e6e;
+}
+#swapReview .details .titleNet, #swapReview .details .valueNet {
+    margin: 0.25em 0;
+    font-weight: bold;
+}
+
+#swapReview button{
+    position: absolute;
+    bottom: 4em;
+    left: 1em;
+    right: 1em;
+}
+
+#swapReview .details .titleFees{
+    margin: 0.25em 0;
+    padding: 0;
 }
 
 #swapReview .ticker {
@@ -224,7 +263,7 @@
 
 #swapReviewAmountIn, #swapReviewNetFees, #swapReviewSwapFees {
     display: inline-block;
-    max-width: 84px;
+    max-width: 130px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
@@ -235,17 +274,21 @@
     transition: all 0.2s ease-in;
 }
 
+#swapReviewBack i {
+    font-size: 1.5em;
+}
+
 #swapReviewBack:hover {
     color: black;
 }
 
 #swapReviewNetFees {
-    max-width: 78px!important;
+    max-width: 110px!important;
 }
 
 #swapReviewAmountOut {
     display: inline-block;
-    max-width: 14ch;
+    max-width: 10ch;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
@@ -265,3 +308,88 @@
     font-size: 2.5em;
     margin: 0.25em auto;
 }
+
+
+
+.closeBtn, .backBtn, #cancelOrderClose {
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    color: #333;
+}
+
+.closeBtn:hover, .backBtn:hover, #cancelOrderClose:hover {
+    color: black;
+}
+
+.exchangeInput {
+    background-color: var(--lightGrey);
+    padding: 0.5em;
+    border-radius: 100em;
+}
+
+.exchangeInputWrapper {
+    margin: 0.5em !important;
+}
+
+.swapInput input {
+    background: transparent;
+    border: none;
+    font-size: 1.75em;
+    outline: none;
+    width: 100%;
+    line-height: 1em;
+}
+
+.swapInput .tokenSelect {
+    background: white;
+    border-radius: 100em;
+    padding: 0.3em;
+    cursor: pointer;
+    width: 121%;
+    height: 42px;
+}
+
+.swapInput img, .swapInput svg {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+}
+
+.swapInput .ticker {
+    padding-left: 0.5em;
+    font-size: 1.2em;
+    line-height: 1em;
+    margin-bottom: 0em!important;
+    font-weight: 600;
+}
+
+#exchangeIcon {
+    background: var(--lightGrey);
+    color: var(--mainColor);
+    height: 48px;
+    width: 48px;
+    display: inline-block;
+    line-height: 48px;
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin-top: 1em;
+}
+
+#swapReview img, #swapReview svg {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+}
+
+#swapReview .details {
+    background: #F3F3F3;
+    border-radius: 10px;
+    margin: 0;
+}
+
+#swapReviewTransferAmount {
+    padding: 0 1em;
+}
+
+

@@ -2,17 +2,17 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
+    background: white;
     transform-origin: 50% 0;
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
+    padding-top: 1em !important;
+    padding: 0em 1em;
 }
 
 #contacts .contactsList{
     z-index: 99999;
-    padding: 0 1em !important;
-    max-height: 485px;
 }
 
 #contacts .showElements{
@@ -20,28 +20,20 @@
 }
 
 #contacts .back {
-    position: absolute;
-    top: 0.9em;
-    width: 2em;
-    text-align: center;
-    left: 0.5em;
     cursor: pointer;
-    color: #545454;
     transition: color ease 0.25s;
+    padding-left: 1em !important;
 }
 
 #contacts .back i {
     font-size: 1.5em;
+    vertical-align: middle;
 }
 
 #contacts .adressContact {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 10px;
-}
-
-#contacts .searchIcon{
-    cursor: pointer;
 }
 
 #contacts svg {
@@ -68,7 +60,7 @@
 
 #contacts .contactUser{
     transition: background-color 250ms;
-    background: #5a009c14;
+    background: #f9f9f9;
     border-radius: 0.5em;
     padding-top: 0.375em !important;
     padding-bottom: 0.375em !important;
@@ -121,10 +113,6 @@
     background: #5a009c14;
 }
 
-#contacts .contactFormContent{
-    padding: 0 1em;
-}
-
 #contacts .contactFormContent .form-text{
     margin-top: 0.25rem;
     font-size: .675em;
@@ -152,4 +140,20 @@
 
 #contacts #contactDiv .contactsList .fa-star{
     cursor: pointer;
+}
+
+#contacts .title{
+    font-size: 1.25rem;
+}
+
+#contactsSearchWrapper {
+    margin: 1em 0;
+    border-bottom: 1px solid var(--lightGrey);
+    padding-bottom: 0.25em;
+}
+
+#contactsSearch {
+    border: none;
+    width: 100%;
+    outline: none;
 }

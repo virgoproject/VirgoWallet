@@ -2,7 +2,7 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
+    background: #ffffff;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
@@ -12,15 +12,10 @@
 
 #transactionsPane .content {
     z-index: 99999;
-    padding: 0 1em;
 }
 
 #transactionsPane .back {
-    position: absolute;
-    top: 0.9em;
-    width: 2em;
     text-align: center;
-    left: 0.5em;
     cursor: pointer;
     color: #545454;
     transition: color ease 0.25s;
@@ -32,12 +27,13 @@
 
 #transactionsPane .back i {
     font-size: 1.5em;
+    margin-left: 1em;
 }
 
 #transactionsPane .listWrap {
     overflow: auto;
-    max-height: 548px;
-    padding: 0 1em;
+    max-height: 475px;
+    padding: 0 1.5em;
 }
 
 #transactionsPane .listWrap::-webkit-scrollbar {
@@ -50,16 +46,17 @@
 }
 
 #transactionsPane .listItem {
-    background: rgba(90, 0, 156, 0.08);
+    background: #f9f9f9;
     border-radius: 0.5em;
-    padding-top: 0.375em;
-    padding-bottom: 0.375em;
+    padding-top: 1.1em;
+    padding-bottom: 1.1em;
+    padding-left: 1em;
     transition: background ease 0.25s;
     cursor: pointer;
 }
 
 #transactionsPane .listItem:hover {
-    background: rgba(90, 0, 156, 0.12);
+    background: #e6e1e9;
 }
 
 #transactionsPane .listItem p {
@@ -67,7 +64,7 @@
 }
 
 #transactionsPane .listItem .header .amount val {
-    max-width: 130px;
+    max-width: 12ch;
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
@@ -103,7 +100,9 @@
 #transactionsPane .listItem .smallDetails .recipient {
     color: var(--highlightColor1);
 }
-
+#transactionsPane  .siteAdress {
+    color: var(--highlightColor1);
+}
 #transactionsPane .listItem .details {
     display: none;
 }
@@ -115,6 +114,7 @@
 
 #transactionsPane .listItem .detail .title {
     font-size: 0.85em;
+    padding-top: 0.15em;
     font-weight: bold;
 }
 
@@ -137,8 +137,10 @@
     color: black;
 }
 
-#transactionsPane .listItem.opened .smallDetails, #transactionsPane .listItem.opened .header .amount {
-    visibility: hidden;
+#transactionsPane .listItem progress-ring {
+    display: block;
+    position: absolute;
+    transform: translate(-6px, -44px);
 }
 
 #transactionsPane .listItem.opened .details {
@@ -146,8 +148,16 @@
 }
 
 #transactionsPane .listItem.opened {
-    background: rgba(90, 0, 156, 0.12);
+    background: #F9F9F9;
     cursor: default;
+}
+
+#transactionsPane .listItem.confirmedTx .status {
+    color: green;
+}
+
+#transactionsPane .listItem.refusedTx .status {
+    color: red;
 }
 
 #transactionsPane .listItem .confirmed, #transactionsPane .listItem .refused {
@@ -198,22 +208,22 @@
     color: var(--mainColor);
 }
 
-#transactionsPane .listItem.swapTx .logo {
+#transactionsPane .listItem .swapTx .logo {
     height: 26px;
     width: 26px;
-    position: absolute;
     margin-top: -13px;
 }
 
-#transactionsPane .listItem.swapTx .logo.two {
+#transactionsPane .listItem .swapTx .logo.two {
     margin-left: 13px;
 }
+
 
 #transactionsPane .listItem .ticker {
     color: var(--mainColorDark10);
 }
 
-#transactionsPane .listItem.swapTx .smallDetails .amount {
+#transactionsPane .listItem .swapTx .smallDetails .amount {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -221,10 +231,120 @@
     vertical-align: top;
 }
 
-#transactionsPane .listItem.swapTx.opened .header .title {
+#transactionsPane .listItem .swapTx.opened .header .title {
     float: left;
 }
 
-#transactionsPane .listItem.swapTx.opened .header {
+#transactionsPane .listItem .swapTx.opened .header {
     margin-top: 10px;
+}
+
+#transactionsPane .fees{
+    background-color: white;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 10px;
+}
+
+#transactionsPane .paneSelected{
+    color: var(--mainColor) !important;
+    border-bottom: solid 3px !important;
+}
+
+#transactionsPane .pane{
+    border-bottom: solid 2px #c7c7c7;
+}
+
+#transactionsPane .paneTitle{
+cursor: pointer;
+    margin-bottom: 0.5em !important;
+}
+
+.confirmedTx .statusColor{
+    background: var(--greenBackground);
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: var(--greenArrow);
+}
+
+
+.atomicSwapTx.confirmedTx .statusColor{
+    background: #E8D0FF;
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #B668FF;
+}
+.swapTx.confirmedTx .statusColor, .swapTokenForTokenTx.confirmedTx .statusColor{
+    background: var(--blueBackground);
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: var(--blueArrow);
+}
+
+.refusedTx .statusColor{
+    background: var(--redBackground);
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: var(--redArrow);
+}
+
+.pendingTx .statusColor{
+    background: #E9EBEC;
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #9FA4B2;
+}
+
+.addrRecipient{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 111px;
+    vertical-align: top;
+}
+
+#transactionsPane .addr, #transactionsPane .closeChevron {
+    color: #6e6e6e;
+}
+
+#transactionsPane .closeChevron {
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 1.5em;
+    margin-right: 16px;
+}
+
+#transactionsPane .closeChevron:hover {
+    color: var(--bs-body-color);
+}
+
+#transactionsPane .timeApprove{
+    margin-left: 41px;
+}
+
+#transactionsPane .time{
+    float: right;
+}
+
+#transactionsPane .chevronOpened{
+    rotate: 90deg;
+}
+
+.listDate{
+    margin-top: 11px;
 }

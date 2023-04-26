@@ -69,9 +69,7 @@ class SettingsPane {
     }
 
     constructor() {
-
         let mainSettingsBackLevel = 0;
-
 
         events.addListener("addressesChanged", data => {
             const baseElem = $("#baseAccountRow").clone()
@@ -80,18 +78,24 @@ class SettingsPane {
 
             settingsPane.setSettings(data)
         })
-
         SettingsPane.addAccountBtn.click(function(){
-            addAccount()
+            addAccount().then(function(data){
+                const baseElem = $("#baseAccountRow").clone()
+                SettingsPane.accounts.html("")
+                SettingsPane.accounts.append(baseElem)
+                settingsPane.setSettings(data)
+            })
         })
 
-        SettingsPane.accountSelectionHeader.click(function(){
+        SettingsPane.accountSelectionHeader.click(function(e){
             if(SettingsPane.settings.hasClass("opened")){
                 SettingsPane.settings.removeClass("opened")
                 SettingsPane.accountSelectionHeader.removeClass("opened")
+                showAddress()
             } else{
                 SettingsPane.settings.addClass("opened")
                 SettingsPane.accountSelectionHeader.addClass("opened")
+                hideAddress()
             }
             //make sure settings is closed
             for(let i = mainSettingsBackLevel; i >= 0; i--){
@@ -105,6 +109,7 @@ class SettingsPane {
 
         SettingsPane.openSettingsBtn.click(function(){
             SettingsPane.main.hide()
+            hideStatsBar()
             SettingsPane.settingsMain.show()
             SettingsPane.settingsTitle.html("Settings")
         })
@@ -122,6 +127,7 @@ class SettingsPane {
             }else{
                 if(mainSettingsBackLevel == 0){
                     SettingsPane.main.show()
+                    showStatsBar()
                     SettingsPane.settingsMain.hide()
                     SettingsPane.settingsTitle.html("My Wallet")
                     return
@@ -211,6 +217,7 @@ class SettingsPane {
                     elem.addClass("selected")
                     SettingsPane.accountSelectionHeader.click()
                     SettingsPane.accountSelectionHeaderSvg.attr("data-jdenticon-value", address)
+                    document.getElementById("resumeTokenBar").innerHTML = ""
                     jdenticon()
                 })
             })

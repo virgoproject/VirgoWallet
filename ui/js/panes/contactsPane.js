@@ -9,7 +9,7 @@ class ContactsPane {
         setRecipentAddress: $('#body .send .sendForm .recipient'),
         changeContactName: $('#contacts .inputNameContact'),
         changeContactNote: $('#contacts .changeNote'),
-        searchContact: $('#contacts #contactDiv .inputSearch')
+        searchContact: $('#contactsSearch')
     }
 
     static div = {
@@ -57,6 +57,7 @@ class ContactsPane {
             ContactsPane.text.title.html('Add contact')
 
         })
+
 
         ContactsPane.buttons.addItNow.click(function (e) {
             ContactsPane.buttons.addContact.click()
@@ -150,12 +151,14 @@ class ContactsPane {
                 ContactsPane.div.formContact.hide()
                 ContactsPane.div.contacts.hide()
                 ContactsPane.extern.payForm.show()
+                hideStatsBar()
             } else {
                 ContactsPane.div.bodyContacts.show()
                 ContactsPane.extern.payForm.show()
                 ContactsPane.buttons.addContact.show()
                 ContactsPane.div.formContact.hide()
                 ContactsPane.text.title.html('Contacts')
+                hideStatsBar()
             }
         })
     }

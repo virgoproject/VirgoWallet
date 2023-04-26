@@ -4,7 +4,7 @@
     width: 100%;
     top: 52px;
     position: absolute;
-    background: #fbf4f8;
+    background: white;
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
@@ -50,11 +50,30 @@
 #chainSelectionHeader {
     cursor: pointer;
     transform: rotate(0deg);
+    background: #f8f4fb;
+    border-radius: 25px;
+    padding: .5em;
+    z-index: 0 !important;
+}
+
+#chainSelectionHeader:hover{
+    background: var(--whiteBackground);
+}
+
+#chainSelectionHeader:hover {
+    background: #e6e1e9;
 }
 
 #chainSelectionHeader i {
     transform: rotate(0deg);
     transition:transform 0.25s ease;
+}
+
+#chainSelectionHeader p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: .7em;
 }
 
 #chainSelectionHeader.opened i {
