@@ -262,6 +262,7 @@
 
 #settings .settingsPane .settingsCat[data-settingId='connectedWebsites'] {
     padding: 0em 2em;
+    overflow: auto;
 }
 
 #settings .settingsPane .importMnemonic{

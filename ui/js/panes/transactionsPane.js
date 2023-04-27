@@ -107,7 +107,7 @@ class TransactionsPane {
 
                     transactionsPane.txsCount++
                 }
-
+                TransactionsPane.list.loading.hide()
             }
 
             if ($("#transactionsPane #transac").hasClass("paneSelected")){
@@ -118,6 +118,7 @@ class TransactionsPane {
 
                     transactionsPane.txsCount++
                 }
+                TransactionsPane.list.loading.hide()
             }
 
             TransactionsPane.list.loading.hide()
@@ -387,6 +388,10 @@ class TransactionsPane {
             elem.addClass('confirmedTx').removeClass('pendingTx');
         }
 
+        if (transaction.origin !== undefined){
+            elem.find(".site").html(transaction.origin.replace(/^https?:\/\//, ''))
+        }
+
         elem.find(".details .siteAdress").html(transaction.allowed.address)
         elem.find(".recipient").html(transaction.recipient)
 
@@ -491,6 +496,34 @@ class TransactionsPane {
             elem.attr("id", "tx" + transaction.hash)
             elem.find(".logo").css("background-image", "url(https://www.pngall.com/wp-content/uploads/10/PancakeSwap-Crypto-Logo-PNG.png)")
 
+            if (transaction.swap.name !== "exactInputSingle"){
+                getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
+                    elem.find(".ticker.one").html(token1.symbol)
+                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
+                })
+            }else{
+                getTokenDetails(transaction.swap.params[0].value[1]).then(function (token1) {
+                    elem.find(".ticker.one").html(token1.symbol)
+                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[2], token1.decimals))
+                })
+            }
+
+            if (transaction.swap.name !== "exactInputSingle"){
+                let tokenAdr = transaction.swap.params[2].value.length - 1
+                getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
+                    elem.find(".ticker.two").html(token2.symbol)
+                    if(transaction.swap.params[2].value !== undefined)
+                        elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
+                })
+            }else {
+                getTokenDetails(transaction.swap.params[0].value[0]).then(function (token2){
+                    elem.find(".ticker.two").html(token2.symbol)
+
+                    if(transaction.swap.params[0].value !== undefined)
+                        elem.find(".amountOut val").html(Utils.formatAmount(transaction.amount, token2.decimals))
+                })
+            }
+
             if (transaction.status === false){
                 elem.find(".status").html("Canceled")
                 elem.addClass('refusedTx').removeClass('pendingTx');
@@ -501,23 +534,13 @@ class TransactionsPane {
                 elem.addClass('confirmedTx').removeClass('pendingTx');
             }
 
-            getTokenDetails(transaction.swap.params[0].value[1]).then(function (token1) {
-                elem.find(".ticker.one").html(token1.symbol)
-                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[2], token1.decimals))
-            })
-
-            let tokenAdr = transaction.swap.params[0].value.length - 1
-
-            getTokenDetails(transaction.swap.params[0].value[0]).then(function (token2){
-                elem.find(".ticker.two").html(token2.symbol)
-
-                if(transaction.swap.params[0].value !== undefined)
-                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.amount, token2.decimals))
-            })
+            if (transaction.origin !== undefined){
+                elem.find(".site").html(transaction.origin.replace(/^https?:\/\//, ''))
+            }
 
             const dateswap = new Date(transaction.date)
 
-            elem.find(" .time").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+            elem.find(".time").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
 
             elem.attr("data-date", transaction.date)
             const date = new Date(transaction.date)
@@ -748,7 +771,7 @@ class TransactionsPane {
         elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
 
         elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
-        //elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
         console.log(transaction)
         elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
         elem.find(".totalFees span").html(selectedWallet.ticker)

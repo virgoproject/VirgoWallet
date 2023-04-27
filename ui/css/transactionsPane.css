@@ -121,7 +121,6 @@
 #transactionsPane .listItem .detail .body {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 #transactionsPane .listItem .details .close {
@@ -347,4 +346,12 @@ cursor: pointer;
 
 .listDate{
     margin-top: 11px;
+}
+
+.amountLimit{
+    display: inline-block;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    overflow: hidden;
+    vertical-align: bottom;
 }
