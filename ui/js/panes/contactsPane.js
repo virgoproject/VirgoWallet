@@ -211,11 +211,8 @@ class ContactsPane {
                 element.click(function (e) {
                     e.stopPropagation()
 
-                    if( e.target.classList.contains('seeMoreChev') || e.target.classList.contains('showElements') || e.target.classList.contains('changeNote') || e.target.classList.contains('changeContact') || e.target.classList.contains('deleteContact')|| e.target.classList.contains('fa-star')|| e.target.classList.contains('fa-check'))
-                        return false
-
-                    ContactsPane.input.setRecipentAddress.val(element.find('.textAddress').html())
-                    ContactsPane.buttons.goBack.click()
+                    $("#body .send .sendForm .recipient").val(res[l].address)
+                    $("#body .send .sendForm .submit").click()
 
                 })
 
@@ -266,6 +263,11 @@ class ContactsPane {
                         $(this).parent().find('.notesPart').show()
                     }
                 })
+
+                element.onclick = () => {
+                    $("#body .send .sendForm .recipient").val(res[l].address)
+                    $("#body .send .sendForm .submit").click()
+                }
 
                 element.show()
                 SendPane.divContactList.append(element)

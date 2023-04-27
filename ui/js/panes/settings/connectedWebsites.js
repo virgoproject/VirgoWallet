@@ -1,11 +1,10 @@
 
 
 document.getElementById('settingsBack').click(function() {
-    $('.listSite').html('')
+    $('.listSite').html("")
 })
 
 $('#connectedWebsites').click(function () {
-
     getBaseInfos().then(res => {
         res = res.connectedSites
         if (res.length <= 0 || res.length === undefined){
