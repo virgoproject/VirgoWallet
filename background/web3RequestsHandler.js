@@ -198,7 +198,7 @@ function grantPendingAuthorization(auth, params){
                         if (auth.method === "eth_sendTransaction") {
                             console.log(auth)
                             let amount = auth.value
-                            let data =  TxIdentifier.getDecodeAbi(auth.data, resp.result, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce)
+                            let data =  TxIdentifier.getDecodeAbi(auth.data, resp.result, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, origin)
                             console.log(data)
                             baseWallet.getCurrentWallet().transactions.unshift(data)
                             baseWallet.save()

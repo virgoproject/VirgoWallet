@@ -40,6 +40,10 @@ $("#addr").html(get("addr"))
 $("#data").html(get("data"))
 $(".feesTicker").html(ticker)
 
+$(".editFees").click(function (){
+    $("#editfees").show()
+})
+
 getTokenDetails(get("allowed")).then(function(detail){
     $("#siteName").html(detail.symbol)
     console.log(detail)
