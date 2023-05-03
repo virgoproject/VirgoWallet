@@ -1,7 +1,7 @@
 
 
 document.getElementById('settingsBack').click(function() {
-    $('.listSite').html("")
+    $('.listSite').innerHTML = ""
 })
 
 $('#connectedWebsites').click(function () {

@@ -417,23 +417,25 @@ class Web3Wallet {
         const _this = this
         if (!this.CG_Platform) return
         //not optimised, better to fetch prices for all addresses at once
-        for(const token of this.tokens){
-            if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
-            console.log("updating price for " + token.contract)
-            fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies=usd&include_24hr_change=true")
-                .then(function (resp) {
-                    resp.json().then(function (res) {
-                        console.log(res)
-                        const price = {
-                            price: parseFloat(res[token.contract.toLowerCase()].usd),
-                            change: parseFloat(res[token.contract.toLowerCase()].usd_24h_change)
-                        }
-                        _this.prices.set(token.contract, price)
-                    })
-                }).catch(function (e) {
+        getBaseInfos().then(res =>{
+            for(const token of this.tokens){
+                if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
+                console.log("updating price for " + token.contract)
+                fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies="+ res.selectedCurrency +"&include_24hr_change=true")
+                    .then(function (resp) {
+                        resp.json().then(function (res) {
+                            console.log(res)
+                            const price = {
+                                price: parseFloat(res[token.contract.toLowerCase()].usd),
+                                change: parseFloat(res[token.contract.toLowerCase()].usd_24h_change)
+                            }
+                            _this.prices.set(token.contract, price)
+                        })
+                    }).catch(function (e) {
                     console.log(e)
-            })
-        }
+                })
+            }
+        })
     }
 
     hasToken(contract){

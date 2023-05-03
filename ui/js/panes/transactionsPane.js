@@ -92,7 +92,6 @@ class TransactionsPane {
     }
 
     loadTxs() {
-        TransactionsPane.list.loading.show()
         getBaseInfos().then(function(data){
             let selectedWallet = data.wallets[data.selectedWallet].wallet
             let transactions = selectedWallet.transactions
@@ -107,7 +106,6 @@ class TransactionsPane {
 
                     transactionsPane.txsCount++
                 }
-                TransactionsPane.list.loading.hide()
             }
 
             if ($("#transactionsPane #transac").hasClass("paneSelected")){
@@ -118,10 +116,8 @@ class TransactionsPane {
 
                     transactionsPane.txsCount++
                 }
-                TransactionsPane.list.loading.hide()
             }
 
-            TransactionsPane.list.loading.hide()
 
             if(transactionsPane.txsCount == transactions.length)
                 transactionsPane.reachedEnd = true
@@ -504,7 +500,7 @@ class TransactionsPane {
             }else{
                 getTokenDetails(transaction.swap.params[0].value[1]).then(function (token1) {
                     elem.find(".ticker.one").html(token1.symbol)
-                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[2], token1.decimals))
+                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[5], token1.decimals))
                 })
             }
 

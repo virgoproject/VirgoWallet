@@ -175,6 +175,19 @@
     font-size: .85em;
 }
 
+#settings .settingsPane .currencyConversion{
+    padding: 1em 2em;
+}
+
+#settings .settingsPane .currencyConversionTitle{
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#settings .settingsPane .currencyConversionDesc {
+    font-size: .85em;
+}
+
 #settings .settingsPane .tab p {
     font-size: 0.9em;
 }

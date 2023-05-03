@@ -40,6 +40,14 @@ browser.storage.local.get("connectedWebsites").then(function(res){
     loadedElems["connectedWebsites"] = true
 })
 
+let selectedCurrency = "usd"
+browser.storage.local.get("selectedCurrency").then(function(res){
+    if(res.selectedCurrency !== undefined)
+        selectedCurrency = res.selectedCurrency
+
+    loadedElems["selectedCurrency"] = true
+})
+
 const pendingTransactions = {}
 const pendingSigns = {}
 
@@ -126,7 +134,7 @@ browser.runtime.onInstalled.addListener(() => {
 })
 
 browser.alarms.onAlarm.addListener(async a => {
-    while(Object.keys(loadedElems).length < 10){
+    while(Object.keys(loadedElems).length < 11){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -158,7 +166,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 10){
+    while(Object.keys(loadedElems).length < 11){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -173,6 +181,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(getBaseInfos())
                 activityHeartbeat()
             }
+            break
+
+        case "setSelectedcurrency":
+            selectedCurrency = request.currency
+            browser.storage.session.set({"selectedCurrency": request.currency})
             break
 
         case "unlockWallet":
@@ -797,6 +810,7 @@ function getBaseInfos(){
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites,
+        "selectedCurrency" : selectedCurrency,
         "setupDone" : setupDone
     }
 }

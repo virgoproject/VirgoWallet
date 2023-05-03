@@ -219,3 +219,7 @@ async function setupDone(){
 async function tutorialDone(){
     return await browser.runtime.sendMessage({command : 'tutorialDone'})
 }
+
+async function setSelectedcurrency(currency) {
+    return await browser.runtime.sendMessage({command : 'setSelectedcurrency'})
+}
