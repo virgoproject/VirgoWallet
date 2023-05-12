@@ -31,7 +31,7 @@ class AirdropPane{
 
         AirdropPane.airdropCard.claimBn.addEventListener('click', (event) => {
             getBaseInfos().then(function (infos) {
-                fetch('http://51.210.180.58:3000/api/getreward',{
+                fetch('https://airdrops.virgo.net:2053/api/getreward',{
                     method: "POST",
                     body: JSON.stringify({address: infos.addresses[0].address}),
                     headers: {'Content-Type': 'application/json'}
@@ -112,7 +112,7 @@ class AirdropPane{
         })
     }
     loadActiveDrops(){
-        fetch('http://51.210.180.58:3000/api/activedrops', {
+        fetch('https://airdrops.virgo.net:2053/api/activedrops', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
         }).then(response => response.json())
@@ -194,7 +194,7 @@ class AirdropPane{
                                                     airdropID : elemClicked.id,
                                                     address : playAddress
                                                 }
-                                                fetch('http://51.210.180.58:3000/api/airdropsetplay',{
+                                                fetch('https://airdrops.virgo.net:2053/api/airdropsetplay',{
                                                     method : "POST",
                                                     body : JSON.stringify(userInfos),
                                                     headers: {'Content-Type': 'application/json'}
@@ -303,7 +303,7 @@ class AirdropPane{
                                                         address : playAddress,
                                                         username : TwitterName
                                                     }
-                                                    fetch('http://51.210.180.58:3000/api/airdropsetplay',{
+                                                    fetch('https://airdrops.virgo.net:2053/api/airdropsetplay',{
                                                         method : "POST",
                                                         body : JSON.stringify(userInfos),
                                                         headers: {'Content-Type': 'application/json'}
@@ -401,7 +401,7 @@ class AirdropPane{
             })
     }
     loadUpcomingDrops(){
-        fetch('http://51.210.180.58:3000/api/upcomingairdrop', {
+        fetch('https://airdrops.virgo.net:2053/api/upcomingairdrop', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
 
@@ -530,7 +530,7 @@ class AirdropPane{
             })
     }
     loadpassedDrops(){
-        fetch('http://51.210.180.58:3000/api/endedairdrop', {
+        fetch('https://airdrops.virgo.net:2053/api/endedairdrop', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
 
