@@ -121,6 +121,15 @@ class MainPane {
 
         })
 
+        events.addListener("currencyChanged", data => {
+            if (data.selectedCurrency === "eur"){
+                $(".dollars").html("&euro;")
+            }
+            else if (data.selectedCurrency === "usd"){
+                $(".dollars").html("$")
+            }
+        })
+
         MainPane.testnetFaucet.button.click(() => {
             MainPane.testnetFaucet.button.hide()
             MainPane.testnetFaucet.loader.show()
@@ -203,7 +212,7 @@ class MainPane {
             const bal = Utils.formatAmount(balance.balance, balance.decimals)
             const fiat = Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals)
 
-            const fiatBal = "$" + fiat
+            const fiatBal = fiat
 
             if(!elem.length){
                 //create row for this asset

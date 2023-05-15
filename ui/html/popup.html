@@ -100,7 +100,7 @@
             <div class="d-inline-flex balance-header">
                 <h1 class="values" data-fiatTotal>0</h1>
                 <h1 class="decmialValues" data-fiatTotal>0</h1>
-                <span class="dollars">$</span>
+                <span class="dollars"></span>
 <!--                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
                     <val>0</val>
                     %
@@ -158,7 +158,7 @@
                                         <b class="ticker"></b></p>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <p class="fiatEq">$0</p>
+                                    <p ><span class="dollars"></span><span class="fiatEq">0</span></p>
                                     <p class="fluctuation"><i class="fas fa-chevron-up"></i>
                                         <val></val>%
                                     </p>
@@ -394,7 +394,7 @@
                             <div class="d-flex balance-header">
                                 <h1 class="values winnedAmmount">0</h1>
                                 <h1 class="values decimalValue"></h1>
-                                <span class="dollarSign">$</span>
+                                <span class="dollars">$</span>
                             </div>
                         </div>
                     </div>
@@ -739,7 +739,7 @@
                 <a class="col-2 max">Use max</a>
             </div>
             <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
-                <p class="value labelCost"><span id="showCost">-</span> $</p>
+                <p class="value labelCost"><span id="showCost">-</span> <span class="dollars">$</span></p>
             </div>
             <div class="col-12 d-flex justify-content-center inputWButton">
                 <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
@@ -2099,7 +2099,7 @@
                     <p class="currencyConversionDesc">Display fiat values in using a specific currency throughout the application.</p>
                     <select name="currency" id="currencyConversion">
                         <option value="usd">USD - United States Dollar</option>
-                        <option value="eur">EUR - Euro</option>
+                        <option value="eur" selected>EUR - Euro</option>
                     </select>
                 </div>
             </div>
@@ -2551,6 +2551,7 @@
 <script src="../js/panes/tutorialPane.js"></script>
 <script src="../js/panes/unlockPane.js"></script>
 <script src="../js/panes/settings/connectedWebsites.js"></script>
+<script src="../js/panes/settings/changeCurrency.js"></script>
 <script src="../js/panes/settings/importMnemonic.js"></script>
 <script src="../js/panes/settings/passwordSetup.js"></script>
 <script src="../js/panes/settings/showMnemonic.js"></script>
