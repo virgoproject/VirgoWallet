@@ -285,7 +285,8 @@ class MainPane {
                         document.getElementById("resumeTokenBar").append(elem)
                     }
 
-                    tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
+                    if(document.getElementById("resumeTokenBar").children.length > 0)
+                        tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
 
                     hasChanged = true
                 }
