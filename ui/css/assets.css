@@ -164,7 +164,7 @@
 }
 
 #assetsPane .listItem .name {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #assetsPane .listItem .ticker {

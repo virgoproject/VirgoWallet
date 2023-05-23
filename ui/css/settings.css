@@ -126,13 +126,17 @@
 }
 
 #settings .accounts .account .address {
-    font-weight: bold;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 15px !important;
     cursor: pointer;
     min-width: 6ch;
     max-width: 18ch;
+}
+
+#settings .accounts .account .ticker {
+    font-weight: 600;
 }
 
 #settings .accounts .account .balance {

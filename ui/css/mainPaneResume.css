@@ -60,11 +60,15 @@ display: block;
 }
 
 #mainPane .resume .assets .asset .title {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #mainPane .resume .assets .asset .amount {
     font-size: 0.85em;
+}
+
+#mainPane .resume .assets .asset .ticker {
+    font-weight: 600;
 }
 
 #mainPane .resume .assets .asset .amount val {
