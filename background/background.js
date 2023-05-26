@@ -116,6 +116,14 @@ browser.storage.local.get("lastActivity").then(function(res){
     loadedElems["lastActivity"] = true
 })
 
+let tutorialDone = false
+browser.storage.local.get("tutorialDone").then(function(res){
+    if(res.tutorialDone !== undefined)
+        tutorialDone = res.tutorialDone
+
+    loadedElems["tutorialDone"] = true
+})
+
 browser.storage.session.get("unlockPassword").then(function(res){
     if(res.unlockPassword !== undefined){
         unlockPassword = res.unlockPassword
@@ -134,7 +142,7 @@ browser.runtime.onInstalled.addListener(() => {
 })
 
 browser.alarms.onAlarm.addListener(async a => {
-    while(Object.keys(loadedElems).length < 11){
+    while(Object.keys(loadedElems).length < 12){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -166,7 +174,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 11){
+    while(Object.keys(loadedElems).length < 12){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -185,7 +193,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "setSelectedcurrency":
             selectedCurrency = request.currency
-            browser.storage.session.set({"selectedCurrency": request.currency})
+            browser.storage.local.set({"selectedCurrency": request.currency})
             break
 
         case "unlockWallet":
@@ -772,9 +780,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case 'tutorialDone':
+            sendResponse(tutorialDone)
+            break
+
+        case "setTutorialDone":
             browser.storage.local.set({"tutorialDone": true})
             tutorialDone = true
-            sendResponse(tutorialDone)
             break
 
         case "setupNot":

@@ -8,7 +8,7 @@ class tutorialPane{
         steps2 : $('#tutorialPopup #tutoStep2'),
         steps3 : $('#tutorialPopup #tutoStep3'),
         tutorialPic : $('#tutorialPopup #imgTutorial'),
-        tutorialTittle : $('#tutorialPopup #tutorialTitle'),
+        tutorialTitle : $('#tutorialPopup #tutorialTitle'),
         tutorialCenteredText : $('#tutorialPopup #tutorialCenteredText'),
         tutorialBottomText : $('#tutorialPopup #tutorialBottomText'),
         tutorialBtn : $('#tutorialPopup #tutorialButton'),
@@ -25,6 +25,7 @@ class tutorialPane{
                 return
             }else {
                 tutorialPane.boxTutorial.tutorialPopup.css('display','block')
+                tutorialPane.boxTutorial.chainSelection.css({'position' : 'relative','z-index' : '1000','pointer-events' : 'none'})
             }
         })
 
@@ -38,21 +39,19 @@ class tutorialPane{
                 case 0:
                     tutorialPane.boxTutorial.chainSelection.css({'position' : '','z-index' : '','pointer-events' : ''})
                     tutorialPane.boxTutorial.accountSelection.css({'position' : 'relative','z-index' : '1000','pointer-events' : 'none'})
-                    tutorialPane.boxTutorial.tutorialPic.attr("src", "../images/tutorialSetup.png");
+                    tutorialPane.boxTutorial.tutorialPic.attr("src", "../images/tutorial/settings.png");
                     tutorialPane.boxTutorial.steps2.addClass('stepsActive')
-                    tutorialPane.boxTutorial.tutorialTittle.text('Access to your account settings')
-                    tutorialPane.boxTutorial.tutorialCenteredText.text('Manage your security settings,create and switch accounts and much more.')
-                    tutorialPane.boxTutorial.tutorialBottomText.text('You will find our support to contact us in case of problems.')
-                    tutorialPane.boxTutorial.tutorialBtn.text('Continue')
+                    tutorialPane.boxTutorial.tutorialTitle.text('Access to your account settings')
+                    tutorialPane.boxTutorial.tutorialCenteredText.text('Manage your security settings,create and switch between accounts and much more.')
+                    tutorialPane.boxTutorial.tutorialBottomText.text('')
                     activeSteps = 1
                     break;
                 case 1:
-                    tutorialPane.boxTutorial.tutorialPic.attr("src", "../images/tutorialAssetsFinal.png");
+                    tutorialPane.boxTutorial.tutorialPic.attr("src", "../images/tutorial/assets.png");
                     tutorialPane.boxTutorial.steps3.addClass('stepsActive')
-                    tutorialPane.boxTutorial.tutorialTittle.text('View your transaction and swap history')
-                    tutorialPane.boxTutorial.tutorialCenteredText.text('Watch all your activities in the Wallet, down to the last detail.')
+                    tutorialPane.boxTutorial.tutorialTitle.text('View your activity history')
+                    tutorialPane.boxTutorial.tutorialCenteredText.text('Keep an eye on your wallet activity, down to the last detail.')
                     tutorialPane.boxTutorial.tutorialBottomText.text("You won't miss anything.")
-                    tutorialPane.boxTutorial.tutorialBtn.text('I discover Virgo Wallet')
                     tutorialPane.boxTutorial.accountSelection.css({'position' : '','z-index' : '','pointer-events' : ''})
                     tutorialPane.boxTutorial.pendingTxs.css({'position' : 'relative','z-index' : '1000','pointer-events' : 'none'})
                     activeSteps = 2
@@ -61,7 +60,7 @@ class tutorialPane{
                 case 2:
                     tutorialPane.boxTutorial.tutorialPopup.css('display','none')
                     tutorialPane.boxTutorial.pendingTxs.css({'position' : '','z-index' : '','pointer-events' : ''})
-                    tutorialDone()
+                    setTutorialDone()
                     break;
             }
 
@@ -73,7 +72,7 @@ class tutorialPane{
             tutorialPane.boxTutorial.accountSelection.css({'position' : '','z-index' : '','pointer-events' : ''})
             tutorialPane.boxTutorial.pendingTxs.css({'position' : '','z-index' : '','pointer-events' : ''})
             tutorialPane.boxTutorial.chainSelection.css({'position' : '','z-index' : '','pointer-events' : ''})
-            tutorialDone()
+            setTutorialDone()
 
         })
 

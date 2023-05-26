@@ -137,9 +137,9 @@
 }
 
 #transactionsPane .listItem progress-ring {
-    display: block;
-    position: absolute;
     transform: translate(-6px, -44px);
+    height: 0;
+    width: 50px;
 }
 
 #transactionsPane .listItem.opened .details {

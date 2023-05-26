@@ -127,6 +127,8 @@ class TransactionsPane {
             else
                 TransactionsPane.list.empty.hide()
 
+            console.log("sucepute")
+
             transactionsPane.updateTxs(data)
 
         })
@@ -718,108 +720,112 @@ class TransactionsPane {
     }
 
     showBasicTransaction(selectedWallet, transaction){
-        let elem = TransactionsPane.list.basicTx.clone()
-        elem.attr("id", "tx"+transaction.hash)
+        try {
+            let elem = TransactionsPane.list.basicTx.clone()
+            elem.attr("id", "tx"+transaction.hash)
 
-        if(transaction.contractAddr == selectedWallet.ticker || transaction.contractAddr == "WEB3_CALL") {
-            elem.find(".amount val").html(Utils.formatAmount(transaction.amount, selectedWallet.decimals))
-            elem.find(".amount span").html(selectedWallet.ticker)
-        } else {
-            let tokenInfos = selectedWallet.tokens.filter(record => record.contract == transaction.contractAddr)[0]
-            console.log(tokenInfos)
-            elem.find(".amount span").html(tokenInfos.ticker)
-            elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
-        }
-        const date = new Date(transaction.date)
+            if(transaction.contractAddr == selectedWallet.ticker || transaction.contractAddr == "WEB3_CALL") {
+                elem.find(".amount val").html(Utils.formatAmount(transaction.amount, selectedWallet.decimals))
+                elem.find(".amount span").html(selectedWallet.ticker)
+            } else {
+                let tokenInfos = selectedWallet.tokens.filter(record => record.contract == transaction.contractAddr)[0]
+                console.log(tokenInfos)
+                elem.find(".amount span").html(tokenInfos.ticker)
+                elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
+            }
+            const date = new Date(transaction.date)
 
-        elem.find(".recipient").html(transaction.recipient)
-        elem.find(".addr val").html(transaction.recipient)
+            elem.find(".recipient").html(transaction.recipient)
+            elem.find(".addr val").html(transaction.recipient)
 
-        elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
-        elem.find(".details .recipient").click(function(){
-            copyToClipboard($(this).get(0))
-            elem.find(".recipientTitle").hide()
-            elem.find(".recipientCopied").show()
-            setTimeout(function (){
-                elem.find(".recipientTitle").show()
-                elem.find(".recipientCopied").hide()
-            }, 2000)
-        })
-
-
-        elem.attr("data-date", transaction.date)
-        let options = {hour: "2-digit", minute: "2-digit"}
-
-        if (transaction.status === false){
-            elem.find(".status").html("Canceled")
-            elem.addClass('refusedTx').removeClass('pendingTx');
-        }
-
-        if (transaction.status === true){
-            elem.find(".status").html("Confirmed")
-            elem.addClass('confirmedTx').removeClass('pendingTx');
-        }
-
-        options = {month: "short", day: "numeric"};
-        elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
-
-        options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
-        elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
-
-        elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
-        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
-        console.log(transaction)
-        elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
-        elem.find(".totalFees span").html(selectedWallet.ticker)
-
-        elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + transaction.contractAddr + "/logo.png')")
-
-        if(selectedWallet.explorer === undefined)
-            elem.find("button").hide()
-        else
-            elem.find("button").click(function(){
-                window.open(selectedWallet.explorer + transaction.hash, "_blank")
+            elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+            elem.find(".details .recipient").click(function(){
+                copyToClipboard($(this).get(0))
+                elem.find(".recipientTitle").hide()
+                elem.find(".recipientCopied").show()
+                setTimeout(function (){
+                    elem.find(".recipientTitle").show()
+                    elem.find(".recipientCopied").hide()
+                }, 2000)
             })
 
-        elem.click(function(){
-            if(elem.hasClass("opened")) return
 
-            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
-            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
-            elem.addClass("opened")
-        })
+            elem.attr("data-date", transaction.date)
+            let options = {hour: "2-digit", minute: "2-digit"}
 
-        elem.find(".closeChevron").click(function(){
-            if(!elem.hasClass("opened")) return
-            elem.removeClass("opened")
-            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
-            return false
-        })
+            if (transaction.status === false){
+                elem.find(".status").html("Canceled")
+                elem.addClass('refusedTx').removeClass('pendingTx');
+            }
 
-        if(transaction.status !== undefined){
-            elem.find(".tweakBtns").hide()
-            elem.find(".badge-warning").hide()
-            if(!transaction.status && transaction.canceling)
-                elem.find(".badge-secondary").show()
+            if (transaction.status === true){
+                elem.find(".status").html("Confirmed")
+                elem.addClass('confirmedTx').removeClass('pendingTx');
+            }
+
+            options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+            console.log(transaction)
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
+            elem.find(".totalFees span").html(selectedWallet.ticker)
+
+            elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + transaction.contractAddr + "/logo.png')")
+
+            if(selectedWallet.explorer === undefined)
+                elem.find("button").hide()
             else
-                elem.find(".badge-secondary").hide()
-
-        }else{
-            elem.find(".speed-up").click(function(){
-                transactionsPane.confirmSpeedup(transaction, elem)
-            })
-            if(transaction.canceling){
-                elem.find(".cancel").hide()
-                elem.find(".badge-warning").show()
-            } else
-                elem.find(".cancel").click(function(){
-                    transactionsPane.confirmCancel(transaction, elem)
+                elem.find("button").click(function(){
+                    window.open(selectedWallet.explorer + transaction.hash, "_blank")
                 })
+
+            elem.click(function(){
+                if(elem.hasClass("opened")) return
+
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".closeChevron").click(function(){
+                if(!elem.hasClass("opened")) return
+                elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
+                return false
+            })
+
+            if(transaction.status !== undefined){
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if(!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            }else{
+                elem.find(".speed-up").click(function(){
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if(transaction.canceling){
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function(){
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+
+            TransactionsPane.list.self.append(elem)
+            elem.show()
+        }catch(e){
+            console.log(e)
         }
-
-
-        TransactionsPane.list.self.append(elem)
-        elem.show()
     }
 
     updateAtomicSwapTx(elem, transaction){
@@ -861,6 +867,7 @@ class TransactionsPane {
                 if(transaction.status !== undefined){
                     elem.find(".badge-warning").hide()
                     if(!transaction.status){
+                        console.log("hiding")
                         elem.find("progress-ring").hide()
                         elem.find(".status").html("Canceled")
                         elem.addClass('refusedTx').removeClass('pendingTx');
@@ -872,6 +879,7 @@ class TransactionsPane {
 
                     }else {
                         if(transaction.confirmations >= 12){
+                            console.log("hiding")
                             elem.find("progress-ring").hide()
                             elem.find(".status").html("Confirmed")
                             elem.addClass('confirmedTx').removeClass('pendingTx');

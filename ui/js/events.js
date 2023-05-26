@@ -50,8 +50,10 @@ class Events {
                 events.fireCurrencyChanged(data)
             }else{
 
-                if(events.oldDataJSON.selectedWallet != data.selectedWallet)
+                if(events.oldDataJSON.selectedWallet != data.selectedWallet){
                     this.fireChainChangedEvent(data)
+                    this.fireCurrencyChanged(data)
+                }
 
                 if(events.oldDataJSON.selectedAddress != data.selectedAddress)
                     this.fireAddressChangedEvent(data)

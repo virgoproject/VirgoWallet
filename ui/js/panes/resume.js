@@ -122,6 +122,7 @@ class MainPane {
         })
 
         events.addListener("currencyChanged", data => {
+            console.log("currency changed")
             if (data.selectedCurrency === "eur"){
                 $(".dollars").html("&euro;")
             }
@@ -231,7 +232,7 @@ class MainPane {
                     _this.updateTokenBar(selectedAddress)
                 }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
 
-                elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
+                elem.find(".fiatEq").html(Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
                 elem.find("svg").attr("data-jdenticon-value", contractAddr)
 
                 elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
