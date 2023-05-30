@@ -167,6 +167,7 @@
     color: var(--highlightColor1);
     cursor: pointer;
     transition: color ease 0.25s;
+    text-overflow: ellipsis;
 }
 
 #transactionsPane .listItem.opened .recipient:hover {

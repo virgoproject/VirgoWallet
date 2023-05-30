@@ -3,7 +3,7 @@ class ImportMnemonic{
     constructor() {
 
         /** -- Restore from mnemonic -- **/
-        $("#settings .settingsPane .tab[data-target=importMnemonic]").click(function(){
+        $("#import_mnemonic").click(function(){
             //reset forms
             SettingsPane.importMnemonic.warn.hide()
             SettingsPane.importMnemonic.ask.show()
@@ -11,6 +11,8 @@ class ImportMnemonic{
             SettingsPane.importMnemonic.inputWords.val("")
             SettingsPane.importMnemonic.askBtn.attr("disabled", true)
             SettingsPane.importMnemonic.askInput.attr("disabled", false)
+
+            SettingsPane.importMnemonic.self.show()
         })
 
         SettingsPane.importMnemonic.inputWords.on("input", function(){

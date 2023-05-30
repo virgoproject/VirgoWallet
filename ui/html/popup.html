@@ -75,7 +75,7 @@
 <div id="mainPane" style="display: none">
     <div class="header">
         <div class="topbar row d-flex align-items-center">
-            <div class="col-6 d-flex align-items-center address wallet-address" id="accountSelectionHeader">
+            <div class="col-6 align-items-center address wallet-address" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
                 <div class="contentAddress">
                     <div class="d-flex align-items-center copy">
@@ -1441,7 +1441,7 @@
             <div class="loading text-center mt-2 mb-2">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
-            <div class="listEmpty text-center mt-5 mb-5" style="display: none">
+            <div class="listEmpty text-center mt-5 mb-5" style="display: none" id="noTransactionMsg">
                 <img src="/ui/images/noTransactions.png" class="img-fluid" alt="nocontact" />
                 <h4>Nothing to show!</h4>
                 <p>Your wallet activity will appear here.</p>
@@ -1697,21 +1697,25 @@
                 </div>
             </div>
             <div class="settingsCat" data-settingId="security" data-title="Security & Privacy" data-settingsLevel="1">
-
                 <div class="row securityPane">
-                    <h5 class="securitytitles">Protect Your Wallet</h5>
-                    <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
+                    <h5 class="securitytitles">Backup seed phrase</h5>
+                    <p class="securitydesc">Reveal your current seed phrase to backup your wallet.</p>
                     <button class="button tab" id="revealSeed" data-target="setupPassword">Reveal Seed Phrase</button>
                 </div>
                 <div class="row securityPane">
                     <h5 class="securitytitles">Protect Your Wallet</h5>
-                    <p class="securitydesc">Display fiat values in using a specific currency throughout the application.</p>
+                    <p class="securitydesc">Setup a password that will be asked to unlock the wallet after inactivity.</p>
                     <button class="buttonEmpty tab" id="change_password" data-target="setupPassword">Setup/Change password</button>
                 </div>
                 <div class="row securityPane">
+                    <h5 class="securitytitles">Restore account</h5>
+                    <p class="securitydesc">Import an already existing seed phrase into the wallet.</p>
+                    <button class="buttonEmpty tab" id="import_mnemonic" data-target="importMnemonic">Import seed phrase</button>
+                </div>
+                <div class="row securityPane">
                     <h5 class="securitytitles">Auto-Lock</h5>
-                    <p class="securitydesc">Choose the amount of time before the application automatically locks.</p>
-                    <select class="form-select">
+                    <p class="securitydesc">Choose the amount of time before the wallet automatically locks.</p>
+                    <select class="form-select" id="autolockDelaySetting">
                         <option value="5">5 minutes</option>
                         <option value="10">10 minutes</option>
                         <option value="30">30 minutes</option>
@@ -2081,8 +2085,8 @@
             <div class="settingsCat" data-settingId="connectedWebsites" data-title="Connected Websites" data-settingsLevel="1">
                 <div class="noTracked text-center" style="display: none">
                     <img src="/ui/images/noSites.png" alt="noSites" class="img-fluid" />
-                    <p class="m-0">No website tracking wallet</p>
-                    <p class="p-0 m-0">Authorized website will be show here</p>
+                    <p class="m-0">No connected websites</p>
+                    <p class="p-0 m-0">Web3 connections will appear here</p>
                 </div>
                 <div class="row trakeExemple justify-content-center align-items-center p-2 mt-2" id="trakeExemple" style="display: none">
                     <img class="col-3 imgAffiliated img-fluid" src="/"/>

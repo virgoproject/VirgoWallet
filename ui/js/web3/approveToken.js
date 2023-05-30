@@ -46,12 +46,11 @@ $(".editFees").click(function (){
 
 getTokenDetails(get("allowed")).then(function(detail){
     $("#siteName").html(detail.symbol)
-    console.log(detail)
 })
 getAsset(ticker).then(function(assetInfos){
     editFees.onGasChanged = (gasPrice, gasLimit) => {
 
-        $("#allow").click(async () => {
+        $("#allow").unbind("click").click(async () => {
             await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: gasPrice}})
             window.close()
         })
@@ -70,7 +69,4 @@ getAsset(ticker).then(function(assetInfos){
 })
 $("svg").attr("data-jdenticon-value",get("addr"))
 
-
-
-
-
+window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

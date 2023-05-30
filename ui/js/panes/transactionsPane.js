@@ -15,7 +15,7 @@ class TransactionsPane {
         approveTx: $('#transactionsApproveTx'),
         loading: $("#transactionsPane .loading"),
         wrapper: $("#transactionsPane .listWrap"),
-        empty: $("#transactionsPane .listEmpty")
+        empty: $("#noTransactionMsg")
     }
     static speedUp = {
         self: $("#speedupPopup"),
@@ -126,8 +126,6 @@ class TransactionsPane {
                 TransactionsPane.list.empty.show()
             else
                 TransactionsPane.list.empty.hide()
-
-            console.log("sucepute")
 
             transactionsPane.updateTxs(data)
 

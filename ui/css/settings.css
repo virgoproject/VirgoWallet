@@ -1,5 +1,6 @@
 #accountSelectionHeader {
     z-index: 10;
+    display: flex;
 }
 
 .edit{
@@ -226,6 +227,8 @@
     width: 100%;
     background: #faf6fc;
     height: 544px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #settings .settingsPane .writeMnemonic .word {
@@ -283,7 +286,6 @@
 }
 
 #settings .settingsPane .importMnemonic{
-    margin-top: -19px !important;
     height: 100%;
 }
 

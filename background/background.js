@@ -89,28 +89,28 @@ let lastActivity = Date.now();
 let setupDone = false;
 
 browser.storage.local.get('setupDone').then(function (res) {
-    if (res.setupDone !== undefined){
+    if (res.setupDone !== undefined && res.setupDone !== null){
         setupDone = res.setupDone;
     }
     loadedElems["setupDone"] = true
 })
 
 browser.storage.local.get("autolockEnabled").then(function(res){
-    if(res.autolockEnabled !== undefined)
+    if(res.autolockEnabled !== undefined && res.autolockEnabled !== null)
         autolockEnabled = res.autolockEnabled
 
     loadedElems["autolockEnabled"] = true
 })
 
 browser.storage.local.get("lockDelay").then(function(res){
-    if(res.lockDelay !== undefined)
+    if(res.lockDelay !== undefined && res.lockDelay !== null)
         lockDelay = res.lockDelay
 
     loadedElems["lockDelay"] = true
 })
 
 browser.storage.local.get("lastActivity").then(function(res){
-    if(res.lastActivity !== undefined)
+    if(res.lastActivity !== undefined && res.lastActivity !== null)
         lastActivity = res.lastActivity
 
     loadedElems["lastActivity"] = true
@@ -118,14 +118,14 @@ browser.storage.local.get("lastActivity").then(function(res){
 
 let tutorialDone = false
 browser.storage.local.get("tutorialDone").then(function(res){
-    if(res.tutorialDone !== undefined)
+    if(res.tutorialDone !== undefined && res.tutorialDone !== null)
         tutorialDone = res.tutorialDone
 
     loadedElems["tutorialDone"] = true
 })
 
 browser.storage.session.get("unlockPassword").then(function(res){
-    if(res.unlockPassword !== undefined){
+    if(res.unlockPassword !== undefined && res.unlockPassword !== null){
         unlockPassword = res.unlockPassword
         BaseWallet.loadFromJSON(unlockPassword).then(() => {
             loadedElems["unlockPassword"] = true
@@ -160,6 +160,7 @@ browser.alarms.onAlarm.addListener(async a => {
 function activityHeartbeat(){
     lastActivity = Date.now()
     browser.storage.local.set({"lastActivity": lastActivity})
+    console.log("heartbeat: " + lastActivity)
 }
 
 //listen for messages sent by popup
@@ -754,11 +755,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "changeModalStatus":
-                for (let i =0; request.state[0].length > i; i++){
-                    const json = {}
-                    json['airdrop' + request.state[i].airdropID] = true
-                    browser.storage.local.set(json)
-                }
+            for (let i =0; request.state[0].length > i; i++){
+                const json = {}
+                json['airdrop' + request.state[i].airdropID] = true
+                browser.storage.local.set(json)
+            }
             break
 
         case 'deleteConnectedSite':
@@ -899,11 +900,11 @@ function sendTo(request, sendResponse){
                     txResume.confirmations = confirmationNumber
                     baseWallet.save()
                 }).catch(e => {
-                    if(e.code == -32000){
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        sendTo(request, sendResponse)
-                    }
-                })
+                if(e.code == -32000){
+                    baseWallet.selectWallet(baseWallet.selectedWallet)
+                    sendTo(request, sendResponse)
+                }
+            })
             return
         }
 
@@ -969,11 +970,11 @@ function sendTo(request, sendResponse){
                 txResume.confirmations = confirmationNumber
                 baseWallet.save()
             }).catch(e => {
-                if(e.code == -32000){
-                    baseWallet.selectWallet(baseWallet.selectedWallet)
-                    sendTo(request, sendResponse)
-                }
-            })
+            if(e.code == -32000){
+                baseWallet.selectWallet(baseWallet.selectedWallet)
+                sendTo(request, sendResponse)
+            }
+        })
     })
 }
 
