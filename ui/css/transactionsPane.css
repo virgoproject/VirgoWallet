@@ -333,12 +333,22 @@ cursor: pointer;
     color: var(--bs-body-color);
 }
 
-#transactionsPane .timeApprove{
-    margin-left: 41px;
-}
-
 #transactionsPane .time{
     float: right;
+}
+#transactionsPane .site{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+}
+
+#transactionsPane .amountOverflow{
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    max-width: 15ch;
 }
 
 #transactionsPane .chevronOpened{

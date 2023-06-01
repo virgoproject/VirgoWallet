@@ -936,11 +936,11 @@
                         <i class="fa-solid fa-arrow-right statusColor"></i>
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
-                    <div class="col-8 justify-content-center align-self-center">
+                    <div class="col-9 justify-content-center align-self-center">
                         <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
                         <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
                     </div>
-                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                    <div class="col-1 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -1176,11 +1176,11 @@
                         <i class="fa-solid fa-right-left statusColor"></i>
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
-                    <div class="col-8">
+                    <div class="col-9">
                         <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="addr">On VirgoWallet <span class="time"></span></p>
+                        <p class="addr"><span class="site">On VirgoWallet</span> <span class="time"></span></p>
                     </div>
-                    <div class="col-2 text-right justify-content-center align-self-center p-0">
+                    <div class="col-1 text-right justify-content-center align-self-center p-0">
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -1214,103 +1214,13 @@
                                 <span class="badge badge-secondary" style="display: none">Canceled by user</span>
                                 <span class="badge badge-warning" style="display: none">Canceling..</span>
                             </div>
-                            <p class="body amountIn col-6 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
+                            <p class="body amountIn col-6 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker one">ETH</span></p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
                             <p class="title col-6">Amount out</p>
-                            <p class="body amountOut col-6 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
-                        </div>
-                    </div>
-                    <div class="row fees mb-3">
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title col-6 text-left">Gas Price</p>
-                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title col-6 text-left">Gas Limit</p>
-                                    <p class="body gasLimit col-6 text-right">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title col-6 text-left">Gas Used</p>
-                                    <p class="body gasUsed col-6 text-right">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title col-6 text-left">Total fees</p>
-                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
-                </div>
-            </div>
-            <div class="listItem mb-2 swapTokenForTokenTx pendingTx" id="transactionsTokenForTokenSwapTx" style="display: none">
-                <div class="row header">
-                    <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-right-left statusColor"></i>
-                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
-                    </div>
-                    <div class="col-9">
-                        <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="addr">On <span class="site"></span> <span class="time"></span></p>
-                    </div>
-                    <div class="col-1 text-right justify-content-center align-self-center p-0" >
-                        <i class="fas fa-chevron-right closeChevron"></i>
-                    </div>
-                    <div class="col-12">
-                        <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="details">
-                    <div class="detail">
-                        <div class="row">
-                            <div class="col-6">
-                                <p class="title">Status</p>
-                            </div>
-                        <p class="body amount text-right col-6"><span class="status"></span></p>
-                        </div>
-                    </div>
-                    <div class="detail mb-3">
-                        <div class="row">
-                            <p class="title col-4">Date</p>
-                            <p class="body date col-8 text-right">-</p>
-                        </div>
-                    </div>
-                    <div class="detail">
-                        <div class="row">
-                            <div class="col-6">
-                                <p class="title">Amount in</p>
-                            </div>
-                            <div class="col-6 text-right" style="display: none">
-                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
-                                <span class="badge badge-warning" style="display: none">Canceling..</span>
-                            </div>
-                            <p class="body amountIn col-6 text-right"><val class="amountLimit">-</val> <span class="ticker one">ETH</span></p>
-                        </div>
-                    </div>
-                    <div class="detail">
-                        <div class="row">
-                            <p class="title col-6">Amount out</p>
-                            <p class="body amountOut col-6 text-right"><val class="amountLimit">-</val> <span class="ticker two">ETH</span></p>
+                            <p class="body amountOut col-6 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker two">ETH</span></p>
                         </div>
                     </div>
                     <div class="row fees mb-3">
@@ -1356,11 +1266,11 @@
                         <i class="fa-solid fa-check statusColor"></i>
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
-                    <div class="col-8 justify-content-center align-self-center">
+                    <div class="col-9 justify-content-center align-self-center">
                         <p class="title">Allow <span class="ticker token" ></span></p>
-                        <p class="addr">On <span class="site"></span> <span class="timeApprove"></span></p>
+                        <p class="addr">On <span class="site"></span> <span class="time"></span></p>
                     </div>
-                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                    <div class="col-1 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
@@ -1379,13 +1289,13 @@
                             <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
-                    <div class="detail" style="margin-bottom: 20px">
+                    <div class="detail mb-3">
                         <div class="row">
                             <p class="title col-4">Date</p>
-                            <p class="body date col-8 bold text-right">-</p>
+                            <p class="body date col-8 text-right">-</p>
                         </div>
                     </div>
-                    <div class="detail " style="margin-bottom: 20px">
+                    <div class="detail">
                         <div class="row">
                             <p class="title SiteTitle col-7">Spender address <i class="far fa-copy copy"></i></p>
                             <p class="title SiteCopied col-7" style="display: none">Copied!</p>
@@ -1397,7 +1307,7 @@
                             <p class="body recipient bold col-5 text-right">-</p>
                         </div>
                     </div>
-                    <div class="row fees">
+                    <div class="row fees mb3">
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
@@ -1425,8 +1335,8 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title bold text-left col-5">Total fees</p>
-                                    <p class="body totalFees bold col-7"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title  text-left col-6">Total fees</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
                                 </div>
                             </div>
                         </div>
