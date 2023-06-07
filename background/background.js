@@ -28,7 +28,7 @@ if(browser.storage.session === undefined){
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.9"
+const VERSION = "0.8.0"
 
 const loadedElems = {}
 
@@ -160,7 +160,6 @@ browser.alarms.onAlarm.addListener(async a => {
 function activityHeartbeat(){
     lastActivity = Date.now()
     browser.storage.local.set({"lastActivity": lastActivity})
-    console.log("heartbeat: " + lastActivity)
 }
 
 //listen for messages sent by popup
@@ -303,6 +302,16 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "getTokenDetails":
+            if(request.asset === undefined){
+                sendResponse(false)
+                return
+            }
+
+            if(baseWallet.getCurrentWallet().hasToken(request.asset)){
+                sendResponse(baseWallet.getCurrentWallet().tokenSet.get(request.asset))
+                return
+            }
+
             const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
             tokenContract.methods.name().call().then(function(name){
                 tokenContract.methods.decimals().call().then(function(decimals){

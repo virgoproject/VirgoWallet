@@ -180,6 +180,7 @@ class SendPane {
             if($(this).attr("disabled")) return;
             SendPane.recipient.val("")
             SendPane.confirmForm.hide()
+            SendPane.btnSubmit.attr("disabled", true)
             $("#sendAssetSelect").val('default').selectpicker("refresh");
             $('#amountSend').val("")
             $('#sendNextStep').attr("disabled", true)
@@ -212,6 +213,7 @@ class SendPane {
                     notyf.success("Transaction sent!")
                     SendPane.recipient.val("")
                     SendPane.amount.val(null)
+                    SendPane.btnSubmit.attr("disabled", true)
                     $("#sendAssetSelect").val('default').selectpicker("refresh");
                     SendPane.confirmForm.hide()
                     SendPane.feesForm.hide()
@@ -260,7 +262,6 @@ class SendPane {
                 return
             }
             validateAddress(input.val()).then(function(res){
-                console.log("nnnoooooo")
                 SendPane.btnSubmit.attr("disabled", !res)
             })
         })

@@ -92,7 +92,12 @@ class TransactionsPane {
     }
 
     loadTxs() {
-        getBaseInfos().then(function(data){
+        TransactionsPane.list.loading.show()
+
+        if(transactionsPane.txsCount == 0)
+            TransactionsPane.list.wrapper.hide()
+
+        getBaseInfos().then(async function(data){
             let selectedWallet = data.wallets[data.selectedWallet].wallet
             let transactions = selectedWallet.transactions
             let initialCount = transactionsPane.txsCount
@@ -102,7 +107,7 @@ class TransactionsPane {
                 while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
 
                     transactionsPane.showDate(transactions[transactionsPane.txsCount])
-                    transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
+                    await transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
 
                     transactionsPane.txsCount++
                 }
@@ -112,12 +117,14 @@ class TransactionsPane {
                 while(transactionsPane.txsCount < transactions.length && transactionsPane.txsCount-initialCount < 15){
 
                     transactionsPane.showDate(transactions[transactionsPane.txsCount])
-                    transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
+                    await transactionsPane.showTransaction(selectedWallet, transactions[transactionsPane.txsCount])
 
                     transactionsPane.txsCount++
                 }
             }
 
+            TransactionsPane.list.loading.hide()
+            TransactionsPane.list.wrapper.show()
 
             if(transactionsPane.txsCount == transactions.length)
                 transactionsPane.reachedEnd = true
@@ -132,7 +139,7 @@ class TransactionsPane {
         })
     }
 
-    showTransaction(selectedWallet, transaction){
+    async showTransaction(selectedWallet, transaction){
         switch (transaction.contractAddr){
             case "SWAP":
                 this.showSwapTransaction(selectedWallet, transaction)
@@ -141,7 +148,7 @@ class TransactionsPane {
                 this.showApprovedTransaction(selectedWallet, transaction)
                 break
             case 'WEB3_SWAP':
-                this.showSwapTransaction(selectedWallet, transaction)
+                await this.showSwapTransaction(selectedWallet, transaction)
                 break
             case 'NOTIF':
                 this.showNotifTransaction(selectedWallet, transaction)
@@ -484,161 +491,148 @@ class TransactionsPane {
         elem.show()
     }
 
-    showSwapTransaction(selectedWallet, transaction){
-        let elem = TransactionsPane.list.swapTx.clone()
-        elem.attr("id", "tx"+transaction.hash)
+    async showSwapTransaction(selectedWallet, transaction){
+        try {
+            let elem = TransactionsPane.list.swapTx.clone()
+            elem.attr("id", "tx"+transaction.hash)
 
-        if (transaction.contractAddr === "WEB3_SWAP"){
-            if (transaction.swap.name !== "exactInputSingle"){
-                getTokenDetails(transaction.swap.params[2].value[0]).then(function (token1) {
-                    elem.find(".ticker.one").html(token1.symbol)
-                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value, token1.decimals))
-                })
-            }else{
-                getTokenDetails(transaction.swap.params[0].value[1]).then(function (token1) {
-                    elem.find(".ticker.one").html(token1.symbol)
-                    elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.params[0].value[5], token1.decimals))
-                })
-            }
+            console.log(transaction)
 
-            if (transaction.swap.name !== "exactInputSingle"){
-                let tokenAdr = transaction.swap.params[2].value.length - 1
-                getTokenDetails(transaction.swap.params[2].value[tokenAdr]).then(function (token2){
-                    elem.find(".ticker.two").html(token2.symbol)
-                    if(transaction.swap.params[2].value !== undefined)
-                        elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.params[1].value, token2.decimals))
-                })
-            }else {
-                getTokenDetails(transaction.swap.params[0].value[0]).then(function (token2){
-                    elem.find(".ticker.two").html(token2.symbol)
+            if (transaction.contractAddr === "WEB3_SWAP"){
+                const token1 = await getTokenDetails(transaction.swap.tokenIn)
+                elem.find(".ticker.one").html(token1.symbol)
+                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swap.amountIn, token1.decimals))
 
-                    if(transaction.swap.params[0].value !== undefined)
-                        elem.find(".amountOut val").html(Utils.formatAmount(transaction.amount, token2.decimals))
-                })
-            }
+                const token2 = await getTokenDetails(transaction.swap.tokenOut)
+                elem.find(".ticker.two").html(token2.symbol)
+                if(transaction.swap.amountOut !== undefined)
+                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.swap.amountOut, token2.decimals))
 
-            if (transaction.origin !== undefined){
-                elem.find(".site").html(transaction.origin.replace(/^https?:\/\//, ''))
-            }
-        }
-
-        if (transaction.contractAddr === "SWAP"){
-            let token1;
-
-            let logo1 = transaction.swapInfos.route[0]
-            if(logo1 == selectedWallet.contract){
-                token1 = {
-                    decimals: selectedWallet.decimals,
-                    ticker: selectedWallet.ticker
+                if (transaction.origin !== undefined){
+                    elem.find(".site").html(transaction.origin.replace(/^https?:\/\//, ''))
                 }
-                logo1 = selectedWallet.ticker
-            }else
-                token1 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[0])[0]
+            }
+
+            if (transaction.contractAddr === "SWAP"){
+                let token1;
+
+                let logo1 = transaction.swapInfos.route[0]
+                if(logo1 == selectedWallet.contract){
+                    token1 = {
+                        decimals: selectedWallet.decimals,
+                        ticker: selectedWallet.ticker
+                    }
+                    logo1 = selectedWallet.ticker
+                }else
+                    token1 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[0])[0]
 
 
-            let token2;
+                let token2;
 
-            let logo2 = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
-            if(logo2 == selectedWallet.contract){
-                token2 = {
-                    decimals: selectedWallet.decimals,
-                    ticker: selectedWallet.ticker
-                }
-                logo2 = selectedWallet.ticker
-            }else
-                token2 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[transaction.swapInfos.route.length-1])[0]
-
-
-
-            elem.find(".smallDetails .ticker").html(token1.ticker)
-
-            elem.find(".ticker.one").html(token1.ticker)
-            elem.find(".ticker.two").html(token2.ticker)
-
-            elem.find(".amountIn val").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
-
-            if(transaction.swapInfos.amountOut !== undefined)
-                elem.find(".amountOut val").html(Utils.formatAmount(transaction.swapInfos.amountOut, token2.decimals))
-        }
-
-
-
-        if (transaction.status === false){
-            elem.find(".status").html("Canceled")
-            elem.addClass('refusedTx').removeClass('pendingTx');
-        }
-
-        if (transaction.status === true){
-            elem.find(".status").html("Confirmed")
-            elem.addClass('confirmedTx').removeClass('pendingTx');
-        }
+                let logo2 = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
+                if(logo2 == selectedWallet.contract){
+                    token2 = {
+                        decimals: selectedWallet.decimals,
+                        ticker: selectedWallet.ticker
+                    }
+                    logo2 = selectedWallet.ticker
+                }else
+                    token2 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[transaction.swapInfos.route.length-1])[0]
 
 
 
-        const dateswap = new Date(transaction.date)
+                elem.find(".smallDetails .ticker").html(token1.ticker)
 
-        elem.find(" .time").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+                elem.find(".ticker.one").html(token1.ticker)
+                elem.find(".ticker.two").html(token2.ticker)
 
-        elem.attr("data-date", transaction.date)
-        const date = new Date(transaction.date)
+                elem.find(".amountIn val").html(Utils.formatAmount(transaction.swapInfos.amountIn, token1.decimals))
 
-        let options = {month: "short", day: "numeric"};
-        elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+                if(transaction.swapInfos.amountOut !== undefined)
+                    elem.find(".amountOut val").html(Utils.formatAmount(transaction.swapInfos.amountOut, token2.decimals))
+            }
 
-        options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
-        elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
 
-        elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
-        elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
 
-        elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
-        elem.find(".totalFees span").html(selectedWallet.ticker)
+            if (transaction.status === false){
+                elem.find(".status").html("Canceled")
+                elem.addClass('refusedTx').removeClass('pendingTx');
+            }
 
-        if(selectedWallet.explorer === undefined)
-            elem.find("button").hide()
-        else
-            elem.find("button").click(function(){
-                window.open(selectedWallet.explorer + transaction.hash, "_blank")
-            })
+            if (transaction.status === true){
+                elem.find(".status").html("Confirmed")
+                elem.addClass('confirmedTx').removeClass('pendingTx');
+            }
 
-        elem.click(function(){
-            if(elem.hasClass("opened")) return
 
-            elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
-            $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
-            elem.addClass("opened")
-        })
 
-        elem.find(".closeChevron").click(function(){
-            if(!elem.hasClass("opened")) return
-            elem.removeClass("opened")
-            elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
-            return false
-        })
+            const dateswap = new Date(transaction.date)
 
-        if(transaction.status !== undefined){
-            elem.find(".tweakBtns").hide()
-            elem.find(".badge-warning").hide()
-            if(!transaction.status && transaction.canceling)
-                elem.find(".badge-secondary").show()
+            elem.find(" .time").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+
+            elem.attr("data-date", transaction.date)
+            const date = new Date(transaction.date)
+
+            let options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
+            elem.find(".totalFees span").html(selectedWallet.ticker)
+
+            if(selectedWallet.explorer === undefined)
+                elem.find("button").hide()
             else
-                elem.find(".badge-secondary").hide()
-
-        }else{
-            elem.find(".speed-up").click(function(){
-                transactionsPane.confirmSpeedup(transaction, elem)
-            })
-            if(transaction.canceling){
-                elem.find(".cancel").hide()
-                elem.find(".badge-warning").show()
-            } else
-                elem.find(".cancel").click(function(){
-                    transactionsPane.confirmCancel(transaction, elem)
+                elem.find("button").click(function(){
+                    window.open(selectedWallet.explorer + transaction.hash, "_blank")
                 })
-        }
 
-        TransactionsPane.list.self.append(elem)
-        elem.show()
+            elem.click(function(){
+                if(elem.hasClass("opened")) return
+
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".closeChevron").click(function(){
+                if(!elem.hasClass("opened")) return
+                elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
+                return false
+            })
+
+            if(transaction.status !== undefined){
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if(!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            }else{
+                elem.find(".speed-up").click(function(){
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if(transaction.canceling){
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function(){
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+            TransactionsPane.list.self.append(elem)
+            elem.show()
+        }catch(e){
+            console.log(e)
+        }
     }
 
     showBasicTransaction(selectedWallet, transaction){
