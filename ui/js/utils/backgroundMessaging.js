@@ -93,7 +93,7 @@ async function changeAccountName(address, newName){
 }
 
 async function getTokenDetails(asset){
-    return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
+    return await browser.runtime.sendMessage({command: 'getNftDetails', asset: asset})
 }
 
 async function addAsset(name, symbol, decimals, contract){
