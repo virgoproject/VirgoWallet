@@ -36,7 +36,12 @@ class MainPane {
     static carouselLoading = $(".loading")
     static baseAssetRow = $("#baseAssetRow")
     static walletAssets = $("#walletAssets")
+    static walletNft = $("#walletNft")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
+    static allAssetdiv = $("#allAssetdiv")
+    static nftDiv = $("#nftDiv")
+    static allAssets = $("#allAssets")
+    static nft = $("#nft")
     static testnetFaucet = {
         self: $("#testnetFaucet"),
         button: $("#testnetFaucet span"),
@@ -73,6 +78,18 @@ class MainPane {
         MainPane.updatePopup.close.click(function(){
             closedUpdatePopup()
         })
+
+        MainPane.allAssets.click(function (){
+           MainPane.allAssetdiv.addClass("divResumePaneSelected")
+           MainPane.nftDiv.removeClass("divResumePaneSelected")
+        })
+
+        MainPane.nft.click(function (){
+            MainPane.nftDiv.addClass("divResumePaneSelected")
+            MainPane.allAssetdiv.removeClass("divResumePaneSelected")
+
+        })
+
 
         MainPane.backupPopup.button.click(function(){
             SettingsPane.accountSelectionHeader.click()
@@ -386,6 +403,15 @@ class MainPane {
 
         setInterval(function(){
             mainPane.updateData()
+            if (MainPane.allAssetdiv.hasClass("divResumePaneSelected")) {
+                MainPane.walletAssets.show()
+                MainPane.walletNft.hide()
+            }
+
+            else if (MainPane.nftDiv.hasClass("divResumePaneSelected")) {
+                MainPane.walletAssets.hide()
+                MainPane.walletNft.show()
+            }
         }, 250)
 
     }

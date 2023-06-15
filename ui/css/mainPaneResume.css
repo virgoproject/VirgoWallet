@@ -99,8 +99,25 @@ display: block;
     cursor: pointer;
     color: var(--mainColor);
     transition: all 0.2s ease-in;
-    width: fit-content;
-    float: right;
+    display: flex;
+    justify-content: center;
+}
+
+#mainPane .resume .assets .resumePane {
+    display: flex;
+    justify-content: center;
+}
+
+#mainPane .resume .assets .divResumePaneSelected{
+    color: var(--mainColor) !important;
+    border-bottom: solid 3px !important;
+    cursor: pointer;
+
+}
+
+#mainPane .resume .assets .divResumePane{
+    border-bottom: solid 2px #c7c7c7;
+    cursor: pointer;
 }
 
 #mainPane .resume .assets .addAsset:hover {
