@@ -95,7 +95,7 @@ display: block;
     vertical-align: text-top;
 }
 
-#mainPane .resume .assets .addAsset {
+#mainPane .resume .assets .addAsset,#mainPane .resume .assets .addNft  {
     cursor: pointer;
     color: var(--mainColor);
     transition: all 0.2s ease-in;

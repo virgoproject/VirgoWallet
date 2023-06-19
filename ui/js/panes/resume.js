@@ -182,6 +182,7 @@ class MainPane {
     updateData(){
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
+                console.log(response)
                 if(events.oldData !== JSON.stringify(response)) {
                     console.log("updating")
                     mainPane.displayData(response)
