@@ -215,8 +215,8 @@ async function deleteConnectedSite(address){
     return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
 }
 
-async function setupDone(){
-    return await browser.runtime.sendMessage({command : 'setupDone'})
+async function setSetupDone(){
+    return await browser.runtime.sendMessage({command : 'setSetupDone'})
 }
 
 async function tutorialDone(){

@@ -57,7 +57,8 @@ const mobileScripts = [
     "../../background/wallet/baseWallet.js",
     "../../background/web3RequestsHandler.js",
     "../../background/utils/txIdentifierAbi.js",
-    "../../background/background.js"
+    "../../background/background.js",
+    "../js/mobileTweaks.js"
 ]
 
 const loadScript = async src => {

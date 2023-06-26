@@ -608,5 +608,3 @@ class BaseWallet {
     }
 
 }
-
-BaseWallet.loadFromJSON()
