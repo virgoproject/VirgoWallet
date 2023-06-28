@@ -1,6 +1,6 @@
 #assetsPane {
     display: block;
-    height: 600px;
+    height: 100%;
     width: 100%;
     background: white;
     /* transform: scaleY(0); */
@@ -13,6 +13,7 @@
 #assetsPane .content {
     z-index: 99999;
     padding: 0 1em;
+    height: 100%;
 }
 
 #assetsListSearchWrapper {
@@ -68,8 +69,8 @@
 
 #assetsPane .addBottomLogo {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 2.5em;
+    bottom: 6em;
     background: var(--mainColorLight);
     border-radius: 50%;
     color: white;
@@ -115,9 +116,9 @@
 }
 
 #assetsPane .listWrap {
-    overflow: auto;
-    max-height: 478px;
     padding: 0 1em;
+    overflow: auto;
+    max-height: 100%;
 }
 
 #assetsPane .listWrap::-webkit-scrollbar {

@@ -1,6 +1,6 @@
 #transactionsPane {
     display: block;
-    height: 600px;
+    height: 100%;
     width: 100%;
     background: #ffffff;
     /* transform: scaleY(0); */

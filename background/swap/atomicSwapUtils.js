@@ -214,5 +214,4 @@ class AtomicSwapUtils {
     }
 
 }
-
-const atomicSwap = new AtomicSwapUtils()
+new AtomicSwapUtils()

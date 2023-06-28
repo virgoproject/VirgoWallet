@@ -7,12 +7,14 @@ const browserShim = {
     tabs: {},
     windows: {},
     runtime: {
-        onMessage: {}
+        onMessage: {},
+        onInstalled: {}
+    },
+    alarms: {
+        onAlarm: {}
     }
 }
 
-browserShim.storage = {}
-browserShim.storage.local = {}
 browserShim.storage.local.get = async (name) => {
     let item = window.localStorage.getItem(name)
     const res = {}
@@ -72,6 +74,18 @@ browserShim.runtime.sendMessage = (message) => {
     return new Promise((resolve, reject) => {
         browserShim.runtime.onMessage.listener(message, "", resolve)
     })
+}
+
+browserShim.runtime.onInstalled.addListener = () => {
+    return
+}
+
+browserShim.alarms.onAlarm.addListener = () => {
+    return
+}
+
+browserShim.runtime.getURL = () => {
+    return ""
 }
 
 browser = browserShim

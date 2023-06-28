@@ -193,7 +193,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                     await new Promise(r => setTimeout(r, 10));
                 }
-                sendResponse(getBaseInfos())
+                sendResponse(bg_getBaseInfos())
                 activityHeartbeat()
             }
             break
@@ -213,7 +213,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                         await new Promise(r => setTimeout(r, 10));
                     }
 
-                    sendResponse(getBaseInfos())
+                    sendResponse(bg_getBaseInfos())
                 }
                 else sendResponse(false)
             })
@@ -231,12 +231,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "addAccount":
             baseWallet.addAccount()
-            sendResponse(getBaseInfos())
+            sendResponse(bg_getBaseInfos())
             break
 
         case "changeAccount":
             baseWallet.selectAddress(request.accountID)
-            sendResponse(getBaseInfos())
+            sendResponse(bg_getBaseInfos())
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
             break
 
@@ -273,7 +273,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "getBalance":
-            getBalance(request.asset).then(bal => {
+            bg_getBalance(request.asset).then(bal => {
                 sendResponse(bal)
             })
             break
@@ -281,7 +281,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
         //temporary solution, will need to go full-crosschain
         case "getBalanceCross":
             if(request.chainID == baseWallet.getCurrentWallet().chainID){
-                getBalance(request.asset).then(bal => {
+                bg_getBalance(request.asset).then(bal => {
                     sendResponse(bal)
                 })
             }else{
@@ -305,7 +305,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "sendTo":
-            sendTo(request, sendResponse)
+            bg_sendTo(request, sendResponse)
             break
 
         case "getTokenDetails":
@@ -385,7 +385,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 }
                 browser.storage.local.set({"setupDone": true})
                 setupDone = true
-                sendResponse(getBaseInfos())
+                sendResponse(bg_getBaseInfos())
             }catch(e){
                 console.log(e)
                 sendResponse(false)
@@ -823,7 +823,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
     return true
 }
 
-function getBaseInfos(){
+function bg_getBaseInfos(){
     if (baseWallet.version != VERSION){
         browser.storage.local.set({"setupDone": true})
         setupDone = true
@@ -849,7 +849,7 @@ function forgetWallet() {
     wallet = null;
 }
 
-async function getBalance(asset){
+async function bg_getBalance(asset){
     const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
 
     if(!bal.tracked){
@@ -860,7 +860,7 @@ async function getBalance(asset){
     return bal
 }
 
-function sendTo(request, sendResponse){
+function bg_sendTo(request, sendResponse){
     let txResume = null;
     console.log(request)
     //send native asset
@@ -918,7 +918,7 @@ function sendTo(request, sendResponse){
                 }).catch(e => {
                 if(e.code == -32000){
                     baseWallet.selectWallet(baseWallet.selectedWallet)
-                    sendTo(request, sendResponse)
+                    bg_sendTo(request, sendResponse)
                 }
             })
             return
@@ -988,7 +988,7 @@ function sendTo(request, sendResponse){
             }).catch(e => {
             if(e.code == -32000){
                 baseWallet.selectWallet(baseWallet.selectedWallet)
-                sendTo(request, sendResponse)
+                bg_sendTo(request, sendResponse)
             }
         })
     })

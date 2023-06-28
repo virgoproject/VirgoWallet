@@ -219,7 +219,7 @@ async function setSetupDone(){
     return await browser.runtime.sendMessage({command : 'setSetupDone'})
 }
 
-async function tutorialDone(){
+async function isTutorialDone(){
     return await browser.runtime.sendMessage({command : 'tutorialDone'})
 }
 
