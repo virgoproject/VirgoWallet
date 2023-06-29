@@ -13,7 +13,7 @@
 #assetsPane .content {
     z-index: 99999;
     padding: 0 1em;
-    height: 100%;
+    height: calc(100% - 7em);
 }
 
 #assetsListSearchWrapper {

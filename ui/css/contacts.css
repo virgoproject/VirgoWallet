@@ -1,6 +1,7 @@
 #contacts{
-    display: block;
-    height: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
     background: white;
     transform-origin: 50% 0;
@@ -11,8 +12,15 @@
     padding: 0em 1em;
 }
 
+#contactDiv {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 #contacts .contactsList{
-    z-index: 99999;
+    max-height: 100%;
 }
 
 #contacts .showElements{
@@ -91,6 +99,10 @@
     color: white;
     cursor: pointer;
     transition: all 250ms;
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+    text-align: center;
 }
 
 #contacts .addBottomLogo:hover {
@@ -98,7 +110,6 @@
 }
 
 #contacts .addLogo {
-    padding: 15px;
     font-size: 1.2em;
 }
 
