@@ -1,5 +1,6 @@
 #transactionsPane {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     background: #ffffff;
@@ -11,7 +12,8 @@
 }
 
 #transactionsPane .content {
-    z-index: 99999;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 #transactionsPane .back {
@@ -34,6 +36,7 @@
     overflow: auto;
     max-height: 475px;
     padding: 0 1.5em;
+    padding-bottom: 1em;
 }
 
 #transactionsPane .listWrap::-webkit-scrollbar {
