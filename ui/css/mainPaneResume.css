@@ -17,7 +17,6 @@
 }
 
 #mainPane .resume .assets .asset {
-    background: #f8f4fb;
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -117,6 +116,6 @@ display: block;
 }
 
 #body .resume {
-    max-height: 400px;
+    max-height: 100%;
     overflow-y: auto;
 }

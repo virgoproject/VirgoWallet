@@ -87,28 +87,7 @@
     font-size: 1.2em;
 }
 
-#assetsPane .stateCoin {
-    padding: 8px;
-    border-radius: 25px;
-    cursor: pointer;
-    color: white;
-    background: gray;
-    transition: 250ms all;
-}
-
-#assetsPane .stateCoin:hover {
-    background: #9f9f9f;
-}
-
-#assetsPane .stateCoin.activated {
-    background: rgb(35, 183, 115);
-}
-
-#assetsPane .stateCoin.activated:hover {
-    background: rgb(31, 162, 104);
-}
-
- .searchLabel {
+.searchLabel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,10 +133,22 @@
 }
 
 #assetsPane .listItem {
-    background: #f8f4fb;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+}
+
+#assetsPane .listItem.selected {
+    background: var(--whiteBackgroundSelected);
+}
+
+#assetsPane .listItem .stateCoin {
+    display: none;
+}
+
+#assetsPane .listItem.selected .stateCoin {
+    display: inline-block;
 }
 
 #assetsPane .listItem p {

@@ -45,6 +45,7 @@ const mobileScripts = [
     "../../commonJS/browser-polyfill-shim.js",
     "../../commonJS/utils.js",
     "../../background/xhrShim.js",
+    "../../background/utils/converter.js",
     "../../background/web3.min.js",
     "../../background/bip39.js",
     "../../background/hdwallet.js",
@@ -58,7 +59,9 @@ const mobileScripts = [
     "../../background/web3RequestsHandler.js",
     "../../background/utils/txIdentifierAbi.js",
     "../../background/background.js",
-    "../js/mobileTweaks.js"
+    "../js/mobileTweaks.js",
+    "../js/utils/html5-qrcode.js",
+    "../js/panes/qrReadTest.js"
 ]
 
 const loadScript = async src => {

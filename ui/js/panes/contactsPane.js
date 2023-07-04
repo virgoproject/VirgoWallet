@@ -209,14 +209,14 @@ class ContactsPane {
                 })
 
                 element.click(function (e) {
-                    e.stopPropagation()
-
                     $("#body .send .sendForm .recipient").val(res[l].address)
                     $("#body .send .sendForm .submit").click()
-
+                    ContactsPane.div.contacts.hide()
                 })
 
-                element.find('.fa-star').attr('data-address',res[l].address).click(function () {
+                element.find('.fa-star').attr('data-address',res[l].address).click(e => {
+
+                    e.stopPropagation()
 
                     if ($(this).hasClass('fas')) {
                         $(this).removeClass('fas').addClass('fal').css('color', 'unset')
@@ -247,7 +247,8 @@ class ContactsPane {
                         ContactsPane.div.noContactFound.show()
                 })
 
-                element.find('.showElements').click(function () {
+                element.find('.showElements').click(e => {
+                    e.stopPropagation()
 
                     if ($(this).hasClass('opened')) {
                         $(this).removeClass('opened')

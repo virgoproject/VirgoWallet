@@ -59,7 +59,7 @@
     width: 100%;
     top: 0px;
     position: absolute;
-    background: #faf6fc;
+    background: white;
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
@@ -119,7 +119,7 @@
 }
 
 #settings .accounts .account.selected {
-    background: #ece2f3;
+    background: var(--whiteBackgroundSelected);
     cursor: default;
 }
 
@@ -234,7 +234,7 @@
     position: absolute;
     top: 3.5em;
     width: 100%;
-    background: #faf6fc;
+    background: white;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;

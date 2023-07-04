@@ -35,7 +35,7 @@
 }
 
 #chainSelector .chain.selected {
-    background: #e2d2ed;
+    background: var(--whiteBackgroundSelected);
     cursor: default;
 }
 

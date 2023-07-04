@@ -213,16 +213,15 @@ class AssetsPane {
         elem.find("svg").attr("data-jdenticon-value", token.contract)
 
         if(token.tracked)
-            elem.find(".stateCoin").addClass("activated")
+            elem.addClass("selected")
 
-        elem.find(".stateCoin").click(function(){
-            const coin = $(this)
+        elem.click(function(){
             changeAssetTracking(token.contract).then(function(){
-                if(coin.hasClass("activated")){
-                    coin.removeClass("activated")
+                if(elem.hasClass("selected")){
+                    elem.removeClass("selected")
                     $("#bal"+token.contract).remove()
                 }else{
-                    coin.addClass("activated")
+                    elem.addClass("selected")
                 }
             })
         })

@@ -2,6 +2,8 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 #mainPane>.header {
@@ -10,6 +12,7 @@
     padding: 0.5em;
     margin-bottom: -0.5em;
     margin-top: 0.5em;
+    flex: 0 1 151px;
 }
 .hr{
     width: 90%;
@@ -18,11 +21,21 @@
 #mainPane>.header>.stats {
     color: black;
     padding: 1em 0em;
-    position: absolute;
-    left: 2em;
-    right: 2em;
-    top: 55px;
     border-radius: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-top: 1em;
+}
+
+#body {
+    height: 100%;
+    flex: 1 1;
+    min-height: 0;
+    margin-top: 1em;
+}
+
+#mainPane .bodyElem.resume {
+    padding-bottom: 6em;
 }
 
 #mainPane .header .stats .fluctuation {

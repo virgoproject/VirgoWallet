@@ -12,7 +12,6 @@ class EditFees extends HTMLElement {
         this.setAttribute("id","editfees")
 
         this.innerHTML = `
-        <div class="blackbg"></div>
         <div class="see p-4">
             <i class="fa-solid fa-horizontal-rule rule"></i>
             <div class="d-flex align-items-center mb-2 justify-content-center titleFees">
@@ -42,8 +41,12 @@ class EditFees extends HTMLElement {
         </div>
     `;
 
-        $(".blackbg").click(function (){
-            $("#editfees").css("display", "none")
+        $(this).find(".see").click(event => {
+            event.stopPropagation()
+        })
+
+        $(this).click(() => {
+            $(this).hide()
         })
 
         const _this = this

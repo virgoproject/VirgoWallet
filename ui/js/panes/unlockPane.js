@@ -17,10 +17,13 @@ class UnlockPane {
     }
     static loadingPane = $("#loadingPane")
 
+    static self = $("#unlockPane")
+
     constructor() {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 UnlockPane.loadingPane.hide()
+                UnlockPane.self.show()
                 if(!response.locked)
                     unlockPane.displayWallet(response)
                 if(!response.setupDone)

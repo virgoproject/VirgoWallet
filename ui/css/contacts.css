@@ -68,7 +68,7 @@
 
 #contacts .contactUser{
     transition: background-color 250ms;
-    background: #f9f9f9;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em !important;
     padding-bottom: 0.375em !important;
