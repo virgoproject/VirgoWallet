@@ -5,7 +5,7 @@ class MainPane {
     static self = $("#mainPane")
     static resume = $("#body .bodyElem.resume")
     static address = $("#walletAddress")
-    static addressDiv = $(".contentAddress")
+    static addressDiv = $("#mainPane .header .stats .addressContainer")
     static addAsset = {
         pane: $("#body .bodyElem.addAsset"),
         contract: $("#body .bodyElem.addAsset .assetContract"),

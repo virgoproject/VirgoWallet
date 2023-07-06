@@ -25,7 +25,6 @@
 </head>
 <body>
 <div id="reader" width="100vw"></div>
-<i class="fas fa-spinner fa-pulse"></i>
 <div id="loadingPane">
     <i class="fas fa-spinner fa-pulse"></i>
 </div>
@@ -75,28 +74,29 @@
 </div>
 <div id="mainPane" style="display: none">
     <div class="header">
-        <div class="topbar row d-flex align-items-center">
-            <div class="col-6 align-items-center address wallet-address" id="accountSelectionHeader">
+        <div class="topbar d-flex align-items-center">
+            <div class="align-items-center address wallet-address" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
-                <div class="contentAddress">
-                    <div class="d-flex align-items-center copy">
-                        <p id="walletAddress" class="value adress m-0" data-address>0x0000000000000000000000000000000000000000</p>
-                        <i class="ms-2 fal fa-copy"></i>
-                    </div>
-                </div>
-
             </div>
-            <div class="col-4" id="chainSelectionHeader">
+            <div id="chainSelectionHeader">
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
             </div>
-            <div class="col-2 pendingTxs">
+            <div class="qrCode">
+                <p><i class="fa-regular fa-qrcode"></i></p>
+            </div>
+            <div class="pendingTxs">
                 <p><i class="fa-solid fa-clock-rotate-left"></i></p>
             </div>
-
         </div>
         <div class="stats row">
             <div class="d-flex balanceTitle align-items-center">
                 <h1 class="title m-0">Available Balance</h1>
+                <div class="addressContainer">
+                    <div class="d-flex align-items-center copy">
+                        <p id="walletAddress" class="value adress m-0" data-address="">0x37...4cC3</p>
+                        <i class="ms-2 fal fa-copy"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-inline-flex balance-header">
                 <h1 class="values" data-fiatTotal>0</h1>
@@ -1563,7 +1563,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 p-2 pt-0" style="flex: 0 1 8em;">
+            <div class="row mt-2 p-2 pt-0" style="flex: 0 1 8em;">
                 <div class="col-6 pl-0 pr-1">
                     <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
                 </div>
