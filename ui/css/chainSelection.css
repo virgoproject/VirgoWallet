@@ -50,7 +50,7 @@
 #chainSelectionHeader {
     cursor: pointer;
     transform: rotate(0deg);
-    background: #f8f4fb;
+    background: var(--whiteBackground);
     border-radius: 25px;
     padding: 0.5em;
     z-index: 0;

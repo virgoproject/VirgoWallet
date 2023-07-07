@@ -22,9 +22,9 @@
     <link rel="stylesheet" href="../css/atomicSwapPane.css">
     <link rel="stylesheet" href="../css/airdropPane.css">
     <link rel="stylesheet" href="../css/editFees.css">
+    <link rel="stylesheet" href="../css/panes/qrScanner.css">
 </head>
 <body>
-<div id="reader" width="100vw"></div>
 <div id="loadingPane">
     <i class="fas fa-spinner fa-pulse"></i>
 </div>
@@ -81,7 +81,7 @@
             <div id="chainSelectionHeader">
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
             </div>
-            <div class="qrCode">
+            <div class="qrCode" id="qrCodeToggleBtn">
                 <p><i class="fa-regular fa-qrcode"></i></p>
             </div>
             <div class="pendingTxs">
@@ -2424,7 +2424,11 @@
             </div>
         </div>
     </div>
-
+    <div id="qrScannerPane" style="display: none">
+        <i class="fa-solid fa-chevron-left" id="qrScannerPaneBack"></i>
+        <div id="qrScanner"></div>
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
 </div>
 <script src="../js/scriptLoader.js"></script>
 </body>

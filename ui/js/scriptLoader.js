@@ -61,7 +61,7 @@ const mobileScripts = [
     "../../background/background.js",
     "../js/mobileTweaks.js",
     "../js/utils/html5-qrcode.js",
-    "../js/panes/qrReadTest.js"
+    "../js/panes/qrScannerPane.js"
 ]
 
 const loadScript = async src => {

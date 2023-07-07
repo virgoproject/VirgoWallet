@@ -1,0 +1,21 @@
+#qrScannerPane {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: black;
+    align-items: center;
+}
+
+#qrScanner {
+    width: 100vw;
+}
+
+#qrScannerPaneBack {
+    position: absolute;
+    left: 1em;
+    top: 1em;
+    font-size: 1.5em;
+    color: white;
+    cursor: pointer;
+}
