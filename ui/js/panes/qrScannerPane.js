@@ -7,9 +7,21 @@ class QrScannerPane {
     constructor() {
 
         const html5QrCode = new Html5Qrcode("qrScanner");
-        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+
+        let errorCooldown = false
+
+        const qrCodeSuccessCallback = (decodedText) => {
+            if(errorCooldown) return
+
+            errorCooldown = true
+
+            setTimeout(() => {
+                errorCooldown = false
+            }, 4000)
+
+            notyf.error("Invalid QR code")
+
             console.log(decodedText)
-            console.log(decodedResult)
         };
         const config = {fps: 10, qrbox: (viewfinderWidth, viewfinderHeight) => {
             console.log(viewfinderWidth)

@@ -1,4 +1,4 @@
-class Web3Wallet {
+class EthWallet {
 
     constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
         this.name = name
@@ -166,7 +166,7 @@ class Web3Wallet {
         if(json.chainID == 61)
             json.RPC = "https://www.ethercluster.com/etc"
       
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
+        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 
     toJSON(){

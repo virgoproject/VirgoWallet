@@ -17,7 +17,7 @@ class BaseWallet {
         for(const wallet of data.wallets){
             switch(wallet.type){
                 case "web3":
-                    this.wallets.push(Web3Wallet.fromJSON(wallet.wallet))
+                    this.wallets.push(EthWallet.fromJSON(wallet.wallet))
                     break
             }
         }
@@ -436,7 +436,7 @@ class BaseWallet {
                 if(refWallet.wallet.chainID == wallet.chainID) continue b
 
             changed = true
-            this.wallets.push(Web3Wallet.fromJSON(refWallet.wallet))
+            this.wallets.push(EthWallet.fromJSON(refWallet.wallet))
         }
 
         if(changed) this.save()

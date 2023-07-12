@@ -54,7 +54,7 @@ const mobileScripts = [
     "../../background/swap/uniswap03Utils.js",
     "../../background/swap/atomicSwapUtils.js",
     "../../background/wallet/web3ABIs.js",
-    "../../background/wallet/web3Wallet.js",
+    "../../background/wallet/ethWallet.js",
     "../../background/wallet/baseWallet.js",
     "../../background/web3RequestsHandler.js",
     "../../background/utils/txIdentifierAbi.js",

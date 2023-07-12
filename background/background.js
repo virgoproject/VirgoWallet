@@ -3,7 +3,7 @@ if(typeof browser === 'undefined'){
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
         "utils/converter.js", "swap/uniswap02Utils.js",
         "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
+        "wallet/ethWallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
 }
 
 if(browser.storage.session === undefined){
