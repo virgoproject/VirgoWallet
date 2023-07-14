@@ -19,3 +19,22 @@
     color: white;
     cursor: pointer;
 }
+
+#wcPermPane {
+    z-index: 100000;
+    background-color: #000000ba;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+}
+
+#wcPermContainer {
+    background: white;
+    bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 1em;
+    border-radius: 1em 1em 0 0;
+    text-align: center;
+}

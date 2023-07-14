@@ -61,7 +61,10 @@ const mobileScripts = [
     "../../background/background.js",
     "../js/mobileTweaks.js",
     "../js/utils/html5-qrcode.js",
-    "../js/panes/qrScannerPane.js"
+    "../js/panes/qrScannerPane.js",
+    "../../background/mobile/walletConnect/walletConnectWeb3Wallet.js",
+    "../../background/mobile/walletConnect/walletConnectCore.js",
+    "../../background/mobile/walletConnect/walletConnect.js"
 ]
 
 const loadScript = async src => {

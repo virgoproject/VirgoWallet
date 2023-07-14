@@ -4,25 +4,43 @@ class QrScannerPane {
     static self = document.getElementById("qrScannerPane")
     static backBtn = document.getElementById("qrScannerPaneBack")
 
+    static wcPermPane = document.getElementById("wcPermPane")
+    static wcSitename = document.getElementById("wcSitename")
+
+    static wcPermContainer = document.getElementById("wcPermContainer")
+
     constructor() {
 
         const html5QrCode = new Html5Qrcode("qrScanner");
 
-        let errorCooldown = false
+        this.cooldown = false
 
-        const qrCodeSuccessCallback = (decodedText) => {
-            if(errorCooldown) return
+        const _this = this
 
-            errorCooldown = true
+        const qrCodeSuccessCallback = async (decodedText) => {
 
-            setTimeout(() => {
-                errorCooldown = false
-            }, 4000)
+            if(_this.cooldown) return
 
-            notyf.error("Invalid QR code")
+            _this.cooldown = true
 
-            console.log(decodedText)
+            const req = await walletConnect.connect(decodedText)
+
+            console.log(req)
+
+            if(req == false){
+                setTimeout(() => {
+                    _this.cooldown = false
+                }, 4000)
+
+                notyf.error("Invalid QR code")
+
+                return
+            }
+
+            _this.displayRequest(req)
+
         };
+
         const config = {fps: 10, qrbox: (viewfinderWidth, viewfinderHeight) => {
             console.log(viewfinderWidth)
             console.log(viewfinderHeight)
@@ -47,6 +65,19 @@ class QrScannerPane {
 
     }
 
-}
+    displayRequest(req){
+        QrScannerPane.wcSitename.innerHTML = req.params.proposer.metadata.url.replaceAll("https://", "").replaceAll("http://", "")
+        QrScannerPane.wcPermPane.style.display = "block"
 
+        QrScannerPane.wcPermPane.onclick = () => {
+            QrScannerPane.wcPermPane.style.display = "none"
+        }
+
+        QrScannerPane.wcPermContainer.onclick = e => {
+            e.stopPropagation()
+        }
+    }
+
+}
+hjj
 qrScannerPane = new QrScannerPane()
