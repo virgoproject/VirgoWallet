@@ -6,12 +6,20 @@ class QrScannerPane {
 
     static wcPermPane = document.getElementById("wcPermPane")
     static wcSitename = document.getElementById("wcSitename")
-
     static wcPermContainer = document.getElementById("wcPermContainer")
+
+    static wcSiteLogo = document.getElementById("wcSiteLogo")
+
+    static wcAllowBtn = document.getElementById("wcAllow")
+
+    static wcRefuseBtn = document.getElementById("wcRefuse")
+
+    static wcClose = document.getElementById("wcClose")
+
 
     constructor() {
 
-        const html5QrCode = new Html5Qrcode("qrScanner");
+        this.html5QrCode = new Html5Qrcode("qrScanner");
 
         this.cooldown = false
 
@@ -55,29 +63,58 @@ class QrScannerPane {
 
         QrScannerPane.toggleBtn.onclick = () => {
             QrScannerPane.self.style.display = "flex"
-            html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+            this.html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
         }
 
         QrScannerPane.backBtn.onclick = () => {
             QrScannerPane.self.style.display = "none"
-            html5QrCode.stop()
+            this.html5QrCode.stop()
         }
 
     }
 
     displayRequest(req){
+        const _this = this
+
         QrScannerPane.wcSitename.innerHTML = req.params.proposer.metadata.url.replaceAll("https://", "").replaceAll("http://", "")
         QrScannerPane.wcPermPane.style.display = "block"
 
+        if(req.params.proposer.metadata.icons !== undefined)
+            QrScannerPane.wcSiteLogo.src = req.params.proposer.metadata.icons[req.params.proposer.metadata.icons.length-1]
+
         QrScannerPane.wcPermPane.onclick = () => {
             QrScannerPane.wcPermPane.style.display = "none"
+            walletConnect.refuse(req)
+            _this.cooldown = false
         }
 
         QrScannerPane.wcPermContainer.onclick = e => {
             e.stopPropagation()
         }
+
+        QrScannerPane.wcAllowBtn.onclick = e => {
+            QrScannerPane.wcPermPane.style.display = "none"
+            walletConnect.allow(req)
+            _this.cooldown = false
+            QrScannerPane.self.style.display = "none"
+            _this.html5QrCode.stop()
+            notyf.success("Successfully connected!")
+        }
+
+        QrScannerPane.wcRefuseBtn.onclick = e => {
+            QrScannerPane.wcPermPane.style.display = "none"
+            walletConnect.refuse(req)
+            _this.cooldown = false
+        }
+
+        QrScannerPane.wcClose.onclick = e => {
+            QrScannerPane.wcPermPane.style.display = "none"
+            walletConnect.refuse(req)
+            _this.cooldown = false
+        }
+
     }
 
 }
-hjj
+
 qrScannerPane = new QrScannerPane()

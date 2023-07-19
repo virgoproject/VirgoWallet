@@ -22,27 +22,67 @@ class WalletConnect {
             }
         })
 
-        this.wcWallet.on('session_proposal', async proposal => {
-            _this.pendingConnections[proposal.params.pairingTopic] = proposal
+        this.wcWallet.on('session_proposal', proposal => {
+            console.log("got proposal")
+            _this.pendingConnections[proposal.params.pairingTopic](proposal)
         })
 
     }
 
-    async connect(uri){
-        try {
-            this.core.pairing.pair({ uri: uri })
+    connect(uri){
+        const _this = this
 
-            uri = uri.split(":")[1].split("@")[0]
+        return new Promise(resolve => {
+            let topic = uri.split(":")[1].split("@")[0]
 
-            while(this.pendingConnections[uri] === undefined){
-                await new Promise(r => setTimeout(r, 100));
-            }
+            console.log(topic)
 
-            return this.pendingConnections[uri]
+            _this.pendingConnections[topic] = resolve
 
-        }catch(e){
-            return false
+            _this.core.pairing.pair({ uri: uri }).catch(e => {
+                console.log(e)
+                resolve(false)
+            })
+        })
+    }
+
+    async allow(proposal){
+        const { id, params } = proposal
+
+        const chains = []
+
+        const accounts = []
+
+        for(const chain of baseWallet.getWalletsJSON()){
+            chains.push("eip155:"+chain.wallet.chainID)
+            accounts.push("eip155:"+chain.wallet.chainID+":"+baseWallet.getCurrentAddress())
         }
+
+        const approvedNamespaces = wcUtils.buildApprovedNamespaces({
+            proposal: params,
+            supportedNamespaces: {
+                eip155: {
+                    chains: chains,
+                    methods: ["eth_sendTransaction", "personal_sign"],
+                    events: ["accountsChanged", "chainChanged"],
+                    accounts: accounts
+                },
+            },
+        })
+
+        const session = await this.wcWallet.approveSession({
+            id,
+            namespaces: approvedNamespaces,
+        })
+
+        console.log(session)
+    }
+
+    refuse(proposal){
+        this.wcWallet.rejectSession({
+            id: proposal.id,
+            reason: wcUtils.getSdkError('USER_REJECTED_METHODS')
+        })
     }
 
 }

@@ -38,3 +38,37 @@
     border-radius: 1em 1em 0 0;
     text-align: center;
 }
+
+#wcPermContainer p {
+    font-weight: 600;
+    margin-bottom: 1.5em;
+}
+
+#wcSitename {
+    color: var(--mainColor);
+}
+
+#wcSiteLogo {
+    height: 64px;
+    width: 64px;
+    margin-bottom: 1em;
+    background-color: var(--whiteBackgroundSelected);
+    border-radius: 100em;
+}
+
+#wcAllow {
+    margin-bottom: 1.25em;
+}
+
+#wcRefuse {
+    cursor: pointer;
+    color: #545454;
+}
+
+#wcClose {
+    position: absolute;
+    right: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #545454;
+}
