@@ -104,6 +104,10 @@ async function addAsset(name, symbol, decimals, contract){
     return await browser.runtime.sendMessage({command: 'addToken', name: name, ticker: symbol, decimals: decimals, contract: contract})
 }
 
+async function addNft(uri,tokenId,owner,contract){
+    return await browser.runtime.sendMessage({command: 'addNft', uri: uri, tokenId: tokenId, owner: owner , contract: contract})
+}
+
 function closedBackupPopup(){
     browser.runtime.sendMessage({command: 'closedBackupPopup'})
 }

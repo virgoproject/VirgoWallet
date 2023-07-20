@@ -329,10 +329,10 @@ async function onBackgroundMessage(request, sender, sendResponse){
             const nftContractAddress = request.asset;
             const nftContract = new web3.eth.Contract(ERC721_ABI, nftContractAddress);
 
-            const tokenId = 1; // ID du NFT que vous souhaitez récupérer
-
+            const tokenId = request.tokenID;
             nftContract.methods.tokenURI(tokenId).call().then(function(tokenURI) {
                 nftContract.methods.ownerOf(tokenId).call().then(function(owner) {
+                    console.log(tokenURI,owner)
                     sendResponse({
                         contract: nftContractAddress,
                         tokenID: tokenId,
@@ -340,16 +340,21 @@ async function onBackgroundMessage(request, sender, sendResponse){
                         owner: owner
                     });
                 }).catch(function() {
-                    sendResponse(false);
+                    console.log(false);
                 });
             }).catch(function() {
-                sendResponse(false);
+                console.log(false);
             });
             break;
 
 
         case "addToken":
             baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
+            sendResponse(true)
+            break
+
+        case "addNft":
+            baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract)
             sendResponse(true)
             break
 

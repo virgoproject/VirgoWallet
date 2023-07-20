@@ -473,6 +473,23 @@ class Web3Wallet {
 
     }
 
+    addNft(tokenURI,tokenId,owner, contractNft, track = true){
+        if(this.hasToken(contractNft) || !web3.utils.isAddress(contractNft)) return;
+
+        const token = {
+            "tokenUri": tokenURI,
+            "tokenId": tokenId,
+            "nft": true,
+            "contract": contractNft,
+            "owner": owner,
+            "track": track
+        }
+
+        console.log(token)
+        this.tokens.push(token)
+        this.tokenSet.set(token.contract, token)
+    }
+
     removeToken(contract){
         let i = 0;
         for(const token of this.tokens){

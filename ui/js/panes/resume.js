@@ -35,6 +35,7 @@ class MainPane {
     static carousel = $("#carousel-wallet-inner")
     static carouselLoading = $(".loading")
     static baseAssetRow = $("#baseAssetRow")
+    static baseNftRow = $("#baseNftRow")
     static walletAssets = $("#walletAssets")
     static walletNft = $("#walletNft")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
@@ -186,6 +187,7 @@ class MainPane {
                 if(events.oldData !== JSON.stringify(response)) {
                     console.log("updating")
                     mainPane.displayData(response)
+                    mainPane.displayNft(response)
                     transactionsPane.updateTxs(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)
                     swapPane.updateBalance(SwapPane.inputs.two, true)
@@ -221,95 +223,97 @@ class MainPane {
         //display tokens balances
 
         const tokensFiatAmounts = []
-
+        let x = 0;
         for(const contractAddr of Object.keys(selectedAddress.balances)){
-            const balance = selectedAddress.balances[contractAddr]
+                const balance = selectedAddress.balances[contractAddr]
+                if (!balance.tracked) continue;
 
-            if(!balance.tracked) continue;
+                let elem = $("#bal" + contractAddr);
 
-            let elem = $("#bal"+contractAddr);
+                const bal = Utils.formatAmount(balance.balance, balance.decimals)
+                const fiat = Utils.beautifyAmount(balance.price * balance.balance / 10 ** balance.decimals)
 
-            const bal = Utils.formatAmount(balance.balance, balance.decimals)
-            const fiat = Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals)
+                const fiatBal = fiat
+                console.log(selectedWallet.tokens[x])
+                if (!elem.length) {
+                        //create row for this asset
+                        elem = MainPane.baseAssetRow.clone()
+                        if (selectedWallet)
+                            elem.attr("id", "bal" + contractAddr)
 
-            const fiatBal = fiat
 
-            if(!elem.length){
-                //create row for this asset
-                elem = MainPane.baseAssetRow.clone()
-                elem.attr("id", "bal"+contractAddr)
+                        elem.find(".title").html(balance.name)
+                        elem.find(".ticker").html(balance.ticker)
+                        elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
 
-                elem.find(".title").html(balance.name)
-                elem.find(".ticker").html(balance.ticker)
-                elem.find(".balance").html(Utils.formatAmount(balance.balance, balance.decimals))
+                        elem.find(".logo").attr("id", 'logo' + contractAddr)
+                        elem.find(".logo").on('load', function () {
+                            elem.find("svg").hide()
+                            elem.find(".logo").show()
+                            _this.updateTokenBar(selectedAddress)
+                        }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
 
-                elem.find(".logo").attr("id", 'logo'+contractAddr)
-                elem.find(".logo").on('load', function() {
-                    elem.find("svg").hide()
-                    elem.find(".logo").show()
-                    _this.updateTokenBar(selectedAddress)
-                }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
+                        elem.find(".fiatEq").html(Utils.beautifyAmount(balance.price * balance.balance / 10 ** balance.decimals))
+                        elem.find("svg").attr("data-jdenticon-value", contractAddr)
 
-                elem.find(".fiatEq").html(Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
-                elem.find("svg").attr("data-jdenticon-value", contractAddr)
+                        elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
+                        if (balance.change >= 0)
+                            elem.find(".fluctuation").removeClass("negative")
+                        else
+                            elem.find(".fluctuation").addClass("negative")
 
-                elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
-                if(balance.change >= 0)
-                    elem.find(".fluctuation").removeClass("negative")
-                else
-                    elem.find(".fluctuation").addClass("negative")
+                        MainPane.walletAssets.append(elem)
 
-                MainPane.walletAssets.append(elem)
+                        hasChanged = true
+                        if (contractAddr == MAIN_ASSET.ticker)
+                            elem.attr("data-sort", 9999999999999999)
+                        else
+                            elem.attr("data-sort", balance.price == 0 ? balance.balance / 10 ** balance.decimals * 2 : balance.price * balance.balance / 10 ** balance.decimals)
 
-                hasChanged = true
-                if(contractAddr == MAIN_ASSET.ticker)
-                    elem.attr("data-sort", 9999999999999999)
-                else
-                    elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
+                        elem.click(function () {
+                            tokenDetailPane.displayToken(balance)
+                        })
 
-                elem.click(function(){
-                    tokenDetailPane.displayToken(balance)
-                })
+                        elem.show()
+                } else {
+                    if (elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal) {
+                        //serve for sorting
+                        if (contractAddr == MAIN_ASSET.ticker)
+                            elem.attr("data-sort", 9999999999999999)
+                        else
+                            elem.attr("data-sort", balance.price == 0 ? balance.balance / 10 ** balance.decimals * 2 : balance.price * balance.balance / 10 ** balance.decimals)
 
-                elem.show()
-            }else{
-                if(elem.find(".balance").html() != bal || elem.find(".fiatEq").html() != fiatBal){
-                    //serve for sorting
-                    if(contractAddr == MAIN_ASSET.ticker)
-                        elem.attr("data-sort", 9999999999999999)
-                    else
-                        elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
+                        const bar = document.getElementById("bar" + contractAddr)
 
-                    const bar = document.getElementById("bar"+contractAddr)
+                        if (bar != null) {
+                            bar.style.width = parseInt(parseFloat(fiat) * 10000) + "%"
+                        } else if (fiat != "0") {
+                            const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
+                            elem.style.backgroundColor = getDominantColor(document.getElementById("logo" + contractAddr))
+                            elem.style.width = parseInt(parseFloat(fiat) * 10000) + "%"
+                            elem.style.display = "block"
+                            elem.id = "bar" + contractAddr
+                            elem.setAttribute("data-sort", parseInt(fiat))
+                            document.getElementById("resumeTokenBar").append(elem)
+                        }
 
-                    if(bar != null){
-                        bar.style.width = parseInt(parseFloat(fiat)*10000)  + "%"
-                    }else if(fiat != "0"){
-                        const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
-                        elem.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
-                        elem.style.width = parseInt(parseFloat(fiat)*10000) + "%"
-                        elem.style.display = "block"
-                        elem.id = "bar"+contractAddr
-                        elem.setAttribute("data-sort", parseInt(fiat))
-                        document.getElementById("resumeTokenBar").append(elem)
+                        if (document.getElementById("resumeTokenBar").children.length > 0)
+                            tinysort("#resumeTokenBar > hr", {attr: "data-sort", order: 'desc'});
+
+                        hasChanged = true
                     }
-
-                    if(document.getElementById("resumeTokenBar").children.length > 0)
-                        tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
-
-                    hasChanged = true
+                    elem.find(".balance").html(bal)
+                    elem.find(".fiatEq").html(fiatBal)
+                    elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
+                    if (balance.change >= 0)
+                        elem.find(".fluctuation").removeClass("negative")
+                    else
+                        elem.find(".fluctuation").addClass("negative")
+                    elem.unbind("click").click(function () {
+                        tokenDetailPane.displayToken(balance)
+                    })
                 }
-                elem.find(".balance").html(bal)
-                elem.find(".fiatEq").html(fiatBal)
-                elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
-                if(balance.change >= 0)
-                    elem.find(".fluctuation").removeClass("negative")
-                else
-                    elem.find(".fluctuation").addClass("negative")
-                elem.unbind("click").click(function(){
-                    tokenDetailPane.displayToken(balance)
-                })
-            }
+
 
             totalBalance += balance.price*balance.balance/10**balance.decimals;
 
@@ -351,6 +355,50 @@ class MainPane {
         }
 
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
+    }
+
+    displayNft(data) {
+        const selectedWallet = data.wallets[data.selectedWallet].wallet
+
+        for (let x = 0; x < data.wallets[data.selectedWallet].wallet.tokens.length; x++) {
+            if (data.wallets[data.selectedWallet].wallet.tokens[x]?.nft === true) {
+                let uri = data.wallets[data.selectedWallet].wallet.tokens[x]?.tokenUri;
+                let contractAdr = data.wallets[data.selectedWallet].wallet.tokens[x].contract;
+                let elemId = "bal" + contractAdr;
+                let existingElem = $("#" + elemId);
+
+                if (existingElem.length === 0) {
+                    fetch(uri).then(resp => {
+                        resp.json().then(json => {
+                            console.log(json)
+                            // create row for this nft
+                            let newRow = MainPane.baseNftRow.clone();
+                            if (selectedWallet) {
+                                newRow.attr("id", elemId);
+                            }
+
+                            newRow.find(".title").html(json.name);
+                            newRow.find(".ticker").html();
+
+                            let url = json.image;
+                            const regex = /\.[^.\\/]*$/;
+                            const extension = url.match(regex);
+                            console.log(extension)
+
+                            newRow.find(".logoNft").attr("src", url);
+                            newRow.find("svg").attr("data-jdenticon-value");
+
+                            newRow.click(function() {
+                                nftDetailPane.displayToken(uri);
+                            });
+
+                            MainPane.walletNft.append(newRow);
+                            newRow.show();
+                        });
+                    });
+                }
+            }
+        }
     }
 
     updateTokenBar(selectedAddress){
@@ -395,6 +443,7 @@ class MainPane {
 
     setResume(data){
         this.displayData(data)
+        this.displayNft(data)
 
         if(data.backupPopup)
             MainPane.backupPopup.self.show()

@@ -55,6 +55,12 @@ display: block;
     background-size: cover;
 }
 
+#mainPane .resume .assets .asset .logoNft {
+    height: 45px;
+    width: 45px;
+    background-size: cover;
+}
+
 #mainPane .resume .assets .asset svg {
     border-radius: 50%;
 }

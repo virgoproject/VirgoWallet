@@ -14,10 +14,9 @@ class NftPane{
         resume: {
             self: $("#assetsListAdd .resume"),
             name: $("#assetsListAdd .resume .name"),
-            symbol: $("#assetsListAdd .resume .symbol"),
-            decimals: $("#assetsListAdd .resume .decimals"),
-            ticker: $("#assetsListAdd .resume .ticker"),
-            submit: $("#assetsListAdd .resume button")
+            uri: $("#assetsListAdd .resume .uri"),
+            tokenId: $("#assetsListAdd .resume .tokenId"),
+            owner: $("#assetsListAdd .resume .owner"),
         }
     }
 
@@ -36,10 +35,7 @@ class NftPane{
         NftPane.add.contract.input.on("input", function(){
             validateAddress(NftPane.add.contract.input.val()).then(function(res){
                 hasAsset(NftPane.add.contract.input.val()).then(function(hasAsset){
-                    console.log(NftPane.add.contract.tokenId.val())
-                    if (NftPane.add.contract.tokenId.val() !== undefined || NftPane.add.contract.tokenId.val() !== null){
                         NftPane.add.contract.submit.attr("disabled", !res || hasAsset)
-                    }
                 })
             })
         })
@@ -47,9 +43,10 @@ class NftPane{
         NftPane.add.contract.submit.click(function(){
             NftPane.add.contract.input.attr("disabled", true)
             disableLoadBtn($(this))
-
-            getNftDetails(NftPane.add.contract.input.val()).then(function(details){
+            console.log(NftPane.add.contract.tokenId.val())
+            getNftDetails(NftPane.add.contract.input.val(), NftPane.add.contract.tokenId.val()).then(function(details){
                 console.log(details)
+                console.log("details")
                 if(!details){
                     NftPane.add.contract.input.attr("disabled", false)
                     enableLoadBtn(NftPane.add.contract.submit)
@@ -67,17 +64,23 @@ class NftPane{
                     return
                 }
 
-                NftPane.add.resume.name.val(details.name)
-                NftPane.add.resume.decimals.val(details.decimals)
-                NftPane.add.resume.symbol.val(details.symbol)
-                NftPane.add.resume.ticker.html(details.symbol)
-
                 enableLoadBtn(NftPane.add.contract.submit)
-                NftPane.add.contract.self.hide()
-                NftPane.add.resume.self.show()
+
+
+                const uri = details.tokenURI
+                const tokenId = details.tokenID
+                console.log(details.contract)
+
+                addNft(uri,tokenId,details.owner,details.contract).then(function(){
+                    AssetsPane.back.click()
+                    notyf.success("Added !")
+                })
+
             })
         })
     }
 }
 
 const nftPane = new NftPane()
+//2526987
+//0x4a8e348b29Df68Fa4d874b043f920150d750604E

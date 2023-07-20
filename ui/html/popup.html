@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/ui/css/nftPane.css">
     <link rel="stylesheet" href="/ui/css/transactionsPane.css">
     <link rel="stylesheet" href="/ui/css/tokenDetailPane.css">
+    <link rel="stylesheet" href="/ui/css/nftDetailPane.css">
     <link rel="stylesheet" href="/ui/css/notyf.min.css">
     <link rel="stylesheet" href="/ui/css/feesManagement.css">
     <link rel="stylesheet" href="/ui/css/contacts.css">
@@ -174,30 +175,25 @@
                         </div>
                     </div>
                 </div>
-                <div id="walletNft" class="row">
-                    <div class="col-12 asset mt-2" id="baseNftRow" style="display: none" data-sort=0>
-                        <div class="row">
-                            <div class="col-2 justify-content-center align-self-center">
-                                <img class="logo" crossorigin="anonymous" style="display: none"/>
-                                <svg data-jdenticon-value="" width="32" height="32" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet"></svg>
-                            </div>
-                            <div class="col-6">
-                                <p class="title">Bitcoin</p>
-                                <p class="amount">
-                                    <val class="balance">0</val>
-                                    <b class="ticker"></b></p>
-                            </div>
-                            <div class="col-4 text-right">
-                                <p ><span class="dollars"></span><span class="fiatEq">0</span></p>
-                                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                                    <val></val>%
-                                </p>
-                            </div>
+                <div>
+                    <div id="walletNft" class="row">
+                        <div class="col-12 asset mt-2" id="baseNftRow" style="display: none" data-sort=0>
+                            <div class="row">
+                                <div class="col-2 justify-content-center align-self-center">
+                                    <img class="logoNft" crossorigin="anonymous" style=""/>
+                                </div>
+                                <div class="col-6">
+                                    <p class="title">Bitcoin</p>
 
+                                </div>
+                                <div class="col-4 align-self-center text-right">
+                                    <i class="fa-thin fa-arrow-right"></i>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 mt-2">
-                        <p class="mb-0 addNft">Import Nft</p>
+                        <div class="col-12 mt-2">
+                            <p class="mb-0 addNft">Import Nft</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -964,6 +960,24 @@
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
+            <div class="row resume" style="display: none">
+                <div>
+                    <p class="label text-left">Asset name</p>
+                    <input type="text" class="input col-12 name" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">URI</p>
+                    <input type="text" class="input col-12 uri" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">tokenId</p>
+                    <input type="text" class="input col-12 tokenId" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">owner</p>
+                    <input type="text" class="input col-12 owner" placeholder="" disabled>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1592,6 +1606,46 @@
             </div>
         </div>
     </div>
+    <div id="nftDetailPane" style="display: none">
+        <div class="row">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+        <div id="nftDetailsPaneLoading">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div>
+        <div id="nftDetailsDetailed" style="display: none">
+            <div class="row infos">
+                <div class="col-12 d-flex justify-content-center align-self-center ">
+                    <p class="name"></p>
+                </div>
+            </div>
+
+            <div class="content">
+                <div id="nftInfos" style="display: none">
+                    <div id="nftInfosLoading">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                    <div id="nftInfosWrapper" style="display: none">
+                        <div class="text-center rank mt-2 mb-1">
+                            <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
+                        </div>
+                        <div class="row stats">
+                            <div class="col-12">
+                                <p class="description"></p>
+                            </div>
+                            <div class="col-4 baseAttrNft" style="display: none">
+                                <p class="attrTitle"></p>
+                                <p class="attrSpec"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="settings" class="pt-2">
         <div>
             <div class="col-12 title d-flex justify-content-center  settingTitle">
@@ -2520,6 +2574,7 @@
 <script src="../js/panes/swapPane.js"></script>
 <script src="../js/panes/transactionsPane.js"></script>
 <script src="../js/panes/tokenDetailPane.js"></script>
+<script src="../js/panes/nftDetailPane.js"></script>
 <script src="../js/panes/contactsPane.js"></script>
 <script src="../js/panes/atomicSwapPane.js"></script>
 <script src="../js/panes/airdropPane.js"></script>
