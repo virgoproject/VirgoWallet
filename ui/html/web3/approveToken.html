@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <title>Approve Token - Virgo Wallet</title>
-  <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
-  <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/ui/css/main.css">
-  <link rel="stylesheet" href="/ui/css/web3/signTransaction.css">
-  <link rel="stylesheet" href="/ui/css/feesManagement.css">
-  <link rel="stylesheet" href="/ui/css/editFees.css">
+  <link rel="stylesheet" href="../../css/fontAwesome/css/all.css">
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/web3/signTransaction.css">
+  <link rel="stylesheet" href="../../css/feesManagement.css">
+  <link rel="stylesheet" href="../../css/editFees.css">
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
   <div class="row w-100 p-4 mb-4 position-absolute">
     <div id="siteLogo" class="d-flex align-items-center justify-content-center col-4" style="width: 80px; height: 80px">
-      <img src="/ui/images/logoIndigo.png" width="50px">
+      <img src="../../images/logoIndigo.png" width="50px">
     </div>
     <div class="col-4 d-flex align-items-center justify-content-center" style="font-size: 10px">
       <i class="fa-duotone fa-circle col-3"></i>
@@ -21,7 +21,7 @@
       <i class="fa-duotone fa-circle col-3"></i>
     </div>
     <div id="virgoLogo" class="d-flex align-items-center justify-content-center col-4" style="width: 80px; height: 80px; padding-top: 5px">
-      <img src="/ui/images/logoWhite.png" width="50px">
+      <img src="../../images/logoWhite.png" width="50px">
     </div>
     <h2 class="col-12 mt-2" style="padding-top: 40px;margin-bottom: 10px">Give this site permission to access your
       <val id="siteName"></val> ?</h2>
@@ -54,13 +54,9 @@
   </div>
   <edit-fees class="w-100 approve" style="display: none"></edit-fees>
 </div>
-<script src="../../js/utils/jquery.min.js"></script>
-<script src="/commonJS/utils.js"></script>
-<script src="/commonJS/browser-polyfill.js"></script>
-<script src="../../js/utils/backgroundMessaging.js"></script>
-<script src="../../js/web3/editFees.js"></script>
-<script src="../../js/web3/approveToken.js"></script>
-<script src="../../js/utils/rangeSlider.js"></script>
-<script src="../../js/utils/jdenticon.min.js"></script>
+<script src="../../js/web3/web3ScriptLoader.js"></script>
+<script>
+  initScripts(["../../js/web3/approveToken.js"])
+</script>
 </body>
 </html>

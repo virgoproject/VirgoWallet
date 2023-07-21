@@ -91,11 +91,9 @@ class SettingsPane {
             if(SettingsPane.settings.hasClass("opened")){
                 SettingsPane.settings.removeClass("opened")
                 SettingsPane.accountSelectionHeader.removeClass("opened")
-                showAddress()
             } else{
                 SettingsPane.settings.addClass("opened")
                 SettingsPane.accountSelectionHeader.addClass("opened")
-                hideAddress()
             }
             //make sure settings is closed
             for(let i = mainSettingsBackLevel; i >= 0; i--){

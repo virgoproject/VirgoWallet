@@ -403,7 +403,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "web3Request":
-            handleWeb3Request(sendResponse, request.origin, request.method, request.params, request.reqId, sender)
+            handleWeb3Request(request.origin, request.method, request.params, request.reqId, sender)
             break
 
         case "resolveWeb3Authorization":
@@ -783,6 +783,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
             {
                 if (connectedWebsites[i] === request.address) {
                     connectedWebsites.splice(i, 1)
+                    sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
+                    break
+                }else if(connectedWebsites[i].type === "walletConnect" && connectedWebsites[i].params.topic === request.address){
+                    connectedWebsites.splice(i, 1)
+                    walletConnect.disconnect(request.address)
                     sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
                     break
                 }

@@ -3,6 +3,7 @@ class WalletConnect {
     constructor() {
         this.pendingConnections = {}
         this.init()
+        this.reqs = new Map()
     }
 
     async init() {
@@ -25,6 +26,43 @@ class WalletConnect {
         this.wcWallet.on('session_proposal', proposal => {
             console.log("got proposal")
             _this.pendingConnections[proposal.params.pairingTopic](proposal)
+        })
+
+        this.wcWallet.on('session_request', async event => {
+
+            console.log(event)
+
+            const reqId = Date.now() + "." + Math.random()
+
+            _this.reqs.set(reqId, event)
+
+            handleWeb3Request(event.verifyContext.verified.origin, event.params.request.method, event.params.request.params, reqId, {tab: {id: "walletConnect"}})
+        })
+
+        browser.tabs.onMessage.addListener(message => {
+            console.log("got reeeee")
+            console.log(message)
+
+            const event = _this.reqs.get(message.id)
+
+            const { topic, params, id } = event
+
+            const response = { id, result: message.resp, jsonrpc: '2.0' }
+
+            _this.wcWallet.respondSessionRequest({ topic, response })
+
+            _this.reqs.delete(message.id)
+        })
+
+        this.wcWallet.on("session_delete", event => {
+            console.log(event)
+            for (let i = 0; i < connectedWebsites.length; i++) {
+                console.log(connectedWebsites[i].params.topic)
+                if(connectedWebsites[i].type === "walletConnect" && connectedWebsites[i].params.topic === event.topic){
+                    connectedWebsites.splice(i, 1)
+                    break
+                }
+            }
         })
 
     }
@@ -75,13 +113,24 @@ class WalletConnect {
             namespaces: approvedNamespaces,
         })
 
-        console.log(session)
+        connectedWebsites.push({
+            "type": "walletConnect",
+            "params": session
+        })
+        browser.storage.local.set({"connectedWebsites": connectedWebsites})
     }
 
     refuse(proposal){
         this.wcWallet.rejectSession({
             id: proposal.id,
             reason: wcUtils.getSdkError('USER_REJECTED_METHODS')
+        })
+    }
+
+    disconnect(topic){
+        this.wcWallet.disconnectSession({
+            topic,
+            reason: wcUtils.getSdkError('USER_DISCONNECTED')
         })
     }
 

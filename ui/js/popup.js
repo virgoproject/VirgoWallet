@@ -33,16 +33,6 @@ function showStatsBar(){
     statBar.classList.remove("d-none")
 }
 
-function hideAddress(){
-    let adressBar = document.querySelector('.contentAddress')
-    adressBar.classList.add("d-none")
-}
-
-function showAddress(){
-    let adressBar = document.querySelector('.contentAddress')
-    adressBar.classList.remove("d-none")
-}
-
 $("#footer .footerElem").click(function(){
     if($(this).hasClass("selected")) return false
 

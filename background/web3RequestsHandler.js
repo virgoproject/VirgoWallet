@@ -256,6 +256,8 @@ function refusePendingAuthorization(auth){
 }
 
 function isWebsiteAuthorized(origin, tabId, reqId){
+    if(tabId == "walletConnect") return true
+
     if(!connectedWebsites.includes(origin)){
         respondToWeb3Request(tabId, reqId, {
             success: false,
@@ -269,7 +271,7 @@ function isWebsiteAuthorized(origin, tabId, reqId){
     return true
 }
 
-function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
+function handleWeb3Request(origin, method, params, reqId, sender){
     const tabId = sender.tab.id
 
     console.log(method)
@@ -301,7 +303,7 @@ function handleWeb3Request(sendResponse, origin, method, params, reqId, sender){
             break
         case "eth_requestAccounts":
         case "eth_accounts":
-            if(connectedWebsites.includes(origin)){
+            if(connectedWebsites.includes(origin) || tabId == "walletConnect"){
                 respondToWeb3Request(tabId, reqId, {
                     success: true,
                     data: [baseWallet.getCurrentAddress()]
