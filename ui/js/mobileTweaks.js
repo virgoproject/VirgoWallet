@@ -10,6 +10,7 @@ const setMobileTweaks = () => {
     const body = document.getElementsByTagName("body")[0]
     body.style.height = "100vh"
     body.style.width = "100vw"
+
 }
 
 setMobileTweaks()

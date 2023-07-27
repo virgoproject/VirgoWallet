@@ -163,8 +163,18 @@ class MainPane {
     }
 
     updateData(){
+        if(document.hidden) return
+
+        const _this = this
+
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
+                if(response.locked){
+                    unlockPane.displayUnlock()
+                    clearInterval(_this.interval)
+                    return
+                }
+
                 if(events.oldData !== JSON.stringify(response)) {
                     console.log("updating")
                     mainPane.displayData(response)
@@ -384,7 +394,7 @@ class MainPane {
         if(data.updatePopup)
             MainPane.updatePopup.self.show()
 
-        setInterval(function(){
+        this.interval = setInterval(function(){
             mainPane.updateData()
         }, 250)
 

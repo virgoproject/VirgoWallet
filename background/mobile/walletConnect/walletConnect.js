@@ -65,6 +65,16 @@ class WalletConnect {
             }
         })
 
+        events.addListener("chainChanged", () => {
+            console.log("chainsssss")
+            _this.updateSessions("chainChanged")
+        })
+
+        events.addListener("addressChanged", () => {
+            console.log("adddddrrr")
+            _this.updateSessions("accountsChanged")
+        })
+
     }
 
     connect(uri){
@@ -108,9 +118,31 @@ class WalletConnect {
             },
         })
 
+        console.log(approvedNamespaces)
+
         const session = await this.wcWallet.approveSession({
             id,
             namespaces: approvedNamespaces,
+        })
+
+        console.log(session)
+
+        web3wallet.emitSessionEvent({
+            session.topic,
+            event: {
+                name: 'chainChanged',
+                data: [baseWallet.getCurrentAddress()]
+            },
+            chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
+        })
+
+        web3wallet.emitSessionEvent({
+            session.topic,
+            event: {
+                name: 'accountsChanged',
+                data: [baseWallet.getCurrentAddress()]
+            },
+            chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
         })
 
         connectedWebsites.push({
@@ -132,6 +164,52 @@ class WalletConnect {
             topic,
             reason: wcUtils.getSdkError('USER_DISCONNECTED')
         })
+    }
+
+    async updateSessions(type){
+        const topics = Object.keys(walletConnect.wcWallet.getActiveSessions())
+
+        const chains = []
+
+        const accounts = []
+
+        for(const chain of baseWallet.getWalletsJSON()){
+            chains.push("eip155:"+chain.wallet.chainID)
+            accounts.push("eip155:"+chain.wallet.chainID+":"+baseWallet.getCurrentAddress())
+        }
+
+        const ns = {
+            eip155: {
+                chains: chains,
+                methods: ["eth_sendTransaction", "personal_sign"],
+                events: ["accountsChanged", "chainChanged"],
+                accounts: accounts
+            }
+        }
+
+        for(const topic of topics){
+            await web3wallet.updateSession({ topic, namespaces: ns })
+
+            if(type == "chainChanged"){
+                web3wallet.emitSessionEvent({
+                    session.topic,
+                    event: {
+                        name: 'chainChanged',
+                        data: [baseWallet.getCurrentAddress()]
+                    },
+                    chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
+                })
+            }else if(type == "accountsChanged"){
+                web3wallet.emitSessionEvent({
+                    session.topic,
+                    event: {
+                        name: 'accountsChanged',
+                        data: [baseWallet.getCurrentAddress()]
+                    },
+                    chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
+                })
+            }
+        }
     }
 
 }

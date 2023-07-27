@@ -20,17 +20,23 @@ class UnlockPane {
     static self = $("#unlockPane")
 
     constructor() {
+
+        const _this = this
+
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 UnlockPane.loadingPane.hide()
                 UnlockPane.self.show()
-                if(!response.locked)
+                if(response.locked){
+                    _this.displayUnlock()
+                }else{
                     unlockPane.displayWallet(response)
-                if(!response.setupDone)
-                    UnlockPane.createpane.show()
-                else {
-                    UnlockPane.createpane.hide()
-                    tutorialPane.checkDisplay()
+                    if(!response.setupDone)
+                        UnlockPane.createpane.show()
+                    else {
+                        UnlockPane.createpane.hide()
+                        tutorialPane.checkDisplay()
+                    }
                 }
             })
 
@@ -48,10 +54,14 @@ class UnlockPane {
             disableLoadBtn($(this))
             browser.runtime.sendMessage({command: 'unlockWallet', password: UnlockPane.password.val()})
                 .then(function (response) {
-                    if(response)
+                    UnlockPane.password.val("")
+                    if(response){
                         unlockPane.displayWallet(response)
-                    else{
                         enableLoadBtn(UnlockPane.passSubmit)
+                        UnlockPane.passSubmit.prop("disabled", true)
+                    }else{
+                        enableLoadBtn(UnlockPane.passSubmit)
+                        UnlockPane.passSubmit.prop("disabled", true)
                         UnlockPane.password.addClass("is-invalid");
                         UnlockPane.passWrong.show();
                         UnlockPane.passBase.hide();
@@ -90,10 +100,10 @@ class UnlockPane {
         UnlockPane.recoverBox.submit.click(function(){
             disableLoadBtn($(this))
             restoreFromMnemonic(UnlockPane.recoverBox.mnemonic.val()).then(function(response){
-                if(response)
+                if(response){
                     this.displayWallet(response)
-                else{
                     enableLoadBtn(UnlockPane.recoverBox.submit)
+                } else {
                     UnlockPane.recoverBox.mnemonic.addClass("is-invalid");
                     UnlockPane.recoverBox.msgWrong.show();
                     UnlockPane.recoverBox.msgBase.hide();
@@ -120,6 +130,18 @@ class UnlockPane {
         settingsPane.setSettings(data)
         atomicSwap.setAtomicSwap(data)
         $("#mainPane").show()
+    }
+
+    displayUnlock(){
+        $("#mainPane").hide()
+        $("#unlockPane").show()
+
+        reactMessaging.getPassword().then(res => {
+            if(res.password === undefined) return
+
+            UnlockPane.password.val(res.password)
+            UnlockPane.passSubmit.click()
+        })
     }
 
 }

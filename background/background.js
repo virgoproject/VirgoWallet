@@ -169,6 +169,16 @@ function activityHeartbeat(){
     browser.storage.local.set({"lastActivity": lastActivity})
 }
 
+//only useful in mobile context
+function checkAutolock(){
+    if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+    if(Date.now()-lastActivity >= lockDelay*60000){
+        baseWallet = undefined
+        browser.storage.session.set({"unlockPassword": null})
+    }
+}
+
 //listen for messages sent by popup
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if(sender.id != browser.runtime.id)
@@ -187,6 +197,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
     switch (request.command) {
         case "getBaseInfos":
+            checkAutolock()
+
             if(baseWallet === undefined)
                 sendResponse({"locked": true})
             else {
@@ -361,6 +373,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
             baseWallet.encrypt(request.password)
             baseWallet.save()
+
+            reactMessaging.storePassword(request.password)
 
             sendResponse(true)
             break

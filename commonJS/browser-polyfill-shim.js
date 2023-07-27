@@ -1,6 +1,7 @@
 const browserShim = {
     storage: {
-        local: {}
+        local: {},
+        session: {}
     },
     notifications: {},
     extension: {},
@@ -48,6 +49,34 @@ browserShim.storage.local.remove = async (name) => {
     return
 }
 
+browserShim.storage.session.map = new Map()
+
+browserShim.storage.session.get = async (name) => {
+    let item = browserShim.storage.session.map.get(name)
+    const res = {}
+
+    if(item == null) return res
+
+    try {
+        item = JSON.parse(item)
+    }catch(e){}
+
+    res[name] = item
+
+    return res
+}
+
+browserShim.storage.session.set = async (data) => {
+    for(let [key, value] of Object.entries(data)){
+        if(typeof value === "object")
+            value = JSON.stringify(value)
+
+        browserShim.storage.session.map.set(key, value)
+    }
+
+    return
+}
+
 browserShim.notifications.create = async (name, params) => {
     return
 }
@@ -57,7 +86,9 @@ browserShim.extension.getURL = (url) => {
 }
 
 browserShim.tabs.query = (tabs) => {
-    return []
+    return {
+        then: function(){}
+    }
 }
 
 browserShim.tabs.onMessage.addListener = (func) => {

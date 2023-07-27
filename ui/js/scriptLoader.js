@@ -43,6 +43,7 @@ const browserScripts = [
 
 const mobileScripts = [
     "../../commonJS/browser-polyfill-shim.js",
+    "../../commonJS/reactMessaging.js",
     "../../commonJS/utils.js",
     "../../background/xhrShim.js",
     "../../background/utils/converter.js",
