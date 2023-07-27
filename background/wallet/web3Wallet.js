@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, nft, transactions, explorer, swapParams, testnet, atomicSwapParams) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -61,6 +61,7 @@ class Web3Wallet {
 
     static fromJSON(json){
         if(json.transactions === undefined) json.transactions = []
+        if (json.nft === undefined) json.nft = []
         if(json.explorer === undefined){
             switch(json.chainID){
                 case 1:
@@ -171,7 +172,7 @@ class Web3Wallet {
         if(json.chainID == 61)
             json.RPC = "https://www.ethercluster.com/etc"
       
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
+        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams, json.nft)
     }
 
     toJSON(){
