@@ -327,24 +327,45 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "getNftDetails":
             const nftContractAddress = request.asset;
-            const nftContract = new web3.eth.Contract(ERC721_ABI, nftContractAddress);
+            let chainName
+            switch (baseWallet.getCurrentWallet().asset){
+                case 'Ethereum':
+                    chainName = "ethereum"
+                break;
+                case 'Binance Coin':
+                    chainName = "bsc"
+                break;
+                case 'Goerli':
+                    chainName = "goerli"
+                break;
+                case 'Polygon':
+                    chainName = "matic"
+                break;
+                case 'Avalanche':
+                    chainName = "avalanche"
+                break
+            }
+            console.log(baseWallet.getCurrentWallet())
+            console.log(chainName)
+            const options = {
+                method: 'GET',
+                headers: {accept: 'application/json', 'X-API-KEY': 'e6d937e6287d496db299ba15278b1e6d'}
+            };
 
-            const tokenId = request.tokenID;
-            nftContract.methods.tokenURI(tokenId).call().then(function(tokenURI) {
-                nftContract.methods.ownerOf(tokenId).call().then(function(owner) {
-                    console.log(tokenURI,owner)
+            fetch('https://api.opensea.io/v2/chain/'+chainName+'/contract/'+nftContractAddress+'/nfts/'+request.tokenID+'', options)
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
                     sendResponse({
                         contract: nftContractAddress,
-                        tokenID: tokenId,
-                        tokenURI: tokenURI,
-                        owner: owner
+                        tokenID: response.nft.identifier,
+                        tokenURI: response.nft.metadata_url,
+                        owner: response.nft.owners[0].address,
+                        collection: response.nft.collection
                     });
-                }).catch(function() {
-                    console.log(false);
-                });
-            }).catch(function() {
-                console.log(false);
-            });
+                })
+                .catch(err => console.error(err));
+
             break;
 
 

@@ -1,6 +1,6 @@
 class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, nft, transactions, explorer, swapParams, testnet, atomicSwapParams) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -9,6 +9,7 @@ class Web3Wallet {
         this.rpcURL = rpcURL
         this.chainID = chainID
         this.tokens = tokens
+        this.nft = nft
         this.transactions = transactions
         this.explorer = explorer
         this.swapParams = swapParams
@@ -20,6 +21,10 @@ class Web3Wallet {
         this.prices = new Map()
 
         this.tokenSet = new Map()
+        this.nftSet = new Map()
+
+        for (let nft of this.nft)
+            this.nftSet.set(nft.contract, nft)
 
         for(let token of this.tokens)
             this.tokenSet.set(token.contract, token)
@@ -181,6 +186,7 @@ class Web3Wallet {
                 "RPC": this.rpcURL,
                 "chainID": this.chainID,
                 "tokens": this.tokens,
+                "nft":  this.nft,
                 "transactions": this.transactions,
                 "explorer": this.explorer,
                 "swapParams": this.swapParams,
@@ -473,21 +479,22 @@ class Web3Wallet {
 
     }
 
-    addNft(tokenURI,tokenId,owner, contractNft, track = true){
+    addNft(tokenURI,tokenId,owner, contractNft,collec, track = true){
         if(this.hasToken(contractNft) || !web3.utils.isAddress(contractNft)) return;
 
+        console.log(collec)
         const token = {
             "tokenUri": tokenURI,
             "tokenId": tokenId,
-            "nft": true,
+            "collection": collec,
             "contract": contractNft,
             "owner": owner,
             "track": track
         }
 
         console.log(token)
-        this.tokens.push(token)
-        this.tokenSet.set(token.contract, token)
+        this.nft.push(token)
+        this.nftSet.set(token.contract, token)
     }
 
     removeToken(contract){

@@ -46,7 +46,6 @@ class NftPane{
             console.log(NftPane.add.contract.tokenId.val())
             getNftDetails(NftPane.add.contract.input.val(), NftPane.add.contract.tokenId.val()).then(function(details){
                 console.log(details)
-                console.log("details")
                 if(!details){
                     NftPane.add.contract.input.attr("disabled", false)
                     enableLoadBtn(NftPane.add.contract.submit)
@@ -69,10 +68,10 @@ class NftPane{
 
                 const uri = details.tokenURI
                 const tokenId = details.tokenID
-                console.log(details.contract)
+                console.log(details.collection)
 
-                addNft(uri,tokenId,details.owner,details.contract).then(function(){
-                    AssetsPane.back.click()
+                addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(){
+                    NftPane.back.click()
                     notyf.success("Added !")
                 })
 

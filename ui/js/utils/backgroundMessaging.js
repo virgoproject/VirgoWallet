@@ -96,16 +96,16 @@ async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
 }
 
-async function getNftDetails(asset, tokenId){
-    return await browser.runtime.sendMessage({command: 'getNftDetails', asset: asset, tokenID: tokenId})
+async function getNftDetails(asset, tokenId, chainID){
+    return await browser.runtime.sendMessage({command: 'getNftDetails', asset: asset, tokenID: tokenId, chainID: chainID})
 }
 
 async function addAsset(name, symbol, decimals, contract){
     return await browser.runtime.sendMessage({command: 'addToken', name: name, ticker: symbol, decimals: decimals, contract: contract})
 }
 
-async function addNft(uri,tokenId,owner,contract){
-    return await browser.runtime.sendMessage({command: 'addNft', uri: uri, tokenId: tokenId, owner: owner , contract: contract})
+async function addNft(uri,tokenId,owner,contract,collection){
+    return await browser.runtime.sendMessage({command: 'addNft', uri: uri, tokenId: tokenId, owner: owner , contract: contract, collection: collection})
 }
 
 function closedBackupPopup(){
