@@ -170,7 +170,7 @@ class MainPane {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 if(response.locked){
-                    unlockPane.displayUnlock()
+                    unlockPane.displayUnlock(response.biometricsEnabled)
                     clearInterval(_this.interval)
                     return
                 }

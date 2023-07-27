@@ -65,15 +65,19 @@ class WalletConnect {
             }
         })
 
-        events.addListener("chainChanged", () => {
-            console.log("chainsssss")
-            _this.updateSessions("chainChanged")
-        })
+        const interval = setInterval(() => {
+            if(events == undefined) return
 
-        events.addListener("addressChanged", () => {
-            console.log("adddddrrr")
-            _this.updateSessions("accountsChanged")
-        })
+            events.addListener("chainChanged", () => {
+                _this.updateSessions("chainChanged")
+            })
+
+            events.addListener("addressChanged", () => {
+                _this.updateSessions("accountsChanged")
+            })
+
+            clearInterval(interval)
+        }, 100)
 
     }
 
@@ -127,8 +131,8 @@ class WalletConnect {
 
         console.log(session)
 
-        web3wallet.emitSessionEvent({
-            session.topic,
+        this.wcWallet.emitSessionEvent({
+            topic: session.topic,
             event: {
                 name: 'chainChanged',
                 data: [baseWallet.getCurrentAddress()]
@@ -136,8 +140,8 @@ class WalletConnect {
             chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
         })
 
-        web3wallet.emitSessionEvent({
-            session.topic,
+        this.wcWallet.emitSessionEvent({
+            topic: session.topic,
             event: {
                 name: 'accountsChanged',
                 data: [baseWallet.getCurrentAddress()]
@@ -167,7 +171,7 @@ class WalletConnect {
     }
 
     async updateSessions(type){
-        const topics = Object.keys(walletConnect.wcWallet.getActiveSessions())
+        const topics = Object.keys(this.wcWallet.getActiveSessions())
 
         const chains = []
 
@@ -188,11 +192,11 @@ class WalletConnect {
         }
 
         for(const topic of topics){
-            await web3wallet.updateSession({ topic, namespaces: ns })
+            await this.wcWallet.updateSession({ topic, namespaces: ns })
 
             if(type == "chainChanged"){
-                web3wallet.emitSessionEvent({
-                    session.topic,
+                this.wcWallet.emitSessionEvent({
+                    topic: topic,
                     event: {
                         name: 'chainChanged',
                         data: [baseWallet.getCurrentAddress()]
@@ -200,8 +204,8 @@ class WalletConnect {
                     chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
                 })
             }else if(type == "accountsChanged"){
-                web3wallet.emitSessionEvent({
-                    session.topic,
+                this.wcWallet.emitSessionEvent({
+                    topic: topic,
                     event: {
                         name: 'accountsChanged',
                         data: [baseWallet.getCurrentAddress()]

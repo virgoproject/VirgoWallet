@@ -68,6 +68,10 @@ class SettingsPane {
         delay: $("#autolockDelaySetting")
     }
 
+    static biometrics = {
+        enabled: $("#biometricsEnabledSetting")
+    }
+
     constructor() {
         let mainSettingsBackLevel = 0;
 
@@ -168,6 +172,14 @@ class SettingsPane {
 
         SettingsPane.autolock.delay.change(function(){
             setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
+        })
+
+        getBiometrics().then(function(res){
+            SettingsPane.biometrics.enabled.prop("checked", res)
+        })
+
+        SettingsPane.biometrics.enabled.change(function() {
+            setBiometrics($(this).is(':checked'))
         })
 
     }

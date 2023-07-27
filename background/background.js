@@ -46,8 +46,12 @@ let backupPopupDate = 0;
 let accName = {}
 
 let lockDelay = 60;
-let autolockEnabled = false;
+let autolockEnabled = true;
+
+let biometricsEnabled = true;
+
 let lastActivity = Date.now();
+
 let setupDone = false;
 
 let tutorialDone = false
@@ -109,6 +113,13 @@ BaseWallet.loadFromJSON().then(() => {
         loadedElems["autolockEnabled"] = true
     })
 
+    browser.storage.local.get("biometricsEnabled").then(function(res){
+        if(res.biometricsEnabled !== undefined && res.biometricsEnabled !== null)
+            biometricsEnabled = res.biometricsEnabled
+
+        loadedElems["biometricsEnabled"] = true
+    })
+
     browser.storage.local.get("lockDelay").then(function(res){
         if(res.lockDelay !== undefined && res.lockDelay !== null)
             lockDelay = res.lockDelay
@@ -148,7 +159,7 @@ BaseWallet.loadFromJSON().then(() => {
     })
 
     browser.alarms.onAlarm.addListener(async a => {
-        while(Object.keys(loadedElems).length < 12){
+        while(Object.keys(loadedElems).length < 13){
             await new Promise(r => setTimeout(r, 10));
         }
 
@@ -191,7 +202,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 12){
+    while(Object.keys(loadedElems).length < 13){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -200,7 +211,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             checkAutolock()
 
             if(baseWallet === undefined)
-                sendResponse({"locked": true})
+                sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled})
             else {
                 while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                     await new Promise(r => setTimeout(r, 10));
@@ -527,6 +538,15 @@ async function onBackgroundMessage(request, sender, sendResponse){
             lockDelay = request.delay
             browser.storage.local.set({"autolockEnabled": autolockEnabled})
             browser.storage.local.set({"lockDelay": lockDelay})
+            return false
+
+        case "getBiometrics":
+            sendResponse(biometricsEnabled)
+            break
+
+        case "setBiometrics":
+            biometricsEnabled = request.enabled
+            browser.storage.local.set({"biometricsEnabled": biometricsEnabled})
             return false
 
         case "addContact":
@@ -858,7 +878,8 @@ function bg_getBaseInfos(){
         "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites,
         "selectedCurrency" : selectedCurrency,
-        "setupDone" : setupDone
+        "setupDone" : setupDone,
+        "biometricsEnabled": biometricsEnabled
     }
 }
 

@@ -136,6 +136,14 @@ function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
 }
 
+function setBiometrics(enabled){
+    browser.runtime.sendMessage({command: 'setBiometrics', enabled: enabled})
+}
+
+async function getBiometrics(){
+    return await browser.runtime.sendMessage({command: 'getBiometrics'})
+}
+
 async function addingContact(address,name,note,favorite) {
    return await browser.runtime.sendMessage({command: 'addContact' , address:address , name:name , note:note , favorite:favorite })
 

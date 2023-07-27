@@ -28,7 +28,7 @@ class UnlockPane {
                 UnlockPane.loadingPane.hide()
                 UnlockPane.self.show()
                 if(response.locked){
-                    _this.displayUnlock()
+                    _this.displayUnlock(response.biometricsEnabled)
                 }else{
                     unlockPane.displayWallet(response)
                     if(!response.setupDone)
@@ -128,20 +128,27 @@ class UnlockPane {
         sendPane.setSend(data)
         swapPane.setSwap(data)
         settingsPane.setSettings(data)
-        atomicSwap.setAtomicSwap(data)
+        atomicSwapPane.setAtomicSwap(data)
         $("#mainPane").show()
     }
 
-    displayUnlock(){
+    displayUnlock(useBiometrics){
         $("#mainPane").hide()
         $("#unlockPane").show()
 
-        reactMessaging.getPassword().then(res => {
-            if(res.password === undefined) return
+        if(useBiometrics){
+            reactMessaging.isBiometricsAvailable().then(res => {
+                if(res.success){
+                    reactMessaging.getPassword().then(res => {
+                        if(res.password === undefined) return
 
-            UnlockPane.password.val(res.password)
-            UnlockPane.passSubmit.click()
-        })
+                        UnlockPane.password.val(res.password)
+                        UnlockPane.passSubmit.click()
+                    })
+                }
+            })
+        }
+
     }
 
 }

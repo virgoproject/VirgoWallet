@@ -177,41 +177,40 @@ class AtomicSwapUtils {
                 "gasPrice": gasPrice,
                 "from": baseWallet.getCurrentAddress(),
                 "nonce": nonce
+            }).on("transactionHash", async hash => {
+                order.lockHashA = hash
+                order.secret = secret
+                order.status = 1
+                order.chainIdA = chainIdA
+                order.chainIdB = chainIdB
+
+                atomicSwap.addOrder(order)
+
+                const txResume = {
+                    "hash": hash,
+                    "contractAddr": "ATOMICSWAP",
+                    "date": Date.now(),
+                    "recipient": chainA.atomicSwapParams.lockerAddress,
+                    "amount": 0,
+                    "gasPrice": gasPrice,
+                    "gasLimit": gasAmount,
+                    "nonce": nonce,
+                    "swapInfos": order
+                }
+
+                chainA.atomicSwapParams.orders.push(order)
+
+                chainA.transactions.unshift(txResume)
+                chainB.transactions.unshift(txResume)
+
+                AtomicSwapUtils.saveOrder(order)
+
+                const updateOrderReq = await fetch("https://atomicswap.virgo.net:2083/api/order/" + order.id + "/update/" + hash)
+
+                resolve(true)
             })
-                .on("transactionHash", async hash => {
-                    order.lockHashA = hash
-                    order.secret = secret
-                    order.status = 1
-                    order.chainIdA = chainIdA
-                    order.chainIdB = chainIdB
-
-                    atomicSwap.addOrder(order)
-
-                    const txResume = {
-                        "hash": hash,
-                        "contractAddr": "ATOMICSWAP",
-                        "date": Date.now(),
-                        "recipient": chainA.atomicSwapParams.lockerAddress,
-                        "amount": 0,
-                        "gasPrice": gasPrice,
-                        "gasLimit": gasAmount,
-                        "nonce": nonce,
-                        "swapInfos": order
-                    }
-
-                    chainA.atomicSwapParams.orders.push(order)
-
-                    chainA.transactions.unshift(txResume)
-                    chainB.transactions.unshift(txResume)
-
-                    AtomicSwapUtils.saveOrder(order)
-
-                    const updateOrderReq = await fetch("https://atomicswap.virgo.net:2083/api/order/" + order.id + "/update/" + hash)
-
-                    resolve(true)
-                })
         })
     }
 
 }
-new AtomicSwapUtils()
+atomicSwap = new AtomicSwapUtils()

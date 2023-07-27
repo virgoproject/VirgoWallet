@@ -40,7 +40,7 @@ class ContactsPane {
 
     }
 
-    static  extern = {
+    static extern = {
         payForm: $("#body .send .sendForm")
     }
 
@@ -218,11 +218,10 @@ class ContactsPane {
 
                     e.stopPropagation()
 
-                    if ($(this).hasClass('fas')) {
-                        $(this).removeClass('fas').addClass('fal').css('color', 'unset')
+                    if ($(e.target).hasClass('fas')) {
+                        $(e.target).removeClass('fas').addClass('fal').css('color', 'unset')
                     } else {
-                        $(this).removeClass('fal').addClass('fas').css('color', 'rgb(247, 208, 108)')
-
+                        $(e.target).removeClass('fal').addClass('fas').css('color', 'rgb(247, 208, 108)')
                     }
                     let idFavorite = element.find('.bg-danger').attr('data-address')
                     deleteFavorite(idFavorite)
