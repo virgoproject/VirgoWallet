@@ -23,10 +23,6 @@
     max-height: 100%;
 }
 
-#contacts .showElements{
-    transition:transform 0.25s ease;
-}
-
 #contacts .back {
     cursor: pointer;
     transition: color ease 0.25s;
@@ -80,6 +76,19 @@
     background-color: #ece2f3;
 }
 
+#contacts .contactUser.opened:hover{
+    background-color: var(--whiteBackground) !important;
+}
+
+#contacts .contactUser .showElements {
+    transition:transform 0.25s ease;
+    transform: rotate(0deg);
+}
+
+#contacts .contactUser.opened .showElements {
+    transform: rotate(90deg);
+}
+
 #contacts .favoriteContacts {
     background: var(--mainColor);
     color: white;
@@ -121,7 +130,7 @@
     resize: none;
     border-radius: 0.5em;
     border: unset;
-    background: #5a009c14;
+    background: #ededed;
 }
 
 #contacts .contactFormContent .form-text{

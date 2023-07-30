@@ -249,7 +249,7 @@
     white-space: nowrap;
 }
 
-#settings .settingsPane .trakeExemple{
+#settings .settingsPane .trakeExemple {
     background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
@@ -265,6 +265,10 @@
 #settings .settingsPane .trakeExemple i:hover {
     cursor: pointer;
     color: var(--bs-danger);
+}
+
+#settings .settingsPane .trakeExemple img {
+    border-radius: 50%;
 }
 
 #settings .settingsPane .settingsCat[data-settingId='connectedWebsites'] {

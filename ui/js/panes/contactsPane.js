@@ -233,41 +233,36 @@ class ContactsPane {
                 element.find('.noteContact').html(res[l].note)
                 element.find('svg').attr("data-jdenticon-value", res[l].address)
                 element.find('.notesPart').hide()
-                element.find('.changeContact').attr('data-index', l).click(function () {
-                    updateContact($(this).attr('data-index'), element.find('.inputNameContact').val(), element.find('.changeNote').val())
+                element.find('.changeContact').attr('data-index', l).click(e => {
+                    updateContact($(e.target).attr('data-index'), element.find('.inputNameContact').val(), element.find('.changeNote').val())
                     element.find('.showElements').click()
                     notyf.success("Contact updated!")
+                    e.stopPropagation()
                 })
 
-                element.find('.deleteContact').attr('id', l).attr('data-address',res[l].address).click(function () {
-                    deleteContact($(this).attr('data-address'))
+                element.find('.deleteContact').attr('id', l).attr('data-address',res[l].address).click(e => {
+                    deleteContact($(e.target).attr('data-address'))
                     element.remove()
                     if (ContactsPane.div.contactList.children().length <= 0)
                         ContactsPane.div.noContactFound.show()
+                    e.stopPropagation()
                 })
 
                 element.find('.showElements').click(e => {
                     e.stopPropagation()
 
-                    if ($(this).hasClass('opened')) {
-                        $(this).removeClass('opened')
-                        $(this).css('transform', "rotate(0deg)")
+                    if (element.hasClass('opened')) {
+                        element.removeClass('opened')
                         element.find('.inputNameContact').prop( "disabled", true ).css('cursor','')
 
-                        $(this).parent().find('.notesPart').hide()
+                        element.find('.notesPart').hide()
                     } else {
-                        $(this).addClass('opened')
-                        $(this).css('transform', "rotate(90deg)")
+                        element.addClass('opened')
                         element.find('.notesPart').show()
                         element.find('.inputNameContact').prop( "disabled", false ).css('cursor','pointer')
-                        $(this).parent().find('.notesPart').show()
+                        element.find('.notesPart').show()
                     }
                 })
-
-                element.onclick = () => {
-                    $("#body .send .sendForm .recipient").val(res[l].address)
-                    $("#body .send .sendForm .submit").click()
-                }
 
                 element.show()
                 SendPane.divContactList.append(element)

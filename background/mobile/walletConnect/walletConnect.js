@@ -24,7 +24,6 @@ class WalletConnect {
         })
 
         this.wcWallet.on('session_proposal', proposal => {
-            console.log("got proposal")
             _this.pendingConnections[proposal.params.pairingTopic](proposal)
         })
 
@@ -40,9 +39,6 @@ class WalletConnect {
         })
 
         browser.tabs.onMessage.addListener(message => {
-            console.log("got reeeee")
-            console.log(message)
-
             const event = _this.reqs.get(message.id)
 
             const { topic, params, id } = event
@@ -55,7 +51,6 @@ class WalletConnect {
         })
 
         this.wcWallet.on("session_delete", event => {
-            console.log(event)
             for (let i = 0; i < connectedWebsites.length; i++) {
                 console.log(connectedWebsites[i].params.topic)
                 if(connectedWebsites[i].type === "walletConnect" && connectedWebsites[i].params.topic === event.topic){
@@ -121,8 +116,6 @@ class WalletConnect {
                 },
             },
         })
-
-        console.log(approvedNamespaces)
 
         const session = await this.wcWallet.approveSession({
             id,
@@ -192,7 +185,12 @@ class WalletConnect {
         }
 
         for(const topic of topics){
-            await this.wcWallet.updateSession({ topic, namespaces: ns })
+
+            console.log("updating " + topic)
+
+            const sess = await this.wcWallet.updateSession({ topic, namespaces: ns })
+
+            console.log(sess)
 
             if(type == "chainChanged"){
                 this.wcWallet.emitSessionEvent({
