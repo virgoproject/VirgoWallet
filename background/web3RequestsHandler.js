@@ -126,8 +126,13 @@ async function signMessage(origin, data, tabId, reqId, method){
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
     let msg = data[1]
-    if(method == "eth_signTypedData_v4")
+    if(method == "eth_signTypedData_v4"){
+        if(typeof msg == "string")
+            msg = JSON.parse(msg)
+
         msg = JSON.stringify(msg.message)
+    }
+
 
     msg = btoa(msg)
 

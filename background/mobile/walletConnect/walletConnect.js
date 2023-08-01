@@ -4,6 +4,7 @@ class WalletConnect {
         this.pendingConnections = {}
         this.init()
         this.reqs = new Map()
+        this.topicsParams = new Map()
     }
 
     async init() {
@@ -43,7 +44,14 @@ class WalletConnect {
 
             const { topic, params, id } = event
 
-            const response = { id, result: message.resp, jsonrpc: '2.0' }
+            let response;
+
+            if(message.resp.success)
+                response = { id, result: message.resp.data, jsonrpc: '2.0' }
+            else
+                response = { id, error: message.resp.error, jsonrpc: '2.0' }
+
+            console.log(response)
 
             _this.wcWallet.respondSessionRequest({ topic, response })
 
@@ -110,12 +118,14 @@ class WalletConnect {
             supportedNamespaces: {
                 eip155: {
                     chains: chains,
-                    methods: ["eth_sendTransaction", "personal_sign"],
+                    methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData_v4", "eth_sign", "eth_signTransaction"],
                     events: ["accountsChanged", "chainChanged"],
                     accounts: accounts
                 },
             },
         })
+
+        console.log(approvedNamespaces)
 
         const session = await this.wcWallet.approveSession({
             id,
@@ -124,23 +134,31 @@ class WalletConnect {
 
         console.log(session)
 
-        this.wcWallet.emitSessionEvent({
-            topic: session.topic,
-            event: {
-                name: 'chainChanged',
-                data: [baseWallet.getCurrentAddress()]
-            },
-            chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
-        })
+        this.topicsParams.set(session.topic, params)
 
-        this.wcWallet.emitSessionEvent({
-            topic: session.topic,
-            event: {
-                name: 'accountsChanged',
-                data: [baseWallet.getCurrentAddress()]
-            },
-            chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
-        })
+        console.log(session.topic)
+
+        setTimeout(() => {
+            this.wcWallet.emitSessionEvent({
+                topic: session.topic,
+                event: {
+                    name: 'chainChanged',
+                    data: baseWallet.getCurrentWallet().chainID
+                },
+                chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
+            })
+        }, 500)
+
+        setTimeout(() => {
+            this.wcWallet.emitSessionEvent({
+                topic: session.topic,
+                event: {
+                    name: 'accountsChanged',
+                    data: [baseWallet.getCurrentAddress()]
+                },
+                chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
+            })
+        }, 1000)
 
         connectedWebsites.push({
             "type": "walletConnect",
@@ -175,16 +193,21 @@ class WalletConnect {
             accounts.push("eip155:"+chain.wallet.chainID+":"+baseWallet.getCurrentAddress())
         }
 
-        const ns = {
-            eip155: {
-                chains: chains,
-                methods: ["eth_sendTransaction", "personal_sign"],
-                events: ["accountsChanged", "chainChanged"],
-                accounts: accounts
-            }
-        }
-
         for(const topic of topics){
+
+            console.log(topic)
+
+            const ns = wcUtils.buildApprovedNamespaces({
+                proposal: this.topicsParams.get(topic),
+                supportedNamespaces: {
+                    eip155: {
+                        chains: chains,
+                        methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData_v4", "eth_sign", "eth_signTransaction"],
+                        events: ["accountsChanged", "chainChanged"],
+                        accounts: accounts
+                    },
+                },
+            })
 
             console.log("updating " + topic)
 
@@ -197,7 +220,7 @@ class WalletConnect {
                     topic: topic,
                     event: {
                         name: 'chainChanged',
-                        data: [baseWallet.getCurrentAddress()]
+                        data: baseWallet.getCurrentWallet().chainID
                     },
                     chainId: 'eip155:'+baseWallet.getCurrentWallet().chainID
                 })

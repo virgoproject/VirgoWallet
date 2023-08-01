@@ -149,6 +149,9 @@ class EthWallet {
 
         }
 
+        if(json.chainID == 1)
+            json.RPC = "https://rpc.ankr.com/eth"
+
         if(json.chainID == 3){
             json.name = "Goerli"
             json.chainID = 5
@@ -165,7 +168,10 @@ class EthWallet {
 
         if(json.chainID == 61)
             json.RPC = "https://www.ethercluster.com/etc"
-      
+
+        if(json.chainID == 137)
+            json.RPC = "https://rpc.ankr.com/polygon"
+
         return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 

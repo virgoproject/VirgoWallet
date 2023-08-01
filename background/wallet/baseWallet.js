@@ -124,7 +124,7 @@ class BaseWallet {
                 "ticker": "ETH",
                 "decimals": 18,
                 "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                "RPC": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+                "RPC": "https://rpc.ankr.com/eth",
                 "chainID": 1,
                 "tokens": [],
                 "transactions": [],
@@ -206,7 +206,7 @@ class BaseWallet {
                 "ticker": "MATIC",
                 "decimals": 18,
                 "contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-                "RPC": "https://polygon-rpc.com",
+                "RPC": "https://rpc.ankr.com/polygon",
                 "chainID": 137,
                 "tokens": [],
                 "transactions": [],
@@ -552,6 +552,7 @@ class BaseWallet {
             shareNonce: false
         })
         this.setProvider(newProvider)
+        provider.engine.stop()
         provider = newProvider
         this.save()
         this.getCurrentWallet().update()
