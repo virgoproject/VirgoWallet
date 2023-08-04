@@ -410,6 +410,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 }
                 browser.storage.local.set({"setupDone": true})
                 setupDone = true
+
+                while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                    await new Promise(r => setTimeout(r, 10));
+                }
+
                 sendResponse(bg_getBaseInfos())
             }catch(e){
                 console.log(e)

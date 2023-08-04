@@ -100,9 +100,9 @@ class UnlockPane {
         UnlockPane.recoverBox.submit.click(function(){
             disableLoadBtn($(this))
             restoreFromMnemonic(UnlockPane.recoverBox.mnemonic.val()).then(function(response){
+                enableLoadBtn(UnlockPane.recoverBox.submit)
                 if(response){
-                    this.displayWallet(response)
-                    enableLoadBtn(UnlockPane.recoverBox.submit)
+                    unlockPane.displayWallet(response)
                 } else {
                     UnlockPane.recoverBox.mnemonic.addClass("is-invalid");
                     UnlockPane.recoverBox.msgWrong.show();
@@ -121,6 +121,7 @@ class UnlockPane {
     }
 
     displayWallet(data){
+        console.log(data)
         $("#unlockPane").hide()
         UnlockPane.createpane.hide()
         selectChains.setChains(data)
