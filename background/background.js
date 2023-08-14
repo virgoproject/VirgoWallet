@@ -33,11 +33,21 @@ const VERSION = "0.7.9"
 const loadedElems = {}
 
 let connectedWebsites = []
+
+const notifsStored = []
+
+let notifications = []
 browser.storage.local.get("connectedWebsites").then(function(res){
     if(res.connectedWebsites !== undefined)
         connectedWebsites = res.connectedWebsites
 
     loadedElems["connectedWebsites"] = true
+})
+
+browser.storage.local.get("notifications").then(function (res) {
+    if(res.notifications !== undefined)
+        notifications = res.notifications
+    loadedElems["notifications"] = true
 })
 
 let selectedCurrency = "usd"
@@ -131,6 +141,9 @@ browser.runtime.onInstalled.addListener(() => {
     browser.alarms.get('walletLock').then(a => {
         if (!a) browser.alarms.create('walletLock', { periodInMinutes: 1.0 })
     })
+    browser.alarms.get('notifs').then(a => {
+        if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
+    })
 })
 
 browser.alarms.onAlarm.addListener(async a => {
@@ -146,8 +159,32 @@ browser.alarms.onAlarm.addListener(async a => {
             browser.storage.session.set({"unlockPassword": null})
         }
 
-    }
-});
+    }else if(a.name === "notifs"){
+        fetch('https://airdrops.virgo.net:2096/api/notifications/retrieve',{
+            method : 'GET',
+            headers: {'Content-Type': 'application/json'}
+        }).then(response => response.json())
+            .then(results => {
+                browser.storage.local.get('notifications').then(function(res) {
+                    const notifsIds = {}
+
+                    if (res.notifications === undefined) res.notifications = []
+
+                    for(const notif of res.notifications){
+                        notifsIds[notif.id] = true
+                    }
+
+                    for(const notif of results){
+                        if(!notifsIds[notif.id]){
+                            res.notifications.push(notif)
+                        }
+                    }
+                    browser.storage.local.set({"notifications": res.notifications})
+                })
+            })
+        }
+    });
+
 
 function activityHeartbeat(){
     lastActivity = Date.now()
@@ -706,10 +743,6 @@ async function onBackgroundMessage(request, sender, sendResponse){
                     address : addressUser
                 }
 
-                console.log(newAirdrop)
-
-                console.log(res.airdropinfos)
-
                 if(res.airdropinfos === undefined) {
                     browser.storage.local.set({"airdropinfos": [newAirdrop]})
                     sendResponse(true)
@@ -765,6 +798,28 @@ async function onBackgroundMessage(request, sender, sendResponse){
             sendResponse(true)
             break
 
+        case 'getNotifications' :
+            browser.storage.local.get('notifications').then(function(res) {
+                sendResponse(res.notifications)
+            })
+            break
+
+        case 'hideNotification':
+            browser.storage.local.get('notifications').then(function(res) {
+                console.log(res)
+                for (var i=0 ; i < res.notifications.length ; i++)
+                {
+                    if (res.notifications[i].id === request.id) {
+                        res.notifications.splice(i, 1)
+                        browser.storage.local.set({"notifications": res.notifications})
+                        sendResponse(true)
+                        break
+                    }
+                }
+
+            })
+            break
+
         case 'setupDone':
             browser.storage.local.set({"setupDone": true})
             setupDone = true
@@ -810,6 +865,7 @@ function getBaseInfos(){
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites,
+        "notifications" : notifications,
         "selectedCurrency" : selectedCurrency,
         "setupDone" : setupDone
     }

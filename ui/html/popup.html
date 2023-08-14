@@ -1012,21 +1012,17 @@
             <div class="listItem mb-2 notifTx pendingTx" id="transactionsNotifTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center">
-                        <i class="fa-solid fa-arrow-right statusColor" ></i>
-                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
+                        <i class="statusColor"></i>
                     </div>
                     <div class="col-8 justify-content-center align-self-center">
-                        <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
-                        <p class="addr">To <val class="addrRecipient"></val></p>
+                        <span class="ticker"></span>
+                        <p>
+                        <span class="notifDesc"></span>
+                            <val class="notifTime ms-2"></val>
+                        </p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0" >
-                        <i class="fas fas fa-chevron-right addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
-                    </div>
-                    <div class="col-12">
-                        <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
-                        </div>
+                        <i class="fa-solid fa-eye-slash addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
                     </div>
                 </div>
                 <div class="details">
