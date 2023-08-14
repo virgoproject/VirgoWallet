@@ -360,10 +360,9 @@ class MainPane {
     displayNft(data) {
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 
-        for (let x = 0; x < data.wallets[data.selectedWallet].wallet.tokens.length; x++) {
-            if (data.wallets[data.selectedWallet].wallet.tokens[x]?.nft === true) {
-                let uri = data.wallets[data.selectedWallet].wallet.tokens[x]?.tokenUri;
-                let contractAdr = data.wallets[data.selectedWallet].wallet.tokens[x].contract;
+        for (let x = 0; x < data.wallets[data.selectedWallet].wallet.nft.length; x++) {
+                let uri = data.wallets[data.selectedWallet].wallet.nft[x].tokenUri;
+                let contractAdr = data.wallets[data.selectedWallet].wallet.nft[x].contract;
                 let elemId = "bal" + contractAdr;
                 let existingElem = $("#" + elemId);
 
@@ -397,7 +396,7 @@ class MainPane {
                         });
                     });
                 }
-            }
+
         }
     }
 

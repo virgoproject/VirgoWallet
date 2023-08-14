@@ -375,7 +375,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "addNft":
-            baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract)
+            baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract, request.collection)
             sendResponse(true)
             break
 
