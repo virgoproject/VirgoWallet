@@ -49,6 +49,22 @@
     padding: 0;
 }
 
+#mainPane .header .pendingTxs:hover .notifs {
+    background-color: red;
+    border-radius: 50% !important;
+    position: absolute !important;
+    padding: 0.6em;
+    margin-top: -0.8em !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .15s ease-in-out;
+}
+
+.pendingTxs:hover .notifsCount{
+    display: none;
+}
+
 #resumeTokenBar hr {
     height: 3px;
     margin-left: 2px;

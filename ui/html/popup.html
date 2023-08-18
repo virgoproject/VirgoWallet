@@ -89,6 +89,9 @@
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
             </div>
             <div class="col-2 pendingTxs">
+                <span class="notifs">
+                    <p class="notifsCount"></p>
+                </span>
                 <p><i class="fa-solid fa-clock-rotate-left"></i></p>
             </div>
 
@@ -1010,79 +1013,81 @@
                 </div>
             </div>
             <div class="listItem mb-2 notifTx pendingTx" id="transactionsNotifTx" style="display: none">
-                <div class="row header">
-                    <div class="col-2 justify-content-center align-self-center">
-                        <i class="statusColor"></i>
+                <div class="showNotifs">
+                    <div class="row header">
+                        <div class="col-2 justify-content-center align-self-center">
+                            <i class="statusColor"></i>
+                        </div>
+                        <div class="col-8 justify-content-center align-self-center">
+                            <span class="ticker"></span>
+                            <p>
+                                <span class="notifDesc"></span>
+                                <val class="notifTime ms-2"></val>
+                            </p>
+                        </div>
+                        <div class="col-2 text-right justify-content-center align-self-center p-0" >
+                            <i class="fa-solid fa-eye-slash addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
+                        </div>
                     </div>
-                    <div class="col-8 justify-content-center align-self-center">
-                        <span class="ticker"></span>
-                        <p>
-                        <span class="notifDesc"></span>
-                            <val class="notifTime ms-2"></val>
-                        </p>
-                    </div>
-                    <div class="col-2 text-right justify-content-center align-self-center p-0" >
-                        <i class="fa-solid fa-eye-slash addr" style="font-weight: 300;font-size: 1.5em; margin-right: 16px"><span class="time"></span></i>
-                    </div>
-                </div>
-                <div class="details">
-                    <div class="detail">
-                        <div class="row" style="margin-bottom: -7px">
-                            <div class="col-6">
-                                <p class="title">Send</p>
-                            </div>
+                    <div class="details">
+                        <div class="detail">
+                            <div class="row" style="margin-bottom: -7px">
+                                <div class="col-6">
+                                    <p class="title">Send</p>
+                                </div>
 
-                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
+                                <p class="body amount text-right col-6 bold"><span class="status"></span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="detail" style="margin-bottom: 20px">
-                        <div class="row">
-                            <p class="title col-4">Date</p>
-                            <p class="body date col-8 bold text-right">-</p>
+                        <div class="detail" style="margin-bottom: 20px">
+                            <div class="row">
+                                <p class="title col-4">Date</p>
+                                <p class="body date col-8 bold text-right">-</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="detail " style="margin-bottom: 20px">
-                        <div class="row">
-                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
-                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
-                            <p class="body recipient bold col-8 text-right">-</p>
+                        <div class="detail " style="margin-bottom: 20px">
+                            <div class="row">
+                                <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
+                                <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                                <p class="body recipient bold col-8 text-right">-</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row fees">
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title text-left col-6">Gas Price</p>
-                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                        <div class="row fees">
+                            <div class="col-12 text-center">
+                                <div class="detail">
+                                    <div class="row">
+                                        <p class="title text-left col-6">Gas Price</p>
+                                        <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="detail">
+                                    <div class="row gas">
+                                        <p class="title text-left col-6">Gas Limit</p>
+                                        <p class="body text-right  gasLimit col-6">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="detail">
+                                    <div class="row gas">
+                                        <p class="title text-left col-6">Gas Used</p>
+                                        <p class="body text-right  gasUsed col-6">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="detail">
+                                    <div class="row">
+                                        <p class="title bold text-left col-5">Total fees</p>
+                                        <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row gas">
-                                    <p class="title text-left col-6">Gas Limit</p>
-                                    <p class="body text-right  gasLimit col-6">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row gas">
-                                    <p class="title text-left col-6">Gas Used</p>
-                                    <p class="body text-right  gasUsed col-6">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <div class="detail">
-                                <div class="row">
-                                    <p class="title bold text-left col-5">Total fees</p>
-                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        <button class="button w-100 mt-1">Open in explorer</button>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
                 </div>
             </div>
             <div class="listItem mb-2 atomicSwapTx pendingTx" id="transactionsAtomicSwapTx" style="display: none">

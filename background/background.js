@@ -37,6 +37,9 @@ let connectedWebsites = []
 const notifsStored = []
 
 let notifications = []
+
+let notifCounter = 0;
+
 browser.storage.local.get("connectedWebsites").then(function(res){
     if(res.connectedWebsites !== undefined)
         connectedWebsites = res.connectedWebsites
@@ -49,6 +52,8 @@ browser.storage.local.get("notifications").then(function (res) {
         notifications = res.notifications
     loadedElems["notifications"] = true
 })
+
+fetchNotifs()
 
 let selectedCurrency = "usd"
 browser.storage.local.get("selectedCurrency").then(function(res){
@@ -160,30 +165,9 @@ browser.alarms.onAlarm.addListener(async a => {
         }
 
     }else if(a.name === "notifs"){
-        fetch('https://airdrops.virgo.net:2096/api/notifications/retrieve',{
-            method : 'GET',
-            headers: {'Content-Type': 'application/json'}
-        }).then(response => response.json())
-            .then(results => {
-                browser.storage.local.get('notifications').then(function(res) {
-                    const notifsIds = {}
-
-                    if (res.notifications === undefined) res.notifications = []
-
-                    for(const notif of res.notifications){
-                        notifsIds[notif.id] = true
-                    }
-
-                    for(const notif of results){
-                        if(!notifsIds[notif.id]){
-                            res.notifications.push(notif)
-                        }
-                    }
-                    browser.storage.local.set({"notifications": res.notifications})
-                })
-            })
-        }
-    });
+        fetchNotifs()
+    }
+});
 
 
 function activityHeartbeat(){
@@ -801,17 +785,19 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case 'getNotifications' :
             browser.storage.local.get('notifications').then(function(res) {
                 sendResponse(res.notifications)
+                countNotifs()
             })
             break
 
         case 'hideNotification':
             browser.storage.local.get('notifications').then(function(res) {
-                console.log(res)
                 for (var i=0 ; i < res.notifications.length ; i++)
                 {
-                    if (res.notifications[i].id === request.id) {
-                        res.notifications.splice(i, 1)
+
+                    if (res.notifications[i].id === Number(request.id)) {
+                        res.notifications[i].shown = false;
                         browser.storage.local.set({"notifications": res.notifications})
+                        countNotifs()
                         sendResponse(true)
                         break
                     }
@@ -866,6 +852,7 @@ function getBaseInfos(){
         "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites,
         "notifications" : notifications,
+        "notificationsCount" : notifCounter,
         "selectedCurrency" : selectedCurrency,
         "setupDone" : setupDone
     }
@@ -1019,6 +1006,48 @@ function sendTo(request, sendResponse){
                     sendTo(request, sendResponse)
                 }
             })
+    })
+}
+
+function fetchNotifs() {
+    fetch('https://airdrops.virgo.net:2096/api/notifications/retrieve',{
+        method : 'GET',
+        headers: {'Content-Type': 'application/json'}
+    }).then(response => response.json())
+        .then(results => {
+            browser.storage.local.get('notifications').then(function(res) {
+                const notifsIds = {}
+
+                if (res.notifications === undefined) res.notifications = []
+
+                for(const notif of res.notifications){
+                    notifsIds[notif.id] = true
+                }
+
+                for(const notif of results){
+                    if(!notifsIds[notif.id]){
+                        res.notifications.push(notif)
+                    }
+                }
+                countNotifs()
+                browser.storage.local.set({"notifications": res.notifications})
+            })
+        })
+}
+
+function countNotifs(){
+    browser.storage.local.get('notifications').then(function(res) {
+        for (let i=0 ; i < res.notifications.length ; i++) {
+            console.log(res.notifications[i].shown)
+            if(res.notifications[i].shown === undefined){
+                notifCounter = notifCounter+1
+            }
+            if(notifCounter === 0){
+                browser.action.setBadgeText({text : ""})
+            }else {
+                browser.action.setBadgeText({text : notifCounter.toString()})
+            }
+        }
     })
 }
 

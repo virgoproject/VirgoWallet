@@ -43,6 +43,7 @@ class TransactionsPane {
         this.txsCount = 0
         this.countDate = 0
         this.reachedEnd = false
+
         TransactionsPane.btn.click(function(){
             TransactionsPane.self.show()
             transactionsPane.txsCount = 0
@@ -830,52 +831,55 @@ class TransactionsPane {
     }
 
     showNotifications(notification){
+        for(let i = 0; notification.length > i; i++) {
+            notifCounter = 0
+            if(!notification.length < 0) {
+            if (notification[i].shown === undefined) {
+                let elem = TransactionsPane.list.notifTx.clone()
+                let notifID = notification[i].id
+                let notifType = notification[i].type.toLowerCase()
+                let notifTitle = notification[i].title
+                let notifDesc = notification[i].description
+                let notifDate = notification[i].createdAT
+                let type = ''
+                TransactionsPane.list.self.append(elem)
 
-        for(let i = 0; notification.length > i; i++){
-            let elem = TransactionsPane.list.notifTx.clone()
-            let notifID = notification[i].id
-            let notifType = notification[i].type.toLowerCase()
-            let notifTitle = notification[i].title
-            let notifDesc = notification[i].description
-            let notifDate = notification[i].date
-            let type = ''
-            TransactionsPane.list.self.append(elem)
+                switch (notifType) {
+                    case 'regular':
+                        type = 'fa-bell fa-solid regular'
+                        break;
+                    case 'important':
+                        type = 'fa-regular fa-circle-exclamation important'
+                        break;
+                    case 'danger':
+                        type = 'fa-regular fa-circle-exclamation danger'
+                        break;
+                    case 'sucess':
+                        type = 'fa-check fa-solid sucess'
+                        break;
+                    case 'update':
+                        type = 'fa-bell fa-solid update'
+                        break;
+                    case 'test':
+                        type = 'fa-bell fa-solid update'
+                        break;
+                }
 
-            switch (notifType){
-                case 'regular':
-                    type = 'fa-bell fa-solid regular'
-                    break;
-                case 'important':
-                    type = 'fa-regular fa-circle-exclamation important'
-                    break;
-                case 'danger':
-                    type = 'fa-regular fa-circle-exclamation danger'
-                    break;
-                case 'sucess':
-                    type = 'fa-check fa-solid sucess'
-                    break;
-                case 'update':
-                    type = 'fa-bell fa-solid update'
-                    break;
-                case 'test':
-                    type = 'fa-bell fa-solid update'
-                    break;
-            }
-
-            elem.find('.statusColor').addClass(type)
-            elem.find('.ticker').text(notifTitle)
-            elem.find('.notifDesc').text(notifDesc)
-            let actDate = new Date(notifDate)
-            elem.find('.notifTime').text(actDate.toLocaleTimeString())
-            elem.find('.fa-eye-slash').attr('id',notifID).click(function () {
-                hideNotification(this.id).then(() =>{
-                    console.log('ok')
+                elem.find('.statusColor').addClass(type)
+                elem.find('.ticker').text(notifTitle)
+                elem.find('.notifDesc').text(notifDesc)
+                let actDate = new Date(notifDate)
+                elem.find('.notifTime').text(actDate.toLocaleTimeString())
+                elem.find('.fa-eye-slash').attr('id', notifID).click(function () {
+                    elem.hide()
+                    hideNotification(this.id).then(() => {
+                    })
                 })
-            })
-
-
-            elem.show()
-            console.log(notification[i])
+                elem.show()
+            }
+        } else {
+            TransactionsPane.list.empty.show()
+            }
         }
 
     }
