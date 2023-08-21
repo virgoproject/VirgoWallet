@@ -4,6 +4,19 @@ function get(name){
     return p[name];
 }
 
+window.jdenticon_config = {
+    hues: [281],
+    lightness: {
+        color: [0.47, 0.67],
+        grayscale: [0.28, 0.48]
+    },
+    saturation: {
+        color: 0.61,
+        grayscale: 0.02
+    },
+    backColor: "#dcd3e6"
+};
+
 let gas = parseInt(get("gas"))
 let ticker = get("ticker")
 let amount = parseInt(get("value"))
@@ -14,7 +27,6 @@ let editFees = document.querySelector("edit-fees")
 const decimal = editFees.dataset.decimal = decimals
 editFees.dataset.limit = gas
 const MainTicker = editFees.dataset.ticker = mainAssetTicker
-editFees.start(gas)
 let finalGasPrice = 0
 
 
@@ -46,12 +58,11 @@ $(".editFees").click(function (){
 
 getTokenDetails(get("allowed")).then(function(detail){
     $("#siteName").html(detail.symbol)
-    console.log(detail)
 })
 getAsset(ticker).then(function(assetInfos){
     editFees.onGasChanged = (gasPrice, gasLimit) => {
 
-        $("#allow").click(async () => {
+        $("#allow").unbind("click").click(async () => {
             await browser.runtime.sendMessage({command: 'resolveWeb3Authorization', id: get("id"), decision: true, params: {gasPrice: gasPrice}})
             window.close()
         })
@@ -67,10 +78,8 @@ getAsset(ticker).then(function(assetInfos){
 
         $("#fees").html(Utils.formatAmount(gasLimit * gasPrice, decimals))
     }
+    editFees.start(gas)
 })
 $("svg").attr("data-jdenticon-value",get("addr"))
 
-
-
-
-
+window.moveTo((screen.width - 370) / 2, (screen.height - 600) / 2)

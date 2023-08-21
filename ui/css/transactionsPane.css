@@ -137,9 +137,9 @@
 }
 
 #transactionsPane .listItem progress-ring {
-    display: block;
-    position: absolute;
     transform: translate(-6px, -44px);
+    height: 0;
+    width: 50px;
 }
 
 #transactionsPane .listItem.opened .details {
@@ -167,6 +167,7 @@
     color: var(--highlightColor1);
     cursor: pointer;
     transition: color ease 0.25s;
+    text-overflow: ellipsis;
 }
 
 #transactionsPane .listItem.opened .recipient:hover {
@@ -332,12 +333,22 @@ cursor: pointer;
     color: var(--bs-body-color);
 }
 
-#transactionsPane .timeApprove{
-    margin-left: 41px;
-}
-
 #transactionsPane .time{
     float: right;
+}
+#transactionsPane .site{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+}
+
+#transactionsPane .amountOverflow{
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    max-width: 15ch;
 }
 
 #transactionsPane .chevronOpened{

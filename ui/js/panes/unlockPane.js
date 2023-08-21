@@ -27,6 +27,7 @@ class UnlockPane {
                     UnlockPane.createpane.show()
                 else {
                     UnlockPane.createpane.hide()
+                    tutorialPane.checkDisplay()
                 }
             })
 

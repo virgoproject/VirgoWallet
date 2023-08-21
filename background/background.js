@@ -28,7 +28,7 @@ if(browser.storage.session === undefined){
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.9"
+const VERSION = "0.8.0"
 
 const loadedElems = {}
 
@@ -104,35 +104,43 @@ let lastActivity = Date.now();
 let setupDone = false;
 
 browser.storage.local.get('setupDone').then(function (res) {
-    if (res.setupDone !== undefined){
+    if (res.setupDone !== undefined && res.setupDone !== null){
         setupDone = res.setupDone;
     }
     loadedElems["setupDone"] = true
 })
 
 browser.storage.local.get("autolockEnabled").then(function(res){
-    if(res.autolockEnabled !== undefined)
+    if(res.autolockEnabled !== undefined && res.autolockEnabled !== null)
         autolockEnabled = res.autolockEnabled
 
     loadedElems["autolockEnabled"] = true
 })
 
 browser.storage.local.get("lockDelay").then(function(res){
-    if(res.lockDelay !== undefined)
+    if(res.lockDelay !== undefined && res.lockDelay !== null)
         lockDelay = res.lockDelay
 
     loadedElems["lockDelay"] = true
 })
 
 browser.storage.local.get("lastActivity").then(function(res){
-    if(res.lastActivity !== undefined)
+    if(res.lastActivity !== undefined && res.lastActivity !== null)
         lastActivity = res.lastActivity
 
     loadedElems["lastActivity"] = true
 })
 
+let tutorialDone = false
+browser.storage.local.get("tutorialDone").then(function(res){
+    if(res.tutorialDone !== undefined && res.tutorialDone !== null)
+        tutorialDone = res.tutorialDone
+
+    loadedElems["tutorialDone"] = true
+})
+
 browser.storage.session.get("unlockPassword").then(function(res){
-    if(res.unlockPassword !== undefined){
+    if(res.unlockPassword !== undefined && res.unlockPassword !== null){
         unlockPassword = res.unlockPassword
         BaseWallet.loadFromJSON(unlockPassword).then(() => {
             loadedElems["unlockPassword"] = true
@@ -152,7 +160,7 @@ browser.runtime.onInstalled.addListener(() => {
 })
 
 browser.alarms.onAlarm.addListener(async a => {
-    while(Object.keys(loadedElems).length < 11){
+    while(Object.keys(loadedElems).length < 12){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -187,7 +195,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 11){
+    while(Object.keys(loadedElems).length < 12){
         await new Promise(r => setTimeout(r, 10));
     }
 
@@ -206,7 +214,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "setSelectedcurrency":
             selectedCurrency = request.currency
-            browser.storage.session.set({"selectedCurrency": request.currency})
+            browser.storage.local.set({"selectedCurrency": request.currency})
             break
 
         case "unlockWallet":
@@ -315,6 +323,16 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "getTokenDetails":
+            if(request.asset === undefined){
+                sendResponse(false)
+                return
+            }
+
+            if(baseWallet.getCurrentWallet().hasToken(request.asset)){
+                sendResponse(baseWallet.getCurrentWallet().tokenSet.get(request.asset))
+                return
+            }
+
             const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
             tokenContract.methods.name().call().then(function(name){
                 tokenContract.methods.decimals().call().then(function(decimals){
@@ -763,11 +781,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "changeModalStatus":
-                for (let i =0; request.state[0].length > i; i++){
-                    const json = {}
-                    json['airdrop' + request.state[i].airdropID] = true
-                    browser.storage.local.set(json)
-                }
+            for (let i =0; request.state[0].length > i; i++){
+                const json = {}
+                json['airdrop' + request.state[i].airdropID] = true
+                browser.storage.local.set(json)
+            }
             break
 
         case 'deleteConnectedSite':
@@ -813,9 +831,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case 'tutorialDone':
+            sendResponse(tutorialDone)
+            break
+
+        case "setTutorialDone":
             browser.storage.local.set({"tutorialDone": true})
             tutorialDone = true
-            sendResponse(tutorialDone)
             break
 
         case "setupNot":
@@ -931,11 +952,11 @@ function sendTo(request, sendResponse){
                     txResume.confirmations = confirmationNumber
                     baseWallet.save()
                 }).catch(e => {
-                    if(e.code == -32000){
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        sendTo(request, sendResponse)
-                    }
-                })
+                if(e.code == -32000){
+                    baseWallet.selectWallet(baseWallet.selectedWallet)
+                    sendTo(request, sendResponse)
+                }
+            })
             return
         }
 
@@ -1001,11 +1022,11 @@ function sendTo(request, sendResponse){
                 txResume.confirmations = confirmationNumber
                 baseWallet.save()
             }).catch(e => {
-                if(e.code == -32000){
-                    baseWallet.selectWallet(baseWallet.selectedWallet)
-                    sendTo(request, sendResponse)
-                }
-            })
+            if(e.code == -32000){
+                baseWallet.selectWallet(baseWallet.selectedWallet)
+                sendTo(request, sendResponse)
+            }
+        })
     })
 }
 

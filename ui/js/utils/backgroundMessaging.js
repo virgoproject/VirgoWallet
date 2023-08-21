@@ -70,6 +70,9 @@ async function isEncrypted(){
 }
 
 async function restoreFromMnemonic(mnemonic){
+    setTimeout(() => {
+        tutorialPane.checkDisplay()
+    }, 5000)
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
 }
 
@@ -218,6 +221,10 @@ async function setupDone(){
 
 async function tutorialDone(){
     return await browser.runtime.sendMessage({command : 'tutorialDone'})
+}
+
+async function setTutorialDone(){
+    return await browser.runtime.sendMessage({command : 'setTutorialDone'})
 }
 
 async function setSelectedcurrency(currency) {
