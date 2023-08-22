@@ -101,9 +101,13 @@ class MainPane {
 
                 Object.keys(result).forEach(key => {
                     MainPane.carouselLoading.hide()
+
+                    if (Date.now() > result[key].expiresOn ) {
+                    delete result[key]
+                    }
+
                     const img = MainPane.carouselImage.clone()
                     img.attr("id", "bal"+result[key].img)
-
                     img.find(".image").attr("src","https://raw.githubusercontent.com/virgoproject/walletBanners/main/"+result[key].img);
                     img.find(".image").click(function (){
                         window.open(result[key].href, "_blank")
