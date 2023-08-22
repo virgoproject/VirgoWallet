@@ -70,7 +70,7 @@ class TutorialPane {
     }
 
     checkDisplay() {
-        tutorialDone().then(res => {
+        isTutorialDone().then(res => {
             if (res) {
                 return
             }else {

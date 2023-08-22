@@ -264,7 +264,7 @@
 }
 
 .sendRecentElem {
-    background: #f8f4fb;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
@@ -273,7 +273,7 @@
 }
 
 .sendRecentElem:hover {
-    background: var(--whiteBackground);
+    background: var(--whiteBackgroundSelected);
 }
 
 .sendRecentElem .addressWrapper {

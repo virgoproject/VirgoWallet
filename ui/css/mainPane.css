@@ -2,6 +2,8 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 #mainPane>.header {
@@ -10,6 +12,7 @@
     padding: 0.5em;
     margin-bottom: -0.5em;
     margin-top: 0.5em;
+    flex: 0 1 151px;
 }
 .hr{
     width: 90%;
@@ -18,11 +21,43 @@
 #mainPane>.header>.stats {
     color: black;
     padding: 1em 0em;
-    position: absolute;
-    left: 2em;
-    right: 2em;
-    top: 55px;
     border-radius: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-top: 1em;
+}
+
+#mainPane .header .stats .addressContainer {
+    background-color: var(--whiteBackground);
+    border-radius: 50em;
+    padding: 0.25em 1em;
+    margin-left: 1em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.25s ease-in;
+}
+
+#mainPane .header .stats .addressContainer:hover {
+    background-color: var(--whiteBackgroundSelected);
+}
+
+#mainPane .header .stats .addressContainer i {
+    font-size: 0.75em;
+}
+
+#mainPane .header .topbar {
+    gap: 1em;
+    padding: 0 0.5em;
+}
+
+#body {
+    height: 100%;
+    flex: 1 1;
+    min-height: 0;
+}
+
+#mainPane .bodyElem.resume {
+    padding-bottom: 6em;
 }
 
 #mainPane .header .stats .fluctuation {
@@ -144,7 +179,6 @@
     font-size: 30px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.5);
-
 }
 
 #mainPane .header .pendingTxs {
@@ -155,13 +189,25 @@
     font-size: .9em;
     border-radius: 50%;
     line-height: 28px;
-    margin: auto;
     cursor: pointer;
     padding: 0;
-    margin-left: 17px;
 }
 
+#mainPane .header .qrCode {
+    height: 28px;
+    width: 28px;
+    background: transparent;
+    color: var(--mainColor);
+    font-size: 1.25em;
+    border-radius: 50%;
+    line-height: 28px;
+    cursor: pointer;
+    padding: 0;
+}
 
+#mainPane .header .qrCode:hover {
+    background: var(--whiteBackground);
+}
 
 #mainPane .bodyElem.resume, #mainPane .bodyElem.send {
     padding: 0em 2em;

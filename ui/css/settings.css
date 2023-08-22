@@ -1,6 +1,8 @@
 #accountSelectionHeader {
     z-index: 10;
     display: flex;
+    width: 36px;
+    flex: 0 1 auto;
 }
 
 .edit{
@@ -25,44 +27,24 @@
     transform: rotate(-90deg);
 }
 
-#accountSelectionHeader .contentAddress .adress{
-    font-size: .7em;
-}
-
-#accountSelectionHeader .contentAddress {
-    background: #f8f4fb;
-    padding: 0.5em;
-    border-radius: 25px;
-    cursor: pointer;
-    padding-right: 1em;
-}
-#accountSelectionHeader .copy{
-    margin-left: 38px;
-}
-
-.contentAddress .fa-copy{
-    font-size: 12px !important;
-}
-
-#accountSelectionHeader .contentAddress:hover {
-    background: var(--whiteBackground);
-}
-
-#accountSelectionHeader .contentAddress:hover {
-    background: #e6e1e9;
-}
-
 #settings {
-    display: block;
-    height: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
     top: 0px;
     position: absolute;
-    background: #faf6fc;
+    background: white;
     transform: scaleY(0);
     transform-origin: 50% 0;
     transition:transform 0.25s ease;
     z-index: 1;
+}
+
+#settings .mainPane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 #settings.walletSetup {
@@ -87,8 +69,11 @@
 }
 
 #settings .accounts {
-    max-height: 410px;
+    height: 100%;
     overflow-y: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+    align-content: flex-start;
 }
 
 #settings .accounts .account {
@@ -98,6 +83,7 @@
     padding-bottom: 0.375em;
     cursor: pointer;
     transition: background ease 0.25s;
+    height: min-content;
 }
 
 #settings .accounts .account:hover {
@@ -110,7 +96,7 @@
 }
 
 #settings .accounts .account.selected {
-    background: #ece2f3;
+    background: var(--whiteBackgroundSelected);
     cursor: default;
 }
 
@@ -225,10 +211,11 @@
     position: absolute;
     top: 3.5em;
     width: 100%;
-    background: #faf6fc;
-    height: 544px;
+    background: white;
+    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-bottom: 6em;
 }
 
 #settings .settingsPane .writeMnemonic .word {
@@ -262,7 +249,7 @@
     white-space: nowrap;
 }
 
-#settings .settingsPane .trakeExemple{
+#settings .settingsPane .trakeExemple {
     background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
@@ -278,6 +265,10 @@
 #settings .settingsPane .trakeExemple i:hover {
     cursor: pointer;
     color: var(--bs-danger);
+}
+
+#settings .settingsPane .trakeExemple img {
+    border-radius: 50%;
 }
 
 #settings .settingsPane .settingsCat[data-settingId='connectedWebsites'] {

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Montserrat';
-    src: url('/ui/fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
     font-weight: 100 900;
 }
 
@@ -14,7 +14,8 @@ body {
     --mainColorLight30: #d160aa;
     --highlightColor1: #8B2B75;
     --highlightColor2: #ffb4f8;
-    --whiteBackground: #F2EBF7;
+    --whiteBackground: #f9f9f9;
+    --whiteBackgroundSelected: #ece2f3;
     --greenBackground: #E3F3E1;
     --greenArrow: #84C56F;
     --blueBackground: #DFF0FF;
@@ -409,4 +410,12 @@ input[type=number] {
 .filter-option-inner-inner{
     overflow: hidden;
     margin-right: 7px;
+}
+
+iframe {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    z-index: 10000000000;
 }

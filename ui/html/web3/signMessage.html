@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <title>Sign - Virgo Wallet</title>
-    <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
-    <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/ui/css/main.css">
-    <link rel="stylesheet" href="/ui/css/web3/signTransaction.css">
+    <link rel="stylesheet" href="../../css/fontAwesome/css/all.css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/web3/signTransaction.css">
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="row w-100 p-4 mb-4">
         <div id="siteLogo" class="d-flex align-items-center justify-content-center">
-            <img src="/ui/images/logoIndigo.png" width="55px">
+            <img src="../../images/logoIndigo.png" width="55px">
         </div>
         <p class="col-12 mt-2">Sign message from <val id="siteName"></val> ?</p>
         <div class="col-12 mb-3 text-left">
@@ -30,10 +30,9 @@
         </div>
     </div>
 </div>
-
-<script src="/ui/js/utils/jquery.min.js"></script>
-<script src="/commonJS/utils.js"></script>
-<script src="/commonJS/browser-polyfill.js"></script>
-<script src="/ui/js/web3/signMessage.js"></script>
+<script src="../../js/web3/web3ScriptLoader.js"></script>
+<script>
+    initScripts(["../../js/web3/signMessage.js"])
+</script>
 </body>
 </html>

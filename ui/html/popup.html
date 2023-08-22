@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
-    <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/ui/css/main.css">
-    <link rel="stylesheet" href="/ui/css/unlockPane.css">
-    <link rel="stylesheet" href="/ui/css/createPane.css">
-    <link rel="stylesheet" href="/ui/css/mainPane.css">
-    <link rel="stylesheet" href="/ui/css/mainPaneResume.css">
-    <link rel="stylesheet" href="/ui/css/send.css">
-    <link rel="stylesheet" href="/ui/css/chainSelection.css">
-    <link rel="stylesheet" href="/ui/css/settings.css">
-    <link rel="stylesheet" href="/ui/css/assets.css">
-    <link rel="stylesheet" href="/ui/css/transactionsPane.css">
-    <link rel="stylesheet" href="/ui/css/tokenDetailPane.css">
-    <link rel="stylesheet" href="/ui/css/notyf.min.css">
-    <link rel="stylesheet" href="/ui/css/feesManagement.css">
-    <link rel="stylesheet" href="/ui/css/contacts.css">
-    <link rel="stylesheet" href="/ui/css/swapPane.css">
-    <link rel="stylesheet" href="/ui/css/bootstrap-select.css">
-    <link rel="stylesheet" href="/ui/css/atomicSwapPane.css">
-    <link rel="stylesheet" href="/ui/css/airdropPane.css">
-    <link rel="stylesheet" href="/ui/css/editFees.css">
+    <link rel="stylesheet" href="../css/fontAwesome/css/all.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/unlockPane.css">
+    <link rel="stylesheet" href="../css/createPane.css">
+    <link rel="stylesheet" href="../css/mainPane.css">
+    <link rel="stylesheet" href="../css/mainPaneResume.css">
+    <link rel="stylesheet" href="../css/send.css">
+    <link rel="stylesheet" href="../css/chainSelection.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/assets.css">
+    <link rel="stylesheet" href="../css/transactionsPane.css">
+    <link rel="stylesheet" href="../css/tokenDetailPane.css">
+    <link rel="stylesheet" href="../css/notyf.min.css">
+    <link rel="stylesheet" href="../css/feesManagement.css">
+    <link rel="stylesheet" href="../css/contacts.css">
+    <link rel="stylesheet" href="../css/swapPane.css">
+    <link rel="stylesheet" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" href="../css/atomicSwapPane.css">
+    <link rel="stylesheet" href="../css/airdropPane.css">
+    <link rel="stylesheet" href="../css/editFees.css">
+    <link rel="stylesheet" href="../css/panes/qrScanner.css">
 </head>
 <body>
-
 <div id="loadingPane">
     <i class="fas fa-spinner fa-pulse"></i>
 </div>
-<div id="unlockPane">
-    <img src="/ui/images/logoPurple.png">
+<div id="unlockPane" style="display: none">
+    <img src="../images/logoPurple.png">
     <h1 class="mt-2">Nice to see you!</h1>
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
@@ -61,8 +61,8 @@
         </button>
     </div>
 </div>
-<div id="createPane" class="position-absolute ">
-    <img src="/ui/images/logoPurple.png">
+<div id="createPane" class="position-absolute" style="display: none">
+    <img src="../images/logoPurple.png">
     <h1 class="mt-2">Nice to see you!</h1>
     <p class="subtitle">Decentralization is a *click* away!</p>
     <div class="passwordBox">
@@ -74,31 +74,32 @@
 </div>
 <div id="mainPane" style="display: none">
     <div class="header">
-        <div class="topbar row d-flex align-items-center">
-            <div class="col-6 align-items-center address wallet-address" id="accountSelectionHeader">
+        <div class="topbar d-flex align-items-center">
+            <div class="align-items-center address wallet-address" id="accountSelectionHeader">
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
-                <div class="contentAddress">
-                    <div class="d-flex align-items-center copy">
-                        <p id="walletAddress" class="value adress m-0" data-address>0x0000000000000000000000000000000000000000</p>
-                        <i class="ms-2 fal fa-copy"></i>
-                    </div>
-                </div>
-
             </div>
-            <div class="col-4" id="chainSelectionHeader">
+            <div id="chainSelectionHeader">
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
             </div>
-            <div class="col-2 pendingTxs">
+            <div class="qrCode" id="qrCodeToggleBtn" style="display: none">
+                <p><i class="fa-regular fa-qrcode"></i></p>
+            </div>
+            <div class="pendingTxs">
                 <span class="notifs">
                     <p class="notifsCount"></p>
                 </span>
                 <p><i class="fa-solid fa-clock-rotate-left"></i></p>
             </div>
-
         </div>
         <div class="stats row">
             <div class="d-flex balanceTitle align-items-center">
                 <h1 class="title m-0">Available Balance</h1>
+                <div class="addressContainer">
+                    <div class="d-flex align-items-center copy">
+                        <p id="walletAddress" class="value adress m-0" data-address=""></p>
+                        <i class="ms-2 fal fa-copy"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-inline-flex balance-header">
                 <h1 class="values" data-fiatTotal>0</h1>
@@ -191,7 +192,7 @@
                 <div class="col-12 mb-3 p-0">
                     <p class="label">Recent</p>
                     <div class="text-center mt-5 mb-5" style="" id="sendRecentNotfound">
-                        <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact">
+                        <img src="../images/noContact.png" class="img-fluid" alt="nocontact">
                     </div>
                     <div class="row" id="sendRecentElems">
 
@@ -610,7 +611,7 @@
                     </div>
                 </div>
                 <div id="noDropsElems" class="row airdropActive airdropPaddingModifier d-none justify-content-center text-center">
-                    <img src="/ui/images/noAirdrops.png" alt="soon" class="img-fluid" >
+                    <img src="../images/noAirdrops.png" alt="soon" class="img-fluid" >
                     <h4>No Airdrops listed &#128546;</h4>
                     <p>Come back later </p>
                 </div>
@@ -621,7 +622,7 @@
             <div class="row airdropWinModal m-0" style="display: none;">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-9 d-flex justify-content-center align-items-center bg-light flex-column rounded-1">
-                        <img src="/ui/images/Virgo_win.png" alt="win" height="250px" class="winImg">
+                        <img src="../images/Virgo_win.png" alt="win" height="250px" class="winImg">
                         <p class="m-0 p-0 wonText">You won</p>
                         <h1 class="mb-4 winAmmount">100 VGO</h1>
                         <a  href="https://twitter.com/intent?text=This%20photo%20is%20awesome!%20Check%20it%20out:%20pic.twitter.com/9Ee63f7aVp" class="button mb-2 rounded-1 twitter-btn">Share it on Twitter</a>
@@ -863,7 +864,7 @@
                 <p>Didn't see the asset you want? <br><span>Add it now!</span></p>
             </div>
             <div class="searchNotFound text-center mt-5 mb-5" style="display: none">
-                <img src="/ui/images/notFound.png" class="img-fluid" alt="nocontact" />
+                <img src="../images/notFound.png" class="img-fluid" alt="nocontact" />
                 <h4>Not found!</h4>
                 <p>Really want this asset? <br><span>Add it now!</span></p>
             </div>
@@ -1353,7 +1354,7 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
             <div class="listEmpty text-center mt-5 mb-5" style="display: none" id="noTransactionMsg">
-                <img src="/ui/images/noTransactions.png" class="img-fluid" alt="nocontact" />
+                <img src="../images/noTransactions.png" class="img-fluid" alt="nocontact" />
                 <h4>Nothing to show!</h4>
                 <p>Your wallet activity will appear here.</p>
             </div>
@@ -1563,7 +1564,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 p-2 pt-0">
+            <div class="row mt-2 p-2 pt-0" style="flex: 0 1 8em;">
                 <div class="col-6 pl-0 pr-1">
                     <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
                 </div>
@@ -1639,6 +1640,10 @@
                     <div class="form-check form-switch mt-2">
                         <input class="form-check-input" type="checkbox" id="autolockEnabledSetting">
                         <label class="form-check-label" for="autolockEnabledSetting">Enable autolock</label>
+                    </div>
+                    <div class="form-check form-switch mt-2" id="biometricsEnabledSettingContainer" style="display: none">
+                        <input class="form-check-input" type="checkbox" id="biometricsEnabledSetting">
+                        <label class="form-check-label" for="biometricsEnabledSetting">Enable biometrics unlock</label>
                     </div>
                 </div>
             </div>
@@ -1995,7 +2000,7 @@
             </div>
             <div class="settingsCat" data-settingId="connectedWebsites" data-title="Connected Websites" data-settingsLevel="1">
                 <div class="noTracked text-center" style="display: none">
-                    <img src="/ui/images/noSites.png" alt="noSites" class="img-fluid" />
+                    <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
                     <p class="m-0">No connected websites</p>
                     <p class="p-0 m-0">Web3 connections will appear here</p>
                 </div>
@@ -2031,7 +2036,7 @@
             </div>
             <div class="body row text-center p-4 pt-0">
                 <div class="col-12">
-                    <img src="/ui/images/backup.png" style="width: 40%;margin-left: 10%;">
+                    <img src="../images/backup.png" style="width: 40%;margin-left: 10%;">
                 </div>
                 <div class="col-12 p-3">
                     <h3>Secure your assets!</h3>
@@ -2173,7 +2178,7 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
             <div class="text-center mt-3 mb-5 noContactFound" style="display: none">
-                <img src="/ui/images/noContact.png" class="img-fluid" alt="nocontact" />
+                <img src="../images/noContact.png" class="img-fluid" alt="nocontact" />
                 <h4>No contacts?</h4>
                 <p>Save time on your transactions by saving recurrent addresses.<br><span>Add a contact now!</span></p>
             </div>
@@ -2424,45 +2429,21 @@
             </div>
         </div>
     </div>
-
+    <div id="qrScannerPane" style="display: none">
+        <i class="fa-solid fa-chevron-left" id="qrScannerPaneBack"></i>
+        <div id="qrScanner"></div>
+        <i class="fas fa-spinner fa-pulse"></i>
+        <div id="wcPermPane" style="display: none">
+            <div id="wcPermContainer">
+                <i class="fas fa-times" id="wcClose"></i>
+                <img id="wcSiteLogo">
+                <p>Connect your wallet to<br><span id="wcSitename"></span>?</p>
+                <button class="button" id="wcAllow">Connect my wallet</button>
+                <p id="wcRefuse">Not for the moment</p>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script src="../js/utils/jquery.min.js"></script>
-<script src="../js/utils/bn.js"></script>
-<script src="/commonJS/utils.js"></script>
-<script src="/commonJS/browser-polyfill.js"></script>
-<script src="../js/utils/bootstrap.bundle.min.js"></script>
-<script src="../js/utils/progressRing.js"></script>
-<script src="../js/utils/notyf.min.js"></script>
-<script src="../js/utils/jdenticon.min.js"></script>
-<script src="../js/utils/tinysort.min.js"></script>
-<script src="../js/utils/rangeSlider.js"></script>
-<script src="../js/utils/chart.min.js"></script>
-<script src="../js/utils/bootstrap-select.min.js"></script>
-<script src="../js/utils/backgroundMessaging.js"></script>
-<script src="../js/utils/tokensSelect.js"></script>
-<script src="../js/utils/getDominantColor.js"></script>
-<script src="../js/events.js"></script>
-<script src="../js/popup.js"></script>
-<script src="../js/panes/selectChains.js"></script>
-<script src="../js/panes/resume.js"></script>
-<script src="../js/panes/sendPane.js"></script>
-<script src="../js/panes/settings.js"></script>
-<script src="../js/panes/assetsPane.js"></script>
-<script src="../js/panes/swapPane.js"></script>
-<script src="../js/panes/transactionsPane.js"></script>
-<script src="../js/panes/tokenDetailPane.js"></script>
-<script src="../js/panes/contactsPane.js"></script>
-<script src="../js/panes/atomicSwapPane.js"></script>
-<script src="../js/panes/airdropPane.js"></script>
-<script src="../js/panes/createPane.js"></script>
-<script src="../js/web3/editFees.js"></script>
-<script src="../js/panes/tutorialPane.js"></script>
-<script src="../js/panes/unlockPane.js"></script>
-<script src="../js/panes/settings/connectedWebsites.js"></script>
-<script src="../js/panes/settings/changeCurrency.js"></script>
-<script src="../js/panes/settings/importMnemonic.js"></script>
-<script src="../js/panes/settings/passwordSetup.js"></script>
-<script src="../js/panes/settings/showMnemonic.js"></script>
+<script src="../js/scriptLoader.js"></script>
 </body>
 </html>
