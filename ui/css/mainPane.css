@@ -32,7 +32,17 @@
     border-radius: 50em;
     padding: 0.25em 1em;
     margin-left: 1em;
-    font-size: 0.65em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.25s ease-in;
+}
+
+#mainPane .header .stats .addressContainer:hover {
+    background-color: var(--whiteBackgroundSelected);
+}
+
+#mainPane .header .stats .addressContainer i {
+    font-size: 0.75em;
 }
 
 #mainPane .header .topbar {
@@ -44,7 +54,6 @@
     height: 100%;
     flex: 1 1;
     min-height: 0;
-    margin-top: 1em;
 }
 
 #mainPane .bodyElem.resume {

@@ -16,8 +16,9 @@ class QrScannerPane {
 
     static wcClose = document.getElementById("wcClose")
 
-
     constructor() {
+
+        QrScannerPane.toggleBtn.style.display = "block"
 
         this.html5QrCode = new Html5Qrcode("qrScanner");
 

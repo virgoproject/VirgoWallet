@@ -11,6 +11,7 @@ const setMobileTweaks = () => {
     body.style.height = "100vh"
     body.style.width = "100vw"
 
+    SettingsPane.biometrics.container.show()
 }
 
 setMobileTweaks()

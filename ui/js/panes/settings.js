@@ -69,7 +69,8 @@ class SettingsPane {
     }
 
     static biometrics = {
-        enabled: $("#biometricsEnabledSetting")
+        enabled: $("#biometricsEnabledSetting"),
+        container: $("#biometricsEnabledSettingContainer")
     }
 
     constructor() {

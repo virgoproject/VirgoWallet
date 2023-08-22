@@ -81,7 +81,7 @@
             <div id="chainSelectionHeader">
                 <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
             </div>
-            <div class="qrCode" id="qrCodeToggleBtn">
+            <div class="qrCode" id="qrCodeToggleBtn" style="display: none">
                 <p><i class="fa-regular fa-qrcode"></i></p>
             </div>
             <div class="pendingTxs">
@@ -1640,7 +1640,7 @@
                         <input class="form-check-input" type="checkbox" id="autolockEnabledSetting">
                         <label class="form-check-label" for="autolockEnabledSetting">Enable autolock</label>
                     </div>
-                    <div class="form-check form-switch mt-2">
+                    <div class="form-check form-switch mt-2" id="biometricsEnabledSettingContainer" style="display: none">
                         <input class="form-check-input" type="checkbox" id="biometricsEnabledSetting">
                         <label class="form-check-label" for="biometricsEnabledSetting">Enable biometrics unlock</label>
                     </div>
