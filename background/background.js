@@ -34,6 +34,27 @@ const loadedElems = {}
 
 let connectedWebsites = []
 
+const notifsStored = []
+
+let notifications = []
+
+let notifCounter = 0;
+
+browser.storage.local.get("connectedWebsites").then(function(res){
+    if(res.connectedWebsites !== undefined)
+        connectedWebsites = res.connectedWebsites
+
+    loadedElems["connectedWebsites"] = true
+})
+
+browser.storage.local.get("notifications").then(function (res) {
+    if(res.notifications !== undefined)
+        notifications = res.notifications
+    loadedElems["notifications"] = true
+})
+
+fetchNotifs()
+
 let selectedCurrency = "usd"
 
 const pendingTransactions = {}
@@ -97,6 +118,11 @@ BaseWallet.loadFromJSON().then(() => {
         }
 
         loadedElems["accountsNames"] = true
+    })
+
+    browser.alarms.get('notifs').then(a => {
+        if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
+      })
     })
 
     browser.storage.local.get('setupDone').then(function (res) {
@@ -171,9 +197,13 @@ BaseWallet.loadFromJSON().then(() => {
                 browser.storage.session.set({"unlockPassword": null})
             }
 
+        }else if(a.name === "notifs"){
+          fetchNotifs()
         }
     });
+
 })
+
 
 function activityHeartbeat(){
     lastActivity = Date.now()
@@ -770,10 +800,6 @@ async function onBackgroundMessage(request, sender, sendResponse){
                     address : addressUser
                 }
 
-                console.log(newAirdrop)
-
-                console.log(res.airdropinfos)
-
                 if(res.airdropinfos === undefined) {
                     browser.storage.local.set({"airdropinfos": [newAirdrop]})
                     sendResponse(true)
@@ -834,7 +860,31 @@ async function onBackgroundMessage(request, sender, sendResponse){
             sendResponse(true)
             break
 
-        case 'setSetupDone':
+        case 'getNotifications' :
+            browser.storage.local.get('notifications').then(function(res) {
+                sendResponse(res.notifications)
+                countNotifs()
+            })
+            break
+
+        case 'hideNotification':
+            browser.storage.local.get('notifications').then(function(res) {
+                for (var i=0 ; i < res.notifications.length ; i++)
+                {
+
+                    if (res.notifications[i].id === Number(request.id)) {
+                        res.notifications[i].shown = false;
+                        browser.storage.local.set({"notifications": res.notifications})
+                        countNotifs()
+                        sendResponse(true)
+                        break
+                    }
+                }
+
+            })
+            break
+
+        case 'setupDone':
             browser.storage.local.set({"setupDone": true})
             setupDone = true
             sendResponse(setupDone)
@@ -882,6 +932,8 @@ function bg_getBaseInfos(){
         "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
         "updatePopup":  baseWallet.version != VERSION,
         "connectedSites": connectedWebsites,
+        "notifications" : notifications,
+        "notificationsCount" : notifCounter,
         "selectedCurrency" : selectedCurrency,
         "setupDone" : setupDone,
         "biometricsEnabled": biometricsEnabled
@@ -1036,6 +1088,48 @@ function bg_sendTo(request, sendResponse){
                 bg_sendTo(request, sendResponse)
             }
         })
+    })
+}
+
+function fetchNotifs() {
+    fetch('https://airdrops.virgo.net:2096/api/notifications/retrieve',{
+        method : 'GET',
+        headers: {'Content-Type': 'application/json'}
+    }).then(response => response.json())
+        .then(results => {
+            browser.storage.local.get('notifications').then(function(res) {
+                const notifsIds = {}
+
+                if (res.notifications === undefined) res.notifications = []
+
+                for(const notif of res.notifications){
+                    notifsIds[notif.id] = true
+                }
+
+                for(const notif of results){
+                    if(!notifsIds[notif.id]){
+                        res.notifications.push(notif)
+                    }
+                }
+                countNotifs()
+                browser.storage.local.set({"notifications": res.notifications})
+            })
+        })
+}
+
+function countNotifs(){
+    browser.storage.local.get('notifications').then(function(res) {
+        for (let i=0 ; i < res.notifications.length ; i++) {
+            console.log(res.notifications[i].shown)
+            if(res.notifications[i].shown === undefined){
+                notifCounter = notifCounter+1
+            }
+            if(notifCounter === 0){
+                browser.action.setBadgeText({text : ""})
+            }else {
+                browser.action.setBadgeText({text : notifCounter.toString()})
+            }
+        }
     })
 }
 

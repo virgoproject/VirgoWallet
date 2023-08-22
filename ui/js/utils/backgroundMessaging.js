@@ -238,3 +238,11 @@ async function setTutorialDone(){
 async function setSelectedcurrency(currency) {
     return await browser.runtime.sendMessage({command : 'setSelectedcurrency', currency : currency})
 }
+
+async function getNotifications(){
+    return await browser.runtime.sendMessage({command : 'getNotifications'})
+}
+
+async function hideNotification(id){
+    return await browser.runtime.sendMessage({command : 'hideNotification', id : id})
+}

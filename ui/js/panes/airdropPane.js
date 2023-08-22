@@ -112,7 +112,7 @@ class AirdropPane{
         })
     }
     loadActiveDrops(){
-        fetch('https://airdrops.virgo.net:2053/api/activedrops', {
+        fetch('https://airdrops.virgo.net:2096/api/activedrops', {
             method : 'GET',
             headers: {'Content-Type': 'application/json'}
         }).then(response => response.json())
