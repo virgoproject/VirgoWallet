@@ -181,6 +181,7 @@
                     </div>
                 </div>
                 <div class="col-12 p-0 mb-4">
+                    <button class="button" id="receive-qr"><i class="fa-solid fa-arrow-down"></i> Receive</button>
                     <p class="label mb-2">To</p>
                     <div class="input-group col-12" style="font-size: 1.2em">
                         <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
@@ -220,6 +221,29 @@
                             </div>
                             <div class="col-2 align-self-center">
                                 <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" id="qr-form" style="display: none">
+                    <div class="col-12" id="qr-code-form">
+                        <div class="col-12 d-flex justify-content-center align-items-center text-center mt-2">
+                            <div class="col-2 close-qr">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="col-8">
+                                <h5>Receive</h5>
+                            </div>
+                            <div class="col-2 close-qr">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        </div>
+                        <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
+                        <p class="text-center mt-2">Scan address to receive payment</p>
+                        <div class="col-12 d-flex justify-content-center">
+                            <div class="col-6 d-flex justify-content-center address-qr-code">
+                                <p id="address-qr-code"></p>
+                                <i class="ms-2 fal fa-copy"></i>
                             </div>
                         </div>
                     </div>
@@ -2523,6 +2547,7 @@
 <script src="../js/utils/bn.js"></script>
 <script src="/commonJS/utils.js"></script>
 <script src="/commonJS/browser-polyfill.js"></script>
+<script src="/commonJS/qrcode.min.js"></script>
 <script src="../js/utils/bootstrap.bundle.min.js"></script>
 <script src="../js/utils/progressRing.js"></script>
 <script src="../js/utils/notyf.min.js"></script>

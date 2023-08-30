@@ -26,6 +26,7 @@ class SendPane {
     static buttonContacts = $('#contacts .addContact')
     static divContactClone = $('#contacts .contactUser')
     static divContactList = $('#contacts .contactsList')
+    static receiveBtn = $('#receive-qr')
 
     static estimateFees = null;
 
@@ -174,6 +175,35 @@ class SendPane {
                 })
             })
 
+        })
+
+        SendPane.receiveBtn.click(function () {
+
+            let address;
+            $('#qr-form').show()
+
+            $('.close-qr').click(function () {
+                $('#qr-form').hide()
+            })
+
+
+            getBaseInfos().then(function (info){
+                address =info.addresses[info.selectedAddress].address
+                $('#qrcode').empty()
+                new QRCode(document.getElementById("qrcode"), info.addresses[info.selectedAddress].address);
+                document.querySelector('#address-qr-code').innerHTML = info.addresses[info.selectedAddress].address.replace(info.addresses[info.selectedAddress].address.substring(8,38),"...")
+            })
+
+            $('.address-qr-code').click(function () {
+                copyToClipboard(address);
+
+                $('#address-qr-code').html("Copied!")
+
+                setTimeout(function(){
+                    $('#address-qr-code').html(address.replace(address.substring(8,38),"..."))
+                }, 2500)
+
+            })
         })
 
         SendPane.backBtn.click(function(){
