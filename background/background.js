@@ -123,7 +123,6 @@ BaseWallet.loadFromJSON().then(() => {
     browser.alarms.get('notifs').then(a => {
         if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
       })
-    })
 
     browser.storage.local.get('setupDone').then(function (res) {
         if (res.setupDone !== undefined && res.setupDone !== null){
@@ -200,7 +199,7 @@ BaseWallet.loadFromJSON().then(() => {
         }else if(a.name === "notifs"){
           fetchNotifs()
         }
-    });
+    })
 
 })
 
