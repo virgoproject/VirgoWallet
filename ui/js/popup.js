@@ -129,3 +129,11 @@ $.fn.insertIndex = function (i) {
 
     return this;
 };
+
+$(".bottomPopup .background").click(function(){
+    $(this).parents(".bottomPopup").hide()
+})
+
+$(".bottomPopup .close").click(function(){
+    $(this).closest(".bottomPopup").hide()
+})
