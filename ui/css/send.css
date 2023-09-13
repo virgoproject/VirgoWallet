@@ -331,3 +331,33 @@
 .sendRecentContact .textAddress {
     font-size: 10px;
 }
+
+#buyBtnSoon {
+    position: absolute;
+    margin-left: -3ch;
+    margin-top: -0.5em;
+    font-style: italic;
+    color: var(--mainColor);
+    font-size: 0.75em;
+    font-weight: 700;
+}
+
+#receive-qr {
+    color: var(--mainColor);
+    background: #F3F3F3;
+}
+
+#buyBtn {
+    color: var(--mainColor);
+    background: #F3F3F3;
+    opacity: 0.6;
+    cursor: default;
+}
+
+#sendSampleBtn {
+    cursor: default;
+}
+
+#sendSampleBtn:hover {
+    background: var(--mainColor);
+}
