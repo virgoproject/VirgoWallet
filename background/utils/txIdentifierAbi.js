@@ -2,30 +2,24 @@ class TxIdentifier {
 
     static getDecodeAbi(param,hash,date,recipient,amount,gasPrice,gasLimit,nonce,origin){
 
-
         const decodedMethod = abiDecoder.decodeMethod(param)
-        console.log(origin)
+
+        console.log(decodedMethod)
+
         if (decodedMethod !== undefined){
             if (decodedMethod.name !== "multicall"){
                 switch (decodedMethod.name){
-                    case 'approve' :
-                        return {
-                            "hash": hash,
-                            "contractAddr": "APPROVETOKEN",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce,
-                            "allowed": {
-                                "address": decodedMethod.params[0].value
-                            }
-                        }
+                    case 'swapETHForExactTokens':
                     case 'swapExactETHForTokens':
+                    case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
                         return {
-                            "swap": decodedMethod,
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": amount,
+                                "amountOut": decodedMethod.params[0].value,
+                                "tokenIn": decodedMethod.params[1].value[0],
+                                "tokenOut": decodedMethod.params[1].value[decodedMethod.params[1].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -36,23 +30,16 @@ class TxIdentifier {
                             "gasLimit": gasLimit,
                             "nonce": nonce
                         }
-
+                    case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForTokens':
                         return {
-                            "swap": decodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapETHForExactTokens':
-                        return {
-                            "swap": decodedMethod,
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value,
+                                "amountOut": decodedMethod.params[1].value,
+                                "tokenIn": decodedMethod.params[2].value[0],
+                                "tokenOut": decodedMethod.params[2].value[decodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -65,7 +52,13 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactTokens':
                         return {
-                            "swap": decodedMethod,
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[1].value,
+                                "amountOut": decodedMethod.params[0].value,
+                                "tokenIn": decodedMethod.params[2].value[0],
+                                "tokenOut": decodedMethod.params[2].value[decodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -76,36 +69,15 @@ class TxIdentifier {
                             "gasLimit": gasLimit,
                             "nonce": nonce
                         }
-
                     case 'swapTokensForExactETH':
                         return {
-                            "swap": decodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
-                        return {
-                            "swap": decodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
-                        return {
-                            "swap": decodedMethod,
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[1].value,
+                                "amountOut": decodedMethod.params[0].value,
+                                "tokenIn": decodedMethod.params[2].value[0],
+                                "tokenOut": decodedMethod.params[2].value[decodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -117,8 +89,114 @@ class TxIdentifier {
                             "nonce": nonce
                         }
                     case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
+                    case 'swapExactTokensForETH':
                         return {
-                            "swap": decodedMethod,
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value,
+                                "amountOut": decodedMethod.params[1].value,
+                                "tokenIn": decodedMethod.params[2].value[0],
+                                "tokenOut": decodedMethod.params[2].value[decodedMethod.params[2].value.length-1]
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactInput':
+
+                        let path = decodedMethod.params[0].value.path
+
+                        if(!web3.utils.isHexStrict(decodedMethod.params[0].value.path)){
+                            path = web3.utils.toHex(decodedMethod.params[0].value.path)
+                        }
+
+                        const tokenIn = path.slice(0, 42)
+                        const tokenOut = "0x" + path.slice(-40)
+                        console.log(tokenIn)
+                        console.log(tokenOut)
+
+                        return {
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value.amountIn,
+                                "amountOut": decodedMethod.params[0].value.amountOutMinimum,
+                                "tokenIn": tokenIn,
+                                "tokenOut": tokenOut
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactOutput':
+                        let path2 = decodedMethod.params[0].value.path
+
+                        if(!web3.utils.isHexStrict(decodedMethod.params[0].value.path)){
+                            path2 = web3.utils.toHex(decodedMethod.params[0].value.path)
+                        }
+
+                        const tokenIn2 = path2.slice(0, 42)
+                        const tokenOut2 = "0x" + path2.slice(-40)
+                        console.log(tokenIn2)
+                        console.log(tokenOut2)
+
+                        return {
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value.amountInMaximum,
+                                "amountOut": decodedMethod.params[0].value.amountOut,
+                                "tokenIn": tokenIn2,
+                                "tokenOut": tokenOut2
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactInputSingle':
+                        return {
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value.amountIn,
+                                "amountOut": decodedMethod.params[0].value.amountOutMinimum,
+                                "tokenIn": decodedMethod.params[0].value.tokenIn,
+                                "tokenOut": decodedMethod.params[0].value.tokenOut
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactOutputSingle':
+                        return {
+                            "swap": {
+                                "type": decodedMethod.name,
+                                "amountIn": decodedMethod.params[0].value.amountInMaximum,
+                                "amountOut": decodedMethod.params[0].value.amountOut,
+                                "tokenIn": decodedMethod.params[0].value.tokenIn,
+                                "tokenOut": decodedMethod.params[0].value.tokenOut
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -131,7 +209,6 @@ class TxIdentifier {
                         }
                     default:
                         return {
-                            "swap": decodedMethod,
                             "hash": hash,
                             "contractAddr": "WEB3_CALL",
                             "date": date,
@@ -146,63 +223,40 @@ class TxIdentifier {
             }else{
                 const decodedDecodedMethod = abiDecoder.decodeMethod(decodedMethod.params[1].value[0])
 
-                switch (decodedDecodedMethod.name){
-                    case 'exactInputSingle':
-                        return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'exactOutputSingle' :
-                        return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapExactETHForTokens':
-                        return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
+                console.log(decodedDecodedMethod)
 
+                switch (decodedDecodedMethod.name){
+                    case 'swapETHForExactTokens':
+                    case 'swapExactETHForTokens':
+                    case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
+                        return {
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": amount,
+                                "amountOut": decodedDecodedMethod.params[0].value,
+                                "tokenIn": decodedDecodedMethod.params[1].value[0],
+                                "tokenOut": decodedDecodedMethod.params[1].value[decodedDecodedMethod.params[1].value.length-1]
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForTokens':
                         return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapETHForExactTokens':
-                        return {
-                            "swap": decodedDecodedMethod,
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value,
+                                "amountOut": decodedDecodedMethod.params[1].value,
+                                "tokenIn": decodedDecodedMethod.params[2].value[0],
+                                "tokenOut": decodedDecodedMethod.params[2].value[decodedDecodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -215,7 +269,13 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactTokens':
                         return {
-                            "swap": decodedDecodedMethod,
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[1].value,
+                                "amountOut": decodedDecodedMethod.params[0].value,
+                                "tokenIn": decodedDecodedMethod.params[2].value[0],
+                                "tokenOut": decodedDecodedMethod.params[2].value[decodedDecodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -226,36 +286,15 @@ class TxIdentifier {
                             "gasLimit": gasLimit,
                             "nonce": nonce
                         }
-
                     case 'swapTokensForExactETH':
                         return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
-                        return {
-                            "swap": decodedDecodedMethod,
-                            "hash": hash,
-                            "contractAddr": "WEB3_SWAP",
-                            "date": date,
-                            "recipient": recipient,
-                            "amount": amount,
-                            'origin': origin,
-                            "gasPrice": gasPrice,
-                            "gasLimit": gasLimit,
-                            "nonce": nonce
-                        }
-                    case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
-                        return {
-                            "swap": decodedDecodedMethod,
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[1].value,
+                                "amountOut": decodedDecodedMethod.params[0].value,
+                                "tokenIn": decodedDecodedMethod.params[2].value[0],
+                                "tokenOut": decodedDecodedMethod.params[2].value[decodedDecodedMethod.params[2].value.length-1]
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -267,8 +306,114 @@ class TxIdentifier {
                             "nonce": nonce
                         }
                     case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
+                    case 'swapExactTokensForETH':
                         return {
-                            "swap": decodedDecodedMethod,
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value,
+                                "amountOut": decodedDecodedMethod.params[1].value,
+                                "tokenIn": decodedDecodedMethod.params[2].value[0],
+                                "tokenOut": decodedDecodedMethod.params[2].value[decodedDecodedMethod.params[2].value.length-1]
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactInput':
+
+                        let path = decodedDecodedMethod.params[0].value.path
+
+                        if(!web3.utils.isHexStrict(decodedDecodedMethod.params[0].value.path)){
+                            path = web3.utils.toHex(decodedDecodedMethod.params[0].value.path)
+                        }
+
+                        const tokenIn = path.slice(0, 42)
+                        const tokenOut = "0x" + path.slice(-40)
+                        console.log(tokenIn)
+                        console.log(tokenOut)
+
+                        return {
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value.amountIn,
+                                "amountOut": decodedDecodedMethod.params[0].value.amountOutMinimum,
+                                "tokenIn": tokenIn,
+                                "tokenOut": tokenOut
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactOutput':
+                        let path2 = decodedDecodedMethod.params[0].value.path
+
+                        if(!web3.utils.isHexStrict(decodedDecodedMethod.params[0].value.path)){
+                            path2 = web3.utils.toHex(decodedDecodedMethod.params[0].value.path)
+                        }
+
+                        const tokenIn2 = path2.slice(0, 42)
+                        const tokenOut2 = "0x" + path2.slice(-40)
+                        console.log(tokenIn2)
+                        console.log(tokenOut2)
+
+                        return {
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value.amountInMaximum,
+                                "amountOut": decodedDecodedMethod.params[0].value.amountOut,
+                                "tokenIn": tokenIn2,
+                                "tokenOut": tokenOut2
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactInputSingle':
+                        return {
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value.amountIn,
+                                "amountOut": decodedDecodedMethod.params[0].value.amountOutMinimum,
+                                "tokenIn": decodedDecodedMethod.params[0].value.tokenIn,
+                                "tokenOut": decodedDecodedMethod.params[0].value.tokenOut
+                            },
+                            "hash": hash,
+                            "contractAddr": "WEB3_SWAP",
+                            "date": date,
+                            "recipient": recipient,
+                            "amount": amount,
+                            'origin': origin,
+                            "gasPrice": gasPrice,
+                            "gasLimit": gasLimit,
+                            "nonce": nonce
+                        }
+                    case 'exactOutputSingle':
+                        return {
+                            "swap": {
+                                "type": decodedDecodedMethod.name,
+                                "amountIn": decodedDecodedMethod.params[0].value.amountInMaximum,
+                                "amountOut": decodedDecodedMethod.params[0].value.amountOut,
+                                "tokenIn": decodedDecodedMethod.params[0].value.tokenIn,
+                                "tokenOut": decodedDecodedMethod.params[0].value.tokenOut
+                            },
                             "hash": hash,
                             "contractAddr": "WEB3_SWAP",
                             "date": date,
@@ -281,7 +426,6 @@ class TxIdentifier {
                         }
                     default:
                         return {
-                            "swap": decodedDecodedMethod,
                             "hash": hash,
                             "contractAddr": "WEB3_CALL",
                             "date": date,
@@ -307,7 +451,5 @@ class TxIdentifier {
                 "nonce": nonce
             }
         }
-
-
     }
 }

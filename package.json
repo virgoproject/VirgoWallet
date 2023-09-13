@@ -1,6 +1,6 @@
 {
   "name": "virgoWallet",
-  "version": "0.7.7",
+  "version": "0.8.0",
   "description": "",
   "scripts": {
     "build": "webpack",
@@ -19,6 +19,8 @@
   "dependencies": {
     "@truffle/hdwallet-provider": "2.1.4",
     "@uniswap/smart-order-router": "^2.10.0",
+    "@walletconnect/core": "^2.9.0",
+    "@walletconnect/web3wallet": "^1.8.6",
     "abi-decoder": "^2.4.0",
     "assert": "^2.0.0",
     "bip39": "^3.0.4",

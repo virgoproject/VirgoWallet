@@ -3,7 +3,7 @@ if(typeof browser === 'undefined'){
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
         "utils/converter.js", "swap/uniswap02Utils.js",
         "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
-        "wallet/web3Wallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
+        "wallet/ethWallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
 }
 
 if(browser.storage.session === undefined){
@@ -28,7 +28,7 @@ if(browser.storage.session === undefined){
 //Unlock SJCL AES CTR mode
 sjcl.beware["CTR mode is dangerous because it doesn't protect message integrity."]()
 
-const VERSION = "0.7.9"
+const VERSION = "0.8.0"
 
 const loadedElems = {}
 
@@ -56,123 +56,167 @@ browser.storage.local.get("notifications").then(function (res) {
 fetchNotifs()
 
 let selectedCurrency = "usd"
-browser.storage.local.get("selectedCurrency").then(function(res){
-    if(res.selectedCurrency !== undefined)
-        selectedCurrency = res.selectedCurrency
-
-    loadedElems["selectedCurrency"] = true
-})
 
 const pendingTransactions = {}
 const pendingSigns = {}
 
 let pendingAuthorizations = {}
-browser.storage.local.get("pendingAuthorizations").then(function(res){
-    if(res.pendingAuthorizations !== undefined)
-        pendingAuthorizations = res.pendingAuthorizations
-
-    loadedElems["pendingAuthorizations"] = true
-})
 
 let backupPopupDate = 0;
-browser.storage.local.get("backupPopupDate").then(function(res){
-    if(res.backupPopupDate !== undefined)
-        backupPopupDate = res.backupPopupDate
-
-    loadedElems["backupDate"] = true
-})
 
 let accName = {}
-browser.storage.local.get("accountsNames").then(function (res){
-    if (res.accountsNames === undefined || res.accountsNames.length === 0){
-        let count = 0
-        for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
-            accName[address.address] = "Account "+count
-            count++
-        }
-    }else{
-        accName = res.accountsNames
-    }
-
-    loadedElems["accountsNames"] = true
-})
-
 
 let lockDelay = 60;
-let autolockEnabled = false;
+let autolockEnabled = true;
+
+let biometricsEnabled = true;
+
 let lastActivity = Date.now();
+
 let setupDone = false;
 
-browser.storage.local.get('setupDone').then(function (res) {
-    if (res.setupDone !== undefined){
-        setupDone = res.setupDone;
-    }
-    loadedElems["setupDone"] = true
-})
+let tutorialDone = false
 
-browser.storage.local.get("autolockEnabled").then(function(res){
-    if(res.autolockEnabled !== undefined)
-        autolockEnabled = res.autolockEnabled
+BaseWallet.loadFromJSON().then(() => {
+    browser.storage.local.get("connectedWebsites").then(function(res){
+        if(res.connectedWebsites !== undefined)
+            connectedWebsites = res.connectedWebsites
 
-    loadedElems["autolockEnabled"] = true
-})
-
-browser.storage.local.get("lockDelay").then(function(res){
-    if(res.lockDelay !== undefined)
-        lockDelay = res.lockDelay
-
-    loadedElems["lockDelay"] = true
-})
-
-browser.storage.local.get("lastActivity").then(function(res){
-    if(res.lastActivity !== undefined)
-        lastActivity = res.lastActivity
-
-    loadedElems["lastActivity"] = true
-})
-
-browser.storage.session.get("unlockPassword").then(function(res){
-    if(res.unlockPassword !== undefined){
-        unlockPassword = res.unlockPassword
-        BaseWallet.loadFromJSON(unlockPassword).then(() => {
-            loadedElems["unlockPassword"] = true
-        })
-    }else{
-        loadedElems["unlockPassword"] = true
-    }
-})
-
-browser.runtime.onInstalled.addListener(() => {
-    browser.alarms.get('walletLock').then(a => {
-        if (!a) browser.alarms.create('walletLock', { periodInMinutes: 1.0 })
+        loadedElems["connectedWebsites"] = true
     })
-    browser.alarms.get('notifs').then(a => {
-        if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
+
+    browser.storage.local.get("selectedCurrency").then(function(res){
+        if(res.selectedCurrency !== undefined)
+            selectedCurrency = res.selectedCurrency
+
+        loadedElems["selectedCurrency"] = true
     })
-})
 
-browser.alarms.onAlarm.addListener(async a => {
-    while(Object.keys(loadedElems).length < 11){
-        await new Promise(r => setTimeout(r, 10));
-    }
+    browser.storage.local.get("pendingAuthorizations").then(function(res){
+        if(res.pendingAuthorizations !== undefined)
+            pendingAuthorizations = res.pendingAuthorizations
 
-    if(a.name == "walletLock"){
-        if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+        loadedElems["pendingAuthorizations"] = true
+    })
 
-        if(Date.now()-lastActivity >= lockDelay*60000){
-            baseWallet = undefined
-            browser.storage.session.set({"unlockPassword": null})
+    browser.storage.local.get("backupPopupDate").then(function(res){
+        if(res.backupPopupDate !== undefined)
+            backupPopupDate = res.backupPopupDate
+
+        loadedElems["backupDate"] = true
+    })
+
+    browser.storage.local.get("accountsNames").then(function (res){
+        if (res.accountsNames === undefined || res.accountsNames.length === 0){
+            let count = 0
+            for (const address of baseWallet.getCurrentWallet().getAddressesJSON()){
+                accName[address.address] = "Account "+count
+                count++
+            }
+        }else{
+            accName = res.accountsNames
         }
 
-    }else if(a.name === "notifs"){
-        fetchNotifs()
-    }
-});
+        loadedElems["accountsNames"] = true
+    })
+
+    browser.alarms.get('notifs').then(a => {
+        if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
+      })
+
+    browser.storage.local.get('setupDone').then(function (res) {
+        if (res.setupDone !== undefined && res.setupDone !== null){
+            setupDone = res.setupDone;
+        }
+        loadedElems["setupDone"] = true
+    })
+
+    browser.storage.local.get("autolockEnabled").then(function(res){
+        if(res.autolockEnabled !== undefined && res.autolockEnabled !== null)
+            autolockEnabled = res.autolockEnabled
+
+        loadedElems["autolockEnabled"] = true
+    })
+
+    browser.storage.local.get("biometricsEnabled").then(function(res){
+        if(res.biometricsEnabled !== undefined && res.biometricsEnabled !== null)
+            biometricsEnabled = res.biometricsEnabled
+
+        loadedElems["biometricsEnabled"] = true
+    })
+
+    browser.storage.local.get("lockDelay").then(function(res){
+        if(res.lockDelay !== undefined && res.lockDelay !== null)
+            lockDelay = res.lockDelay
+
+        loadedElems["lockDelay"] = true
+    })
+
+    browser.storage.local.get("lastActivity").then(function(res){
+        if(res.lastActivity !== undefined && res.lastActivity !== null)
+            lastActivity = res.lastActivity
+
+        loadedElems["lastActivity"] = true
+    })
+
+    browser.storage.local.get("tutorialDone").then(function(res){
+        if(res.tutorialDone !== undefined && res.tutorialDone !== null)
+            tutorialDone = res.tutorialDone
+
+        loadedElems["tutorialDone"] = true
+    })
+
+    browser.storage.session.get("unlockPassword").then(function(res){
+        if(res.unlockPassword !== undefined && res.unlockPassword !== null){
+            unlockPassword = res.unlockPassword
+            BaseWallet.loadFromJSON(unlockPassword).then(() => {
+                loadedElems["unlockPassword"] = true
+            })
+        }else{
+            loadedElems["unlockPassword"] = true
+        }
+    })
+
+    browser.runtime.onInstalled.addListener(() => {
+        browser.alarms.get('walletLock').then(a => {
+            if (!a) browser.alarms.create('walletLock', { periodInMinutes: 1.0 })
+        })
+    })
+
+    browser.alarms.onAlarm.addListener(async a => {
+        while(Object.keys(loadedElems).length < 13){
+            await new Promise(r => setTimeout(r, 10));
+        }
+
+        if(a.name == "walletLock"){
+            if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+            if(Date.now()-lastActivity >= lockDelay*60000){
+                baseWallet = undefined
+                browser.storage.session.set({"unlockPassword": null})
+            }
+
+        }else if(a.name === "notifs"){
+          fetchNotifs()
+        }
+    })
+
+})
 
 
 function activityHeartbeat(){
     lastActivity = Date.now()
     browser.storage.local.set({"lastActivity": lastActivity})
+}
+
+//only useful in mobile context
+function checkAutolock(){
+    if(baseWallet === undefined || !baseWallet.isEncrypted() || !autolockEnabled) return
+
+    if(Date.now()-lastActivity >= lockDelay*60000){
+        baseWallet = undefined
+        browser.storage.session.set({"unlockPassword": null})
+    }
 }
 
 //listen for messages sent by popup
@@ -187,26 +231,28 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function onBackgroundMessage(request, sender, sendResponse){
-    while(Object.keys(loadedElems).length < 11){
+    while(Object.keys(loadedElems).length < 13){
         await new Promise(r => setTimeout(r, 10));
     }
 
     switch (request.command) {
         case "getBaseInfos":
+            checkAutolock()
+
             if(baseWallet === undefined)
-                sendResponse({"locked": true})
+                sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled})
             else {
                 while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                     await new Promise(r => setTimeout(r, 10));
                 }
-                sendResponse(getBaseInfos())
+                sendResponse(bg_getBaseInfos())
                 activityHeartbeat()
             }
             break
 
         case "setSelectedcurrency":
             selectedCurrency = request.currency
-            browser.storage.session.set({"selectedCurrency": request.currency})
+            browser.storage.local.set({"selectedCurrency": request.currency})
             break
 
         case "unlockWallet":
@@ -219,7 +265,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                         await new Promise(r => setTimeout(r, 10));
                     }
 
-                    sendResponse(getBaseInfos())
+                    sendResponse(bg_getBaseInfos())
                 }
                 else sendResponse(false)
             })
@@ -237,12 +283,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
         case "addAccount":
             baseWallet.addAccount()
-            sendResponse(getBaseInfos())
+            sendResponse(bg_getBaseInfos())
             break
 
         case "changeAccount":
             baseWallet.selectAddress(request.accountID)
-            sendResponse(getBaseInfos())
+            sendResponse(bg_getBaseInfos())
             sendMessageToTabs("accountsChanged", [baseWallet.getCurrentAddress()])
             break
 
@@ -279,7 +325,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "getBalance":
-            getBalance(request.asset).then(bal => {
+            bg_getBalance(request.asset).then(bal => {
                 sendResponse(bal)
             })
             break
@@ -287,7 +333,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
         //temporary solution, will need to go full-crosschain
         case "getBalanceCross":
             if(request.chainID == baseWallet.getCurrentWallet().chainID){
-                getBalance(request.asset).then(bal => {
+                bg_getBalance(request.asset).then(bal => {
                     sendResponse(bal)
                 })
             }else{
@@ -311,10 +357,20 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "sendTo":
-            sendTo(request, sendResponse)
+            bg_sendTo(request, sendResponse)
             break
 
         case "getTokenDetails":
+            if(request.asset === undefined){
+                sendResponse(false)
+                return
+            }
+
+            if(baseWallet.getCurrentWallet().hasToken(request.asset)){
+                sendResponse(baseWallet.getCurrentWallet().tokenSet.get(request.asset))
+                return
+            }
+
             const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
             tokenContract.methods.name().call().then(function(name){
                 tokenContract.methods.decimals().call().then(function(decimals){
@@ -358,6 +414,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
             baseWallet.encrypt(request.password)
             baseWallet.save()
 
+            reactMessaging.storePassword(request.password)
+
             sendResponse(true)
             break
 
@@ -381,7 +439,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 }
                 browser.storage.local.set({"setupDone": true})
                 setupDone = true
-                sendResponse(getBaseInfos())
+
+                while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
+                    await new Promise(r => setTimeout(r, 10));
+                }
+
+                sendResponse(bg_getBaseInfos())
             }catch(e){
                 console.log(e)
                 sendResponse(false)
@@ -399,7 +462,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "web3Request":
-            handleWeb3Request(sendResponse, request.origin, request.method, request.params, request.reqId, sender)
+            handleWeb3Request(request.origin, request.method, request.params, request.reqId, sender)
             break
 
         case "resolveWeb3Authorization":
@@ -509,6 +572,15 @@ async function onBackgroundMessage(request, sender, sendResponse){
             lockDelay = request.delay
             browser.storage.local.set({"autolockEnabled": autolockEnabled})
             browser.storage.local.set({"lockDelay": lockDelay})
+            return false
+
+        case "getBiometrics":
+            sendResponse(biometricsEnabled)
+            break
+
+        case "setBiometrics":
+            biometricsEnabled = request.enabled
+            browser.storage.local.set({"biometricsEnabled": biometricsEnabled})
             return false
 
         case "addContact":
@@ -763,11 +835,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "changeModalStatus":
-                for (let i =0; request.state[0].length > i; i++){
-                    const json = {}
-                    json['airdrop' + request.state[i].airdropID] = true
-                    browser.storage.local.set(json)
-                }
+            for (let i =0; request.state[0].length > i; i++){
+                const json = {}
+                json['airdrop' + request.state[i].airdropID] = true
+                browser.storage.local.set(json)
+            }
             break
 
         case 'deleteConnectedSite':
@@ -775,6 +847,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
             {
                 if (connectedWebsites[i] === request.address) {
                     connectedWebsites.splice(i, 1)
+                    sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
+                    break
+                }else if(connectedWebsites[i].type === "walletConnect" && connectedWebsites[i].params.topic === request.address){
+                    connectedWebsites.splice(i, 1)
+                    walletConnect.disconnect(request.address)
                     sendResponse({'accepted': true,'siteLength' : connectedWebsites.length})
                     break
                 }
@@ -813,9 +890,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case 'tutorialDone':
+            sendResponse(tutorialDone)
+            break
+
+        case "setTutorialDone":
             browser.storage.local.set({"tutorialDone": true})
             tutorialDone = true
-            sendResponse(tutorialDone)
             break
 
         case "setupNot":
@@ -836,7 +916,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
     return true
 }
 
-function getBaseInfos(){
+function bg_getBaseInfos(){
     if (baseWallet.version != VERSION){
         browser.storage.local.set({"setupDone": true})
         setupDone = true
@@ -854,7 +934,8 @@ function getBaseInfos(){
         "notifications" : notifications,
         "notificationsCount" : notifCounter,
         "selectedCurrency" : selectedCurrency,
-        "setupDone" : setupDone
+        "setupDone" : setupDone,
+        "biometricsEnabled": biometricsEnabled
     }
 }
 
@@ -864,7 +945,7 @@ function forgetWallet() {
     wallet = null;
 }
 
-async function getBalance(asset){
+async function bg_getBalance(asset){
     const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
 
     if(!bal.tracked){
@@ -875,7 +956,7 @@ async function getBalance(asset){
     return bal
 }
 
-function sendTo(request, sendResponse){
+function bg_sendTo(request, sendResponse){
     let txResume = null;
     console.log(request)
     //send native asset
@@ -931,11 +1012,11 @@ function sendTo(request, sendResponse){
                     txResume.confirmations = confirmationNumber
                     baseWallet.save()
                 }).catch(e => {
-                    if(e.code == -32000){
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        sendTo(request, sendResponse)
-                    }
-                })
+                if(e.code == -32000){
+                    baseWallet.selectWallet(baseWallet.selectedWallet)
+                    bg_sendTo(request, sendResponse)
+                }
+            })
             return
         }
 
@@ -1001,11 +1082,11 @@ function sendTo(request, sendResponse){
                 txResume.confirmations = confirmationNumber
                 baseWallet.save()
             }).catch(e => {
-                if(e.code == -32000){
-                    baseWallet.selectWallet(baseWallet.selectedWallet)
-                    sendTo(request, sendResponse)
-                }
-            })
+            if(e.code == -32000){
+                baseWallet.selectWallet(baseWallet.selectedWallet)
+                bg_sendTo(request, sendResponse)
+            }
+        })
     })
 }
 

@@ -13,7 +13,8 @@ class CreatePane {
             CreatePane.self.hide()
             MainPane.self.show()
             SettingsPane.settings.removeClass('opened')
-            setupDone()
+            setSetupDone()
+            tutorialPane.checkDisplay()
         })
 
         CreatePane.buttons.importWallet.click(function () {

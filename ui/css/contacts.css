@@ -1,6 +1,7 @@
 #contacts{
-    display: block;
-    height: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
     background: white;
     transform-origin: 50% 0;
@@ -11,12 +12,15 @@
     padding: 0em 1em;
 }
 
-#contacts .contactsList{
-    z-index: 99999;
+#contactDiv {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-#contacts .showElements{
-    transition:transform 0.25s ease;
+#contacts .contactsList{
+    max-height: 100%;
 }
 
 #contacts .back {
@@ -60,7 +64,7 @@
 
 #contacts .contactUser{
     transition: background-color 250ms;
-    background: #f9f9f9;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em !important;
     padding-bottom: 0.375em !important;
@@ -70,6 +74,19 @@
 
 #contacts .contactUser:hover{
     background-color: #ece2f3;
+}
+
+#contacts .contactUser.opened:hover{
+    background-color: var(--whiteBackground) !important;
+}
+
+#contacts .contactUser .showElements {
+    transition:transform 0.25s ease;
+    transform: rotate(0deg);
+}
+
+#contacts .contactUser.opened .showElements {
+    transform: rotate(90deg);
 }
 
 #contacts .favoriteContacts {
@@ -91,6 +108,10 @@
     color: white;
     cursor: pointer;
     transition: all 250ms;
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+    text-align: center;
 }
 
 #contacts .addBottomLogo:hover {
@@ -98,7 +119,6 @@
 }
 
 #contacts .addLogo {
-    padding: 15px;
     font-size: 1.2em;
 }
 
@@ -110,7 +130,7 @@
     resize: none;
     border-radius: 0.5em;
     border: unset;
-    background: #5a009c14;
+    background: #ededed;
 }
 
 #contacts .contactFormContent .form-text{

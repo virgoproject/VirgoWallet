@@ -1,5 +1,6 @@
 class TokenDetailPane {
 
+    static currency
     static self = $("#tokenDetailPane")
     static back = $("#tokenDetailPane .back")
     static loading = $("#tokenDetailsPaneLoading")
@@ -72,7 +73,12 @@ class TokenDetailPane {
 
         TokenDetailPane.detailedPane.chart.on("mouseout", function(e){
             setTimeout(function(){
-                TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(_this.data.price))
+                getBaseInfos().then(infos =>{
+                    if (infos.selectedCurrency === "eur")
+                        TokenDetailPane.detailedPane.chartInfos.price.html("&euro;" + Utils.beautifyAmount(_this.data.price))
+                    else if (infos.selectedCurrency === "usd")
+                        TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(_this.data.price))
+                })
                 TokenDetailPane.detailedPane.chartInfos.changeVal.html(Math.abs(_this.data.change).toFixed(2))
                 if(_this.data.change >= 0)
                     TokenDetailPane.detailedPane.chartInfos.change.removeClass("negative")
@@ -95,13 +101,18 @@ class TokenDetailPane {
             window.open("https://www.coingecko.com/en/coins/"+_this.tokenInfos.CG_ID, "_blank")
         })
 
-
     }
 
     displayToken(data){
         TokenDetailPane.detailedPane.menu.news.click()
         TokenDetailPane.self.find("[data-period=1]").click()
         TokenDetailPane.detailedPane.chartInfos.name.html(data.name)
+        getBaseInfos().then(infos =>{
+            if (infos.selectedCurrency === "eur")
+                TokenDetailPane.detailedPane.chartInfos.price.html("&euro;" + Utils.beautifyAmount(data.price))
+            else if (infos.selectedCurrency === "usd")
+                TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data.price))
+        })
         TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data.price))
 
         if(MAIN_ASSET.contract == data.contract)
@@ -176,103 +187,109 @@ class TokenDetailPane {
     }
 
     fetchAndDisplayChart(data, tokenInfos, period){
+        console.log(data)
+        getBaseInfos().then(infos =>{
+            fetch("https://api.coingecko.com/api/v3/coins/"+tokenInfos.CG_ID+"/ohlc?vs_currency="+infos.selectedCurrency+"&days="+period).then(function(resp){
+                resp.json().then(function(ohlc){
+                    const chartData = TokenDetailPane.ohlcToLine(ohlc)
 
-        fetch("https://api.coingecko.com/api/v3/coins/"+tokenInfos.CG_ID+"/ohlc?vs_currency=usd&days="+period).then(function(resp){
-            resp.json().then(function(ohlc){
-                const chartData = TokenDetailPane.ohlcToLine(ohlc)
+                    const entries = new Map(chartData)
+                    const obj = Object.fromEntries(entries)
 
-                const entries = new Map(chartData)
-                const obj = Object.fromEntries(entries)
+                    TokenDetailPane.detailedPane.chart.append("<canvas></canvas>")
 
-                TokenDetailPane.detailedPane.chart.append("<canvas></canvas>")
+                    const ctxs = TokenDetailPane.detailedPane.chart.find("canvas").get(0).getContext('2d')
 
-                const ctxs = TokenDetailPane.detailedPane.chart.find("canvas").get(0).getContext('2d')
+                    const gradient = ctxs.createLinearGradient(0, 0, 0, 150)
+                    let lineColor = 'rgba(22,199,132,1)'
 
-                const gradient = ctxs.createLinearGradient(0, 0, 0, 150)
-                let lineColor = 'rgba(22,199,132,1)'
-
-                if(chartData[chartData.length-1][1]-chartData[0][1] >= 0){
-                    gradient.addColorStop(0, 'rgba(22,199,132,0.5)')
-                    gradient.addColorStop(1, 'rgba(22,199,132,0.0)')
-                }else{
-                    gradient.addColorStop(0, 'rgba(234,60,70,0.5)')
-                    gradient.addColorStop(1, 'rgba(234,60,70,0.0)')
-                    lineColor = 'rgba(234,60,70,1)'
-                }
-
-                const chart = new Chart(ctxs, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            data: obj,
-                            pointRadius: 0,
-                            fill: {
-                                target: 'origin',
-                                above: gradient,   // Area will be red above the origin
-                                fillOpacity: 1,
-                            },
-                            borderColor: lineColor,
-                            tension: 0.5,
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                display: false,
-                                ticks: {
-                                    display: false,
-                                },
-                                grid: {
-                                    display: false,
-                                }
-                            },
-                            y: {
-                                display: false,
-                                ticks: {
-                                    display: false,
-                                },
-                                grid: {
-                                    display: false,
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        },
-                        animation: {
-                            duration: 0
-                        },
-                        hover: {
-                            mode: 'nearest',
-                            axis: "x",
-                            intersect: false
-                        },
-                        onHover: function (e) {
-                            const canvasPosition = Chart.helpers.getRelativePosition(e, chart)
-                            const x = chart.scales.x.getValueForPixel(canvasPosition.x)
-                            const data = chart.data.datasets[0].data
-                            const key = Object.keys(data)[x]
-                            TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data[key]))
-
-                            const val0Key = Object.keys(data)[0]
-                            const initialPrice = data[val0Key]
-                            const variation = (data[key]/initialPrice-1)*100
-                            TokenDetailPane.detailedPane.chartInfos.changeVal.html(Math.abs(variation).toFixed(2))
-                            if(variation >= 0)
-                                TokenDetailPane.detailedPane.chartInfos.change.removeClass("negative")
-                            else
-                                TokenDetailPane.detailedPane.chartInfos.change.addClass("negative")
-                        }
+                    if(chartData[chartData.length-1][1]-chartData[0][1] >= 0){
+                        gradient.addColorStop(0, 'rgba(22,199,132,0.5)')
+                        gradient.addColorStop(1, 'rgba(22,199,132,0.0)')
+                    }else{
+                        gradient.addColorStop(0, 'rgba(234,60,70,0.5)')
+                        gradient.addColorStop(1, 'rgba(234,60,70,0.0)')
+                        lineColor = 'rgba(234,60,70,1)'
                     }
+
+                    const chart = new Chart(ctxs, {
+                        type: 'line',
+                        data: {
+                            datasets: [{
+                                data: obj,
+                                pointRadius: 0,
+                                fill: {
+                                    target: 'origin',
+                                    above: gradient,   // Area will be red above the origin
+                                    fillOpacity: 1,
+                                },
+                                borderColor: lineColor,
+                                tension: 0.5,
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    display: false,
+                                    ticks: {
+                                        display: false,
+                                    },
+                                    grid: {
+                                        display: false,
+                                    }
+                                },
+                                y: {
+                                    display: false,
+                                    ticks: {
+                                        display: false,
+                                    },
+                                    grid: {
+                                        display: false,
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                },
+                                tooltip: {
+                                    enabled: false
+                                }
+                            },
+                            animation: {
+                                duration: 0
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                axis: "x",
+                                intersect: false
+                            },
+                            onHover: function (e) {
+                                const canvasPosition = Chart.helpers.getRelativePosition(e, chart)
+                                const x = chart.scales.x.getValueForPixel(canvasPosition.x)
+                                const data = chart.data.datasets[0].data
+                                const key = Object.keys(data)[x]
+                                getBaseInfos().then(infos =>{
+                                    if (infos.selectedCurrency === "eur")
+                                        TokenDetailPane.detailedPane.chartInfos.price.html("&euro;" + Utils.beautifyAmount(data[key]))
+                                    else if (infos.selectedCurrency === "usd")
+                                        TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data[key]))
+                                })
+                                const val0Key = Object.keys(data)[0]
+                                const initialPrice = data[val0Key]
+                                const variation = (data[key]/initialPrice-1)*100
+                                TokenDetailPane.detailedPane.chartInfos.changeVal.html(Math.abs(variation).toFixed(2))
+                                if(variation >= 0)
+                                    TokenDetailPane.detailedPane.chartInfos.change.removeClass("negative")
+                                else
+                                    TokenDetailPane.detailedPane.chartInfos.change.addClass("negative")
+                            }
+                        }
+                    })
+
+                    TokenDetailPane.detailedPane.chartLoading.hide()
+
                 })
-
-                TokenDetailPane.detailedPane.chartLoading.hide()
-
             })
         })
     }

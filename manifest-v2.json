@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Virgo Wallet",
-  "version": "0.7.9.1",
+  "version": "0.8.0",
   "short_name": "Virgo Wallet",
   "description": "An easy-to-use, cross-chain wallet in your browser!",
   "permissions": ["storage", "notifications", "alarms"],
@@ -20,7 +20,7 @@
         "background/utils/converter.js", "background/swap/uniswap02Utils.js",
         "background/swap/uniswap03Utils.js", "background/swap/atomicSwapUtils.js", "background/wallet/web3ABIs.js",
         "background/wallet/web3Wallet.js", "background/wallet/baseWallet.js", "background/web3RequestsHandler.js",
-      "background/background.js"
+      "background/background.js", "background/utils/txIdentifierAbi.js"
     ]
   },
 

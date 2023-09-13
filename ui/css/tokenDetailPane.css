@@ -1,21 +1,26 @@
 #tokenDetailPane {
     display: block;
-    height: 600px;
+    height: 100%;
     width: 100%;
-    background: #faf6fc;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-    background: linear-gradient(0deg, rgba(90, 0, 156, 0.08), transparent);
     background-color: white;
     z-index: 10;
 }
 
+#tokenDetailsDetailed {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 #tokenDetailPane .content {
-    z-index: 99999;
-    padding: 0 1em;
+    padding: 1em 1em;
+    flex: 1 1;
+    min-height: 0;
 }
 
 #tokenDetailPane .back {
@@ -39,6 +44,7 @@
 
 #tokenDetailPane .chart {
     height: 120px;
+    flex: 0 1 120px;
 }
 
 #tokenDetailPane .chartLoading {
@@ -47,11 +53,12 @@
     position: absolute;
     width: 100%;
     top: 86px;
+    height: 120px;
+    flex: 0 1 120px;
 }
 
 #tokenDetailPane .chart canvas {
     height: 112px !important;
-    width: 338px !important;
 }
 
 #tokenDetailPane .menu div {
@@ -74,6 +81,7 @@
     margin-bottom: 0.5em;
     margin-left: 19px;
     margin-top: 4px;
+    flex: 0 1 auto;
 }
 
 #tokenDetailPane .infos .name, #tokenDetailPane .infos .price {
@@ -110,6 +118,7 @@
 #tokenDetailPane .periodBtns {
     padding: 0 1em;
     margin-bottom: 1em;
+    flex: 0 1 auto;
 }
 
 #tokenDetailPane .periodBtns div {
@@ -168,8 +177,9 @@
 }
 
 #tokenNews {
-    max-height: 330px;
+    max-height: 100%;
     overflow-y: auto;
+    padding-bottom: 1em;
 }
 
 #tokenNewsLoading {
@@ -179,10 +189,11 @@
 }
 
 #tokenInfos {
-    max-height: 360px;
     overflow: hidden;
     overflow-y: auto;
-    padding-bottom: 2em;
+    max-height: 100%;
+    margin-top: 1em;
+    padding-bottom: 4em;
 }
 
 #tokenInfos .stats {

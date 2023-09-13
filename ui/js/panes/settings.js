@@ -68,6 +68,11 @@ class SettingsPane {
         delay: $("#autolockDelaySetting")
     }
 
+    static biometrics = {
+        enabled: $("#biometricsEnabledSetting"),
+        container: $("#biometricsEnabledSettingContainer")
+    }
+
     constructor() {
         let mainSettingsBackLevel = 0;
 
@@ -91,11 +96,9 @@ class SettingsPane {
             if(SettingsPane.settings.hasClass("opened")){
                 SettingsPane.settings.removeClass("opened")
                 SettingsPane.accountSelectionHeader.removeClass("opened")
-                showAddress()
             } else{
                 SettingsPane.settings.addClass("opened")
                 SettingsPane.accountSelectionHeader.addClass("opened")
-                hideAddress()
             }
             //make sure settings is closed
             for(let i = mainSettingsBackLevel; i >= 0; i--){
@@ -170,6 +173,14 @@ class SettingsPane {
 
         SettingsPane.autolock.delay.change(function(){
             setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
+        })
+
+        getBiometrics().then(function(res){
+            SettingsPane.biometrics.enabled.prop("checked", res)
+        })
+
+        SettingsPane.biometrics.enabled.change(function() {
+            setBiometrics($(this).is(':checked'))
         })
 
     }

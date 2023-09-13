@@ -15,7 +15,6 @@ let editFees = document.querySelector("edit-fees")
 const decimal = editFees.dataset.decimal = decimals
 
 editFees.dataset.limit = gas
-editFees.start(gas)
 
 $(".editFees").click(function (){
     $("#editfees").show()
@@ -47,6 +46,7 @@ $("#to").html(get("to"))
 $("#amount").html(Utils.formatAmount(amount, decimals))
 $("#data").html(get("data"))
 $(".feesTicker").html(ticker)
+$(".ticker").html(ticker)
 
 getAsset(ticker).then(function(assetInfos){
     editFees.onGasChanged = (gasPrice, gasLimit) => {
@@ -67,6 +67,7 @@ getAsset(ticker).then(function(assetInfos){
         $("#fees").html(Utils.formatAmount(gasLimit * gasPrice, decimals))
 
     }
+    editFees.start(gas)
 })
 
 

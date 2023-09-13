@@ -1,4 +1,4 @@
-class Web3Wallet {
+class EthWallet {
 
     constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
         this.name = name
@@ -149,6 +149,9 @@ class Web3Wallet {
 
         }
 
+        if(json.chainID == 1)
+            json.RPC = "https://rpc.ankr.com/eth"
+
         if(json.chainID == 3){
             json.name = "Goerli"
             json.chainID = 5
@@ -165,8 +168,11 @@ class Web3Wallet {
 
         if(json.chainID == 61)
             json.RPC = "https://www.ethercluster.com/etc"
-      
-        return new Web3Wallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
+
+        if(json.chainID == 137)
+            json.RPC = "https://rpc.ankr.com/polygon"
+
+        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
     }
 
     toJSON(){
@@ -375,7 +381,114 @@ class Web3Wallet {
                                         "message": "Transaction " + transaction.hash + " confirmed"
                                     })
 
-                                }else{
+                                } else if(transaction.contractAddr == "WEB3_SWAP"){
+
+                                    try {
+                                        console.log(transaction.swap.type)
+
+                                        switch (transaction.swap.type){
+                                            case 'swapExactETHForTokens':
+                                            case 'exactInput':
+                                            case 'exactInputSingle':
+                                            case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForTokens':
+                                            case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForETH':
+                                                let log = receipt.logs[receipt.logs.length-1]
+
+                                                let decodedLog = null
+
+                                                for(let nLog of receipt.logs){
+                                                    if(nLog.address.toLowerCase() == transaction.swap.tokenOut.toLowerCase()){
+                                                        log = nLog
+                                                        try {
+                                                            console.log(log)
+
+                                                            decodedLog = web3.eth.abi.decodeLog([{
+                                                                type: 'address',
+                                                                name: 'from',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'address',
+                                                                name: 'to',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'uint256',
+                                                                name: 'value'
+                                                            }], log.data, [log.topics[1], log.topics[2], log.topics[3]])
+                                                            break
+                                                        }catch(e){}
+                                                    }
+                                                }
+
+                                                if(decodedLog == null){
+                                                    console.log("no good log")
+                                                    break
+                                                }
+
+                                                console.log(decodedLog)
+                                                console.log("amountOut: " + decodedLog.value)
+
+                                                transaction.swap.amountOut = decodedLog.value
+                                                break
+
+                                            case 'swapTokensForExactETH':
+                                            case 'swapTokensForExactTokens':
+                                            case 'swapETHForExactTokens':
+                                            case 'exactOutput':
+                                            case 'exactOutputSingle':
+                                                let log2 = receipt.logs[receipt.logs.length-1]
+
+                                                let decodedLog2 = null
+
+                                                for(let nLog of receipt.logs){
+                                                    if(nLog.address.toLowerCase() == transaction.swap.tokenIn.toLowerCase()){
+                                                        console.log(nLog.address + " " + transaction.swap.tokenIn)
+                                                        log2 = nLog
+                                                        try {
+                                                            console.log(log2)
+
+                                                            decodedLog2 = web3.eth.abi.decodeLog([{
+                                                                type: 'address',
+                                                                name: 'from',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'address',
+                                                                name: 'to',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'uint256',
+                                                                name: 'value'
+                                                            }], log2.data, [log2.topics[1], log2.topics[2], log2.topics[3]])
+                                                            break
+                                                        }catch(e){}
+                                                    }
+                                                }
+
+                                                if(decodedLog2 == null){
+                                                    console.log("no good log")
+                                                    break
+                                                }
+
+                                                console.log(decodedLog2)
+                                                console.log("amountIn: " + decodedLog2.value)
+
+                                                transaction.swap.amountIn = decodedLog2.value
+                                                break
+                                        }
+                                    }catch (e) {
+                                        console.log(e)
+                                    }
+
+                                    browser.notifications.create("txNotification", {
+                                        "type": "basic",
+                                        "title": "Swap successful!",
+                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
+                                        "message": "Transaction " + transaction.hash + " confirmed"
+                                    })
+
+                                } else {
                                     browser.notifications.create("txNotification", {
                                         "type": "basic",
                                         "title": "Transaction confirmed!",

@@ -68,13 +68,13 @@ class AtomicSwapPane {
         })
 
         AtomicSwapPane.inputs.one.select.change(function(){
-            atomicSwap.updateSelects(1)
+            _this.updateSelects(1)
             _this.updateBalance(AtomicSwapPane.inputs.one)
             AtomicSwapPane.inputs.one.input.trigger("input")
         })
 
         AtomicSwapPane.inputs.two.select.change(function(){
-            atomicSwap.updateSelects(2)
+            _this.updateSelects(2)
             _this.updateBalance(AtomicSwapPane.inputs.two)
             AtomicSwapPane.inputs.one.input.trigger("input")
         })
@@ -343,4 +343,4 @@ class AtomicSwapPane {
 
 }
 
-atomicSwap = new AtomicSwapPane()
+atomicSwapPane = new AtomicSwapPane()

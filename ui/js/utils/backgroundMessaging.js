@@ -70,6 +70,9 @@ async function isEncrypted(){
 }
 
 async function restoreFromMnemonic(mnemonic){
+    setTimeout(() => {
+        tutorialPane.checkDisplay()
+    }, 5000)
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
 }
 
@@ -131,6 +134,14 @@ async function getAutolock(){
 
 function setAutolock(enabled, delay){
     browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
+}
+
+function setBiometrics(enabled){
+    browser.runtime.sendMessage({command: 'setBiometrics', enabled: enabled})
+}
+
+async function getBiometrics(){
+    return await browser.runtime.sendMessage({command: 'getBiometrics'})
 }
 
 async function addingContact(address,name,note,favorite) {
@@ -212,12 +223,16 @@ async function deleteConnectedSite(address){
     return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
 }
 
-async function setupDone(){
-    return await browser.runtime.sendMessage({command : 'setupDone'})
+async function setSetupDone(){
+    return await browser.runtime.sendMessage({command : 'setSetupDone'})
 }
 
-async function tutorialDone(){
+async function isTutorialDone(){
     return await browser.runtime.sendMessage({command : 'tutorialDone'})
+}
+
+async function setTutorialDone(){
+    return await browser.runtime.sendMessage({command : 'setTutorialDone'})
 }
 
 async function setSelectedcurrency(currency) {

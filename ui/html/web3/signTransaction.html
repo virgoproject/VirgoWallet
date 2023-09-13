@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <title>Sign Transaction - Virgo Wallet</title>
-    <link rel="stylesheet" href="/ui/css/fontAwesome/css/all.css">
-    <link rel="stylesheet" href="/ui/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/ui/css/main.css">
-    <link rel="stylesheet" href="/ui/css/web3/signTransaction.css">
-    <link rel="stylesheet" href="/ui/css/feesManagement.css">
-    <link rel="stylesheet" href="/ui/css/editFees.css">
+    <link rel="stylesheet" href="../../css/fontAwesome/css/all.css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/web3/signTransaction.css">
+    <link rel="stylesheet" href="../../css/feesManagement.css">
+    <link rel="stylesheet" href="../../css/editFees.css">
 
 </head>
 <body class="text-center w-100">
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="row w-100 p-4  mb-4 position-absolute">
         <div id="siteLogo" class="d-flex align-items-center justify-content-center">
-            <img src="/ui/images/logoIndigo.png" width="55px">
+            <img src="../../images/logoIndigo.png" width="55px">
         </div>
         <p class="col-12 mt-2">Sign transaction from <val id="siteName"></val> ?</p>
         <div class="col-12 mb-2 text-left">
@@ -48,14 +48,10 @@
         <edit-fees class="w-100 signTransac" style="display: none"></edit-fees>
 
 </div>
-<script src="/ui/js/utils/jquery.min.js"></script>
-<script src="/commonJS/utils.js"></script>
-<script src="/commonJS/browser-polyfill.js"></script>
-<script src="/ui/js/utils/backgroundMessaging.js"></script>
-<script src="../../js/web3/editFees.js"></script>
-<script src="/ui/js/web3/signTransaction.js"></script>
-<script src="/ui/js/utils/rangeSlider.js"></script>
-
+<script src="../../js/web3/web3ScriptLoader.js"></script>
+<script>
+    initScripts(["../../js/web3/signTransaction.js"])
+</script>
 </body>
 </html>
 

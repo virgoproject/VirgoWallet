@@ -12,7 +12,6 @@ class EditFees extends HTMLElement {
         this.setAttribute("id","editfees")
 
         this.innerHTML = `
-        <div class="blackbg"></div>
         <div class="see p-4">
             <i class="fa-solid fa-horizontal-rule rule"></i>
             <div class="d-flex align-items-center mb-2 justify-content-center titleFees">
@@ -42,8 +41,12 @@ class EditFees extends HTMLElement {
         </div>
     `;
 
-        $(".blackbg").click(function (){
-            $("#editfees").css("display", "none")
+        $(this).find(".see").click(event => {
+            event.stopPropagation()
+        })
+
+        $(this).click(() => {
+            $(this).hide()
         })
 
         const _this = this
@@ -61,7 +64,9 @@ class EditFees extends HTMLElement {
                 $(".fast").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            try {
+                _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            }catch(e){}
         })
 
         $(".medium").click(function (){
@@ -75,7 +80,9 @@ class EditFees extends HTMLElement {
                 $(".fast").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            try {
+                _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            }catch(e){}
         })
 
 
@@ -90,7 +97,9 @@ class EditFees extends HTMLElement {
                 $(".slow").removeClass("selectedFees")
             }
 
-            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            try {
+                _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            }catch(e){}
         })
 
 
@@ -98,7 +107,9 @@ class EditFees extends HTMLElement {
             $("#editfees").css("display", "none")
             $("#swapReview").css("display", "block")
 
-            _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            try {
+                _this.onGasChanged(_this.getGasPrice(),_this.gasLimit)
+            }catch(e){}
         })
     }
 
@@ -133,35 +144,39 @@ class EditFees extends HTMLElement {
             let finalGasPriceMedium = Math.round(res * 1)
             let finalGasPriceFast = Math.round(res * 1.2)
 
-        getBaseInfos().then(function (info){
-            $("#editFeesSlow").html(Utils.formatAmount(gasLimit * finalGasPriceSlow, info.wallets[info.selectedWallet].wallet.decimals))
-            $("#editFeesMedium").html(Utils.formatAmount(gasLimit * finalGasPriceMedium, info.wallets[info.selectedWallet].wallet.decimals))
-            $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, info.wallets[info.selectedWallet].wallet.decimals))
-        })
+            getBaseInfos().then(function (info){
+                $("#editFeesSlow").html(Utils.formatAmount(gasLimit * finalGasPriceSlow, info.wallets[info.selectedWallet].wallet.decimals))
+                $("#editFeesMedium").html(Utils.formatAmount(gasLimit * finalGasPriceMedium, info.wallets[info.selectedWallet].wallet.decimals))
+                $("#editFeesFast").html(Utils.formatAmount(gasLimit * finalGasPriceFast, info.wallets[info.selectedWallet].wallet.decimals))
+            })
 
             _this.gasPrice = res
-            _this.onGasChanged(_this.getGasPrice(), gasLimit)
+
+            try {
+                _this.onGasChanged(_this.getGasPrice(), gasLimit)
+            }catch(e){}
+
         })
     }
 
     getGasPrice(){
         const _this = this
-            let elem = $(".selectedFees").attr("speed")
+        let elem = $(".selectedFees").attr("speed")
 
-            switch (elem) {
-                case "slow" :
-                    _this.feesModifier = 0.8
-                    return Math.round(0.8 * _this.gasPrice)
-                    break
-                case "medium" :
-                    _this.feesModifier = 1
-                    return Math.round(1 * _this.gasPrice)
-                    break
-                case "fast" :
-                    _this.feesModifier = 1.2
-                    return Math.round(1.2 * _this.gasPrice)
-                    break
-            }
+        switch (elem) {
+            case "slow" :
+                _this.feesModifier = 0.8
+                return Math.round(0.8 * _this.gasPrice)
+                break
+            case "medium" :
+                _this.feesModifier = 1
+                return Math.round(1 * _this.gasPrice)
+                break
+            case "fast" :
+                _this.feesModifier = 1.2
+                return Math.round(1.2 * _this.gasPrice)
+                break
+        }
     }
 }
 

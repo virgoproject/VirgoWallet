@@ -1,6 +1,7 @@
 #transactionsPane {
-    display: block;
-    height: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
     background: #ffffff;
     /* transform: scaleY(0); */
@@ -11,7 +12,8 @@
 }
 
 #transactionsPane .content {
-    z-index: 99999;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 #transactionsPane .back {
@@ -32,8 +34,9 @@
 
 #transactionsPane .listWrap {
     overflow: auto;
-    max-height: 475px;
+    max-height: 100%;
     padding: 0 1.5em;
+    padding-bottom: 1em;
 }
 
 #transactionsPane .listWrap::-webkit-scrollbar {
@@ -137,9 +140,9 @@
 }
 
 #transactionsPane .listItem progress-ring {
-    display: block;
-    position: absolute;
     transform: translate(-6px, -44px);
+    height: 0;
+    width: 50px;
 }
 
 #transactionsPane .listItem.opened .details {
@@ -167,6 +170,7 @@
     color: var(--highlightColor1);
     cursor: pointer;
     transition: color ease 0.25s;
+    text-overflow: ellipsis;
 }
 
 #transactionsPane .listItem.opened .recipient:hover {
@@ -332,12 +336,22 @@ cursor: pointer;
     color: var(--bs-body-color);
 }
 
-#transactionsPane .timeApprove{
-    margin-left: 41px;
-}
-
 #transactionsPane .time{
     float: right;
+}
+#transactionsPane .site{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+}
+
+#transactionsPane .amountOverflow{
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    max-width: 15ch;
 }
 
 #transactionsPane .chevronOpened{

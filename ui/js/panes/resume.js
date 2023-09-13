@@ -5,7 +5,7 @@ class MainPane {
     static self = $("#mainPane")
     static resume = $("#body .bodyElem.resume")
     static address = $("#walletAddress")
-    static addressDiv = $(".contentAddress")
+    static addressDiv = $("#mainPane .header .stats .addressContainer")
     static addAsset = {
         pane: $("#body .bodyElem.addAsset"),
         contract: $("#body .bodyElem.addAsset .assetContract"),
@@ -134,6 +134,7 @@ class MainPane {
         })
 
         events.addListener("currencyChanged", data => {
+            console.log("currency changed")
             if (data.selectedCurrency === "eur"){
                 $(".dollars").html("&euro;")
             }
@@ -174,8 +175,18 @@ class MainPane {
     }
 
     updateData(){
+        if(document.hidden) return
+
+        const _this = this
+
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
+                if(response.locked){
+                    unlockPane.displayUnlock(response.biometricsEnabled)
+                    clearInterval(_this.interval)
+                    return
+                }
+
                 if(events.oldData !== JSON.stringify(response)) {
                     console.log("updating")
                     mainPane.displayData(response)
@@ -188,7 +199,8 @@ class MainPane {
     }
 
     displayData(data){
-        console.log(data)
+        const _this = this
+
         const selectedAddress = data.addresses[data.selectedAddress]
         $("[data-mainAddress]").html(selectedAddress.address)
 
@@ -239,21 +251,10 @@ class MainPane {
                 elem.find(".logo").on('load', function() {
                     elem.find("svg").hide()
                     elem.find(".logo").show()
-
-                    if(fiat != "0"){
-                        const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
-                        elem.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
-                        elem.style.width = parseInt(parseFloat(fiat)*10000) + "%"
-                        elem.style.display = "block"
-                        elem.id = "bar"+contractAddr
-                        elem.setAttribute("data-sort", parseInt(fiat))
-                        document.getElementById("resumeTokenBar").append(elem)
-                        tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
-                    }
-
+                    _this.updateTokenBar(selectedAddress)
                 }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
 
-                elem.find(".fiatEq").html("$" + Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
+                elem.find(".fiatEq").html(Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
                 elem.find("svg").attr("data-jdenticon-value", contractAddr)
 
                 elem.find(".fluctuation val").html(Math.abs(balance.change).toFixed(2))
@@ -321,6 +322,8 @@ class MainPane {
 
         }
 
+        _this.updateTokenBar(selectedAddress)
+
         if(!hasChanged) return
 
         let fixedValue = Utils.beautifyAmount(totalBalance)
@@ -354,7 +357,45 @@ class MainPane {
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
     }
 
+    updateTokenBar(selectedAddress){
+        let totalBalance = 0;
 
+        for(const contractAddr of Object.keys(selectedAddress.balances)){
+            const balance = selectedAddress.balances[contractAddr]
+
+            if(!balance.tracked) continue;
+
+            totalBalance += balance.price*balance.balance/10**balance.decimals
+        }
+
+        for(const contractAddr of Object.keys(selectedAddress.balances)){
+            const balance = selectedAddress.balances[contractAddr]
+
+            if(!balance.tracked) continue;
+
+            const fiat = balance.price*balance.balance/10**balance.decimals
+
+            const bar = document.getElementById("bar"+contractAddr)
+
+            if(bar != null){
+                bar.style.width = parseInt(fiat / totalBalance * 100)  + "%"
+                bar.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
+            }else if(fiat != "0"){
+                const elem = document.getElementById("resumeTokenBarSample").cloneNode(true)
+                elem.style.backgroundColor = getDominantColor(document.getElementById("logo"+contractAddr))
+                elem.style.width = parseInt(fiat / totalBalance * 100)  + "%"
+                elem.style.display = "block"
+                elem.id = "bar"+contractAddr
+                elem.setAttribute("data-sort", parseInt(fiat))
+                document.getElementById("resumeTokenBar").append(elem)
+            }
+        }
+
+        try {
+            tinysort("#resumeTokenBar > hr",{attr:"data-sort", order:'desc'});
+        }catch(e){}
+
+    }
 
     setResume(data){
         this.displayData(data)
@@ -365,7 +406,7 @@ class MainPane {
         if(data.updatePopup)
             MainPane.updatePopup.self.show()
 
-        setInterval(function(){
+        this.interval = setInterval(function(){
             mainPane.updateData()
         }, 250)
 

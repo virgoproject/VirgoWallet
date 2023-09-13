@@ -1,6 +1,6 @@
 #assetsPane {
     display: block;
-    height: 600px;
+    height: 100%;
     width: 100%;
     background: white;
     /* transform: scaleY(0); */
@@ -13,6 +13,7 @@
 #assetsPane .content {
     z-index: 99999;
     padding: 0 1em;
+    height: calc(100% - 7em);
 }
 
 #assetsListSearchWrapper {
@@ -68,8 +69,8 @@
 
 #assetsPane .addBottomLogo {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 2.5em;
+    bottom: 6em;
     background: var(--mainColorLight);
     border-radius: 50%;
     color: white;
@@ -86,28 +87,7 @@
     font-size: 1.2em;
 }
 
-#assetsPane .stateCoin {
-    padding: 8px;
-    border-radius: 25px;
-    cursor: pointer;
-    color: white;
-    background: gray;
-    transition: 250ms all;
-}
-
-#assetsPane .stateCoin:hover {
-    background: #9f9f9f;
-}
-
-#assetsPane .stateCoin.activated {
-    background: rgb(35, 183, 115);
-}
-
-#assetsPane .stateCoin.activated:hover {
-    background: rgb(31, 162, 104);
-}
-
- .searchLabel {
+.searchLabel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,9 +95,9 @@
 }
 
 #assetsPane .listWrap {
-    overflow: auto;
-    max-height: 478px;
     padding: 0 1em;
+    overflow: auto;
+    max-height: 100%;
 }
 
 #assetsPane .listWrap::-webkit-scrollbar {
@@ -153,10 +133,22 @@
 }
 
 #assetsPane .listItem {
-    background: #f8f4fb;
+    background: var(--whiteBackground);
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+}
+
+#assetsPane .listItem.selected {
+    background: var(--whiteBackgroundSelected);
+}
+
+#assetsPane .listItem .stateCoin {
+    display: none;
+}
+
+#assetsPane .listItem.selected .stateCoin {
+    display: inline-block;
 }
 
 #assetsPane .listItem p {
