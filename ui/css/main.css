@@ -237,8 +237,16 @@ input[type=number] {
     padding-left: .25em !important;
 }
 
+.pl-2 {
+    padding-left: .5rem !important;
+}
+
 .pr-1 {
     padding-right: .25em !important;
+}
+
+.pr-2 {
+    padding-right: .5rem !important;
 }
 
 .text-left {
@@ -410,6 +418,58 @@ input[type=number] {
 .filter-option-inner-inner{
     overflow: hidden;
     margin-right: 7px;
+}
+
+/*
+Popups that spawn at the bottom of the screen, used for eg. Fees and parameters
+*/
+.bottomPopup {
+    z-index: 1000000;
+    position: absolute;
+    inset: 0px;
+    padding: 0;
+}
+
+.bottomPopup .background {
+    z-index: -1;
+    display: flex;
+    background: black;
+    opacity: 0.8;
+    height: 60em;
+    position: relative;
+    margin-bottom: -88px;
+    margin-top: -487px;
+    cursor: pointer;
+}
+
+.bottomPopup .close {
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+}
+
+.bottomPopup .close:hover {
+    color: black;
+    transition: all ease-in 0.1s;
+}
+
+.bottomPopup .content {
+    border-radius: 30px 30px 0px 0px;
+    background: white;
+    position: absolute;
+    z-index: 15;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+}
+
+.bottomPopup .bgBar {
+    position: absolute;
+    color: gray;
+    font-size: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -94px;
 }
 
 iframe {

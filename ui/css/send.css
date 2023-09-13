@@ -31,7 +31,17 @@
     cursor: pointer;
 }
 
+.send .address-qr-code{
+    color: var(--mainColorLight30);
+}
 
+.close-qr:hover{
+    cursor: pointer;
+}
+
+.address-qr-code:hover{
+    cursor: pointer;
+}
 
 .sendConfirm .ticker {
     color: var(--highlightColor1);
@@ -299,4 +309,39 @@
 
 .sendRecentContact .textAddress {
     font-size: 10px;
+}
+
+#buyBtnSoon {
+    position: absolute;
+    margin-left: -3ch;
+    margin-top: -0.5em;
+    font-style: italic;
+    color: var(--mainColor);
+    font-size: 0.75em;
+    font-weight: 700;
+}
+
+#receive-qr {
+    color: var(--mainColor);
+    background: #F3F3F3;
+    transition: all ease-in 0.1s;
+}
+
+#receive-qr:hover {
+    background: var(--whiteBackground);
+}
+
+#buyBtn {
+    color: var(--mainColor);
+    background: #F3F3F3;
+    opacity: 0.6;
+    cursor: default;
+}
+
+#sendSampleBtn {
+    cursor: default;
+}
+
+#sendSampleBtn:hover {
+    background: var(--mainColor);
 }
