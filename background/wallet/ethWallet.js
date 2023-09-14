@@ -123,6 +123,10 @@ class EthWallet {
                     feesRate: 0.002
                 }
                 break
+            case 500:
+                json.RPC = "https://mainnet-rpc.hyperonscan.com/"
+                json.explorer = "https://hyperonscan.com/tx/"
+                break
             case 43114:
                 json.swapParams = {
                 "type": "uni2",

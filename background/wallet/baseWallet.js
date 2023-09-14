@@ -17,6 +17,7 @@ class BaseWallet {
         for(const wallet of data.wallets){
             switch(wallet.type){
                 case "web3":
+                    if(wallet.wallet.chainID == "400") continue
                     this.wallets.push(EthWallet.fromJSON(wallet.wallet))
                     break
             }
@@ -386,24 +387,6 @@ class BaseWallet {
                 "explorer": "https://explorer.etherfair.org/tx/",
                 "swapParams": false,
                 "testnet": false
-            }
-        }
-
-        wallets[12] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Hyperon",
-                "asset": "Hyperon",
-                "ticker": "HPN",
-                "decimals": 18,
-                "contract": "0xe3D2Ba4eBcc6e9AE3569d6418BC2eaABB8FeEf60",
-                "RPC": "https://testnet-rpc.hyperonchain.com",
-                "chainID": 400,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://testnet.hyperonchain.com/tx/",
-                "swapParams": false,
-                "testnet": true
             }
         }
 

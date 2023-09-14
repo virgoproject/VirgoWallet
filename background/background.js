@@ -250,7 +250,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             }
             break
 
-        case "setSelectedcurrency":
+        case "setSelectedCurrency":
             selectedCurrency = request.currency
             browser.storage.local.set({"selectedCurrency": request.currency})
             break
@@ -883,7 +883,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             })
             break
 
-        case 'setupDone':
+        case 'setSetupDone':
             browser.storage.local.set({"setupDone": true})
             setupDone = true
             sendResponse(setupDone)

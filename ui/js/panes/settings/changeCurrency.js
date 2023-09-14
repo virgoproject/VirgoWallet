@@ -7,5 +7,5 @@ events.addListener("chainChanged", res => {
 })
 
 $('#currencyConversion').change(function(){
-    setSelectedcurrency($('#currencyConversion').val())
+    setSelectedCurrency($('#currencyConversion').val())
 })

@@ -12,6 +12,7 @@ const commonScripts = [
     "../js/utils/backgroundMessaging.js",
     "../js/utils/tokensSelect.js",
     "../js/utils/getDominantColor.js",
+    "../js/utils/currencyToSymbol.js",
     "../js/events.js",
     "../js/popup.js",
     "../js/panes/selectChains.js",

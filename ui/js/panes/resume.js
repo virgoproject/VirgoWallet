@@ -135,12 +135,7 @@ class MainPane {
 
         events.addListener("currencyChanged", data => {
             console.log("currency changed")
-            if (data.selectedCurrency === "eur"){
-                $(".dollars").html("&euro;")
-            }
-            else if (data.selectedCurrency === "usd"){
-                $(".dollars").html("$")
-            }
+            $(".dollars").html(currencyToSymbol(data.selectedCurrency))
         })
 
         MainPane.testnetFaucet.button.click(() => {
