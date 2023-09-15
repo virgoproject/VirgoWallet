@@ -61,10 +61,13 @@ const mobileScripts = [
     "../../background/web3RequestsHandler.js",
     "../../background/utils/txIdentifierAbi.js",
     "../../background/background.js",
-    "../js/mobileTweaks.js",
     "../js/utils/html5-qrcode.js",
     "../js/panes/qrScannerPane.js",
     "../../background/mobile/walletConnect/walletConnect.js"
+]
+
+const mobileScriptsAfter = [
+    "../js/mobileTweaks.js",
 ]
 
 const loadScript = async src => {
@@ -95,6 +98,8 @@ if ((typeof chrome !== "undefined" && chrome.extension) || (typeof browser !== "
 } else {
     console.log("Script loader - mobile context")
     loadScripts(mobileScripts).then(() => {
-        loadScripts(commonScripts)
+        loadScripts(commonScripts).then(() => {
+            loadScripts(mobileScriptsAfter)
+        })
     })
 }

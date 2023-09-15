@@ -126,6 +126,10 @@ browserShim.alarms.onAlarm.addListener = () => {
     return
 }
 
+browserShim.alarms.get = async name => {
+    return ""
+}
+
 browserShim.runtime.getURL = () => {
     return ""
 }
