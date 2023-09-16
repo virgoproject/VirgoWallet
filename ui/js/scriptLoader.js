@@ -13,6 +13,7 @@ const commonScripts = [
     "../js/utils/tokensSelect.js",
     "../js/utils/getDominantColor.js",
     "../js/utils/currencyToSymbol.js",
+    "../../commonJS/qrcode.min.js",
     "../js/events.js",
     "../js/popup.js",
     "../js/panes/selectChains.js",

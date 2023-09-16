@@ -182,13 +182,8 @@ class SendPane {
             let address;
             $('#qr-form').show()
 
-            $('.close-qr').click(function () {
-                $('#qr-form').hide()
-            })
-
-
-            getBaseInfos().then(function (info){
-                address =info.addresses[info.selectedAddress].address
+            getBaseInfos().then(function(info){
+                address = info.addresses[info.selectedAddress].address
                 $('#qrcode').empty()
                 new QRCode(document.getElementById("qrcode"), info.addresses[info.selectedAddress].address);
                 document.querySelector('#address-qr-code').innerHTML = info.addresses[info.selectedAddress].address.replace(info.addresses[info.selectedAddress].address.substring(8,38),"...")

@@ -435,10 +435,8 @@ Popups that spawn at the bottom of the screen, used for eg. Fees and parameters
     display: flex;
     background: black;
     opacity: 0.8;
-    height: 60em;
+    height: 100vh;
     position: relative;
-    margin-bottom: -88px;
-    margin-top: -487px;
     cursor: pointer;
 }
 
@@ -469,7 +467,7 @@ Popups that spawn at the bottom of the screen, used for eg. Fees and parameters
     font-size: 35px;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: -94px;
+    margin-top: -36px;
 }
 
 iframe {
