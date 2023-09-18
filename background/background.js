@@ -685,7 +685,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 if(res.contactList !== undefined){
                     sendResponse(res.contactList)
                 }else {
-                    sendResponse(false)
+                    sendResponse([])
                 }
 
             })

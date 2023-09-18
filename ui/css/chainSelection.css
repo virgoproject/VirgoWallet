@@ -1,5 +1,6 @@
 #chainSelector {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     top: 52px;
@@ -23,6 +24,10 @@
     transition: background ease 0.25s;
     text-align: center;
     margin: 0.25em 0;
+}
+
+#chainsContainer {
+    overflow: auto;
 }
 
 #chainSelector .chain .logo {
@@ -111,4 +116,9 @@
     line-height: 1em;
     display: block;
     font-weight: 600;
+}
+
+#atomicSwapAccess1Wrapper {
+    margin-bottom: 52px;
+    margin-top: 19px;
 }

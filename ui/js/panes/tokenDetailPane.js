@@ -116,9 +116,9 @@ class TokenDetailPane {
         TokenDetailPane.detailedPane.chartInfos.price.html("$" + Utils.beautifyAmount(data.price))
 
         if(MAIN_ASSET.contract == data.contract)
-            TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + data.ticker + "/logo.png')");
+            TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.ticker + "/logo.png')");
         else
-            TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.ticker + "/" + data.contract + "/logo.png')");
+            TokenDetailPane.detailedPane.chartInfos.logo.css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.contract + "/logo.png')");
 
         TokenDetailPane.simplePane.logo.attr("data-jdenticon-value", data.contract)
         jdenticon()
@@ -148,7 +148,7 @@ class TokenDetailPane {
         const _this = this
 
         if(this.tokenInfos === undefined || this.tokenInfos.contract != this.data.contract)
-            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+MAIN_ASSET.ticker+"/"+contractAddr+"/infos.json")
+            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+MAIN_ASSET.chainID+"/"+contractAddr+"/infos.json")
                 .then(function(resp){
                     if(!resp.ok){
 

@@ -1,19 +1,20 @@
-#body .bodyElem .airdrop{
-    height: 545px;
+#airdropPane {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-#mainPane .airdrop .airdropHeader{
+#airdropPane .airdropBody {
+    padding-bottom: 4em;
+}
+
+#mainPane .airdrop .airdropHeader {
     padding: 0.5em;
     height: 110px;
     margin-bottom: 1em;
 }
 
-
-.airdrop .airdropBody {
-    max-height: 430px;
-}
-
-.hr{
+.hr {
     width: 90%;
     margin-left: 1em;
 }

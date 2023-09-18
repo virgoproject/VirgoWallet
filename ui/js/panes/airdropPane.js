@@ -132,9 +132,7 @@ class AirdropPane{
                     tickerFromChainID(res[i].chainID).then(function (infos) {
                         console.log(infos)
                         if (!infos) return
-                        let chain = infos.ticker
-                        if(chain === undefined)
-                            chain = infos.wallet.ticker
+                        let chain = res[i].chainID
                         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+chain+"/"+res[i].address+"/infos.json")
                             .then(response => {
                             if (response.ok) {
@@ -423,9 +421,7 @@ class AirdropPane{
                 for (let i = 0; res.length > i; i++) {
                     tickerFromChainID(res[i].chainID).then(function (infos) {
                         if (!infos) return
-                        let chain = infos.ticker
-                        if(chain === undefined)
-                            chain = infos.wallet.ticker
+                        let chain = res[i].chainID
                         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chain + "/" + res[i].address + "/infos.json")
                             .then(response => {
                                 if (response.ok) {
@@ -553,9 +549,7 @@ class AirdropPane{
                 for (let i = 0; res.length > i; i++) {
                     tickerFromChainID(res[i].chainID).then(function (infos) {
                         if (!infos) return
-                        let chain = infos.ticker
-                        if(chain === undefined)
-                            chain = infos.wallet.ticker
+                        let chain = res[i].chainID
                         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chain + "/" + res[i].address + "/infos.json")
                             .then(response => {
                             if (response.ok) {

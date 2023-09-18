@@ -9,6 +9,7 @@
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
+    z-index: 10000;
 }
 
 #transactionsPane .content {

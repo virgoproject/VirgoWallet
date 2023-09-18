@@ -408,7 +408,7 @@ class BaseWallet {
         let referenceWallets = BaseWallet.getBaseWallets()
 
         try {
-            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/chains.json")
+            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/chainaddition1/chains.json")
             referenceWallets = await refWalletsReq.json()
         }catch(e){}
 

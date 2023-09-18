@@ -208,7 +208,7 @@ class AssetsPane {
         elem.find(".logo").on('load', function() {
             elem.find("svg").hide()
             elem.find(".logo").show()
-        }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + infos.wallets[infos.selectedWallet].wallet.ticker + "/" + token.contract + "/logo.png");
+        }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + infos.wallets[infos.selectedWallet].wallet.chainID + "/" + token.contract + "/logo.png");
 
         elem.find("svg").attr("data-jdenticon-value", token.contract)
 

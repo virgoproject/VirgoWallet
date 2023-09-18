@@ -211,7 +211,7 @@ class AtomicSwapPane {
             elem.attr("decimals", wallet.decimals)
 
             elem.attr("data-content",
-                '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+wallet.ticker+'/'+wallet.ticker+'/logo.png);"></div><span class="selectText">'+wallet.ticker+'</span>')
+                '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+wallet.chainID+'/'+wallet.ticker+'/logo.png);"></div><span class="selectText">'+wallet.ticker+'</span>')
 
             input.select.append(elem)
         }

@@ -3,6 +3,7 @@ class Events {
     constructor() {
 
         this.oldData = ""
+        this.firstRun = true
         this.oldDataJSON
 
         this.chainChangedListeners = []
@@ -11,6 +12,7 @@ class Events {
         this.addressesChangedListeners = []
         this.currencyChangedListeners = []
         this.notifsCountListeners = []
+        this.transactionsChangedListeners = []
     }
 
     fireChainChangedEvent(data){
@@ -43,45 +45,62 @@ class Events {
             listener(data)
     }
 
+    fireTransactionsChanged(data){
+        for(const listener of this.transactionsChangedListeners)
+            listener(data)
+    }
+
     //Check for changes in wallet data and fire events accordingly
     updateData(data){
         const dataString = JSON.stringify(data)
-        if(events.oldData !== dataString) {
+        if(this.oldData !== dataString) {
 
-            if(events.oldDataJSON == undefined){
-                events.fireChainChangedEvent(data)
-                events.fireAddressChangedEvent(data)
-                events.fireAddressesChangedEvent(data)
-                events.fireAssetsChanged(data)
-                events.fireCurrencyChanged(data)
-                events.fireNotifsEvent(data)
+
+
+            if(this.firstRun){
+                this.fireChainChangedEvent(data)
+                this.fireAddressChangedEvent(data)
+                this.fireAddressesChangedEvent(data)
+                this.fireAssetsChanged(data)
+                this.fireCurrencyChanged(data)
+                this.fireNotifsEvent(data)
+                this.fireTransactionsChanged(data)
             }else{
 
-                if(events.oldDataJSON.selectedWallet != data.selectedWallet){
+                this.oldDataJSON = JSON.parse(this.oldData)
+
+                if(this.oldDataJSON.selectedWallet != data.selectedWallet){
                     this.fireChainChangedEvent(data)
                     this.fireCurrencyChanged(data)
                 }
 
-                if(events.oldDataJSON.selectedAddress != data.selectedAddress)
+                if(this.oldDataJSON.selectedAddress != data.selectedAddress)
                     this.fireAddressChangedEvent(data)
 
-                if(JSON.stringify(events.oldDataJSON.wallets[events.oldDataJSON.selectedWallet].wallet.tokens) != JSON.stringify(data.wallets[data.selectedWallet].wallet.tokens))
+                if(JSON.stringify(this.oldDataJSON.wallets[this.oldDataJSON.selectedWallet].wallet.tokens) != JSON.stringify(data.wallets[data.selectedWallet].wallet.tokens)) {
+                    console.log("assets changed")
                     this.fireAssetsChanged(data)
+                }
 
-                if(JSON.stringify(events.oldDataJSON.addresses) != JSON.stringify(data.addresses))
+                if(JSON.stringify(this.oldDataJSON.addresses) != JSON.stringify(data.addresses))
                     this.fireAddressesChangedEvent(data)
 
-                if(events.oldDataJSON.selectedCurrency != data.selectedCurrency)
+                if(this.oldDataJSON.selectedCurrency != data.selectedCurrency)
                     this.fireCurrencyChanged(data)
 
-                if(events.oldDataJSON.notificationsCount !== data.notificationsCount){
+                if(this.oldDataJSON.notificationsCount !== data.notificationsCount){
                     this.fireNotifsEvent(data)
+                }
+
+                if(JSON.stringify(this.oldDataJSON.wallets[this.oldDataJSON.selectedWallet].wallet.transactions) != JSON.stringify(data.wallets[data.selectedWallet].wallet.transactions)){
+                    console.log("transactions changed")
+                    this.fireTransactionsChanged(data)
                 }
 
             }
 
-            events.oldData = dataString
-            events.oldDataJSON = data
+            this.oldData = dataString
+            this.firstRun = false
         }
     }
 
@@ -104,6 +123,9 @@ class Events {
                 break
             case "notifsCountChanged":
                 this.notifsCountListeners.push(listener)
+                break
+            case "transactionsChanged":
+                this.transactionsChangedListeners.push(listener)
                 break
         }
     }

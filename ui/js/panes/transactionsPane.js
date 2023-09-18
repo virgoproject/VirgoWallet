@@ -239,7 +239,7 @@ class TransactionsPane {
         elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
         elem.find(".totalFees span").html(selectedWallet.ticker)
 
-        elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + transaction.contractAddr + "/logo.png')")
+        elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.chainID + "/" + transaction.contractAddr + "/logo.png')")
 
         if(selectedWallet.explorer === undefined)
             elem.find("button").hide()
@@ -699,7 +699,7 @@ class TransactionsPane {
             elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
             elem.find(".totalFees span").html(selectedWallet.ticker)
 
-            elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.ticker + "/" + transaction.contractAddr + "/logo.png')")
+            elem.find(".logo").css("background-image", "url('https://raw.githubusercontent.com/virgoproject/tokens/main/" + selectedWallet.chainID + "/" + transaction.contractAddr + "/logo.png')")
 
             if(selectedWallet.explorer === undefined)
                 elem.find("button").hide()

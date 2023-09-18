@@ -309,12 +309,20 @@ class SendPane {
         })
 
         events.addListener("assetsChanged", function (data){
+            console.log("zzz")
             _this.setSend(data)
         })
 
         events.addListener("addressChanged", () => {
             SendPane.recipient.val("")
             SendPane.amount.val("")
+        })
+
+        console.log("hellow")
+
+        events.addListener("transactionsChanged", () => {
+            console.log("transactions changed")
+            _this.displayRecentRecipients()
         })
 
     }
@@ -330,8 +338,6 @@ class SendPane {
 
         Object.entries(selectedAddress.balances).map(([contractAddr, balance]) => {
             if(!balance.tracked) return
-            let actualAddress = data.wallets[data.selectedWallet].wallet.ticker
-            let sa = ('https://raw.githubusercontent.com/virgoproject/tokens/main/" + actualAddress + "/" + balance.contract + "/logo.png')
 
             let elem = $("<option></option>")
             elem.val(contractAddr)
@@ -339,10 +345,10 @@ class SendPane {
 
             if(MAIN_ASSET.contract === balance.contract)
                 elem.attr("data-content",
-                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+MAIN_ASSET.ticker+'/'+MAIN_ASSET.ticker+'/logo.png);"></div><span class="selectText">'+MAIN_ASSET.ticker+'</span>')
+                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+MAIN_ASSET.chainID+'/'+MAIN_ASSET.ticker+'/logo.png);"></div><span class="selectText">'+MAIN_ASSET.ticker+'</span>')
             else
                 elem.attr("data-content",
-                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+actualAddress+'/'+balance.contract+'/logo.png);"></div><span class="selectText">'+balance.ticker+'</span>')
+                    '<div class="selectLogo" style="background-image: url(https://raw.githubusercontent.com/virgoproject/tokens/main/'+MAIN_ASSET.chainID+'/'+balance.contract+'/logo.png);"></div><span class="selectText">'+balance.ticker+'</span>')
 
             SendPane.select.append(elem)
         })

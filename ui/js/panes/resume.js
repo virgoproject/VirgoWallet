@@ -247,7 +247,7 @@ class MainPane {
                     elem.find("svg").hide()
                     elem.find(".logo").show()
                     _this.updateTokenBar(selectedAddress)
-                }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.ticker + "/" + contractAddr + "/logo.png");
+                }).attr("src", "https://raw.githubusercontent.com/virgoproject/tokens/main/" + data.wallets[data.selectedWallet].wallet.chainID + "/" + contractAddr + "/logo.png");
 
                 elem.find(".fiatEq").html(Utils.beautifyAmount(balance.price*balance.balance/10**balance.decimals))
                 elem.find("svg").attr("data-jdenticon-value", contractAddr)
@@ -322,12 +322,12 @@ class MainPane {
         if(!hasChanged) return
 
         let fixedValue = Utils.beautifyAmount(totalBalance)
-        $(".values").html(fixedValue.toString().split(".")[0])
+        $("#resumeFiatTotal").html(fixedValue.toString().split(".")[0])
 
         if (Utils.beautifyAmount(totalBalance).toString().split('.')[1] === undefined){
-            $('.decmialValues').html("." + 0)
+            $('#resumeFiatTotalDec').html("." + 0)
         } else {
-            $('.decmialValues').html("." + Utils.beautifyAmount(totalBalance).toString().split('.')[1])
+            $('#resumeFiatTotalDec').html("." + Utils.beautifyAmount(totalBalance).toString().split('.')[1])
         }
 
         let totalChange = 0;

@@ -102,8 +102,8 @@
                 </div>
             </div>
             <div class="d-inline-flex balance-header">
-                <h1 class="values" data-fiatTotal>0</h1>
-                <h1 class="decmialValues" data-fiatTotal>0</h1>
+                <h1 class="values" data-fiatTotal id="resumeFiatTotal">0</h1>
+                <h1 class="decimalValues" data-fiatTotal id="resumeFiatTotalDec">0</h1>
                 <span class="dollars"></span>
 <!--                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
                     <val>0</val>
@@ -243,17 +243,16 @@
                     <div class="background"></div>
                     <div class="col-12 content" id="qr-code-form">
                         <i class="fa-solid fa-horizontal-rule bgBar"></i>
-                        <div class="col-12 d-flex justify-content-center align-items-center text-center mt-2">
+                        <div class="col-12 d-flex justify-content-center align-items-center text-center mt-3">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <h5>Receive</h5>
+                                <h5 class="mb-1">Receive</h5>
                             </div>
                             <div class="col-2 close">
                                 <i class="fa-solid fa-xmark"></i>
                             </div>
                         </div>
-                        <div id="qrcode" class="d-flex justify-content-center mt-3"></div>
-                        <p class="text-center mt-2">Scan address to receive payment</p>
+                        <div id="qrcode" class="d-flex justify-content-center mt-3 mb-3"></div>
                         <div class="col-12 d-flex justify-content-center">
                             <div class="col-6 d-flex justify-content-center address-qr-code">
                                 <p id="address-qr-code"></p>
@@ -406,12 +405,11 @@
                 </button>
             </div>
         </div>
-        <div class="bodyElem airdrop" style="display: none;">
+        <div class="bodyElem airdrop" style="display: none;" id="airdropPane">
             <div class="airdropHeader d-none" style="justify-content: center">
                 <div class="stats row m-0">
-
                     <div class="address-div">
-                        <div class="address wallet-address" >
+                        <div class="address wallet-address">
                             <div class="d-flex address-bloc align-items-center">
                                 <div class="col-4 d-flex justify-content-center">
                                     <p class="title m-0"><span id="airdropsParticipationCount"></span> participations</p>
@@ -846,7 +844,7 @@
         <div class="row gx-2 mt-2" id="chainsContainer">
 
         </div>
-        <div class="text-center mt-5"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
+        <div class="text-center" id="atomicSwapAccess1Wrapper"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
         <div class="col-4" id="baseChainRow" style="display: none">
             <div class="chain">
                 <div class="row">
