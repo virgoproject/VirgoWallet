@@ -53,7 +53,7 @@ browser.storage.local.get("notifications").then(function (res) {
     loadedElems["notifications"] = true
 })
 
-fetchNotifs()
+//fetchNotifs()
 
 let selectedCurrency = "usd"
 
@@ -197,7 +197,7 @@ BaseWallet.loadFromJSON().then(() => {
             }
 
         }else if(a.name === "notifs"){
-          fetchNotifs()
+          //fetchNotifs()
         }
     })
 
