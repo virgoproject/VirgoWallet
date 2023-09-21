@@ -2141,8 +2141,6 @@ const ERC721_ABI = [
         "name": "Approval",
         "type": "event"
     },
-    // ... Autres événements existants ...
-
     // Fonction pour approuver une adresse pour un NFT donné
     {
         "name": "approve",
@@ -2210,7 +2208,6 @@ const ERC721_ABI = [
         "stateMutability": "nonpayable",
         "type": "function"
     },
-    // ... Autres fonctions existantes ...
 
     // Fonction pour récupérer l'URI d'un NFT donné
     {
