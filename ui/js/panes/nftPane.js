@@ -21,7 +21,6 @@ class NftPane{
     }
 
     constructor() {
-
         NftPane.addNftBtn.click(function(){
             NftPane.self.show()
             hideStatsBar()
@@ -69,6 +68,7 @@ class NftPane{
                 const uri = details.tokenURI
                 const tokenId = details.tokenID
                 console.log(details.collection)
+
 
                 addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(){
                     NftPane.back.click()

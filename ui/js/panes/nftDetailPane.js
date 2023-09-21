@@ -14,22 +14,40 @@ class NftDetailPane {
         infosWrapperDesc: $("#nftInfosWrapper .description"),
         baseAttrNft: $("#nftInfosWrapper .baseAttrNft"),
         baseAttrNftTitle: $("#baseAttrNft .attrTitle"),
-        baseAttrNftSpec: $("#baseAttrNft .attrSpec")
+        baseAttrNftSpec: $("#baseAttrNft .attrSpec"),
+        addrSpec: $("#nftInfosWrapper .AddrNft .AddrSpec"),
+        tokenIdSpec: $("#nftInfosWrapper  .tokenIdNft .tokenIdSpec"),
+        copyAddr: $("#nftInfosWrapper  .AddrNft .addrCopy"),
+        copyTokenId: $("#nftInfosWrapper  .tokenIdNft .tokenIdCopy"),
     }
 
     constructor() {
     NftDetailPane.back.click(function(){
         NftDetailPane.self.hide()
+        NftDetailPane.detailedPane.infosWrapperStats.empty()
     })
     }
 
-    displayToken(uri){
+    displayToken(uri,adress,tokenId){
         NftDetailPane.self.show()
         NftDetailPane.loading.hide()
         NftDetailPane.detailedPane.self.show()
         NftDetailPane.detailedPane.infos.show()
         NftDetailPane.detailedPane.infosLoading.hide()
         NftDetailPane.detailedPane.infosWrapper.show()
+        NftDetailPane.detailedPane.addrSpec.html(adress)
+        NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
+
+        NftDetailPane.detailedPane.copyAddr.click(function(e){
+            e.stopPropagation()
+            copyToClipboard(adress);
+        })
+
+        NftDetailPane.detailedPane.copyTokenId.click(function(e){
+            e.stopPropagation()
+            copyToClipboard(tokenId);
+        })
+
         fetch(uri).then(resp => {
             resp.json().then(json => {
                 console.log(json)
