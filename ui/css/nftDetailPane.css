@@ -2,31 +2,35 @@
     display: block;
     height: 600px;
     width: 100%;
-    background: #faf6fc;
     /* transform: scaleY(0); */
     transform-origin: 50% 0;
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
-    background: linear-gradient(0deg, rgba(90, 0, 156, 0.08), transparent);
     background-color: white;
     z-index: 10;
+}
+
+#nftDetailPane .logoNft {
+border-radius: 20px;
 }
 
 #nftDetailPane .content {
     z-index: 99999;
     padding: 0 1em;
+    overflow-y: scroll;
+    height: 520px;
 }
 
 #nftDetailPane .back {
     position: absolute;
-    top: 0.7em;
     width: 2em;
+    top: 0.1em;
     text-align: center;
     left: 0.3em;
     font-size: 12px;
     cursor: pointer;
-    color: #545454;
+    color: black;
     transition: color ease 0.25s;
 }
 
@@ -56,13 +60,12 @@
 #nftDetailPane .infos {
     padding: 0 1.25em;
     margin-bottom: 0.5em;
-    margin-left: 19px;
     margin-top: 4px;
 }
 
 #nftDetailPane .infos .name, #tokenDetailPane .infos .price {
     margin: 0;
-    font-size: 1.1em;
+    font-size: 1.4em;
 }
 
 #nftDetailPane .infos .ticker, #tokenDetailPane .infos .change {
@@ -106,7 +109,66 @@
     padding-top: 0.5em;
     padding-left: 0;
     padding-right: 0;
+    display: inline-flex;
 }
+
+.baseAttrNft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+}
+
+.attrTitle {
+font-weight: bold;
+}
+
+.AddrSpec{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80px;
+    margin-left: 12em;
+    overflow: hidden;
+}
+
+.tokenIdSpec{
+    margin-left: 12em;
+}
+
+.addrCopy{
+    margin-bottom: 0.5em;
+    cursor: pointer;
+}
+
+.addrCopy:hover {
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    color: var(--mainColor);;
+}
+
+.tokenIdCopy{
+    margin-bottom: 0.5em;
+    cursor: pointer;
+}
+
+.tokenIdCopy:hover {
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    color: var(--mainColor);;
+}
+
+.AddrNft, .tokenIdNft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+}
+
+.AddrTitle, .tokenIdTitle {
+    font-weight: bold;
+}
+
+
 
 #nftInfos .stats .title {
     color: #000000ab;
