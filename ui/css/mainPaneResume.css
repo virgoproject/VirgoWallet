@@ -24,6 +24,15 @@
     transition: all ease-in 0.1s;
 }
 
+#mainPane .resume .assets .assetNft{
+    background: none !important;
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    cursor: pointer;
+    transition: all ease-in 0.1s;
+}
+
 #mainPane .resume .selecteur {
    display: none;
 }
@@ -47,10 +56,22 @@ display: block;
     margin-bottom: 0;
 }
 
+#mainPane .resume .assets .assetNft p {
+    margin-bottom: 0;
+}
+
 #mainPane .resume .assets .asset .logo {
     height: 32px;
     width: 32px;
     border-radius: 50%;
+    background-size: cover;
+}
+
+
+#mainPane .resume .assets .assetNft .logoNft {
+    height: 60px;
+    width: 60px;
+    border-radius: 5px;
     background-size: cover;
 }
 
@@ -59,6 +80,10 @@ display: block;
 }
 
 #mainPane .resume .assets .asset .title {
+    font-weight: 600;
+}
+
+#mainPane .resume .assets .assetNft .title {
     font-weight: 600;
 }
 
@@ -94,12 +119,37 @@ display: block;
     vertical-align: text-top;
 }
 
-#mainPane .resume .assets .addAsset {
+#mainPane .resume .assets .addAsset,#mainPane .resume .assets .addNft  {
     cursor: pointer;
     color: var(--mainColor);
     transition: all 0.2s ease-in;
-    width: fit-content;
-    float: right;
+    display: flex;
+    justify-content: center;
+}
+
+#mainPane .resume .assets .resumePane {
+    display: flex;
+    justify-content: center;
+}
+
+#mainPane .resume .assets .divResumePaneSelected{
+    color: black !important;
+    border-bottom: solid 3px var(--mainColor)!important;
+    cursor: pointer;
+
+}
+
+#mainPane .resume .assetNft:hover{
+    background-color: #f8f4fb !important;
+}
+
+.importNftSelected{
+    display: block !important;
+}
+
+#mainPane .resume .assets .divResumePane{
+    color: #6a6a6a;;
+    cursor: pointer;
 }
 
 #mainPane .resume .assets .addAsset:hover {

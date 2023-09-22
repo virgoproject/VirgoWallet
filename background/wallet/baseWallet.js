@@ -129,6 +129,7 @@ class BaseWallet {
                 "chainID": 1,
                 "tokens": [],
                 "transactions": [],
+                "nft":[],
                 "explorer": "https://etherscan.io/tx/",
                 "swapParams": {
                     "type": "uni3",
@@ -156,6 +157,7 @@ class BaseWallet {
                 "RPC": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
                 "chainID": 5,
                 "tokens": [],
+                "nft":[],
                 "transactions": [],
                 "explorer": "https://goerli.etherscan.io/tx/",
                 "swapParams": false,
@@ -182,6 +184,7 @@ class BaseWallet {
                         "tracked": true
                     }
                 ],
+                "nft":[],
                 "transactions": [],
                 "explorer": "https://bscscan.com/tx/",
                 "swapParams": {

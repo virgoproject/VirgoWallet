@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="../css/mainPaneResume.css">
     <link rel="stylesheet" href="../css/send.css">
     <link rel="stylesheet" href="../css/chainSelection.css">
+    <link rel="stylesheet" href="../css/collectionNft.css">
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/assets.css">
+    <link rel="stylesheet" href="../css/nftPane.css">
     <link rel="stylesheet" href="../css/transactionsPane.css">
     <link rel="stylesheet" href="../css/tokenDetailPane.css">
+    <link rel="stylesheet" href="../css/nftDetailPane.css">
     <link rel="stylesheet" href="../css/notyf.min.css">
     <link rel="stylesheet" href="../css/feesManagement.css">
     <link rel="stylesheet" href="../css/contacts.css">
@@ -22,7 +25,6 @@
     <link rel="stylesheet" href="../css/atomicSwapPane.css">
     <link rel="stylesheet" href="../css/airdropPane.css">
     <link rel="stylesheet" href="../css/editFees.css">
-    <link rel="stylesheet" href="../css/panes/qrScanner.css">
 </head>
 <body>
 <div id="loadingPane">
@@ -141,9 +143,11 @@
             <div class="assets row">
                 <div class="title col-12 m-0 p-0">
                     <div class="row">
-                        <p class="col-6 mb-0">Assets</p>
-                        <div class="col-6">
-                            <p class="mb-0 addAsset">Manage Tokens</p>
+                        <div class="col-3 mb-3  " id="allAssetdiv">
+                            <p class=" mb-0 resumePane divResumePane divResumePaneSelected" id="allAssets">Assets</p>
+                        </div>
+                        <div class="col-3 mb-3 " id="nftDiv">
+                            <p class=" mb-0 resumePane divResumePane" id="nft">NFTs</p>
                         </div>
                     </div>
                 </div>
@@ -169,6 +173,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 mt-2">
+                            <p class="mb-0 addAsset">Manage Tokens</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="walletNft" class="row">
+                        <div class="col-12  assetNft mt-2" id="baseNftRow" style="display: none" data-sort=0>
+                            <div class="row">
+                                <div class="col-2 justify-content-center align-self-center">
+                                    <img class="logoNft" crossorigin="anonymous" style=""/>
+                                </div>
+                                <div class="col-7 d-flex justify-content-center align-items-center">
+                                    <p class="title text-center">Bitcoin</p>
+                                </div>
+                                <div class="col-3 align-self-center text-right">
+                                    <p class="title nftInCollection"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 importNft mt-2" style="display: none">
+                        <p class="mb-0 addNft">Import Nft</p>
                     </div>
                 </div>
             </div>
@@ -944,6 +971,79 @@
             <i class="fas fa-plus addLogo"></i>
         </div>
     </div>
+    <div id="nftAddPane" style="display: none">
+    <div class="row mt-2">
+        <div class="back">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <h5 class="text-center" id="nftListTitle">My Nft</h5>
+    </div>
+    <div class="content">
+        <div class="loading text-center mt-2 mb-2">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div>
+        <div class="p-2" id="nftListAdd">
+            <div class="row contract">
+                <div>
+                    <p class="label text-left">Contract address</p>
+                    <input type="text" class="input col-12 contractAddr" placeholder="Enter the asset's contract address">
+                </div>
+                <div>
+                <p class="label text-left">Token ID</p>
+                <input type="text" class="input col-12 tokenID" placeholder="Enter the asset's Token Id">
+                </div>
+                <button class="button col-12 submit mt-3" disabled="disabled">
+                    <val>Next</val>
+                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+                </button>
+            </div>
+            <div class="row resume" style="display: none">
+                <div>
+                    <p class="label text-left">Asset name</p>
+                    <input type="text" class="input col-12 name" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">URI</p>
+                    <input type="text" class="input col-12 uri" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">tokenId</p>
+                    <input type="text" class="input col-12 tokenId" placeholder="" disabled>
+                </div>
+                <div>
+                    <p class="label text-left">owner</p>
+                    <input type="text" class="input col-12 owner" placeholder="" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="collectionPane" style="display: none">
+        <div class="row mt-3">
+            <div class="back">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <h5 class="text-center" id="collectionTitle"></h5>
+        </div>
+        <div class="content mt-2">
+            <div class="loading text-center mt-2 mb-2">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div id="walletNftByCollection" class="row">
+                <div class="col-6 asset mt-2" id="baseNftRowByCollection" style="display: none" data-sort=0>
+                    <div class="row">
+                        <div class="col-2 justify-content-center align-self-center">
+                            <img class="logoNft" crossorigin="anonymous" style=""/>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <p class="title mt-1">Bitcoin</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="transactionsPane" style="display: none">
         <div class="row mt-3 mb-3">
             <div class="col-2 back pl-0">
@@ -1567,6 +1667,56 @@
             </div>
         </div>
     </div>
+    <div id="nftDetailPane" style="display: none">
+        <div class="row">
+            <div class="back mt-3">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+        <div id="nftDetailsPaneLoading">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div>
+        <div id="nftDetailsDetailed" style="display: none">
+            <div class="row infos">
+                <div class="col-12 mt-2 d-flex justify-content-center align-self-center ">
+                    <p class="name"></p>
+                </div>
+            </div>
+
+            <div class="content">
+                <div id="nftInfos" style="display: none">
+                    <div id="nftInfosLoading">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                    <div id="nftInfosWrapper" style="display: none">
+                        <div class="text-center rank mt-2 mb-1">
+                            <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
+                        </div>
+
+                            <div class="col-12">
+                                <p class="description mt-3"></p>
+                            </div>
+
+                            <div class="col-12 AddrNft" >
+                                <p class="AddrTitle">Adress</p>
+                                <p class="AddrSpec">test</p><i class="ms-2 fal fa-copy addrCopy"></i>
+                            </div>
+                            <div class="col-12 tokenIdNft" >
+                                <p class="tokenIdTitle">TokenId</p>
+                                <p class="tokenIdSpec">test</p><i class="ms-2 fal fa-copy tokenIdCopy"></i>
+                            </div>
+                        <div class="row stats">
+                            <div class="col-12 baseAttrNft" style="display: none">
+                                <p class="attrTitle"></p>
+                                <p class="attrSpec"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="settings" class="pt-2">
         <div>
             <div class="col-12 title d-flex justify-content-center  settingTitle">

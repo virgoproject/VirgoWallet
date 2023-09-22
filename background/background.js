@@ -372,6 +372,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             }
 
             const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
+            console.log(tokenContract)
             tokenContract.methods.name().call().then(function(name){
                 tokenContract.methods.decimals().call().then(function(decimals){
                     tokenContract.methods.symbol().call().then(function(symbol){
@@ -392,8 +393,57 @@ async function onBackgroundMessage(request, sender, sendResponse){
             })
             break
 
+        case "getNftDetails":
+            const nftContractAddress = request.asset;
+            let chainName
+            switch (baseWallet.getCurrentWallet().asset){
+                case 'Ethereum':
+                    chainName = "ethereum"
+                break;
+                case 'Binance Coin':
+                    chainName = "bsc"
+                break;
+                case 'Goerli':
+                    chainName = "goerli"
+                break;
+                case 'Polygon':
+                    chainName = "matic"
+                break;
+                case 'Avalanche':
+                    chainName = "avalanche"
+                break
+            }
+            console.log(baseWallet.getCurrentWallet())
+            console.log(chainName)
+            const options = {
+                method: 'GET',
+                headers: {accept: 'application/json', 'X-API-KEY': 'e6d937e6287d496db299ba15278b1e6d'}
+            };
+
+            fetch('https://api.opensea.io/v2/chain/'+chainName+'/contract/'+nftContractAddress+'/nfts/'+request.tokenID+'', options)
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                    sendResponse({
+                        contract: nftContractAddress,
+                        tokenID: response.nft.identifier,
+                        tokenURI: response.nft.metadata_url,
+                        owner: response.nft.owners[0].address,
+                        collection: response.nft.collection
+                    });
+                })
+                .catch(err => console.error(err));
+
+            break;
+
+
         case "addToken":
             baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
+            sendResponse(true)
+            break
+
+        case "addNft":
+            baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract, request.collection)
             sendResponse(true)
             break
 

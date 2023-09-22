@@ -1,6 +1,6 @@
-class EthWallet {
+class Web3Wallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -9,6 +9,7 @@ class EthWallet {
         this.rpcURL = rpcURL
         this.chainID = chainID
         this.tokens = tokens
+        this.nft = nft
         this.transactions = transactions
         this.explorer = explorer
         this.swapParams = swapParams
@@ -20,6 +21,10 @@ class EthWallet {
         this.prices = new Map()
 
         this.tokenSet = new Map()
+        this.nftSet = new Map()
+
+        for (let nft of this.nft)
+            this.nftSet.set(nft.contract, nft)
 
         for(let token of this.tokens)
             this.tokenSet.set(token.contract, token)
@@ -56,6 +61,7 @@ class EthWallet {
 
     static fromJSON(json){
         if(json.transactions === undefined) json.transactions = []
+        if (json.nft === undefined) json.nft = []
         if(json.explorer === undefined){
             switch(json.chainID){
                 case 1:
@@ -176,7 +182,8 @@ class EthWallet {
         if(json.chainID == 137)
             json.RPC = "https://rpc.ankr.com/polygon"
 
-        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams)
+        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams, json.nft)
+
     }
 
     toJSON(){
@@ -191,6 +198,7 @@ class EthWallet {
                 "RPC": this.rpcURL,
                 "chainID": this.chainID,
                 "tokens": this.tokens,
+                "nft":  this.nft,
                 "transactions": this.transactions,
                 "explorer": this.explorer,
                 "swapParams": this.swapParams,
@@ -588,6 +596,24 @@ class EthWallet {
 
         baseWallet.save()
 
+    }
+
+    addNft(tokenURI,tokenId,owner, contractNft,collec, track = true){
+        if(this.hasToken(contractNft) || !web3.utils.isAddress(contractNft)) return;
+
+        console.log(collec)
+        const token = {
+            "tokenUri": tokenURI,
+            "tokenId": tokenId,
+            "collection": collec,
+            "contract": contractNft,
+            "owner": owner,
+            "track": track
+        }
+
+        console.log(token)
+        this.nft.push(token)
+        this.nftSet.set(token.contract, token)
     }
 
     removeToken(contract){
