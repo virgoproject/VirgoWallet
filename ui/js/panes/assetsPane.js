@@ -129,6 +129,7 @@ class AssetsPane {
             disableLoadBtn($(this))
 
             getTokenDetails(AssetsPane.add.contract.input.val()).then(function(details){
+                console.log(details)
                 if(!details){
                     AssetsPane.add.contract.input.attr("disabled", false)
                     enableLoadBtn(AssetsPane.add.contract.submit)
