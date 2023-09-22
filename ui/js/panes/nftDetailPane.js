@@ -2,7 +2,9 @@ class NftDetailPane {
     static self = $("#nftDetailPane")
     static back = $("#nftDetailPane .back")
     static loading = $("#nftDetailsPaneLoading")
-
+    static nftSendBtn = $("#sendNftBtn")
+    static nftSendBack = $('#nftSendPane .back')
+    static nftSendPane = $("#nftSendPane")
     static detailedPane = {
         self: $("#nftDetailsDetailed"),
         name: $("#nftDetailPane .name"),
@@ -26,6 +28,14 @@ class NftDetailPane {
         NftDetailPane.self.hide()
         NftDetailPane.detailedPane.infosWrapperStats.empty()
     })
+
+   NftDetailPane.nftSendBack.click(function (){
+       NftDetailPane.nftSendPane.hide()
+   })
+
+    NftDetailPane.nftSendBtn.click(function (){
+            NftDetailPane.nftSendPane.show()
+        })
     }
 
     displayToken(uri,adress,tokenId){

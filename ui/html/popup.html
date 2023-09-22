@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="../css/atomicSwapPane.css">
     <link rel="stylesheet" href="../css/airdropPane.css">
     <link rel="stylesheet" href="../css/editFees.css">
+    <link rel="stylesheet" href="../css/nftSendPane.css">
 </head>
 <body>
 <div id="loadingPane">
@@ -1712,6 +1713,28 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <button class="button " id="sendNftBtn">Send NFT</button>
+        </div>
+    </div>
+    <div id="nftSendPane" style="display: none">
+        <div class="row mt-2">
+            <div class="mb-2">
+                <div class="back ">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="col-12 title d-flex justify-content-center">
+                    <h5>Send To</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3">
+            <div class="col-12">
+                <p class="label mb-2">To</p>
+                <div class="input-group col-12" style="font-size: 1.2em">
+                    <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
+                    <button class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit" disabled="disabled"></button>
                 </div>
             </div>
         </div>

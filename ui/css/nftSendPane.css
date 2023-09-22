@@ -1,0 +1,38 @@
+#nftSendPane{
+    height: 600px;
+    width: 100%;
+    /* transform: scaleY(0); */
+    transform-origin: 50% 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.25s ease;
+    background-color: white;
+    z-index: 10;
+}
+
+#nftSendPane .nextBtn{
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    padding: 0.375rem 0.9rem;
+    cursor: pointer;
+    background: var(--mainColorLight);
+    color: white !important;
+    justify-content: center;
+    border: none;
+}
+
+#nftSendPane .nextBtn:disabled{
+    background: #545454 !important;
+    cursor: unset;
+}
+
+#nftSendPane .back {
+    position: absolute;
+    width: 2em;
+    text-align: center;
+    left: 0.3em;
+    font-size: 18px;
+    cursor: pointer;
+    color: black;
+    transition: color ease 0.25s;
+}

@@ -1,5 +1,5 @@
 class NftPane{
-    static addNftBtn = $("#mainPane .resume .addNft")
+    static addNftBtn = $("#mainPane .resume .importNft .addNft")
     static self = $("#nftAddPane")
     static back = $("#nftAddPane .back")
     static add = {
