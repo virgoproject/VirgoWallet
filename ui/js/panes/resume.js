@@ -91,14 +91,12 @@ class MainPane {
         MainPane.allAssets.click(function (){
            MainPane.allAssets.addClass("divResumePaneSelected")
            MainPane.nft.removeClass("divResumePaneSelected")
-           MainPane.importNft.removeClass("importNftSelected")
         })
 
 
         MainPane.nft.click(function (){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
-            MainPane.importNft.addClass("importNftSelected")
 
         })
 
@@ -504,11 +502,15 @@ class MainPane {
             if (MainPane.allAssets.hasClass("divResumePaneSelected")) {
                 MainPane.walletAssets.show()
                 MainPane.walletNft.hide()
+                MainPane.importNft.removeClass("importNftSelected")
+
             }
 
             else if (MainPane.nft.hasClass("divResumePaneSelected")) {
                 MainPane.walletAssets.hide()
                 MainPane.walletNft.show()
+                MainPane.importNft.addClass("importNftSelected")
+
             }
         }, 250)
 

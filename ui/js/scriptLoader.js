@@ -35,7 +35,11 @@ const commonScripts = [
     "../js/panes/settings/changeCurrency.js",
     "../js/panes/settings/importMnemonic.js",
     "../js/panes/settings/passwordSetup.js",
-    "../js/panes/settings/showMnemonic.js"
+    "../js/panes/settings/showMnemonic.js",
+    "../js/panes/settings/collectionNftPane.js",
+    "../js/panes/settings/nftDetailPane.js",
+    "../js/panes/settings/nftPane.js",
+
 ]
 
 const browserScripts = [

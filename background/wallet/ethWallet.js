@@ -1,4 +1,4 @@
-class Web3Wallet {
+class EthWallet {
 
     constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft) {
         this.name = name
