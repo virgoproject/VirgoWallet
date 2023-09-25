@@ -1,0 +1,52 @@
+#settings .settingsPane .settingsCat[data-settingId='manageNetworks'] {
+    padding: 0em 2em;
+    overflow: auto;
+}
+
+#settingsNetworksList .listItem {
+    background: var(--whiteBackground);
+    border-radius: 0.5em;
+    padding-top: 0.375em;
+    padding-bottom: 0.375em;
+    cursor: pointer;
+}
+
+#settingsNetworksList .listItem:hover {
+    background: var(--whiteBackgroundHover);
+}
+
+#settingsNetworksList .listItem.selected {
+    background: var(--whiteBackgroundSelected);
+}
+
+#settingsNetworksList .listItem .stateCoin {
+    display: none;
+}
+
+#settingsNetworksList .listItem.selected .stateCoin {
+    display: inline-block;
+}
+
+#settingsNetworksList .listItem p {
+    margin-bottom: 0;
+}
+
+#settingsNetworksList .listItem .name {
+    font-weight: 600;
+}
+
+#settingsNetworksList .listItem .ticker {
+    font-size: 0.85em;
+}
+
+#settingsNetworksList .listItem .logo {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background-size: cover;
+    margin: auto;
+}
+
+#settingsNetworksList .listItem svg {
+    border-radius: 50%;
+}

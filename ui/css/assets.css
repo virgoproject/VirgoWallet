@@ -137,6 +137,11 @@
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+    cursor: pointer;
+}
+
+#assetsPane .listItem:hover {
+    background: var(--whiteBackgroundHover);
 }
 
 #assetsPane .listItem.selected {

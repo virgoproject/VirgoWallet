@@ -1,6 +1,6 @@
 class EthWallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft, tracked) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -15,7 +15,7 @@ class EthWallet {
         this.swapParams = swapParams
         this.testnet = testnet
         this.atomicSwapParams = atomicSwapParams
-
+        this.tracked = tracked
 
         this.balances = new Map()
         this.prices = new Map()
@@ -60,6 +60,7 @@ class EthWallet {
     }
 
     static fromJSON(json){
+        if(json.tracked === undefined) json.tracked = true
         if(json.transactions === undefined) json.transactions = []
         if (json.nft === undefined) json.nft = []
         if(json.explorer === undefined){
@@ -182,7 +183,7 @@ class EthWallet {
         if(json.chainID == 137)
             json.RPC = "https://rpc.ankr.com/polygon"
 
-        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams, json.nft)
+        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams, json.nft, json.tracked)
 
     }
 
@@ -203,7 +204,8 @@ class EthWallet {
                 "explorer": this.explorer,
                 "swapParams": this.swapParams,
                 "testnet": this.testnet,
-                "atomicSwapParams": this.atomicSwapParams
+                "atomicSwapParams": this.atomicSwapParams,
+                "tracked": this.tracked
             }
         }
     }

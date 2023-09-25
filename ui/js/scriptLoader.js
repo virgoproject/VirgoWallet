@@ -36,10 +36,10 @@ const commonScripts = [
     "../js/panes/settings/importMnemonic.js",
     "../js/panes/settings/passwordSetup.js",
     "../js/panes/settings/showMnemonic.js",
-    "../js/panes/settings/collectionNftPane.js",
-    "../js/panes/settings/nftDetailPane.js",
-    "../js/panes/settings/nftPane.js",
-
+    "../js/panes/collectionNftPane.js",
+    "../js/panes/nftDetailPane.js",
+    "../js/panes/nftPane.js",
+    "../js/panes/settings/manageNetworks.js"
 ]
 
 const browserScripts = [
