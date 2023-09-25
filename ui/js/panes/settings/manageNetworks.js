@@ -7,6 +7,8 @@ document.getElementById("manageNetworks").onclick = () => {
     const baseListElem = document.getElementById("settingsBaseNetwork")
 
     getBaseInfos().then(infos => {
+        let i = 0
+
         for(let wallet of infos.wallets){
             wallet = wallet.wallet
 
@@ -14,6 +16,7 @@ document.getElementById("manageNetworks").onclick = () => {
 
             const elem = baseListElem.cloneNode(true)
             elem.id = ""
+            elem.walletIndex = i
             elem.style.display = "block"
             elem.querySelector(".name").innerHTML = wallet.name
             elem.querySelector(".ticker").innerHTML = wallet.ticker
@@ -28,7 +31,25 @@ document.getElementById("manageNetworks").onclick = () => {
             if(wallet.tracked)
                 elem.classList.add("selected")
 
+            if(i == infos.selectedWallet){
+                elem.querySelector(".name").innerHTML = wallet.name + " (current)"
+                elem.classList.add("disabled")
+            }else{
+                elem.onclick = () => {
+                    if(elem.classList.contains("selected")){
+                        elem.classList.remove("selected")
+                    }else{
+                        elem.classList.add("selected")
+                    }
+                    changeNetworkVisibility(elem.walletIndex).then(() => {
+                        selectChains.updateChains()
+                    })
+                }
+            }
+
             list.appendChild(elem)
+
+            i++
         }
     })
 

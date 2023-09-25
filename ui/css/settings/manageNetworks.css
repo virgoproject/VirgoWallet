@@ -27,6 +27,11 @@
     display: inline-block;
 }
 
+#settingsNetworksList .listItem.disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
 #settingsNetworksList .listItem p {
     margin-bottom: 0;
 }
@@ -49,4 +54,8 @@
 
 #settingsNetworksList .listItem svg {
     border-radius: 50%;
+}
+
+#settingsNetworksList {
+    padding-bottom: 5em;
 }

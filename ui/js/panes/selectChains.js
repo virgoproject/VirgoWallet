@@ -23,6 +23,9 @@ class SelectChains {
         let i = 0;
         for(const walletObj of data.wallets){
             const wallet = walletObj.wallet
+
+            if(!wallet.tracked) continue
+
             const elem = SelectChains.baseChainRow.clone()
 
             elem.attr("id", "")
@@ -67,6 +70,13 @@ class SelectChains {
 
             i++
         }
+    }
+
+    updateChains(){
+        const _this = this
+        getBaseInfos().then(infos => {
+            _this.setChains(infos)
+        })
     }
 
 }

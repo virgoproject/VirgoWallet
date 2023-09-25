@@ -961,6 +961,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(listening)
             })
             break
+
+        case "changeNetworkVisibility":
+            baseWallet.wallets[request.index].tracked = !baseWallet.wallets[request.index].tracked
+            baseWallet.save()
+            sendResponse(true)
+            break
     }
 
     return true
