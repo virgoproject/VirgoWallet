@@ -2,6 +2,11 @@ class NftDetailPane {
     static self = $("#nftDetailPane")
     static back = $("#nftDetailPane .back")
     static loading = $("#nftDetailsPaneLoading")
+    static nftSendBtn = $("#sendNftBtn")
+    static nftSendPane = $("#nftSendPane")
+    static nftSendPaneRecipient = $(".sendPaneNft")
+    static nftSendConfirm = $("#sendNftConfirmFees")
+    static nextStep = $(".nextBtn")
     static detailedPane = {
         self: $("#nftDetailsDetailed"),
         name: $("#nftDetailPane .name"),
@@ -25,6 +30,7 @@ class NftDetailPane {
         NftDetailPane.self.hide()
         NftDetailPane.detailedPane.infosWrapperStats.empty()
     })
+
     }
 
     displayToken(uri,adress,tokenId){
@@ -45,6 +51,17 @@ class NftDetailPane {
         NftDetailPane.detailedPane.copyTokenId.click(function(e){
             e.stopPropagation()
             copyToClipboard(tokenId);
+        })
+
+        NftDetailPane.nftSendBtn.click(function (){
+            NftDetailPane.nftSendPane.show()
+            NftDetailPane.nftSendPaneRecipient.show()
+        })
+
+        NftDetailPane.nextStep.click(function (){
+            NftDetailPane.nftSendPaneRecipient.hide()
+            NftDetailPane.nftSendConfirm.show()
+            sendNft.displayInfo(uri)
         })
 
         fetch(uri).then(resp => {
@@ -68,6 +85,7 @@ class NftDetailPane {
                             console.log(value)
                             newSpec.find(".attrSpec").html(value);
                         }
+
 
                         NftDetailPane.detailedPane.infosWrapperStats.append(newSpec)
                         newSpec.show()

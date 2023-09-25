@@ -12,17 +12,11 @@ class SendNft {
             SendNft.nftSendPane.hide()
         })
 
-        SendNft.nftSendBtn.click(function (){
-            SendNft.nftSendPane.show()
-            SendNft.nftSendPaneRecipient.show()
-        })
 
-        SendNft.nextStep.click(function (){
-            SendNft.nftSendPaneRecipient.hide()
-            SendNft.nftSendConfirm.show()
-        })
+    }
 
-
+    displayInfo(uri){
+        console.log(uri)
     }
 
 }
