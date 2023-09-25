@@ -39,6 +39,7 @@ const commonScripts = [
     "../js/panes/collectionNftPane.js",
     "../js/panes/nftDetailPane.js",
     "../js/panes/nftPane.js",
+    "../js/panes/sendNft.js",
 
 ]
 
