@@ -59,31 +59,17 @@
 #settingsNetworksList {
     padding-bottom: 5em;
     overflow: auto;
-    height: 100%;
-}
-
-#settingsNetworkAddBtn {
-    position: absolute;
-    right: 1em;
-    top: -2.5em;
-    color: var(--mainColor);
-    font-weight: 600;
-    cursor: pointer;
+    height: calc(100% - 9em);
 }
 
 #settings .settingsPane .settingsCat[data-settingId='addNetwork'] {
     overflow: visible;
 }
 
-#settingsNetworkAddBtnHidder {
-    position: absolute;
-    height: 2em;
-    width: 6ch;
-    background: white;
-    top: -2.5em;
-    right: 1em;
-}
-
 #settings .settingsPane .settingsCat[data-settingId='addNetwork'] {
     padding: 0 1em;
+}
+
+#settingsNetworkAddError {
+    font-size: 0.8em;
 }

@@ -34,28 +34,47 @@ class EthWallet {
                 atomicSwap.addOrder(transaction.swapInfos)
 
         const wallet = this
+
+        if(this.chainID == 204 || this.chainID == 8453 || this.chainID == 10 || this.chainID == 42220 || this.chainID == 42161){
+            if(this.tokenSet.has("0x7420B4b9a0110cdC71fB720908340C03F9Bc03EC") || this.tokenSet.has("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")){
+                this.tokens = []
+                this.tokenSet = new Map()
+            }
+        }
+
         try {
-            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/infos.json")
+            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/infos.json")
                 .then(function(resp){
-                    resp.json().then(function(res){
-                        console.log(res)
-                        wallet.CG_Platform = res.CG_Platform
-                        for(let token of res.tokens){
-                            if(!wallet.hasToken(token)){
-                                fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + ticker + "/" + token + "/infos.json")
-                                    .then(function(resp2){
-                                        console.log("adding " + ticker + " " + token)
-                                        resp2.json().then(function(res2){
-                                            console.log("added " + res2.ticker)
-                                            wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
-                                        })
-                                    })
+                    try {
+                        resp.json().then(function(res){
+                            console.log(res)
+                            wallet.CG_Platform = res.CG_Platform
+                            for(let token of res.tokens){
+                                try {
+                                    if(!wallet.hasToken(token)){
+                                        fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/" + token + "/infos.json")
+                                            .then(function(resp2){
+                                                console.log("adding " + chainID + " " + token)
+                                                resp2.json().then(function(res2){
+                                                    console.log("added " + res2.ticker)
+                                                    wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
+                                                })
+                                            })
+                                    }
+                                }catch(e){
+                                    console.log(e)
+                                }
                             }
-                        }
-                    })
+                        }).catch(e => {
+                            console.log(e)
+                            console.log("ssss")
+                        })
+                    }catch(e){
+                        console.log(e)
+                    }
                 })
         }catch(e){
-                console.log(e)
+            console.log(e)
         }
     }
 

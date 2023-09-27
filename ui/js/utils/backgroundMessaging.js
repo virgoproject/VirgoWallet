@@ -258,3 +258,7 @@ async function hideNotification(id){
 async function changeNetworkVisibility(index){
     return await browser.runtime.sendMessage({command: "changeNetworkVisibility", index})
 }
+
+async function addNetwork(name, rpc, chainID, symbol, explorer){
+    return await browser.runtime.sendMessage({command: "addNetwork", name, rpc, chainID, symbol, explorer})
+}

@@ -34,11 +34,11 @@
     margin-left: 1em;
     font-size: 1em;
     cursor: pointer;
-    transition: all 0.25s ease-in;
+    transition: all ease-in 0.1s;
 }
 
 #mainPane .header .stats .addressContainer:hover {
-    background-color: var(--whiteBackgroundSelected);
+    background-color: var(--whiteBackgroundHover);
 }
 
 #mainPane .header .stats .addressContainer i {
