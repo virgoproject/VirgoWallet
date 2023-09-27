@@ -75,6 +75,7 @@ class SettingsPane {
 
     constructor() {
         let mainSettingsBackLevel = 0;
+        let lastSettingsTitle = "";
 
         events.addListener("addressesChanged", data => {
             const baseElem = $("#baseAccountRow").clone()
@@ -140,6 +141,8 @@ class SettingsPane {
 
                 if(mainSettingsBackLevel == 1)
                     SettingsPane.settingsTitle.html("Settings")
+                else
+                    SettingsPane.settingsTitle.html(lastSettingsTitle)
 
                 mainSettingsBackLevel--
             }
@@ -147,6 +150,8 @@ class SettingsPane {
 
         $("#settings .settingsPane .tab").click(function(){
             const target = $("[data-settingId="+$(this).attr("data-target")+"]")
+
+            lastSettingsTitle = SettingsPane.settingsTitle.html()
 
             if(target.attr("data-title"))
                 SettingsPane.settingsTitle.html(target.attr("data-title"))

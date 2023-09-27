@@ -152,6 +152,16 @@ class TokenDetailPane {
                 .then(function(resp){
                     if(!resp.ok){
 
+                        if(_this.data.contract == ""){
+                            TokenDetailPane.simplePane.delete.hide()
+                            TokenDetailPane.simplePane.address.hide()
+                            TokenDetailPane.simplePane.address.prev().hide()
+                        }else{
+                            TokenDetailPane.simplePane.delete.show()
+                            TokenDetailPane.simplePane.address.show()
+                            TokenDetailPane.simplePane.address.prev().show()
+                        }
+
                         TokenDetailPane.simplePane.name.val(_this.data.name)
                         TokenDetailPane.simplePane.symbol.val(_this.data.ticker)
                         TokenDetailPane.simplePane.decimals.val(_this.data.decimals)
