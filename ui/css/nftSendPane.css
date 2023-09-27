@@ -23,7 +23,8 @@
     position: absolute;
     text-align: center;
     left: 0.3em;
-    font-size: 18px;
+    font-size: 12px;
+    top:1.4em;
     cursor: pointer;
     color: black;
     transition: color ease 0.25s;
@@ -49,7 +50,7 @@
     cursor: unset;
 }
 
-#sendPaneNft .back {
+.sendPaneNft .back {
     position: absolute;
     width: 2em;
     text-align: center;
@@ -59,3 +60,15 @@
     color: black;
     transition: color ease 0.25s;
 }
+
+#sendNftConfirmFees .logoNft{
+    height: 136PX;
+    width: 136PX;
+    border-radius: 10px;
+}
+
+#sendNftConfirmFees svg {
+    border-radius: 50%;
+}
+
+

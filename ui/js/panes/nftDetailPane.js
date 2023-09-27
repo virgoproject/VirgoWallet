@@ -4,7 +4,8 @@ class NftDetailPane {
     static loading = $("#nftDetailsPaneLoading")
     static nftSendBtn = $("#sendNftBtn")
     static nftSendPane = $("#nftSendPane")
-    static nftSendPaneRecipient = $(".sendPaneNft")
+    static sendPaneNft = $('.sendPaneNft')
+    static nftSendPaneRecipient = $(".sendPaneNft .recipient")
     static nftSendConfirm = $("#sendNftConfirmFees")
     static nextStep = $(".nextBtn")
     static detailedPane = {
@@ -33,19 +34,19 @@ class NftDetailPane {
 
     }
 
-    displayToken(uri,adress,tokenId){
+    displayToken(uri,address,tokenId){
         NftDetailPane.self.show()
         NftDetailPane.loading.hide()
         NftDetailPane.detailedPane.self.show()
         NftDetailPane.detailedPane.infos.show()
         NftDetailPane.detailedPane.infosLoading.hide()
         NftDetailPane.detailedPane.infosWrapper.show()
-        NftDetailPane.detailedPane.addrSpec.html(adress)
+        NftDetailPane.detailedPane.addrSpec.html(address)
         NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
 
         NftDetailPane.detailedPane.copyAddr.click(function(e){
             e.stopPropagation()
-            copyToClipboard(adress);
+            copyToClipboard(address);
         })
 
         NftDetailPane.detailedPane.copyTokenId.click(function(e){
@@ -55,13 +56,14 @@ class NftDetailPane {
 
         NftDetailPane.nftSendBtn.click(function (){
             NftDetailPane.nftSendPane.show()
-            NftDetailPane.nftSendPaneRecipient.show()
+            NftDetailPane.sendPaneNft.show()
         })
 
         NftDetailPane.nextStep.click(function (){
-            NftDetailPane.nftSendPaneRecipient.hide()
+            NftDetailPane.sendPaneNft.hide()
             NftDetailPane.nftSendConfirm.show()
-            sendNft.displayInfo(uri)
+            let recipient = NftDetailPane.nftSendPaneRecipient.val()
+            sendNft.displayInfo(uri ,recipient ,tokenId, address)
         })
 
         fetch(uri).then(resp => {

@@ -7,22 +7,7 @@ class MainPane {
     static address = $("#walletAddress")
     static addressDiv = $("#mainPane .header .stats .addressContainer")
     static importNft = $(".importNft")
-    static addAsset = {
-        pane: $("#body .bodyElem.addAsset"),
-        contract: $("#body .bodyElem.addAsset .assetContract"),
-        contractInput: $("#body .bodyElem.addAsset .assetContract .input"),
-        contractSubmit: $("#body .bodyElem.addAsset .assetContract .submit"),
-        contractLabel: $("#body .bodyElem.addAsset .assetContract .label"),
-        resume: {
-            self: $("#body .bodyElem.addAsset .assetResume"),
-            name: $("#body .bodyElem.addAsset .assetResume .name"),
-            decimals: $("#body .bodyElem.addAsset .assetResume .decimals"),
-            symbol: $("#body .bodyElem.addAsset .assetResume .symbol"),
-            ticker: $("#body .bodyElem.addAsset .assetResume .ticker"),
-            submit: $("#body .bodyElem.addAsset .assetResume .submit")
-        },
-        back: $("#body .bodyElem.addAsset .back")
-    }
+    static manageTokenBtn = $('.addAsset')
     static backupPopup = {
         self: $("#backupPopup"),
         close: $("#backupPopup .close"),
@@ -91,17 +76,28 @@ class MainPane {
         MainPane.allAssets.click(function (){
            MainPane.allAssets.addClass("divResumePaneSelected")
            MainPane.nft.removeClass("divResumePaneSelected")
+            if (MainPane.allAssets.hasClass("divResumePaneSelected")){
+                MainPane.walletAssets.show()
+                MainPane.manageTokenBtn.show()
+                MainPane.walletNft.hide()
+                MainPane.importNft.removeClass("importNftSelected")
+            }
         })
-
 
         MainPane.nft.click(function (){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
-
+            if ( MainPane.nft.hasClass("divResumePaneSelected")){
+                MainPane.manageTokenBtn.hide()
+                    browser.runtime.sendMessage({command: 'getBaseInfos'})
+                        .then(function (response) {
+                            mainPane.displayNft(response)
+                        })
+                MainPane.walletAssets.hide()
+                MainPane.walletNft.show()
+                MainPane.importNft.addClass("importNftSelected")
+            }
         })
-
-
-
 
         MainPane.backupPopup.button.click(function(){
             SettingsPane.accountSelectionHeader.click()
@@ -206,7 +202,6 @@ class MainPane {
 
                     console.log("updating")
                     mainPane.displayData(response)
-                    mainPane.displayNft(response)
                     transactionsPane.updateTxs(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)
                     swapPane.updateBalance(SwapPane.inputs.two, true)
@@ -380,71 +375,74 @@ class MainPane {
         let previousCollection = null
         const collectionCount = {};
 
-        for (let x = 0; x < data.wallets[data.selectedWallet].wallet.nft.length; x++) {
+        if (data.wallets[data.selectedWallet].wallet.nft.length > 0) {
+            for (let x = 0; x < data.wallets[data.selectedWallet].wallet.nft.length; x++) {
 
-            if (data.wallets[data.selectedWallet].wallet.nft[x].collection !== previousCollection) {
+                if (data.wallets[data.selectedWallet].wallet.nft[x].collection !== previousCollection) {
 
-                previousCollection = data.wallets[data.selectedWallet].wallet.nft[x].collection
+                    previousCollection = data.wallets[data.selectedWallet].wallet.nft[x].collection
 
-                let uri = data.wallets[data.selectedWallet].wallet.nft[x].tokenUri;
-                let contractAdr = data.wallets[data.selectedWallet].wallet.nft[x].contract;
-                let collection = data.wallets[data.selectedWallet].wallet.nft[x].collection
-                let elemId = "bal" + collection;
-                let existingElem = $("#" + elemId);
-                if (existingElem.length == 0) {
-                    fetch(uri).then(resp => {
-                        resp.json().then(json => {
-                            console.log(json)
-                            // create row for this nft
-                            let newRow = MainPane.baseNftRow.clone();
+                    let uri = data.wallets[data.selectedWallet].wallet.nft[x].tokenUri;
+                    let contractAdr = data.wallets[data.selectedWallet].wallet.nft[x].contract;
+                    let collection = data.wallets[data.selectedWallet].wallet.nft[x].collection
+                    let elemId = "bal" + collection;
+                    let existingElem = $("#" + elemId);
+                    if (existingElem.length == 0) {
+                        fetch(uri).then(resp => {
+                            resp.json().then(json => {
+                                console.log(json)
+                                // create row for this nft
+                                let newRow = MainPane.baseNftRow.clone();
 
-                            if (selectedWallet) {
-                                newRow.attr("id", elemId);
-                            }
-
-                            let title = data.wallets[data.selectedWallet].wallet.nft[x].collection.charAt(0).toUpperCase() + data.wallets[data.selectedWallet].wallet.nft[x].collection.slice(1)
-
-                            newRow.find(".title").html(title);
-                            newRow.find(".ticker").html();
-
-                            console.log(data.wallets[data.selectedWallet].wallet.nft)
-                            console.log(data.wallets[data.selectedWallet].wallet.nft[x].collection)
-
-                            data.wallets[data.selectedWallet].wallet.nft.forEach(obj => {
-                                const collection = obj.collection;
-
-                                if (collection in collectionCount) {
-                                    collectionCount[collection]++;
-                                } else {
-                                    collectionCount[collection] = 1;
+                                if (selectedWallet) {
+                                    newRow.attr("id", elemId);
                                 }
+
+                                let title = data.wallets[data.selectedWallet].wallet.nft[x].collection.charAt(0).toUpperCase() + data.wallets[data.selectedWallet].wallet.nft[x].collection.slice(1)
+
+                                newRow.find(".title").html(title);
+                                newRow.find(".ticker").html();
+
+                                console.log(data.wallets[data.selectedWallet].wallet.nft)
+                                console.log(data.wallets[data.selectedWallet].wallet.nft[x].collection)
+
+                                data.wallets[data.selectedWallet].wallet.nft.forEach(obj => {
+                                    const collection = obj.collection;
+
+                                    if (collection in collectionCount) {
+                                        collectionCount[collection]++;
+                                    } else {
+                                        collectionCount[collection] = 1;
+                                    }
+                                });
+
+                                console.log("Nombre d'objets par collection :");
+                                console.log(collectionCount);
+
+                                newRow.find(".nftInCollection").html(collectionCount[collection])
+                                let url = json.image;
+                                const regex = /\.[^.\\/]*$/;
+                                const extension = url.match(regex);
+                                console.log(extension)
+
+                                newRow.find(".logoNft").attr("src", url);
+                                newRow.find("svg").attr("data-jdenticon-value");
+
+                                newRow.click(function () {
+                                    collectionNftPane.displayCollection(collection, data)
+                                });
+
+
+                                MainPane.walletNft.append(newRow);
+                                newRow.show();
                             });
-
-                            console.log("Nombre d'objets par collection :");
-                            console.log(collectionCount);
-
-                            newRow.find(".nftInCollection").html(collectionCount[collection])
-                            let url = json.image;
-                            const regex = /\.[^.\\/]*$/;
-                            const extension = url.match(regex);
-                            console.log(extension)
-
-                            newRow.find(".logoNft").attr("src", url);
-                            newRow.find("svg").attr("data-jdenticon-value");
-
-                            newRow.click(function () {
-                                collectionNftPane.displayCollection(collection, data)
-                            });
-
-
-                            MainPane.walletNft.append(newRow);
-                            newRow.show();
                         });
-                    });
+                    }
                 }
             }
+        }else{
+            MainPane.walletNft.empty()
         }
-
     }
 
     updateTokenBar(selectedAddress){
@@ -489,7 +487,6 @@ class MainPane {
 
     setResume(data){
         this.displayData(data)
-        this.displayNft(data)
 
         if(data.backupPopup)
             MainPane.backupPopup.self.show()
@@ -499,19 +496,6 @@ class MainPane {
 
         setInterval(function(){
             mainPane.updateData()
-            if (MainPane.allAssets.hasClass("divResumePaneSelected")) {
-                MainPane.walletAssets.show()
-                MainPane.walletNft.hide()
-                MainPane.importNft.removeClass("importNftSelected")
-
-            }
-
-            else if (MainPane.nft.hasClass("divResumePaneSelected")) {
-                MainPane.walletAssets.hide()
-                MainPane.walletNft.show()
-                MainPane.importNft.addClass("importNftSelected")
-
-            }
         }, 250)
 
     }

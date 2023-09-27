@@ -174,9 +174,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mt-2">
-                            <p class="mb-0 addAsset">Manage Tokens</p>
-                        </div>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <p class="mb-0 addAsset">Manage Tokens</p>
                     </div>
                 </div>
                 <div>
@@ -1720,7 +1720,7 @@
     </div>
     <div id="nftSendPane" style="display: none">
         <div class="sendPaneNft" style="display: none">
-            <div class="row mt-2" >
+            <div class="row mt-3" >
                 <div class="mb-2">
                     <div class="back ">
                         <i class="fas fa-chevron-left"></i>
@@ -1741,7 +1741,7 @@
             </div>
         </div>
         <div class="sendConfirm" id="sendNftConfirmFees" style="display: none">
-            <div class="row mb-5">
+            <div class="row mb-3">
                 <div class="col-2 back pl-0">
                     <i class=" fas fa-chevron-left"></i>
                 </div>
@@ -1750,14 +1750,10 @@
                 </div>
                 <div class="col-2"></div>
             </div>
-            <div class="row sendAmount mb-4 amount">
-                <p class="m-0 ">Sending Nft</p>
-                <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
-            </div>
-            <div class="row mb-3 from">
-                <p class="labelFromAndTo">Nft</p>
-                <div class="identicon col-2">
-                    <img class="logoNft" id="nftToSend" width="136" height="136">
+            <div class="row mb-3 from d-flex justify-content-center text-center">
+                <p class="labelFromAndTo">NFT to send</p>
+                <div class="identicon col-12 d-flex justify-content-center">
+                    <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
                 </div>
             </div>
             <div class="row mb-3 recipient">
@@ -1773,16 +1769,16 @@
                     <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
                 </div>
                 <div class="col-9 text-right mt-3 mb-1">
-                    <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
+                    <p class="value labelTitle"><span id="sendNftReviewNetFees"></span> <span class="ticker" id="sendNftReviewNetFeesTicker" data-networkticker></span></p>
                 </div>
                 <div class="col-5 mb-3">
                     <p class="labelCost">Total Cost</p>
                 </div>
                 <div class="col-7 text-right">
-                    <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
+                    <p class="value labelCost"><span id="sendNftReviewCost"></span> <span id="sendNftReviewCostTicker" class="ticker"></span></p>
                 </div>
             </div>
-            <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
+            <button class="button feesBtn submit mt-5" id="confirmSendNftBtn" disabled="disabled">
                 <val></val>
                 <i class="fas fa-spinner fa-pulse" style="display: none"></i>
             </button>

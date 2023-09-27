@@ -40,6 +40,10 @@ async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
 
+async function estimateSendFeesNft(recipient ,tokenId, address){
+    return await browser.runtime.sendMessage({command: 'estimateSendFeesNft',recipient: recipient ,tokenId: tokenId, address: address})
+}
+
 async function getGasPrice(){
     return await browser.runtime.sendMessage({command: 'getGasPrice'})
 }

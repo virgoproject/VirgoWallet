@@ -324,6 +324,17 @@ async function onBackgroundMessage(request, sender, sendResponse){
             })
             break
 
+        case "estimateSendFeesNft":
+            web3.eth.getGasPrice().then(function(gasPrice){
+
+                const contract = new web3.eth.Contract(ERC721_ABI, request.address);
+
+                contract.methods.safeTransferFrom(baseWallet.getCurrentAddress(), request.recipient, request.tokenId).estimateGas().then(function(gasLimit){
+                        sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
+                    })
+             })
+            break
+
         case "getBalance":
             bg_getBalance(request.asset).then(bal => {
                 sendResponse(bal)

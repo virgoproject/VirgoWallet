@@ -151,7 +151,7 @@ font-weight: bold;
 }
 
 .addrCopy:hover {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
     color: var(--mainColor);;
 }
@@ -162,7 +162,7 @@ font-weight: bold;
 }
 
 .tokenIdCopy:hover {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
     color: var(--mainColor);;
 }
