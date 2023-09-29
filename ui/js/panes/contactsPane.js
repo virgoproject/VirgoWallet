@@ -33,7 +33,7 @@ class ContactsPane {
     }
 
     static buttons = {
-        addContact: $('#contacts .addLogo'),
+        addContact: $('contactsAddBtn'),
         goBack: $('#contacts .back'),
         addContactButtonForm: $('#contacts .addContactButton'),
         addItNow: $('#contacts #contactDiv .noContactFound span')

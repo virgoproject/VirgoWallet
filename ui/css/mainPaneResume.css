@@ -119,12 +119,16 @@ display: block;
     vertical-align: text-top;
 }
 
-#mainPane .resume .assets .addAsset,#mainPane .resume .assets .addNft  {
+#manageAssetsBtn, #mainPane .resume .assets .addNft {
     cursor: pointer;
     color: var(--mainColor);
     transition: all 0.2s ease-in;
     display: flex;
     justify-content: center;
+}
+
+#manageAssetsBtn {
+    margin-bottom: 5em;
 }
 
 #mainPane .resume .assets .resumePane {

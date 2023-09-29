@@ -174,9 +174,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mt-2">
-                            <p class="mb-0 addAsset">Manage Tokens</p>
-                        </div>
+                    </div>
+                    <div class="col-12 mt-2" id="manageAssetsBtn">
+                        <p class="mb-0">Manage Tokens</p>
                     </div>
                 </div>
                 <div>
@@ -196,7 +196,7 @@
                         </div>
                     </div>
                     <div class="col-12 importNft mt-2" style="display: none">
-                        <p class="mb-0 addNft">Import Nft</p>
+                        <p class="mb-0 addNft">Add an NFT</p>
                     </div>
                 </div>
             </div>
@@ -970,8 +970,12 @@
                 </div>
             </div>
         </div>
-        <div class="addBottomLogo">
-            <i class="fas fa-plus addLogo"></i>
+        <div class="row" style="
+                    background: white;
+                    padding: 0 2em;
+                    padding-top: 1.5em;
+                ">
+            <button class="button" id="addTokenBtn">Add custom token</button>
         </div>
     </div>
     <div id="nftAddPane" style="display: none">
@@ -979,7 +983,7 @@
         <div class="back">
             <i class="fas fa-chevron-left"></i>
         </div>
-        <h5 class="text-center" id="nftListTitle">My Nft</h5>
+        <h5 class="text-center" id="nftListTitle">Add an NFT</h5>
     </div>
     <div class="content">
         <div class="loading text-center mt-2 mb-2">
@@ -987,15 +991,15 @@
         </div>
         <div class="p-2" id="nftListAdd">
             <div class="row contract">
-                <div>
+                <div class="mt-3">
                     <p class="label text-left">Contract address</p>
                     <input type="text" class="input col-12 contractAddr" placeholder="Enter the asset's contract address">
                 </div>
-                <div>
+                <div class="mt-3">
                 <p class="label text-left">Token ID</p>
                 <input type="text" class="input col-12 tokenID" placeholder="Enter the asset's Token Id">
                 </div>
-                <button class="button col-12 submit mt-3" disabled="disabled">
+                <button class="button col-12 submit mt-4" disabled="disabled">
                     <val>Next</val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
@@ -2424,13 +2428,15 @@
     </div>
     <div id="contacts" style="display: none">
         <div class="row mb-2">
-            <div class="col-2 back p-0">
+            <div class="col-3 back p-0">
                 <i class=" fas fa-chevron-left"></i>
             </div>
-            <div class="col-8 title d-flex justify-content-center">
+            <div class="col-6 title d-flex justify-content-center">
                 <h5>Contacts</h5>
             </div>
-            <div class="col-2"></div>
+            <div class="col-3 text-right">
+                <p id="contactsAddBtn"><i class="fa-solid fa-plus"></i> Add</p>
+            </div>
         </div>
         <div id="contactDiv">
             <div class="row" id="contactsSearchWrapper">
@@ -2471,12 +2477,9 @@
                         <button class="button mb-2 bg-danger deleteContact col-2" id="" data-address="" style="font-size: 0.8em"><i class="fas fa-times"></i></button>
                     </div>
             </div>
-        <div class="row contactsList m-0 p-0 overflow-scroll">
+            <div class="row contactsList m-0 p-0 overflow-scroll">
 
-        </div>
-        <div class="addBottomLogo">
-            <i class="fas fa-plus addLogo"></i>
-        </div>
+            </div>
         </div>
         <div id="contactForm" style="display: none">
             <div class="contactFormContent">

@@ -7,22 +7,6 @@ class MainPane {
     static address = $("#walletAddress")
     static addressDiv = $("#mainPane .header .stats .addressContainer")
     static importNft = $(".importNft")
-    static addAsset = {
-        pane: $("#body .bodyElem.addAsset"),
-        contract: $("#body .bodyElem.addAsset .assetContract"),
-        contractInput: $("#body .bodyElem.addAsset .assetContract .input"),
-        contractSubmit: $("#body .bodyElem.addAsset .assetContract .submit"),
-        contractLabel: $("#body .bodyElem.addAsset .assetContract .label"),
-        resume: {
-            self: $("#body .bodyElem.addAsset .assetResume"),
-            name: $("#body .bodyElem.addAsset .assetResume .name"),
-            decimals: $("#body .bodyElem.addAsset .assetResume .decimals"),
-            symbol: $("#body .bodyElem.addAsset .assetResume .symbol"),
-            ticker: $("#body .bodyElem.addAsset .assetResume .ticker"),
-            submit: $("#body .bodyElem.addAsset .assetResume .submit")
-        },
-        back: $("#body .bodyElem.addAsset .back")
-    }
     static backupPopup = {
         self: $("#backupPopup"),
         close: $("#backupPopup .close"),
@@ -89,19 +73,22 @@ class MainPane {
         })
 
         MainPane.allAssets.click(function (){
-           MainPane.allAssets.addClass("divResumePaneSelected")
-           MainPane.nft.removeClass("divResumePaneSelected")
+            MainPane.allAssets.addClass("divResumePaneSelected")
+            MainPane.nft.removeClass("divResumePaneSelected")
+            MainPane.walletAssets.show()
+            AssetsPane.accessBtn.show()
+            MainPane.walletNft.hide()
+            MainPane.importNft.removeClass("importNftSelected")
         })
-
 
         MainPane.nft.click(function (){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
-
+            MainPane.walletAssets.hide()
+            AssetsPane.accessBtn.hide()
+            MainPane.walletNft.show()
+            MainPane.importNft.addClass("importNftSelected")
         })
-
-
-
 
         MainPane.backupPopup.button.click(function(){
             SettingsPane.accountSelectionHeader.click()
@@ -499,19 +486,6 @@ class MainPane {
 
         setInterval(function(){
             mainPane.updateData()
-            if (MainPane.allAssets.hasClass("divResumePaneSelected")) {
-                MainPane.walletAssets.show()
-                MainPane.walletNft.hide()
-                MainPane.importNft.removeClass("importNftSelected")
-
-            }
-
-            else if (MainPane.nft.hasClass("divResumePaneSelected")) {
-                MainPane.walletAssets.hide()
-                MainPane.walletNft.show()
-                MainPane.importNft.addClass("importNftSelected")
-
-            }
         }, 250)
 
     }
