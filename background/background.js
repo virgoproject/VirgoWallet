@@ -330,7 +330,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 const contract = new web3.eth.Contract(ERC721_ABI, request.address);
 
                 contract.methods.safeTransferFrom(baseWallet.getCurrentAddress(), request.recipient, request.tokenId).estimateGas().then(function(gasLimit){
-                        sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
+                       sendResponse({gasPrice: gasPrice, gasLimit: gasLimit, decimals: baseWallet.getCurrentWallet().decimals})
                     })
              })
             break
@@ -405,48 +405,31 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "getNftDetails":
-            const nftContractAddress = request.asset;
-            let chainName
-            switch (baseWallet.getCurrentWallet().asset){
-                case 'Ethereum':
-                    chainName = "ethereum"
-                break;
-                case 'Binance Coin':
-                    chainName = "bsc"
-                break;
-                case 'Goerli':
-                    chainName = "goerli"
-                break;
-                case 'Polygon':
-                    chainName = "matic"
-                break;
-                case 'Avalanche':
-                    chainName = "avalanche"
-                break
-            }
-            console.log(baseWallet.getCurrentWallet())
-            console.log(chainName)
-            const options = {
-                method: 'GET',
-                headers: {accept: 'application/json', 'X-API-KEY': 'e6d937e6287d496db299ba15278b1e6d'}
-            };
-
-            fetch('https://api.opensea.io/v2/chain/'+chainName+'/contract/'+nftContractAddress+'/nfts/'+request.tokenID+'', options)
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                    sendResponse({
-                        contract: nftContractAddress,
-                        tokenID: response.nft.identifier,
-                        tokenURI: response.nft.metadata_url,
-                        owner: response.nft.owners[0].address,
-                        collection: response.nft.collection
-                    });
+            const nftContract = new web3.eth.Contract(ERC721_ABI, request.asset);
+            console.log(nftContract)
+            nftContract.methods.name().call().then(function(name){
+                console.log(name)
+                nftContract.methods.tokenURI(request.tokenID).call().then(function(tokenURI){
+                    console.log(tokenURI)
+                    nftContract.methods.ownerOf(request.tokenID).call().then(function(owner){
+                        console.log(owner)
+                            sendResponse({
+                                contract: request.asset,
+                                tokenID: request.tokenID,
+                                tokenURI: tokenURI,
+                                owner: owner,
+                                collection: name
+                            })
+                    }).catch(function(){
+                        sendResponse(false)
+                    })
+                }).catch(function(){
+                    sendResponse(false)
                 })
-                .catch(err => console.error(err));
-
-            break;
-
+            }).catch(function(){
+                sendResponse(false)
+            })
+            break
 
         case "addToken":
             baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
@@ -454,8 +437,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "addNft":
-            baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract, request.collection)
-            sendResponse(true)
+            if (baseWallet.getCurrentWallet().addNft(request.uri, request.tokenId, request.owner ,request.contract, request.collection)){
+                sendResponse(true)
+            }else{
+                sendResponse(false)
+            }
+
             break
 
         case "hasAsset":

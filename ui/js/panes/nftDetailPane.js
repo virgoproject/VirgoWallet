@@ -32,6 +32,16 @@ class NftDetailPane {
         NftDetailPane.detailedPane.infosWrapperStats.empty()
     })
 
+        NftDetailPane.nftSendPaneRecipient.on("input", function(){
+            const input = $(this);
+            if(input.val().length < 42){
+                NftDetailPane.nextStep.attr("disabled", true)
+                return
+            }
+            validateAddress(input.val()).then(function(res){
+                NftDetailPane.nextStep.attr("disabled", !res)
+            })
+        })
     }
 
     displayToken(uri,address,tokenId){

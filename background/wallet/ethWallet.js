@@ -24,7 +24,7 @@ class EthWallet {
         this.nftSet = new Map()
 
         for (let nft of this.nft)
-            this.nftSet.set(nft.contract, nft)
+            this.nftSet.set(nft.contract+nft.tokenId, nft)
 
         for(let token of this.tokens)
             this.tokenSet.set(token.contract, token)
@@ -566,6 +566,11 @@ class EthWallet {
         return this.tokenSet.has(contract)
     }
 
+    hasContact(contract,tokenId){
+      return this.nftSet.has(contract+tokenId)
+    }
+
+
     addToken(name, ticker, decimals, contract, track = true){
         if(this.hasToken(contract) || !web3.utils.isAddress(contract)) return;
 
@@ -598,8 +603,9 @@ class EthWallet {
 
     }
 
-    addNft(tokenURI,tokenId,owner, contractNft,collec, track = true){
-        if(this.hasToken(contractNft) || !web3.utils.isAddress(contractNft)) return;
+    addNft(tokenURI, tokenId, owner, contractNft, collec, track = true){
+        if(this.hasContact(contractNft,tokenId)) return;
+        if (baseWallet.getCurrentAddress() !== owner) return;
 
         console.log(collec)
         const token = {
@@ -611,9 +617,10 @@ class EthWallet {
             "track": track
         }
 
-        console.log(token)
+        console.log(this.nftSet)
         this.nft.push(token)
-        this.nftSet.set(token.contract, token)
+        this.nftSet.set(token.contract+token.tokenId, token)
+        baseWallet.save()
     }
 
     removeToken(contract){

@@ -36,7 +36,7 @@ async function hasAsset(address){
     return await browser.runtime.sendMessage({command: 'hasAsset', address: address})
 }
 
-async function estimateSendFees(recipient, amount, asset){
+async function estimateSendFees(recipient,amount,asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
 }
 

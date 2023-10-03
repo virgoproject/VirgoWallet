@@ -70,9 +70,15 @@ class NftPane{
                 console.log(details.collection)
 
 
-                addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(){
+                addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
+                    console.log(res)
                     NftPane.back.click()
-                    notyf.success("Added !")
+                    if (res){
+                        notyf.success("Added!")
+                    }else{
+                        notyf.success("Not Added!!")
+                    }
+
                 })
 
             })
