@@ -97,11 +97,13 @@ const loadScripts = async list => {
 
 if ((typeof chrome !== "undefined" && chrome.extension) || (typeof browser !== "undefined" && browser.extension) || (window.safari && safari.extension)) {
     console.log("Script loader - browser context")
+    IS_MOBILE = false
     loadScripts(browserScripts).then(() => {
         loadScripts(commonScripts)
     })
 } else {
     console.log("Script loader - mobile context")
+    IS_MOBILE = true
     loadScripts(mobileScripts).then(() => {
         loadScripts(commonScripts).then(() => {
             loadScripts(mobileScriptsAfter)

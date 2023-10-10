@@ -464,7 +464,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
             baseWallet.encrypt(request.password)
             baseWallet.save()
 
-            reactMessaging.storePassword(request.password)
+            if(reactMessaging != undefined)
+                reactMessaging.storePassword(request.password)
 
             sendResponse(true)
             break
