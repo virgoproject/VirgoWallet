@@ -180,6 +180,10 @@
                     </div>
                 </div>
                 <div>
+                    <div class="text-center " style="display: none" id="nftNotfound">
+                        <img src="../images/NoNft3.png" width="70%" class="img-fluid" alt="nocontact">
+                        <p class="noNftTitle">You do not have NFTs</p>
+                    </div>
                     <div id="walletNft" class="row">
                         <div class="col-12  assetNft mt-2" id="baseNftRow" style="display: none" data-sort=0>
                             <div class="row">
@@ -196,7 +200,7 @@
                         </div>
                     </div>
                     <div class="col-12 importNft mt-2" style="display: none">
-                        <p class="mb-0 addNft">Import Nft</p>
+                        <p class="mb-0 addNft">Import NFTs</p>
                     </div>
                 </div>
             </div>
@@ -1019,6 +1023,9 @@
         </div>
     </div>
 </div>
+    <div class="NftLoadingBody text-center" id="loadingNft" style="display: none">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
     <div id="collectionPane" style="display: none">
         <div class="row mt-3">
             <div class="back">
@@ -1110,6 +1117,91 @@
                             <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
                             <p class="title recipientCopied col-4" style="display: none">Copied!</p>
                             <p class="body recipient bold col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="row fees mb-3">
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title text-left col-6">Gas Price</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="body text-right  gasLimit col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row gas">
+                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="body text-right  gasUsed col-6">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="detail">
+                                <div class="row">
+                                    <p class="title bold text-left col-5">Total fees</p>
+                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button w-100 mt-1">Open in explorer</button>
+                </div>
+            </div>
+            <div class="listItem mb-2 basicTx pendingTx" id="transactionsNftTx" style="display: none">
+                <div class="row header">
+                    <div class="col-2 justify-content-center align-self-center">
+                        <i class="fa-solid fa-image statusColor"></i>
+                        <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
+                    </div>
+                    <div class="col-9 justify-content-center align-self-center">
+                        <p class="amount "><val></val> </p>
+                        <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
+                    </div>
+                    <div class="col-1 text-right justify-content-center align-self-center p-0" >
+                        <i class="fas fa-chevron-right closeChevron"></i>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 tweakBtns">
+                            <div class="col-6 text-center"><a class="speed-up">Speed Up</a></div>
+                            <div class="col-6 text-center"><a class="cancel">Cancel</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <div class="row" style="margin-bottom: -7px">
+                            <div class="col-6">
+                                <p class="title">Send</p>
+                            </div>
+                            <p class="body amount text-right col-6 bold"><span class="status"></span></p>
+                        </div>
+                    </div>
+                    <div class="detail" style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title col-4">Date</p>
+                            <p class="body date col-8 bold text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail " style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                            <p class="body recipient bold col-8 text-right">-</p>
+                        </div>
+                    </div>
+                    <div class="detail " style="margin-bottom: 20px">
+                        <div class="row">
+                            <p class="title collectionTitle col-4">Collection</p>
+                            <p class="body collectionName bold col-8 text-right">-</p>
                         </div>
                     </div>
                     <div class="row fees mb-3">
@@ -1699,11 +1791,11 @@
                             </div>
 
                             <div class="col-12 AddrNft" >
-                                <p class="AddrTitle">Adress</p>
+                                <p class="AddrTitle">Address</p>
                                 <p class="AddrSpec">test</p><i class="ms-2 fal fa-copy addrCopy"></i>
                             </div>
                             <div class="col-12 tokenIdNft" >
-                                <p class="tokenIdTitle">TokenId</p>
+                                <p class="tokenIdTitle">Token ID</p>
                                 <p class="tokenIdSpec">test</p><i class="ms-2 fal fa-copy tokenIdCopy"></i>
                             </div>
                         <div class="row stats">
@@ -1739,6 +1831,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="loadingNft NftLoadingBody text-center" style="display: none">
+            <i class="fas fa-spinner fa-pulse"></i>
         </div>
         <div class="sendConfirm" id="sendNftConfirmFees" style="display: none">
             <div class="row mb-3">

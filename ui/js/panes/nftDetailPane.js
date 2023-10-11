@@ -45,12 +45,12 @@ class NftDetailPane {
     }
 
     displayToken(uri,address,tokenId){
-        NftDetailPane.self.show()
-        NftDetailPane.loading.hide()
-        NftDetailPane.detailedPane.self.show()
-        NftDetailPane.detailedPane.infos.show()
+        NftDetailPane.self.hide()
+        NftDetailPane.loading.show()
+        NftDetailPane.detailedPane.self.hide()
+        NftDetailPane.detailedPane.infos.hide()
         NftDetailPane.detailedPane.infosLoading.hide()
-        NftDetailPane.detailedPane.infosWrapper.show()
+        NftDetailPane.detailedPane.infosWrapper.hide()
         NftDetailPane.detailedPane.addrSpec.html(address)
         NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
 
@@ -73,7 +73,7 @@ class NftDetailPane {
             NftDetailPane.sendPaneNft.hide()
             NftDetailPane.nftSendConfirm.show()
             let recipient = NftDetailPane.nftSendPaneRecipient.val()
-            sendNft.displayInfo(uri ,recipient ,tokenId, address)
+            sendNft.displayInfo(uri ,recipient ,tokenId, address,)
         })
 
         fetch(uri).then(resp => {
@@ -104,6 +104,12 @@ class NftDetailPane {
                     }
                 }
             });
+            NftDetailPane.self.show()
+            NftDetailPane.loading.hide()
+            NftDetailPane.detailedPane.self.show()
+            NftDetailPane.detailedPane.infos.show()
+            NftDetailPane.detailedPane.infosLoading.hide()
+            NftDetailPane.detailedPane.infosWrapper.show()
         });
     }
 

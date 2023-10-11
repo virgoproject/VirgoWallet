@@ -56,6 +56,10 @@ async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
     return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice})
 }
 
+async function sendToNft(recipient, contractNft, tokenId , gasLimit, gasPrice){
+    return await browser.runtime.sendMessage({command: 'sendToNft', recipient: recipient, contractNft: contractNft, tokenId: tokenId, gasLimit: gasLimit, gasPrice: gasPrice})
+}
+
 async function getMnemonic(){
     return await browser.runtime.sendMessage({command: 'getMnemonic'})
 }
@@ -193,6 +197,10 @@ async function initSwap(amount, route, gasPrice){
 
 function removeToken(address){
     browser.runtime.sendMessage({command: 'removeToken' , address:address })
+}
+
+function removeNft(address, tokenId){
+    browser.runtime.sendMessage({command: 'removeNft' , address:address, tokenId })
 }
 
 async function getBalanceCross(chainID, asset){

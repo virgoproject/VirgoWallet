@@ -72,12 +72,15 @@ class NftPane{
 
                 addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
                     console.log(res)
-                    NftPane.back.click()
-                    if (res){
+                    if (res == false){
+                        notyf.error("You do not own this NFT !")
+                        NftPane.back.click()
+                    }else if (res == true){
                         notyf.success("Added!")
-                    }else{
-                        notyf.success("Not Added!!")
+                        NftPane.back.click()
                     }
+
+
 
                 })
 

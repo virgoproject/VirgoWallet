@@ -604,8 +604,8 @@ class EthWallet {
     }
 
     addNft(tokenURI, tokenId, owner, contractNft, collec, track = true){
-        if(this.hasContact(contractNft,tokenId)) return;
-        if (baseWallet.getCurrentAddress() !== owner) return;
+        if(this.hasContact(contractNft,tokenId)) return false;
+        if (baseWallet.getCurrentAddress() !== owner) return false;
 
         console.log(collec)
         const token = {
@@ -621,6 +621,26 @@ class EthWallet {
         this.nft.push(token)
         this.nftSet.set(token.contract+token.tokenId, token)
         baseWallet.save()
+        return true
+    }
+
+    removeNft(contract, tokenId){
+        let i = 0;
+        for(const nft of this.nft){
+            if(nft.contract == contract){
+                if (nft.tokenId == tokenId) {
+                    this.nft.splice(i, 1)
+                    this.tokenSet.delete(nft.contract+nft.tokenId)
+                    baseWallet.save()
+                    return;
+                }
+            }
+            i++
+        }
+        console.log(this.nftSet)
+        this.nftSet.delete(contract+tokenId)
+        baseWallet.save()
+        return;
     }
 
     removeToken(contract){

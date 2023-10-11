@@ -15,11 +15,12 @@ class SendNft {
             SendNft.nftImageSend.attr("src", "");
             SendNft.nftSendPaneRecipient.find("val").html("")
         })
-
     }
 
     displayInfo(uri ,recipient ,tokenId, addres){
         console.log(uri)
+        $("#sendNftConfirmFees").hide()
+        $(".loadingNft").show()
         fetch(uri).then(resp => {
             resp.json().then(json => {
                 SendNft.nftImageSend.attr("src", json.image);
@@ -56,6 +57,24 @@ class SendNft {
                         }
                         editFees.start(fees.gasLimit);
                         editFees.onGasChanged(fees.gasPrice, fees.gasLimit)
+
+                        $(".loadingNft").hide()
+                        $("#sendNftConfirmFees").show()
+
+                        $("#confirmSendNftBtn").click(function(){
+                            console.log("coucou")
+                            sendToNft(recipient,
+                                addres,
+                                tokenId,
+                                fees.gasLimit,
+                                fees.gasPrice)
+                                .then(function(res){
+                                    notyf.success("Transaction sent!")
+                                    removeNft(addres, tokenId)
+                                    SendNft.nftSendBack.click()
+                                })
+
+                        })
                     })
             });
         });

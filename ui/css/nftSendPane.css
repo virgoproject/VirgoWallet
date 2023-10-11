@@ -19,6 +19,11 @@
     width: 100%;
 }
 
+.loadingNft {
+    margin-top: 75%;
+    font-size: 2em;
+}
+
 #sendNftConfirmFees .back{
     position: absolute;
     text-align: center;

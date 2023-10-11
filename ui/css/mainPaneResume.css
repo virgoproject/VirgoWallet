@@ -169,3 +169,7 @@ display: block;
     max-height: 100%;
     overflow-y: auto;
 }
+.noNftTitle{
+    color: #6a6a6a;
+    margin-top: -30px;
+}

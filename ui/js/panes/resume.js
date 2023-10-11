@@ -80,6 +80,7 @@ class MainPane {
                 MainPane.walletAssets.show()
                 MainPane.manageTokenBtn.show()
                 MainPane.walletNft.hide()
+                $('#nftNotfound').hide()
                 MainPane.importNft.removeClass("importNftSelected")
             }
         })
@@ -91,8 +92,9 @@ class MainPane {
                 MainPane.manageTokenBtn.hide()
                     browser.runtime.sendMessage({command: 'getBaseInfos'})
                         .then(function (response) {
-                            mainPane.displayNft(response)
+                                mainPane.displayNft(response)
                         })
+
                 MainPane.walletAssets.hide()
                 MainPane.walletNft.show()
                 MainPane.importNft.addClass("importNftSelected")
@@ -374,20 +376,21 @@ class MainPane {
         const selectedWallet = data.wallets[data.selectedWallet].wallet
         let previousCollection = null
         const collectionCount = {};
+        console.log(data.wallets[data.selectedWallet].wallet.nft)
 
         if (data.wallets[data.selectedWallet].wallet.nft.length > 0) {
             for (let x = 0; x < data.wallets[data.selectedWallet].wallet.nft.length; x++) {
 
                 if (data.wallets[data.selectedWallet].wallet.nft[x].collection !== previousCollection) {
-
                     previousCollection = data.wallets[data.selectedWallet].wallet.nft[x].collection
+
 
                     let uri = data.wallets[data.selectedWallet].wallet.nft[x].tokenUri;
                     let contractAdr = data.wallets[data.selectedWallet].wallet.nft[x].contract;
                     let collection = data.wallets[data.selectedWallet].wallet.nft[x].collection
                     let elemId = "bal" + collection;
                     let existingElem = $("#" + elemId);
-                    if (existingElem.length == 0) {
+                    if (existingElem.length === 0) {
                         fetch(uri).then(resp => {
                             resp.json().then(json => {
                                 console.log(json)
@@ -434,6 +437,7 @@ class MainPane {
 
 
                                 MainPane.walletNft.append(newRow);
+                                $('#nftNotfound').hide()
                                 newRow.show();
                             });
                         });
@@ -442,6 +446,7 @@ class MainPane {
             }
         }else{
             MainPane.walletNft.empty()
+            $('#nftNotfound').show()
         }
     }
 
