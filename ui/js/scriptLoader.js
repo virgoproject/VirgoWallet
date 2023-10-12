@@ -59,6 +59,7 @@ const mobileScripts = [
     "../../background/bundle.js",
     "../../background/swap/uniswap02Utils.js",
     "../../background/swap/uniswap03Utils.js",
+    "../../background/swap/ethSwapUtils.js",
     "../../background/swap/atomicSwapUtils.js",
     "../../background/wallet/web3ABIs.js",
     "../../background/wallet/ethWallet.js",

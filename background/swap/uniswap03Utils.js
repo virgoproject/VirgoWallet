@@ -1,305 +1,103 @@
 class Uniswap03Utils {
 
-    constructor(proxyAddress, quoterAddress, factoryAddress, tokens) {
-        this.proxyAddress = proxyAddress
-        this.quoterAddress = quoterAddress
-        this.factoryAddress = factoryAddress
+    static defaultSwapGas = 600000
+    static additionalGas = 50000
+    static baseSwapFee = 0.01
 
-        this.quoter = new web3.eth.Contract(UNI_QUOTERV2, quoterAddress)
-        this.factory = new web3.eth.Contract(UNI_FACTORY03, factoryAddress)
-        this.proxy = new web3.eth.Contract(VIRGOSWAP_3, proxyAddress)
+    static async estimateSwapFees(dexParams, amount, quote){
+        if(quote.routes[0].route.length == 2)
+            return await this.estimateSwapFees_single(dexParams, amount, quote)
 
-        this.tokens = tokens
-
-        this.feesByRoutes = new Map()
-
-        this.defaultSwapGas = 600000
-        this.additionalGas = 50000
-        this.baseSwapFee = 0.01
+        return await this.estimateSwapFees_multi(dexParams, amount, quote)
     }
 
-    async findRoute(amount, tokenA, tokenB) {
+    static async estimateSwapFees_single(dexParams, amount, quote){
+        console.log("uni03single")
+        const route = quote.routes[0]
 
-        const WETH = await this.getWETH()
+        const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
-        let routes = [];
-        let feeByDirectRoute = new Map()
-        let maxRoutes = 2 + this.tokens.length * 3
-
-        const _this = this
-
-        return await new Promise(async function(resolve){
-
-            const checkFinished = function (){//1
-
-                if(routes.length < maxRoutes)
-                    return
-
-                routes.sort(function(a, b){
-                    if(a.amount.eq(b.amount)) return 0
-                    if(a.amount.lt(b.amount)) return 1
-                    return -1
-                })
-
-                if(routes.length == 0){
-                    resolve(false)
-                    return
-                }
-
-                let identifier = ""
-                for(let step of routes[0].route)
-                    identifier+=step
-
-                _this.feesByRoutes.set(identifier, routes[0].fees)
-
-                resolve(routes[0])
-            }
-
-            let A_WETH;
-            let B_WETH;
-
-            //check if has direct pair and add it
-            if(tokenA.toLowerCase() != WETH.toLowerCase() && tokenB.toLowerCase() != WETH.toLowerCase()){
-                _this.getAmountOutAllFees(amount, [tokenA, tokenB]).then(amountOut => {
-                    if(!amountOut){
-                        maxRoutes--;
-                    }else{
-                        routes.push({
-                            route: [tokenA, tokenB],
-                            amount: amountOut.amount,
-                            fees: [amountOut.fee]
-                        })
-                        feeByDirectRoute.set(tokenA + tokenB, amountOut.fee)
-                    }
-                    checkFinished()
-                })
-
-                const A_res = await _this.getAmountOutAllFees(amount, [tokenA, WETH])
-                A_WETH = A_res != false
-                if(A_WETH)
-                    feeByDirectRoute.set(tokenA + WETH, A_res.fee)
-
-                const B_res = await _this.getAmountOutAllFees(amount, [tokenB, WETH])
-                B_WETH = B_res != false
-                if(B_WETH)
-                    feeByDirectRoute.set(tokenB + WETH, B_res.fee)
-
-            }else{
-                const res = await _this.getAmountOutAllFees(amount, [tokenA, tokenB])
-                if(tokenA.toLowerCase() == WETH.toLowerCase()){
-                    A_WETH = false
-                    B_WETH = res != false
-                }else{
-                    A_WETH = res != false
-                    B_WETH = false
-                }
-                if(res != false){
-                    routes.push({
-                        route: [tokenA, tokenB],
-                        amount: res.amount,
-                        fees: [res.fee]
-                    })
-                    if(tokenA.toLowerCase() == WETH.toLowerCase())
-                        feeByDirectRoute.set(tokenB + WETH, res.fee)
-                    else
-                        feeByDirectRoute.set(tokenA + WETH, res.fee)
-                } else {
-                    maxRoutes--;
-                    checkFinished()
-                }
-            }
-
-            if(A_WETH && B_WETH){
-                const fees = [feeByDirectRoute.get(tokenA + WETH), feeByDirectRoute.get(tokenB + WETH)]
-                _this.getAmountOut(amount, [tokenA, WETH, tokenB], fees).then(amountOut => {
-                    routes.push({
-                        route: [tokenA, WETH, tokenB],
-                        amount: amountOut,
-                        fees: fees
-                    })
-                    checkFinished()
-                })
-            } else {
-                maxRoutes--;
-                checkFinished()
-            }
-
-            for(const token of _this.tokens){
-                if(tokenA.toLowerCase() == token.toLowerCase() || tokenB.toLowerCase() == token.toLowerCase()) {
-                    maxRoutes -= 3
-                    checkFinished()
-                    continue
-                }
-
-                _this.getAmountOutAllFees(amount, [token, WETH]).then(token_WETH => {
-
-                    if(token_WETH != false)
-                        feeByDirectRoute.set(token + WETH, token_WETH.fee)
-                    token_WETH = token_WETH != false
-
-                    _this.getAmountOutAllFees(amount, [tokenA, token]).then(A_token => {
-
-                        if(A_token != false)
-                            feeByDirectRoute.set(tokenA + token, A_token.fee)
-                        A_token = A_token != false
-
-                        _this.getAmountOutAllFees(amount, [tokenB, token]).then(B_token => {
-
-                            if(B_token != false)
-                                feeByDirectRoute.set(tokenB + token, B_token.fee)
-                            B_token = B_token != false
-
-                            if(A_token && B_token) {
-                                const fees = [feeByDirectRoute.get(tokenA + token), feeByDirectRoute.get(tokenB + token)]
-                                _this.getAmountOut(amount, [tokenA, token, tokenB], fees).then(pairAmount => {
-                                    routes.push({
-                                        route: [tokenA, token, tokenB],
-                                        amount: pairAmount,
-                                        fees: fees
-                                    })
-                                    checkFinished()
-                                })
-                            } else {
-                                maxRoutes--;
-                                checkFinished()
-                            }
-
-                            if(!token_WETH){
-                                maxRoutes -= 2;
-                                checkFinished()
-                                return
-                            }
-
-                            if(((A_token && B_token && A_WETH) || (!A_token && B_token && A_WETH)) && tokenB.toLowerCase() != WETH.toLowerCase()){
-                                const fees = [feeByDirectRoute.get(tokenA + WETH), feeByDirectRoute.get(token + WETH), feeByDirectRoute.get(tokenB + token)]
-                                _this.getAmountOut(amount, [tokenA, WETH, token, tokenB], fees).then(pairAmount => {
-                                    routes.push({
-                                        route: [tokenA, WETH, token, tokenB],
-                                        amount: pairAmount,
-                                        fees: fees
-                                    })
-                                    checkFinished()
-                                })
-                            } else {
-                                maxRoutes--;
-                                checkFinished()
-                            }
-
-                            if(((A_token && B_token && B_WETH) || (A_token && !B_token && B_WETH)) && tokenA.toLowerCase() != WETH.toLowerCase()){
-                                const fees = [feeByDirectRoute.get(tokenA + token), feeByDirectRoute.get(token + WETH), feeByDirectRoute.get(tokenB + WETH)]
-                                _this.getAmountOut(amount, [tokenA, token, WETH, tokenB], fees).then(pairAmount => {
-                                    routes.push({
-                                        route: [tokenA, token, WETH, tokenB],
-                                        amount: pairAmount,
-                                        fees: fees
-                                    })
-                                    checkFinished()
-                                })
-                            } else {
-                                maxRoutes--;
-                                checkFinished()
-                            }
-
-                        })
-                    })
-                })
-            }
-
-        })
-
-    }
-
-    async getAmountOutAllFees(amount, path){
-        if(path[0] == path[1])
-            return false
-
-        const amounts = []
-        const fees = [100,500,3000,10000]
-
-        const _this = this
-
-        return await new Promise(resolve => {
-            let maxRes = fees.length
-            for(const fee of fees){
-                _this.getAmountOut(amount, path, [fee]).then(amountOut => {
-                    if(!amountOut){
-                        maxRes--;
-                    }else{
-                        amounts.push({
-                            amount: amountOut,
-                            fee: fee
-                        })
-                    }
-                    if(amounts.length >= maxRes){
-                        if(amounts.length == 0)
-                            resolve(false)
-
-                        amounts.sort(function(a, b){
-                            if(a.amount.eq(b.amount)) return 0
-                            if(a.amount.lt(b.amount)) return 1
-                            return -1
-                        })
-
-                        resolve(amounts[0])
-                    }
-                })
-            }
-        })
-
-    }
-
-    async getAmountOut(amount, path, fees){
-        try {
-            return web3.utils.toBN(await this.quoter.methods.quoteExactInput(this.encodePath(path, fees), amount).call())
-        }catch(e){
-            return false
-        }
-    }
-
-    async estimateSwapFees(amount, route){
-        const WETH = await this.getWETH()
-
-        let identifier = ""
-        for(let step of route)
-            identifier+=step
-
-        const fees = this.feesByRoutes.get(identifier)
+        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
 
         let cumuledFees = this.baseSwapFee
-        for(let fee of fees){
+        for(let fee of route.fees){
             console.log(fee)
             cumuledFees+=(fee/1000000)
         }
 
-
-        if(route[0].toLowerCase() == WETH.toLowerCase())
+        if(route.route[0].toLowerCase() == dexParams.params.WETH.toLowerCase())
             return {
-                gas: await this.proxy.methods.swapExactETHForToken(route, fees).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas,
+                gas: await proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas,
                 feesRate: cumuledFees
             }
 
-        const token = new web3.eth.Contract(ERC20_ABI, route[0], { from: baseWallet.getCurrentAddress()});
+        const token = new web3.eth.Contract(ERC20_ABI, route.route[0], { from: baseWallet.getCurrentAddress()});
 
-        const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), this.proxyAddress).call()
+        const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
 
         if(web3.utils.toBN(allowance).lt(amount)){
             return {
-                gas: this.defaultSwapGas + await token.methods.approve(this.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
+                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
                 feesRate: cumuledFees
             }
         }
 
-        if(route[route.length-1].toLowerCase() == WETH.toLowerCase())
+        if(route.route[route.route.length-1].toLowerCase() == dexParams.params.WETH.toLowerCase())
             return {
-                gas: await this.proxy.methods.swapExactTokenForETH(amount, route, fees).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
+                gas: await proxy.methods.univ3_swapExactTokensForETHSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
                 feesRate: cumuledFees
             }
 
         return {
-            gas: await this.proxy.methods.swapExactTokenForToken(amount, route, fees).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
+            gas: await proxy.methods.univ3_swapExactTokensForTokensSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
             feesRate: cumuledFees
         }
+    }
 
+    static async estimateSwapFees_multi(dexParams, amount, quote){
+        console.log("uni03multi")
+
+        const route = quote.routes[0]
+
+        const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
+
+        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
+
+        const path = this.encodePath(route.route, route.fees)
+
+        let cumuledFees = this.baseSwapFee
+        for(let fee of route.fees){
+            console.log(fee)
+            cumuledFees+=(fee/1000000)
+        }
+
+        if(route.route[0].toLowerCase() == dexParams.params.WETH.toLowerCase())
+            return {
+                gas: await proxy.methods.univ3_swapExactETHForTokens(dexParams.params.routerAddress, path, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas,
+                feesRate: cumuledFees
+            }
+
+        const token = new web3.eth.Contract(ERC20_ABI, route.route[0], { from: baseWallet.getCurrentAddress()});
+
+        const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
+
+        if(web3.utils.toBN(allowance).lt(amount)){
+            return {
+                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
+                feesRate: cumuledFees
+            }
+        }
+
+        if(route.route[route.route.length-1].toLowerCase() == dexParams.params.WETH.toLowerCase())
+            return {
+                gas: await proxy.methods.univ3_swapExactTokensForETH(dexParams.params.routerAddress, amount, route.route[0], path, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
+                feesRate: cumuledFees
+            }
+
+        return {
+            gas: await proxy.methods.univ3_swapExactTokensForTokens(dexParams.params.routerAddress, amount, route.route[0], path, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
+            feesRate: cumuledFees
+        }
     }
 
     async initSwap(amount, route, gasPrice){
@@ -427,7 +225,7 @@ class Uniswap03Utils {
 
     }
 
-    encodePath(path, fees) {
+    static encodePath(path, fees) {
         const FEE_SIZE = 6
         if (path.length !== fees.length + 1) {
             throw new Error('path/fee lengths do not match')
@@ -441,13 +239,6 @@ class Uniswap03Utils {
         }
         encoded += path[path.length - 1].slice(2)
         return encoded
-    }
-
-    async getWETH(){
-        if(this.WETH === undefined)
-            this.WETH = await this.quoter.methods.WETH9().call()
-
-        return this.WETH
     }
 
 }

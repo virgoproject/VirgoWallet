@@ -1,6 +1,6 @@
 class EthWallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapParams, testnet, atomicSwapParams, nft, tracked) {
+    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, atomicSwapParams, nft, tracked) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -12,10 +12,10 @@ class EthWallet {
         this.nft = nft
         this.transactions = transactions
         this.explorer = explorer
-        this.swapParams = swapParams
         this.testnet = testnet
         this.atomicSwapParams = atomicSwapParams
         this.tracked = tracked
+        this.swapV2Params = swapV2Params
 
         this.balances = new Map()
         this.prices = new Map()
@@ -79,6 +79,7 @@ class EthWallet {
     }
 
     static fromJSON(json){
+        if(json.swapV2Params === undefined) json.swapV2Params = false
         if(json.tracked === undefined) json.tracked = true
         if(json.transactions === undefined) json.transactions = []
         if (json.nft === undefined) json.nft = []
@@ -100,83 +101,29 @@ class EthWallet {
         }
         switch(json.chainID){
             case 1:
-                json.swapParams = {
-                    "type": "uni3",
-                    "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-                    "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-                    "popularTokens": ["0xdAC17F958D2ee523a2206206994597C13D831ec7","0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","0x6B175474E89094C44Da98b954EedeAC495271d0F"],
-                    "proxyAddress": "0x5366De6176049C58F53Cb385A09E52Ae51909b13"
-                }
                 json.atomicSwapParams = {
                     lockerAddress: "0x07AF5E2075BB32FfdFF5Ac2Ffb492bdE5D98D65b",
                     orders: []
                 }
                 break
             case 137:
-                json.swapParams = {
-                    "type": "uni3",
-                    "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-                    "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-                    "popularTokens": ["0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","0xc2132D05D31c914a87C6611C10748AEb04B58e8F","0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"],
-                    "proxyAddress": "0x4BF804F200125E1bE6732Cf9fD4a75E60Cc8DEb4"
-                }
                 json.atomicSwapParams = {
                     lockerAddress: "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0",
                     orders: []
                 }
                 break
             case 56:
-                json.swapParams = {
-                    type: "uni2",
-                    routerAddress: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
-                    factoryAddress: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
-                    popularTokens: ["0x2170Ed0880ac9A755fd29B2688956BD959F933F8","0x55d398326f99059fF775485246999027B3197955","0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"],
-                    proxyAddress: "0x230ad23490f55A1167bc6CB59B6A186e1ebA3703",
-                    feesRate: 0.0025
-                }
                 json.atomicSwapParams = {
                     lockerAddress: "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
                     orders: []
-                }
-                break
-            case 250:
-                json.swapParams = {
-                    "type": "uni2",
-                    "routerAddress": "0xf491e7b69e4244ad4002bc14e878a34207e38c29",
-                    "factoryAddress": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
-                    "popularTokens": ["0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83","0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e","0x04068da6c83afcfa0e13ba15a6696662335d5b75","0x049d68029688eabf473097a2fc38ef61633a3c7a"],
-                    "proxyAddress": "0xd52852E3aDad6e722d5834918Df792BDc9eC872F",
-                    feesRate: 0.002
                 }
                 break
             case 500:
                 json.RPC = "https://mainnet-rpc.hyperonscan.com/"
                 json.explorer = "https://hyperonscan.com/tx/"
                 break
-            case 43114:
-                json.swapParams = {
-                "type": "uni2",
-                    "routerAddress": "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
-                    "factoryAddress": "0xefa94DE7a4656D787667C749f7E1223D71E9FD88",
-                    "popularTokens": ["0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E","0xc7198437980c041c805A1EDcbA50c1Ce5db95118","0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB"],
-                    "proxyAddress": "0xF03dc6625D02006cC6421C87A31C466dA0491c8A",
-                    feesRate: 0.003,
-                    "WETH": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
-                }
-            case 10001:
-                json.swapParams = {
-                    "type": "uni2",
-                    "routerAddress": "0x48cB0c46d9b72A0eC2f019B68c41fD2C7C924416",
-                    "factoryAddress": "0xD51CFEb0fa23101f67cF62EB02D0a82A4BaD52b7",
-                    "popularTokens": ["0xd955b4fC5F7Bc5D36d826780C1207AB1C4705c9A","0x2ad7868ca212135c6119fd7ad1ce51cfc5702892"],
-                    "proxyAddress": "0x4836d0b887217e92b8506CDCD1e186875B19E9CD",
-                    feesRate: 0
-                }
-                break
             default:
-                json.swapParams = false
                 json.atomicSwapParams = false
-
         }
 
         if(json.chainID == 1)
@@ -202,8 +149,7 @@ class EthWallet {
         if(json.chainID == 137)
             json.RPC = "https://rpc.ankr.com/polygon"
 
-        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapParams, json.testnet, json.atomicSwapParams, json.nft, json.tracked)
-
+        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.atomicSwapParams, json.nft, json.tracked)
     }
 
     toJSON(){
@@ -221,10 +167,10 @@ class EthWallet {
                 "nft":  this.nft,
                 "transactions": this.transactions,
                 "explorer": this.explorer,
-                "swapParams": this.swapParams,
+                "swapV2Params": this.swapV2Params,
                 "testnet": this.testnet,
                 "atomicSwapParams": this.atomicSwapParams,
-                "tracked": this.tracked
+                "tracked": this.tracked,
             }
         }
     }
@@ -301,12 +247,15 @@ class EthWallet {
         return balances
     }
 
+    //TODO: Refactor everything so it clearer
     update(first = false){
         console.log("updating " + this.name + " wallet")
         const wallet = this
 
         let updateCount = 0
         const updateTarget = (this.tokens.length+1)*baseWallet.getAddresses().length
+
+        const _this = this
 
         //update balances
         for(const address of baseWallet.getAddresses()){
@@ -369,7 +318,7 @@ class EthWallet {
                 for(const transaction of wallet.transactions){
                     if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") continue
 
-                    web3.eth.getTransactionReceipt(transaction.hash).then(function(receipt){
+                    web3.eth.getTransactionReceipt(transaction.hash).then(async function(receipt){
                         if(receipt == null){
                             if(transaction.canceling){
                                 transaction.status = false
@@ -390,29 +339,9 @@ class EthWallet {
                             if(receipt.status){
 
                                 if(transaction.contractAddr == "SWAP"){
-                                    let log = receipt.logs[receipt.logs.length-1]
 
-                                    for(let nLog of receipt.logs){
-                                        if(nLog.address == transaction.recipient)
-                                            log = nLog
-                                    }
-
-                                    const decodedLog = web3.eth.abi.decodeLog([
-                                        {type: "address", "name": "caller"},
-                                        {type: "address", "name": "from"},
-                                        {type: "address", "name": "to"},
-                                        {type: "uint256", "name": "amountIn"},
-                                        {type: "uint256", "name": "amountOut"}
-                                    ], log.data, log.topics)
-
-                                    transaction.swapInfos.amountOut = decodedLog.amountOut
-
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Swap successful!",
-                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + transaction.hash + " confirmed"
-                                    })
+                                    _this.initSwapUtils()
+                                    await _this.swapUtils.updateTransactionStatus(transaction, receipt)
 
                                 } else if(transaction.contractAddr == "WEB3_SWAP"){
 
@@ -677,36 +606,25 @@ class EthWallet {
 
     initSwapUtils(){
         if(this.swapUtils === undefined)
-            switch(this.chainID){
-                case 1:
-                case 137:
-                    this.swapUtils = new Uniswap03Utils(this.swapParams.proxyAddress, this.swapParams.quoterAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens)
-                    return
-                case 250:
-                case 56:
-                case 43114:
-                case 10001:
-                    this.swapUtils = new Uniswap02Utils(this.swapParams.proxyAddress, this.swapParams.routerAddress, this.swapParams.factoryAddress, this.swapParams.popularTokens, this.swapParams.feesRate, this.swapParams.WETH)
-                    return
-            }
+            this.swapUtils = new EthSwapUtils(this.chainID, this.swapV2Params)
     }
 
     async getSwapRoute(amount, token1, token2){
         this.initSwapUtils()
 
-        return await this.swapUtils.findRoute(amount, token1, token2)
+        return await this.swapUtils.getSwapRoute(amount, token1, token2)
     }
 
-    async estimateSwapFees(amount, route){
+    async estimateSwapFees(amount, quote){
         this.initSwapUtils()
 
-        return await this.swapUtils.estimateSwapFees(amount, route)
+        return await this.swapUtils.estimateSwapFees(amount, quote)
     }
 
-    async initSwap(amount, route, gasPrice){
+    async initSwap(amount, quote, gasPrice){
         this.initSwapUtils()
 
-        return await this.swapUtils.initSwap(amount, route, gasPrice)
+        return await this.swapUtils.initSwap(amount, quote, gasPrice)
     }
 
 }

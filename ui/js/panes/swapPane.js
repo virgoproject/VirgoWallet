@@ -27,7 +27,8 @@ class SwapPane {
         self: $("#swapRate"),
         loading: $("#swapRateLoading"),
         amount: $("#swapRateAmount"),
-        notFound: $("#swapRouteNotFound")
+        notFound: $("#swapRouteNotFound"),
+        unavailable: $("#swapServiceUnavailable")
     }
     static params = $("#swapParams")
     static switchBtn = $("#swapSwitchBtn")
@@ -193,7 +194,7 @@ class SwapPane {
             SwapPane.review.amountOut.html(SwapPane.inputs.two.input.val())
             SwapPane.review.outTicker.html(SwapPane.inputs.two.ticker.html())
 
-            estimateSwapFees(SwapPane.inputs.one.input.val(), _this.route.route).then(function (res) {
+            estimateSwapFees(SwapPane.inputs.one.input.val(), _this.quote).then(function (res) {
                 getGasPrice().then(function (gp) {
                     SwapPane.review.swapFees.html(Utils.precisionRound(parseFloat(SwapPane.inputs.one.input.val()) * res.feesRate, 9))
                     SwapPane.review.swapFeesTicker.html(SwapPane.inputs.one.ticker.html())
@@ -244,7 +245,7 @@ class SwapPane {
 
         SwapPane.review.confirmBtn.click(function () {
             disableLoadBtn(SwapPane.review.confirmBtn)
-            initSwap(SwapPane.review.amountIn.html(), _this.route.route, _this.gasPrice)
+            initSwap(SwapPane.review.amountIn.html(), _this.quote, _this.gasPrice)
                 .then(function () {
                     SwapPane.inputs.one.input.val("")
                     SwapPane.inputs.two.input.val("")
@@ -280,7 +281,9 @@ class SwapPane {
         const selectedAddress = data.addresses[data.selectedAddress]
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 
-        if (selectedWallet.swapParams != false) {
+        console.log(selectedWallet)
+
+        if (selectedWallet.swapV2Params != undefined && selectedWallet.swapV2Params != false) {
             SwapPane.params.show()
             SwapPane.comingSoon.hide()
         } else {
@@ -335,6 +338,7 @@ class SwapPane {
         SwapPane.inputs.two.input.val("")
         SwapPane.rate.self.hide()
         SwapPane.rate.notFound.hide()
+        SwapPane.rate.unavailable.hide()
         SwapPane.initBtn.attr("disabled", true)
 
         const _this = this
@@ -357,18 +361,23 @@ class SwapPane {
                 if (amount != SwapPane.inputs.one.input.val() || token1 != SwapPane.inputs.one.contract.html() || token2 != SwapPane.inputs.two.contract.html())
                     return
 
-                _this.route = res
+                _this.quote = res
 
                 SwapPane.rate.loading.css("visibility", "hidden")
 
-                if (res === false) {
+                if(res == false){
+                    SwapPane.rate.unavailable.show()
+                    return
+                }
+
+                if(res.error != undefined || res.routes === undefined) {
                     SwapPane.rate.notFound.show()
                     return
                 }
 
                 SwapPane.rate.self.show()
 
-                const amountOut = parseInt(res.amount)
+                const amountOut = parseInt(res.routes[0].amount)
 
                 SwapPane.inputs.two.input.val(amountOut / 10 ** t2Bal.decimals)
                 SwapPane.rate.amount.html((amountOut / 10 ** t2Bal.decimals) / SwapPane.inputs.one.input.val())

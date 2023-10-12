@@ -1,8 +1,7 @@
 if(typeof browser === 'undefined'){
     window = self
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
-        "utils/converter.js", "swap/uniswap02Utils.js",
-        "swap/uniswap03Utils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
+        "utils/converter.js", "swap/uniswap02Utils.js", "swap/uniswap03Utils.js", "swap/ethSwapUtils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
         "wallet/ethWallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js")
 }
 
@@ -760,13 +759,12 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 request.token1,
                 request.token2
             ).then(function(resp){
-                resp.amount = resp.amount.toString()
                 sendResponse(resp)
             })
             break
 
         case "estimateSwapFees":
-            let decimals2 = baseWallet.getCurrentWallet().tokenSet.get(request.route[0])
+            let decimals2 = baseWallet.getCurrentWallet().tokenSet.get(request.quote.routes[0].route[0])
 
             if(decimals2 === undefined)
                 decimals2 = baseWallet.getCurrentWallet().decimals
@@ -775,14 +773,14 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
             baseWallet.getCurrentWallet().estimateSwapFees(
                 web3.utils.toBN(Utils.toAtomicString(request.amount, decimals2)),
-                request.route
+                request.quote
             ).then(function(resp){
                 sendResponse(resp)
             })
             break
 
         case "initSwap":
-            let decimals3 = baseWallet.getCurrentWallet().tokenSet.get(request.route[0])
+            let decimals3 = baseWallet.getCurrentWallet().tokenSet.get(request.quote.routes[0].route[0])
 
             if(decimals3 === undefined)
                 decimals3 = baseWallet.getCurrentWallet().decimals
@@ -791,10 +789,10 @@ async function onBackgroundMessage(request, sender, sendResponse){
 
             baseWallet.getCurrentWallet().initSwap(
                 web3.utils.toBN(Utils.toAtomicString(request.amount, decimals3)),
-                request.route,
+                request.quote,
                 request.gasPrice
             ).then(function(resp){
-                baseWallet.getCurrentWallet().changeTracking(request.route[request.route.length-1], true)
+                baseWallet.getCurrentWallet().changeTracking(request.quote.routes[0].route[request.quote.routes[0].route.length-1], true)
                 sendResponse(true)
             })
             break

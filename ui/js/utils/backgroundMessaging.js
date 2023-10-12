@@ -29,15 +29,15 @@ async function getAsset(contract){
 }
 
 async function validateAddress(address){
-    return await browser.runtime.sendMessage({command: 'validateAddress', address: address})
+    return await browser.runtime.sendMessage({command: 'validateAddress', address})
 }
 
 async function hasAsset(address){
-    return await browser.runtime.sendMessage({command: 'hasAsset', address: address})
+    return await browser.runtime.sendMessage({command: 'hasAsset', address})
 }
 
 async function estimateSendFees(recipient, amount, asset){
-    return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
+    return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient, amount, asset})
 }
 
 async function getGasPrice(){
@@ -45,11 +45,11 @@ async function getGasPrice(){
 }
 
 async function getBalance(asset){
-    return await browser.runtime.sendMessage({command: 'getBalance', asset: asset})
+    return await browser.runtime.sendMessage({command: 'getBalance', asset})
 }
 
 async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
-    return await browser.runtime.sendMessage({command: 'sendTo', recipient: recipient, amount: amount, asset: asset, gasLimit: gasLimit, gasPrice: gasPrice})
+    return await browser.runtime.sendMessage({command: 'sendTo', recipient, amount, asset, gasLimit, gasPrice})
 }
 
 async function getMnemonic(){
@@ -57,11 +57,11 @@ async function getMnemonic(){
 }
 
 async function setPassword(password, oldPassword){
-    return await browser.runtime.sendMessage({command: 'setPassword', password: password, oldPassword: oldPassword})
+    return await browser.runtime.sendMessage({command: 'setPassword', password, oldPassword})
 }
 
 async function passwordMatch(password){
-    return await browser.runtime.sendMessage({command: 'passwordMatch', password: password})
+    return await browser.runtime.sendMessage({command: 'passwordMatch', password})
 }
 
 async function isEncrypted(){
@@ -73,11 +73,11 @@ async function restoreFromMnemonic(mnemonic){
     setTimeout(() => {
         tutorialPane.checkDisplay()
     }, 5000)
-    return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic: mnemonic})
+    return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic})
 }
 
 async function isMnemonicValid(mnemonic){
-    return await browser.runtime.sendMessage({command: 'isMnemonicValid', mnemonic: mnemonic})
+    return await browser.runtime.sendMessage({command: 'isMnemonicValid', mnemonic})
 }
 
 async function addAccount(){
@@ -85,27 +85,27 @@ async function addAccount(){
 }
 
 async function changeAccount(accountID){
-    return await browser.runtime.sendMessage({command: 'changeAccount', accountID: accountID})
+    return await browser.runtime.sendMessage({command: 'changeAccount', accountID})
 }
 
 async function changeAccountName(address, newName){
-    return await browser.runtime.sendMessage({command: 'changeAccountName', address:address, newName:newName})
+    return await browser.runtime.sendMessage({command: 'changeAccountName', address, newName})
 }
 
 async function getTokenDetails(asset){
-    return await browser.runtime.sendMessage({command: 'getTokenDetails', asset: asset})
+    return await browser.runtime.sendMessage({command: 'getTokenDetails', asset})
 }
 
 async function getNftDetails(asset, tokenId, chainID){
-    return await browser.runtime.sendMessage({command: 'getNftDetails', asset: asset, tokenID: tokenId, chainID: chainID})
+    return await browser.runtime.sendMessage({command: 'getNftDetails', asset, tokenId, chainID})
 }
 
 async function addAsset(name, symbol, decimals, contract){
-    return await browser.runtime.sendMessage({command: 'addToken', name: name, ticker: symbol, decimals: decimals, contract: contract})
+    return await browser.runtime.sendMessage({command: 'addToken', name, symbol, decimals, contract})
 }
 
 async function addNft(uri,tokenId,owner,contract,collection){
-    return await browser.runtime.sendMessage({command: 'addNft', uri: uri, tokenId: tokenId, owner: owner , contract: contract, collection: collection})
+    return await browser.runtime.sendMessage({command: 'addNft', uri, tokenId, owner, contract, collection})
 }
 
 function closedBackupPopup(){
@@ -113,23 +113,23 @@ function closedBackupPopup(){
 }
 
 async function changeAssetTracking(contract){
-    return await browser.runtime.sendMessage({command: 'changeTokenTracking', contract: contract})
+    return await browser.runtime.sendMessage({command: 'changeTokenTracking', contract})
 }
 
 async function getSpeedupGasPrice(hash){
-    return await browser.runtime.sendMessage({command: 'getSpeedupGasPrice', hash: hash})
+    return await browser.runtime.sendMessage({command: 'getSpeedupGasPrice', hash})
 }
 
 async function speedUpTransaction(hash, gasPrice){
-    return await browser.runtime.sendMessage({command: 'speedUpTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
+    return await browser.runtime.sendMessage({command: 'speedUpTransaction', hash, gasPrice: parseInt(gasPrice)})
 }
 
 async function getCancelGasPrice(hash){
-    return await browser.runtime.sendMessage({command: 'getCancelGasPrice', hash: hash})
+    return await browser.runtime.sendMessage({command: 'getCancelGasPrice', hash})
 }
 
 async function cancelTransaction(hash, gasPrice){
-    return await browser.runtime.sendMessage({command: 'cancelTransaction', hash: hash, gasPrice: parseInt(gasPrice)})
+    return await browser.runtime.sendMessage({command: 'cancelTransaction', hash, gasPrice: parseInt(gasPrice)})
 }
 
 function closedUpdatePopup(){
@@ -141,34 +141,31 @@ async function getAutolock(){
 }
 
 function setAutolock(enabled, delay){
-    browser.runtime.sendMessage({command: 'setAutolock', enabled: enabled, delay: delay})
+    browser.runtime.sendMessage({command: 'setAutolock', enabled, delay})
 }
 
 function setBiometrics(enabled){
-    browser.runtime.sendMessage({command: 'setBiometrics', enabled: enabled})
+    browser.runtime.sendMessage({command: 'setBiometrics', enabled})
 }
 
 async function getBiometrics(){
     return await browser.runtime.sendMessage({command: 'getBiometrics'})
 }
 
-async function addingContact(address,name,note,favorite) {
-   return await browser.runtime.sendMessage({command: 'addContact' , address:address , name:name , note:note , favorite:favorite })
-
+async function addingContact(address, name, note, favorite) {
+   return await browser.runtime.sendMessage({command: 'addContact', address, name, note, favorite})
 }
 
-function deleteContact(contactIndex){
-     browser.runtime.sendMessage({command: 'deleteContact' , address:contactIndex })
+function deleteContact(address){
+     browser.runtime.sendMessage({command: 'deleteContact', address})
 }
 
-function updateContact(index,name,note) {
-    browser.runtime.sendMessage({command: 'updateContact' ,  contactIndex:index  , name:name , note:note  })
-
+function updateContact(contactIndex, name, note) {
+    browser.runtime.sendMessage({command: 'updateContact', contactIndex, name, note})
 }
 
-function deleteFavorite(index) {
-    browser.runtime.sendMessage({command: 'deleteFavorite' , address:index })
-
+function deleteFavorite(address) {
+    browser.runtime.sendMessage({command: 'deleteFavorite', address})
 }
 
 async function getContacts(){
@@ -176,83 +173,83 @@ async function getContacts(){
 }
 
 async function getSwapRoute(amount, token1, token2){
-    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount: amount, token1: token1, token2: token2})
+    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, token1, token2})
 }
 
-async function estimateSwapFees(amount, route){
-    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount: amount, route: route})
+async function estimateSwapFees(amount, quote){
+    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount, quote})
 }
 
-async function initSwap(amount, route, gasPrice){
-    return await browser.runtime.sendMessage({command: 'initSwap', amount: amount, route: route, gasPrice: gasPrice})
+async function initSwap(amount, quote, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initSwap', amount, quote, gasPrice})
 }
 
 function removeToken(address){
-    browser.runtime.sendMessage({command: 'removeToken' , address:address })
+    browser.runtime.sendMessage({command: 'removeToken', address})
 }
 
 async function getBalanceCross(chainID, asset){
-    return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID: chainID, asset: asset})
+    return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID, asset})
 }
 
 async function estimateAtomicSwapFees(chainID){
-    return await browser.runtime.sendMessage({command: 'estimateAtomicSwapFees', chainID: chainID})
+    return await browser.runtime.sendMessage({command: 'estimateAtomicSwapFees', chainID})
 }
 
 async function initAtomicSwap(amount, chainA, chainB, gasPrice){
-    return await browser.runtime.sendMessage({command: 'initAtomicSwap', amount: amount, chainA: chainA, chainB: chainB, gasPrice: gasPrice})
+    return await browser.runtime.sendMessage({command: 'initAtomicSwap', amount, chainA, chainB, gasPrice})
 }
 
 async function tickerFromChainID(id){
-    return await browser.runtime.sendMessage({command: 'tickerFromChainID', id: id})
+    return await browser.runtime.sendMessage({command: 'tickerFromChainID', id})
 }
 
 async function checkAirdropPlay(address,id){
-    return await browser.runtime.sendMessage({command : 'checkAirdropPlay',address : address ,id : id})
+    return await browser.runtime.sendMessage({command: 'checkAirdropPlay', address, id})
 }
 
 async function setAirdropPlay(address,id){
-    return await browser.runtime.sendMessage({command : 'setAirdropPlay',address : address ,id : id})
+    return await browser.runtime.sendMessage({command: 'setAirdropPlay', address, id})
 }
 
 async function resetAirdrops(){
-    return await browser.runtime.sendMessage({command : 'resetAirdrops'})
+    return await browser.runtime.sendMessage({command: 'resetAirdrops'})
 }
 
 async function checkClosedModalAirdrop(infos){
-    return await browser.runtime.sendMessage({command : 'checkClosedModal',infos : infos})
+    return await browser.runtime.sendMessage({command: 'checkClosedModal', infos})
 }
 
 async function changeModalStatus(state){
-    return await browser.runtime.sendMessage({command : 'changeModalStatus',state : state})
+    return await browser.runtime.sendMessage({command: 'changeModalStatus', state})
 }
 
 async function deleteConnectedSite(address){
-    return await browser.runtime.sendMessage({command :'deleteConnectedSite',address : address})
+    return await browser.runtime.sendMessage({command: 'deleteConnectedSite', address})
 }
 
 async function setSetupDone(){
-    return await browser.runtime.sendMessage({command : 'setSetupDone'})
+    return await browser.runtime.sendMessage({command: 'setSetupDone'})
 }
 
 async function isTutorialDone(){
-    return await browser.runtime.sendMessage({command : 'tutorialDone'})
+    return await browser.runtime.sendMessage({command: 'tutorialDone'})
 }
 
 async function setTutorialDone(){
-    return await browser.runtime.sendMessage({command : 'setTutorialDone'})
+    return await browser.runtime.sendMessage({command: 'setTutorialDone'})
 }
 
 async function setSelectedCurrency(currency) {
-    return await browser.runtime.sendMessage({command : 'setSelectedCurrency', currency : currency})
+    return await browser.runtime.sendMessage({command: 'setSelectedCurrency', currency})
 }
 
 async function getNotifications(){
-    return await browser.runtime.sendMessage({command : 'getNotifications'})
+    return await browser.runtime.sendMessage({command: 'getNotifications'})
 }
 
 async function hideNotification(id){
-    return await browser.runtime.sendMessage({command : 'hideNotification', id : id})
+    return await browser.runtime.sendMessage({command: 'hideNotification', id})
 }
 
 async function changeNetworkVisibility(index){
