@@ -13,7 +13,7 @@
 #assetsPane .content {
     z-index: 99999;
     padding: 0 1em;
-    height: calc(100% - 7em);
+    height: calc(100% - 12.5em);
 }
 
 #assetsListSearchWrapper {
@@ -61,30 +61,6 @@
 
 #assetsPane .assetsLogo {
     cursor: pointer;
-}
-
-#assetsPane .addAsset {
-    cursor: pointer;
-}
-
-#assetsPane .addBottomLogo {
-    position: absolute;
-    right: 2.5em;
-    bottom: 6em;
-    background: var(--mainColorLight);
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    transition: all 250ms;
-}
-
-#assetsPane .addBottomLogo:hover{
-    background: var(--mainColorLight20);
-}
-
-#assetsPane .addLogo {
-    padding: 15px;
-    font-size: 1.2em;
 }
 
 .searchLabel {
@@ -137,6 +113,11 @@
     border-radius: 0.5em;
     padding-top: 0.375em;
     padding-bottom: 0.375em;
+    cursor: pointer;
+}
+
+#assetsPane .listItem:hover {
+    background: var(--whiteBackgroundHover);
 }
 
 #assetsPane .listItem.selected {

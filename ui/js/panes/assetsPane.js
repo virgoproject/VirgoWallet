@@ -1,6 +1,6 @@
 class AssetsPane {
 
-    static addAssetBtn = $("#mainPane .resume .assets .addAsset")
+    static accessBtn = $("#manageAssetsBtn")
     static self = $("#assetsPane")
     static back = $("#assetsPane .back")
     static list = {
@@ -11,7 +11,7 @@ class AssetsPane {
         end: $("#assetsPane .listEnd")
     }
     static title = $("#assetListTitle")
-    static addCustom = $("#assetsPane .addBottomLogo")
+    static addCustom = $("#addTokenBtn")
     static add = {
         self: $("#assetsListAdd"),
         contract: {
@@ -39,7 +39,7 @@ class AssetsPane {
         this.tokensCount = 0
         this.reachedEnd = false
 
-        AssetsPane.addAssetBtn.click(function(){
+        AssetsPane.accessBtn.click(function(){
             AssetsPane.self.show()
             hideStatsBar()
             assetsPane.tokensCount = 0

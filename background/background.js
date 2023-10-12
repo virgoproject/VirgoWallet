@@ -461,7 +461,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
             baseWallet.encrypt(request.password)
             baseWallet.save()
 
-            reactMessaging.storePassword(request.password)
+            if(reactMessaging != undefined)
+                reactMessaging.storePassword(request.password)
 
             sendResponse(true)
             break
@@ -961,6 +962,60 @@ async function onBackgroundMessage(request, sender, sendResponse){
             web3.eth.net.isListening().then(listening => {
                 sendResponse(listening)
             })
+            break
+
+        case "changeNetworkVisibility":
+            baseWallet.wallets[request.index].tracked = !baseWallet.wallets[request.index].tracked
+            baseWallet.save()
+            sendResponse(true)
+            break
+
+        case "addNetwork":
+            try {
+                const tempWeb3 = new Web3(request.rpc)
+                const res = await tempWeb3.eth.getChainId()
+                if(res != request.chainID){
+                    sendResponse({
+                        status: 1,
+                        id: res
+                    })
+                    break
+                }
+
+                let explorer = request.explorer
+
+                if(explorer != "" && !explorer.endsWith("/tx/")){
+                    explorer = explorer + "/tx/"
+                }
+
+                baseWallet.wallets.push(EthWallet.fromJSON(   {
+                    "name": request.name,
+                    "asset": request.symbol,
+                    "ticker": request.symbol,
+                    "decimals":18,
+                    "contract":"",
+                    "RPC": request.rpc,
+                    "chainID": parseInt(request.chainID),
+                    "tokens":[
+
+                    ],
+                    "transactions":[
+
+                    ],
+                    "explorer": explorer,
+                    "swapParams":false,
+                    "testnet":false
+                }))
+                baseWallet.save()
+                sendResponse({
+                    status: 2
+                })
+            }catch(e){
+                console.log(e)
+                sendResponse({
+                    status: 0
+                })
+            }
             break
     }
 

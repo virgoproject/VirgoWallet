@@ -88,6 +88,7 @@ class MainPane {
         MainPane.nft.click(function (){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
+
             if ( MainPane.nft.hasClass("divResumePaneSelected")){
                 MainPane.manageTokenBtn.hide()
                     browser.runtime.sendMessage({command: 'getBaseInfos'})
@@ -99,6 +100,7 @@ class MainPane {
                 MainPane.walletNft.show()
                 MainPane.importNft.addClass("importNftSelected")
             }
+
         })
 
         MainPane.backupPopup.button.click(function(){

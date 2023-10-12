@@ -24,6 +24,7 @@
     transition: background ease 0.25s;
     text-align: center;
     margin: 0.25em 0;
+    position: relative;
 }
 
 #chainsContainer {
@@ -33,10 +34,12 @@
 #chainSelector .chain .logo {
     height: 32px;
     width: 32px;
-    background-color: var(--mainColor);
     border-radius: 50%;
-    background-size: cover;
     margin: auto;
+}
+
+#chainSelector .chain svg {
+    border-radius: 50%;
 }
 
 #chainSelector .chain.selected {
@@ -45,7 +48,7 @@
 }
 
 #chainSelector .chain:hover {
-    background: #e2d2ed;
+    background: var(--whiteBackgroundHover);
 }
 
 #chainSelector .chain h3, #chainSelector .chain p {
@@ -60,16 +63,16 @@
     padding: 0.5em;
     z-index: 0;
     flex: 1 1 auto;
-    transition: all 0.25s ease-in;
+    transition: all ease-in 0.1s;
 }
 
 #chainSelectionHeader:hover{
-    background: var(--whiteBackgroundSelected);
+    background: var(--whiteBackgroundHover);
 }
 
 #chainSelectionHeader i {
     transform: rotate(0deg);
-    transition:transform 0.25s ease;
+    transition: all ease-in 0.1s;
 }
 
 #chainSelectionHeader p {
@@ -101,10 +104,11 @@
 
 #chainSelector .chain .testnet {
     font-size: 0.65em;
-    margin-left: -12%;
-    margin-top: 2em;
     padding: 0.25em;
     display: none;
+    position: absolute;
+    margin-left: calc(-50% + 1.25em);
+    margin-top: 1.75em;
 }
 
 #chainSelector name {
