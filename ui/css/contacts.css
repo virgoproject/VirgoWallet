@@ -99,29 +99,6 @@
     border-top-right-radius: 10px;
 }
 
-#contacts .addBottomLogo{
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
-    background: var(--mainColorLight);
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    transition: all 250ms;
-    height: 48px;
-    width: 48px;
-    line-height: 48px;
-    text-align: center;
-}
-
-#contacts .addBottomLogo:hover {
-    background: var(--mainColorLight20);
-}
-
-#contacts .addLogo {
-    font-size: 1.2em;
-}
-
 #contacts .fa-chevron-right{
     cursor: pointer;
 }
@@ -176,4 +153,11 @@
     border: none;
     width: 100%;
     outline: none;
+}
+
+#contactsAddBtn {
+    color: var(--mainColor);
+    cursor: pointer;
+    margin-bottom: 0;
+    line-height: 1.75em;
 }

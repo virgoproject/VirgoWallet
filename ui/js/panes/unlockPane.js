@@ -137,7 +137,7 @@ class UnlockPane {
         $("#mainPane").hide()
         $("#unlockPane").show()
 
-        if(useBiometrics){
+        if(useBiometrics && IS_MOBILE){
             reactMessaging.isBiometricsAvailable().then(res => {
                 if(res.success){
                     reactMessaging.getPassword().then(res => {
