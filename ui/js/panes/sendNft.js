@@ -77,6 +77,8 @@ class SendNft {
                                     $("#walletAssets").show()
                                     $(".importNft").removeClass("importNftSelected")
                                     $('.addAsset').show()
+                                    $(".sendPaneNft .recipient").val("")
+                                    $(".nextBtn").attr("disabled", true)
                                     SendNft.nftSendPane.hide()
                                     SendNft.nftSendConfirm.hide()
                                     $("#nftDetailPane").hide()
