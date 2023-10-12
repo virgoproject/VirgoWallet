@@ -1,5 +1,5 @@
 class NftPane{
-    static addNftBtn = $("#mainPane .resume .addNft")
+    static addNftBtn = $("#mainPane .resume .importNft .addNft")
     static self = $("#nftAddPane")
     static back = $("#nftAddPane .back")
     static add = {
@@ -70,9 +70,18 @@ class NftPane{
                 console.log(details.collection)
 
 
-                addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(){
-                    NftPane.back.click()
-                    notyf.success("Added !")
+                addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
+                    console.log(res)
+                    if (res == false){
+                        notyf.error("You do not own this NFT !")
+                        NftPane.back.click()
+                    }else if (res == true){
+                        notyf.success("Added!")
+                        NftPane.back.click()
+                    }
+
+
+
                 })
 
             })

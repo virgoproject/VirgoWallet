@@ -39,7 +39,9 @@ const commonScripts = [
     "../js/panes/collectionNftPane.js",
     "../js/panes/nftDetailPane.js",
     "../js/panes/nftPane.js",
+    "../js/panes/sendNft.js",
     "../js/panes/settings/manageNetworks.js"
+
 ]
 
 const browserScripts = [
