@@ -65,20 +65,20 @@ class EthSwapUtils {
 
         const method = abiDecoder.decodeMethod(txData.input)
 
-        console.log(method.name)
-
         switch(method.name){
             case "swapExactETHForTokens":
-                await _this.getStatusForUni02TokenOut(transaction, receipt)
+            case "swapExactTokensForTokens":
+            case "univ3_swapExactTokensForTokensSingle":
+            case "univ3_swapExactTokensForTokens":
+            case "univ3_swapExactETHForTokensSingle":
+            case "univ3_swapExactETHForTokens":
+                await _this.getStatusForTokenOut(transaction, receipt)
                 break
             case "swapExactTokensForETH":
-                await _this.getStatusForSwapExactTokensForETH(transaction, receipt)
+            case "univ3_swapExactTokensForETHSingle":
+            case "univ3_swapExactTokensForETH":
+                await _this.getStatusForETHOut(transaction, receipt)
                 break
-            case "swapExactTokensForTokens":
-                await _this.getStatusForUni02TokenOut(transaction, receipt)
-                break
-            default:
-                throw new Error("fuck shit")
         }
 
         browser.notifications.create("txNotification", {
@@ -90,8 +90,10 @@ class EthSwapUtils {
 
     }
 
-    async getStatusForUni02TokenOut(transaction, receipt){
+    async getStatusForTokenOut(transaction, receipt){
         const logs = abiDecoder.decodeLogs(receipt.logs)
+
+        transaction.swapInfos.route = transaction.swapInfos.route.route
 
         for(const log of logs){
             if(log.name == "Transfer" && log.address.toLowerCase() == transaction.swapInfos.route[transaction.swapInfos.route.length-1].toLowerCase()){
@@ -106,7 +108,7 @@ class EthSwapUtils {
         }
     }
 
-    async getStatusForSwapExactTokensForETH(transaction, receipt){
+    async getStatusForETHOut(transaction, receipt){
         const logs = abiDecoder.decodeLogs(receipt.logs)
 
         for(const log of logs){
