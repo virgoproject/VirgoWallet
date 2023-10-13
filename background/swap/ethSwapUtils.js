@@ -25,6 +25,8 @@ class EthSwapUtils {
 
             json.routes = finalRoutes
 
+            console.log(json)
+
             return json
 
         }catch (e) {
