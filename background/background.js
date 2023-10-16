@@ -749,10 +749,10 @@ async function onBackgroundMessage(request, sender, sendResponse){
             else
                 decimals = decimals.decimals
 
-            if(request.token1 == baseWallet.getCurrentWallet().ticker)
+            /**if(request.token1 == baseWallet.getCurrentWallet().ticker)
                 request.token1 = baseWallet.getCurrentWallet().contract
             else if(request.token2 == baseWallet.getCurrentWallet().ticker)
-                request.token2 = baseWallet.getCurrentWallet().contract
+                request.token2 = baseWallet.getCurrentWallet().contract**/
 
             baseWallet.getCurrentWallet().getSwapRoute(
                 web3.utils.toBN(Utils.toAtomicString(request.amount, decimals)),
