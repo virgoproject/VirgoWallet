@@ -400,3 +400,10 @@ color: red;
     overflow: hidden;
     vertical-align: bottom;
 }
+
+#transactionsPane .transactionWrapTx .amountIn {
+    max-width: 12ch;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+}

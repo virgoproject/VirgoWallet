@@ -7,13 +7,24 @@ class Uniswap02Utils {
     static async estimateSwapFees(dexParams, amount, quote){
         console.log("uni02")
 
-        const route = quote.routes[0].route
+        const initialRoute = quote.routes[0].route
+
+        const route = []
+
+        for(const node of initialRoute){
+            if(node == baseWallet.getCurrentWallet().ticker){
+                route.push(dexParams.params.WETH)
+                continue
+            }
+
+            route.push(node)
+        }
 
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
         const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
 
-        if(route[0].toLowerCase() == dexParams.params.WETH.toLowerCase())
+        if(initialRoute[0] == baseWallet.getCurrentWallet().ticker)
             return {
                 gas: await proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas,
                 feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
@@ -30,7 +41,7 @@ class Uniswap02Utils {
             }
         }
 
-        if(route[route.length-1].toLowerCase() == dexParams.params.WETH.toLowerCase())
+        if(initialRoute[initialRoute.length-1] == baseWallet.getCurrentWallet().ticker)
             return {
                 gas: await proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas,
                 feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
@@ -46,7 +57,18 @@ class Uniswap02Utils {
     static async initSwap(dexParams, amount, quote, gasPrice){
         const _this = this
 
-        const route = quote.routes[0].route
+        const initialRoute = quote.routes[0].route
+
+        const route = []
+
+        for(const node of initialRoute){
+            if(node == baseWallet.getCurrentWallet().ticker){
+                route.push(dexParams.params.WETH)
+                continue
+            }
+
+            route.push(node)
+        }
 
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
@@ -77,20 +99,11 @@ class Uniswap02Utils {
                         })
                         baseWallet.save()
                         resolve(true)
-                    }).catch(e => {
-                        console.log(e)
-                        if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
-                            baseWallet.selectWallet(baseWallet.selectedWallet)
-                            web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
-                                nonce = newNonce
-                                swapExactETHForToken()
-                            })
-                        }
                     })
                 })
             }
 
-            if(route[0].toLowerCase() == dexParams.params.WETH.toLowerCase()){
+            if(initialRoute[0] == baseWallet.getCurrentWallet().ticker){
                 swapExactETHForToken()
                 return
             }
@@ -116,15 +129,6 @@ class Uniswap02Utils {
                     })
                     baseWallet.save()
                     resolve(true)
-                }).catch(e => {
-                    console.log(e)
-                    if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
-                            nonce = newNonce
-                            swapExactTokensForETH(approveHash, gas)
-                        })
-                    }
                 })
             }
 
@@ -147,20 +151,11 @@ class Uniswap02Utils {
                     })
                     baseWallet.save()
                     resolve(true)
-                }).catch(e => {
-                    console.log(e)
-                    if(e.code == -32000){//sometimes the provider loose track of the nonce, seems to only happen with BSC
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(newNonce => {
-                            nonce = newNonce
-                            swapExactTokensForTokens(approveHash, gas)
-                        })
-                    }
                 })
             }
 
             const estimateGas = function (approveHash){
-                if(route[route.length-1].toLowerCase() == dexParams.params.WETH.toLowerCase()){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == baseWallet.getCurrentWallet().ticker){
                     proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
                         swapExactTokensForETH(approveHash, gas + _this.additionalGas)
                     })
@@ -172,7 +167,7 @@ class Uniswap02Utils {
             }
 
             const swap = function (approveHash){
-                if(route[route.length-1].toLowerCase() == dexParams.params.WETH.toLowerCase()){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == baseWallet.getCurrentWallet().ticker){
                     swapExactTokensForETH(approveHash, _this.defaultSwapGas)
                     return
                 }

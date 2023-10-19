@@ -247,7 +247,7 @@ class EthWallet {
         return balances
     }
 
-    //TODO: Refactor everything so it clearer
+    //TODO: Refactor everything so its clearer
     update(first = false){
         console.log("updating " + this.name + " wallet")
         const wallet = this
