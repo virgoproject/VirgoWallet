@@ -107,9 +107,8 @@
     padding: 0.25em;
     display: none;
     position: absolute;
-    margin-left: -50%;
     margin-top: 1.75em;
-    transform: translateX(50%);
+    transform: translateX(-50%);
 }
 
 #chainSelector name {
@@ -123,7 +122,6 @@
     font-weight: 600;
 }
 
-#atomicSwapAccess1Wrapper {
-    margin-bottom: 52px;
-    margin-top: 19px;
+#atomicSwapAccess1 {
+    margin-bottom: 3em;
 }

@@ -429,7 +429,8 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 }).catch(function(){
                     sendResponse(false)
                 })
-            }).catch(function(){
+            }).catch(function(e){
+                console.log(e)
                 sendResponse(false)
             })
             break
