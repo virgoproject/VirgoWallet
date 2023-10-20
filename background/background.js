@@ -956,9 +956,13 @@ async function onBackgroundMessage(request, sender, sendResponse){
                 sendResponse(false)
                 break
             }
-            web3.eth.net.isListening().then(listening => {
-                sendResponse(listening)
-            })
+            try {
+                web3.eth.net.isListening().then(listening => {
+                    sendResponse(listening)
+                })
+            }catch(e){
+                sendResponse(true)
+            }
             break
 
         case "changeNetworkVisibility":

@@ -144,7 +144,7 @@ class EthWallet {
             json.RPC = "https://http-mainnet.hecochain.com/"
 
         if(json.chainID == 61)
-            json.RPC = "https://www.ethercluster.com/etc"
+            json.RPC = "https://geth-de.etc-network.info"
 
         if(json.chainID == 137)
             json.RPC = "https://rpc.ankr.com/polygon"

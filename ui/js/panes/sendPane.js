@@ -54,6 +54,7 @@ class SendPane {
             $("#body .send .sendForm").hide()
             SendPane.confirmForm.show()
             hideStatsBar()
+            $('#sendNextStep').attr("disabled", true)
         })
 
         $("#sendAssetSelect").change(function (){
