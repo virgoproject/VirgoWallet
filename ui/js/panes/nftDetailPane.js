@@ -2,7 +2,12 @@ class NftDetailPane {
     static self = $("#nftDetailPane")
     static back = $("#nftDetailPane .back")
     static loading = $("#nftDetailsPaneLoading")
-
+    static nftSendBtn = $("#sendNftBtn")
+    static nftSendPane = $("#nftSendPane")
+    static sendPaneNft = $('.sendPaneNft')
+    static nftSendPaneRecipient = $(".sendPaneNft .recipient")
+    static nftSendConfirm = $("#sendNftConfirmFees")
+    static nextStep = $(".nextBtn")
     static detailedPane = {
         self: $("#nftDetailsDetailed"),
         name: $("#nftDetailPane .name"),
@@ -26,26 +31,49 @@ class NftDetailPane {
         NftDetailPane.self.hide()
         NftDetailPane.detailedPane.infosWrapperStats.empty()
     })
+
+        NftDetailPane.nftSendPaneRecipient.on("input", function(){
+            const input = $(this);
+            if(input.val().length < 42){
+                NftDetailPane.nextStep.attr("disabled", true)
+                return
+            }
+            validateAddress(input.val()).then(function(res){
+                NftDetailPane.nextStep.attr("disabled", !res)
+            })
+        })
     }
 
-    displayToken(uri,adress,tokenId){
-        NftDetailPane.self.show()
-        NftDetailPane.loading.hide()
-        NftDetailPane.detailedPane.self.show()
-        NftDetailPane.detailedPane.infos.show()
+    displayToken(uri,address,tokenId){
+        NftDetailPane.self.hide()
+        NftDetailPane.loading.show()
+        NftDetailPane.detailedPane.self.hide()
+        NftDetailPane.detailedPane.infos.hide()
         NftDetailPane.detailedPane.infosLoading.hide()
-        NftDetailPane.detailedPane.infosWrapper.show()
-        NftDetailPane.detailedPane.addrSpec.html(adress)
+        NftDetailPane.detailedPane.infosWrapper.hide()
+        NftDetailPane.detailedPane.addrSpec.html(address)
         NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
 
         NftDetailPane.detailedPane.copyAddr.click(function(e){
             e.stopPropagation()
-            copyToClipboard(adress);
+            copyToClipboard(address);
         })
 
         NftDetailPane.detailedPane.copyTokenId.click(function(e){
             e.stopPropagation()
             copyToClipboard(tokenId);
+        })
+
+        NftDetailPane.nftSendBtn.click(function (){
+            NftDetailPane.nftSendPane.show()
+            NftDetailPane.sendPaneNft.show()
+        })
+
+        NftDetailPane.nextStep.click(function (){
+            NftDetailPane.sendPaneNft.hide()
+            NftDetailPane.nftSendConfirm.show()
+            let recipient = NftDetailPane.nftSendPaneRecipient.val()
+            sendNft.displayInfo(uri ,recipient ,tokenId, address,)
         })
 
         fetch(uri).then(resp => {
@@ -70,11 +98,18 @@ class NftDetailPane {
                             newSpec.find(".attrSpec").html(value);
                         }
 
+
                         NftDetailPane.detailedPane.infosWrapperStats.append(newSpec)
                         newSpec.show()
                     }
                 }
             });
+            NftDetailPane.self.show()
+            NftDetailPane.loading.hide()
+            NftDetailPane.detailedPane.self.show()
+            NftDetailPane.detailedPane.infos.show()
+            NftDetailPane.detailedPane.infosLoading.hide()
+            NftDetailPane.detailedPane.infosWrapper.show()
         });
     }
 

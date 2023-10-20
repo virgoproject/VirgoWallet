@@ -48,6 +48,13 @@
     margin-bottom: 0;
 }
 
+#loadingNft{
+    text-align: center;
+    margin-top: 8em;
+    font-size: 2em;
+    height: 100%;
+}
+
 #collectionPane  .asset .logo {
     height: 32px;
     width: 32px;

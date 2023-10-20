@@ -127,9 +127,6 @@ display: block;
     justify-content: center;
 }
 
-#manageAssetsBtn {
-    margin-bottom: 5em;
-}
 
 #mainPane .resume .assets .resumePane {
     display: flex;
@@ -172,4 +169,8 @@ display: block;
 #body .resume {
     max-height: 100%;
     overflow-y: auto;
+}
+.noNftTitle{
+    color: #6a6a6a;
+    margin-top: -30px;
 }

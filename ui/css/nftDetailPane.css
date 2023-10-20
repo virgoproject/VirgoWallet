@@ -19,7 +19,18 @@ border-radius: 20px;
     z-index: 99999;
     padding: 0 1em;
     overflow-y: scroll;
-    height: 520px;
+    height: 496px;
+}
+
+#sendNftBtn{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    white-space: break-spaces;
+    cursor: pointer;
+    width: 90%;
+    margin-top: 13px;
+
 }
 
 #nftDetailPane .back {
@@ -136,23 +147,23 @@ font-weight: bold;
 }
 
 .addrCopy{
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
 }
 
 .addrCopy:hover {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
     color: var(--mainColor);;
 }
 
 .tokenIdCopy{
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
 }
 
 .tokenIdCopy:hover {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     cursor: pointer;
     color: var(--mainColor);;
 }
@@ -253,4 +264,5 @@ font-weight: bold;
     padding: 0.75em!important;
     border-radius: 0.65em!important;
 }
+
 

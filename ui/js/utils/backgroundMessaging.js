@@ -36,8 +36,17 @@ async function hasAsset(address){
     return await browser.runtime.sendMessage({command: 'hasAsset', address})
 }
 
+
 async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient, amount, asset})
+}
+
+async function estimateSendFees(recipient,amount,asset){
+    return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
+}
+
+async function estimateSendFeesNft(recipient ,tokenId, address){
+    return await browser.runtime.sendMessage({command: 'estimateSendFeesNft',recipient: recipient ,tokenId: tokenId, address: address})
 }
 
 async function getGasPrice(){
@@ -50,6 +59,10 @@ async function getBalance(asset){
 
 async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
     return await browser.runtime.sendMessage({command: 'sendTo', recipient, amount, asset, gasLimit, gasPrice})
+}
+
+async function sendToNft(recipient, contractNft, tokenId , gasLimit, gasPrice){
+    return await browser.runtime.sendMessage({command: 'sendToNft', recipient: recipient, contractNft: contractNft, tokenId: tokenId, gasLimit: gasLimit, gasPrice: gasPrice})
 }
 
 async function getMnemonic(){
@@ -186,6 +199,10 @@ async function initSwap(amount, quote, gasPrice){
 
 function removeToken(address){
     browser.runtime.sendMessage({command: 'removeToken', address})
+}
+
+function removeNft(address, tokenId){
+    browser.runtime.sendMessage({command: 'removeNft' , address:address, tokenId })
 }
 
 async function getBalanceCross(chainID, asset){
