@@ -1,5 +1,5 @@
-class NftPane{
-    static addNftBtn = $("#mainPane .resume .importNft .addNft")
+class NftPane {
+    static addNftBtn = $("#manageNFTsBtn")
     static self = $("#nftAddPane")
     static back = $("#nftAddPane .back")
     static add = {
@@ -34,7 +34,7 @@ class NftPane{
         NftPane.add.contract.input.on("input", function(){
             validateAddress(NftPane.add.contract.input.val()).then(function(res){
                 hasAsset(NftPane.add.contract.input.val()).then(function(hasAsset){
-                        NftPane.add.contract.submit.attr("disabled", !res || hasAsset)
+                    NftPane.add.contract.submit.attr("disabled", !res || hasAsset)
                 })
             })
         })
@@ -42,9 +42,7 @@ class NftPane{
         NftPane.add.contract.submit.click(function(){
             NftPane.add.contract.input.attr("disabled", true)
             disableLoadBtn($(this))
-            console.log(NftPane.add.contract.tokenId.val())
             getNftDetails(NftPane.add.contract.input.val(), NftPane.add.contract.tokenId.val()).then(function(details){
-                console.log(details)
                 if(!details){
                     NftPane.add.contract.input.attr("disabled", false)
                     enableLoadBtn(NftPane.add.contract.submit)
@@ -64,24 +62,17 @@ class NftPane{
 
                 enableLoadBtn(NftPane.add.contract.submit)
 
-
                 const uri = details.tokenURI
                 const tokenId = details.tokenID
-                console.log(details.collection)
-
 
                 addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
-                    console.log(res)
                     if (res == false){
-                        notyf.error("You do not own this NFT !")
+                        notyf.error("You do not own this NFT")
                         NftPane.back.click()
                     }else if (res == true){
-                        notyf.success("Added!")
+                        notyf.success("NFT Successfully added!")
                         NftPane.back.click()
                     }
-
-
-
                 })
 
             })
@@ -90,5 +81,3 @@ class NftPane{
 }
 
 const nftPane = new NftPane()
-//2526987
-//0x4a8e348b29Df68Fa4d874b043f920150d750604E

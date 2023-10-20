@@ -107,8 +107,9 @@
     padding: 0.25em;
     display: none;
     position: absolute;
-    margin-left: calc(-50% + 1.25em);
+    margin-left: -50%;
     margin-top: 1.75em;
+    transform: translateX(50%);
 }
 
 #chainSelector name {

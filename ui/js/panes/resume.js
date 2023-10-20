@@ -7,7 +7,7 @@ class MainPane {
     static address = $("#walletAddress")
     static addressDiv = $("#mainPane .header .stats .addressContainer")
     static importNft = $(".importNft")
-    static manageTokenBtn = $('.addAsset')
+    static manageTokenBtn = $('#manageAssetsBtn')
     static backupPopup = {
         self: $("#backupPopup"),
         close: $("#backupPopup .close"),
@@ -26,7 +26,6 @@ class MainPane {
     static walletNft = $("#walletNft")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
     static allAssetdiv = $("#allAssetdiv")
-    static nftDiv = $("#nftDiv")
     static allAssets = $("#allAssets")
     static nft = $("#nft")
     static testnetFaucet = {
@@ -74,8 +73,10 @@ class MainPane {
         })
 
         MainPane.allAssets.click(function (){
-           MainPane.allAssets.addClass("divResumePaneSelected")
-           MainPane.nft.removeClass("divResumePaneSelected")
+            MainPane.allAssets.addClass("divResumePaneSelected")
+            MainPane.nft.removeClass("divResumePaneSelected")
+            $("#manageNFTsBtn").hide()
+            $("#manageAssetsBtn").show()
             if (MainPane.allAssets.hasClass("divResumePaneSelected")){
                 MainPane.walletAssets.show()
                 MainPane.manageTokenBtn.show()
@@ -88,7 +89,8 @@ class MainPane {
         MainPane.nft.click(function (){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
-
+            $("#manageAssetsBtn").hide()
+            $("#manageNFTsBtn").show()
             if ( MainPane.nft.hasClass("divResumePaneSelected")){
                 MainPane.manageTokenBtn.hide()
                     browser.runtime.sendMessage({command: 'getBaseInfos'})
