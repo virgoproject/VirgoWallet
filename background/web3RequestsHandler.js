@@ -84,6 +84,7 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
     let dataTx = TxIdentifier.getDecodeAbi(data)
+
     switch (dataTx.contractAddr){
         case "APPROVETOKEN":
             await browser.windows.create({
@@ -180,6 +181,14 @@ function grantPendingAuthorization(auth, params){
             console.log("confirming send")
             console.log(auth)
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
+                console.log([{
+                    from: auth.from,
+                    to: auth.to,
+                    value: web3.utils.numberToHex(auth.value),
+                    data: auth.data,
+                    gas: web3.utils.numberToHex(auth.gas),
+                    gasPrice: web3.utils.numberToHex(params.gasPrice),
+                }])
                 web3.currentProvider.send({
                     jsonrpc: "2.0",
                     id: Date.now() + "." + Math.random(),
@@ -191,9 +200,11 @@ function grantPendingAuthorization(auth, params){
                         data: auth.data,
                         gas: web3.utils.numberToHex(auth.gas),
                         gasPrice: web3.utils.numberToHex(params.gasPrice),
-                        nonce: nonce
+                        nonce: web3.utils.numberToHex(nonce)
                     }]
                 }, async function (error, resp) {
+                    console.log(resp)
+                    console.log(error)
                     if (!resp.error) {
                         respondToWeb3Request(auth.tabId, auth.reqId, {
                             success: true,

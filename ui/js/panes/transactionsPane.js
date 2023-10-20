@@ -11,6 +11,7 @@ class TransactionsPane {
         nftTx: $("#transactionsNftTx"),
         notifTx: $("#transactionsNotifTx"),
         swapTx: $("#transactionsSwapTx"),
+        wrapTx: $("#transactionsWrapTx"),
         atomicSwapTx: $("#transactionsAtomicSwapTx"),
         tokenTx:$("#transactionsTokenForTokenSwapTx"),
         approveTx: $('#transactionsApproveTx'),
@@ -50,9 +51,9 @@ class TransactionsPane {
             transactionsPane.txsCount = 0
             transactionsPane.reachedEnd = false
             transactionsPane.loadTxs()
-            getNotifications().then( res => {
+            /**getNotifications().then( res => {
                 transactionsPane.showNotifications(res)
-            })
+            })**/
         })
 
         TransactionsPane.All.click(function (){
@@ -162,6 +163,11 @@ class TransactionsPane {
             case 'ATOMICSWAP':
                 this.showAtomicSwapTransaction(transaction)
                 break
+            case "WRAP":
+                await this.showWrapTransaction(selectedWallet, transaction)
+                break
+            case "UNWRAP":
+                await this.showWrapTransaction(selectedWallet, transaction)
             case 'NFT':
                 this.showNftTransaction(selectedWallet, transaction)
                 break
@@ -180,12 +186,10 @@ class TransactionsPane {
             if( !$("#transactionsPane .list #txDate .setUpDate").hasClass(dates.toLocaleDateString("en-US", options))){
                 if (dates.toLocaleDateString("en-US", options) !== today.toLocaleDateString("en-US", options)){
                     elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
-                    console.log(dates.toLocaleDateString("en-US", options))
                     elem.find('.setUpDate').html(dates.toLocaleDateString("en-US", options))
                     TransactionsPane.list.self.append(elem)
                 }else{
                     elem.find(".setUpDate").addClass(dates.toLocaleDateString("en-US", options))
-                    console.log(dates.toLocaleDateString("en-US", options))
                     elem.find('.setUpDate').html("Today")
                     TransactionsPane.list.self.append(elem)
                 }
@@ -505,8 +509,6 @@ class TransactionsPane {
             let elem = TransactionsPane.list.swapTx.clone()
             elem.attr("id", "tx"+transaction.hash)
 
-            console.log(transaction)
-
             if (transaction.contractAddr === "WEB3_SWAP"){
                 const token1 = await getTokenDetails(transaction.swap.tokenIn)
                 elem.find(".ticker.one").html(token1.symbol)
@@ -644,6 +646,107 @@ class TransactionsPane {
         }
     }
 
+
+    async showWrapTransaction(selectedWallet, transaction){
+        console.log(transaction)
+        try {
+            let elem = TransactionsPane.list.wrapTx.clone()
+            elem.attr("id", "tx"+transaction.hash)
+
+            if (transaction.contractAddr === "WRAP"){
+                elem.find(".ticker.one").html(selectedWallet.ticker)
+                elem.find(".amountIn").html(Utils.formatAmount(transaction.amount, selectedWallet.decimals))
+            }
+
+            if(transaction.contractAddr === "UNWRAP"){
+                elem.find(".wrapType").html("Unwrap")
+                console.log("got here " + transaction.contractAddr)
+                const token1 = await getTokenDetails(selectedWallet.contract)
+                console.log("fuck " + transaction.contractAddr)
+                elem.find(".ticker.one").html(token1.ticker)
+                elem.find(".amountIn").html(Utils.formatAmount(transaction.amount, token1.decimals))
+            }
+
+            if (transaction.status === false){
+                elem.find(".status").html("Canceled")
+                elem.addClass('refusedTx').removeClass('pendingTx');
+            }
+
+            if (transaction.status === true){
+                elem.find(".status").html("Confirmed")
+                elem.addClass('confirmedTx').removeClass('pendingTx');
+            }
+
+            const dateswap = new Date(transaction.date)
+
+            elem.find(" .time").html(dateswap.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+
+            elem.attr("data-date", transaction.date)
+            const date = new Date(transaction.date)
+
+            let options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
+            elem.find(".totalFees span").html(selectedWallet.ticker)
+
+            if(selectedWallet.explorer === undefined)
+                elem.find("button").hide()
+            else
+                elem.find("button").click(function(){
+                    window.open(selectedWallet.explorer + transaction.hash, "_blank")
+                })
+
+            elem.click(function(){
+                if(elem.hasClass("opened")) return
+
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".closeChevron").click(function(){
+                if(!elem.hasClass("opened")) return
+                elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
+                return false
+            })
+
+            if(transaction.status !== undefined){
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if(!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            }else{
+                elem.find(".speed-up").click(function(){
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if(transaction.canceling){
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function(){
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+            TransactionsPane.list.self.append(elem)
+            console.log("showing " + transaction.contractAddr)
+            elem.show()
+        }catch(e){
+            console.log(e)
+        }
+    }
+
     showBasicTransaction(selectedWallet, transaction){
         try {
             let elem = TransactionsPane.list.basicTx.clone()
@@ -654,7 +757,6 @@ class TransactionsPane {
                 elem.find(".amount span").html(selectedWallet.ticker)
             } else {
                 let tokenInfos = selectedWallet.tokens.filter(record => record.contract == transaction.contractAddr)[0]
-                console.log(tokenInfos)
                 elem.find(".amount span").html(tokenInfos.ticker)
                 elem.find(".amount val").html(Utils.formatAmount(transaction.amount, tokenInfos.decimals))
             }
@@ -696,7 +798,6 @@ class TransactionsPane {
 
             elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
             elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
-            console.log(transaction)
             elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
             elem.find(".totalFees span").html(selectedWallet.ticker)
 
@@ -956,7 +1057,6 @@ class TransactionsPane {
                 if(transaction.status !== undefined){
                     elem.find(".badge-warning").hide()
                     if(!transaction.status){
-                        console.log("hiding")
                         elem.find("progress-ring").hide()
                         elem.find(".status").html("Canceled")
                         elem.addClass('refusedTx').removeClass('pendingTx');
@@ -968,7 +1068,6 @@ class TransactionsPane {
 
                     }else {
                         if(transaction.confirmations >= 12){
-                            console.log("hiding")
                             elem.find("progress-ring").hide()
                             elem.find(".status").html("Confirmed")
                             elem.addClass('confirmedTx').removeClass('pendingTx');

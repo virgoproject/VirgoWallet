@@ -221,6 +221,8 @@ const ERC20_ABI = [
     }
 ]
 
+const WETH_ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"guy","type":"address"},{"name":"wad","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"src","type":"address"},{"name":"dst","type":"address"},{"name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"wad","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"dst","type":"address"},{"name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":true,"name":"guy","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":true,"name":"dst","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"dst","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Withdrawal","type":"event"}]
+
 const UNI_ROUTER02 = [
     {
         "inputs": [],
@@ -1341,9 +1343,15 @@ const UNI_FACTORY = [
     }
 ]
 
-const VIRGOSWAP = [
+const VIRGOSWAP_ABI = [
     {
-        "inputs": [],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "weth",
+                "type": "address"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "constructor"
     },
@@ -1367,14 +1375,61 @@ const VIRGOSWAP = [
         "type": "event"
     },
     {
+        "anonymous": false,
         "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "Swap",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
             {
                 "internalType": "address[]",
                 "name": "route",
                 "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
             }
         ],
-        "name": "swapExactBNBForToken",
+        "name": "swapExactETHForTokens",
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
@@ -1382,6 +1437,11 @@ const VIRGOSWAP = [
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
@@ -1390,9 +1450,14 @@ const VIRGOSWAP = [
                 "internalType": "address[]",
                 "name": "route",
                 "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
             }
         ],
-        "name": "swapExactTokenForBNB",
+        "name": "swapExactTokensForETH",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1400,6 +1465,11 @@ const VIRGOSWAP = [
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
@@ -1408,9 +1478,197 @@ const VIRGOSWAP = [
                 "internalType": "address[]",
                 "name": "route",
                 "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
             }
         ],
-        "name": "swapExactTokenForToken",
+        "name": "swapExactTokensForTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactETHForTokens",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "route",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint24",
+                "name": "poolFee",
+                "type": "uint24"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactETHForTokensSingle",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactTokensForETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "route",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint24",
+                "name": "poolFee",
+                "type": "uint24"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactTokensForETHSingle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactTokensForTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "routerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "route",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint24",
+                "name": "poolFee",
+                "type": "uint24"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "univ3_swapExactTokensForTokensSingle",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1867,138 +2125,6 @@ const UNI_QUOTERV2 = [
     }
 ]
 
-const VIRGOSWAP_3 = [
-    {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "Received",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "caller",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amountIn",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amountOut",
-                "type": "uint256"
-            }
-        ],
-        "name": "Swap",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address[]",
-                "name": "route",
-                "type": "address[]"
-            },
-            {
-                "internalType": "uint24[]",
-                "name": "fees",
-                "type": "uint24[]"
-            }
-        ],
-        "name": "swapExactETHForToken",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address[]",
-                "name": "route",
-                "type": "address[]"
-            },
-            {
-                "internalType": "uint24[]",
-                "name": "fees",
-                "type": "uint24[]"
-            }
-        ],
-        "name": "swapExactTokenForETH",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address[]",
-                "name": "route",
-                "type": "address[]"
-            },
-            {
-                "internalType": "uint24[]",
-                "name": "fees",
-                "type": "uint24[]"
-            }
-        ],
-        "name": "swapExactTokenForToken",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "stateMutability": "payable",
-        "type": "receive"
-    }
-]
-
 const ATOMIC_LOCKER = [
     {
         "inputs": [
@@ -2099,4 +2225,5 @@ abiDecoder.addABI(UNI_FACTORY03)
 abiDecoder.addABI(UNI_QUOTERV2)
 abiDecoder.addABI(PANCAKE_SMARTROUTER3)
 abiDecoder.addABI(UNI_ROUTER3)
+abiDecoder.addABI(VIRGOSWAP_ABI)
 
