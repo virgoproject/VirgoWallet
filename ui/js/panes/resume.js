@@ -94,6 +94,7 @@ class MainPane {
             $("#manageAssetsBtn").hide()
             $("#manageNFTsBtn").show()
             MainPane.manageTokenBtn.hide()
+            $(".loadingCollection").show()
             mainPane.displayNFTs()
             MainPane.walletAssets.hide()
             MainPane.walletNft.show()
@@ -372,6 +373,7 @@ class MainPane {
     }
 
     async displayNFTs() {
+
         const data = await getBaseInfos()
         const selectedWallet = data.wallets[data.selectedWallet].wallet
         let previousCollection = null
@@ -438,6 +440,7 @@ class MainPane {
                                 MainPane.walletNft.append(newRow);
                                 $('#nftNotfound').hide()
                                 newRow.show();
+                                $(".loadingCollection").hide()
                             });
                         });
                     }

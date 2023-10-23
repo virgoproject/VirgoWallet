@@ -86,7 +86,7 @@ class NftPane {
                         NftPane.back.click()
                     }else if (res == true){
                         notyf.success("NFT Successfully added!")
-                        mainPane.updateNft()
+                        mainPane.displayNFTs()
                         NftPane.back.click()
                     }
                 })

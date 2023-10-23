@@ -45,7 +45,7 @@ class NftDetailPane {
     }
 
     displayToken(uri,address,tokenId){
-        NftDetailPane.self.hide()
+        NftDetailPane.self.show()
         NftDetailPane.loading.show()
         NftDetailPane.detailedPane.self.hide()
         NftDetailPane.detailedPane.infos.hide()
@@ -101,14 +101,14 @@ class NftDetailPane {
 
                         NftDetailPane.detailedPane.infosWrapperStats.append(newSpec)
                         newSpec.show()
+                        NftDetailPane.self.show()
+                        NftDetailPane.loading.hide()
+                        NftDetailPane.detailedPane.self.show()
+                        NftDetailPane.detailedPane.infos.show()
+                        NftDetailPane.detailedPane.infosLoading.hide()
+                        NftDetailPane.detailedPane.infosWrapper.show()
                     }
                 }
-                NftDetailPane.self.show()
-                NftDetailPane.loading.hide()
-                NftDetailPane.detailedPane.self.show()
-                NftDetailPane.detailedPane.infos.show()
-                NftDetailPane.detailedPane.infosLoading.hide()
-                NftDetailPane.detailedPane.infosWrapper.show()
             });
         });
     }

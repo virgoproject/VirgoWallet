@@ -27,6 +27,13 @@
     top: 8.5em;
 }
 
+.loadingCollection{
+    font-size: 2em;
+    text-align: center;
+    width: 100%;
+    top: 8.5em;
+}
+
 #sendNftConfirmFees .back{
     position: absolute;
     text-align: center;
