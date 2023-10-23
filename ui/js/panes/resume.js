@@ -89,16 +89,18 @@ class MainPane {
         })
 
         MainPane.nft.click(function(){
-            MainPane.nft.addClass("divResumePaneSelected")
-            MainPane.allAssets.removeClass("divResumePaneSelected")
-            $("#manageAssetsBtn").hide()
-            $("#manageNFTsBtn").show()
-            MainPane.manageTokenBtn.hide()
-            $(".loadingCollection").show()
-            mainPane.displayNFTs()
-            MainPane.walletAssets.hide()
-            MainPane.walletNft.show()
-            MainPane.importNft.addClass("importNftSelected")
+            if(!MainPane.nft.hasClass("divResumePaneSelected")) {
+                MainPane.nft.addClass("divResumePaneSelected")
+                MainPane.allAssets.removeClass("divResumePaneSelected")
+                $("#manageAssetsBtn").hide()
+                $("#manageNFTsBtn").show()
+                MainPane.manageTokenBtn.hide()
+                $(".loadingCollection").show()
+                mainPane.displayNFTs()
+                MainPane.walletAssets.hide()
+                MainPane.walletNft.show()
+                MainPane.importNft.addClass("importNftSelected")
+            }
         })
 
         MainPane.backupPopup.button.click(function(){
