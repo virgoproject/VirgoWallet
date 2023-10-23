@@ -99,7 +99,6 @@ class MainPane {
                         .then(function (response) {
                                 mainPane.displayNft(response)
                         })
-
                 MainPane.walletAssets.hide()
                 MainPane.walletNft.show()
                 MainPane.importNft.addClass("importNftSelected")
@@ -215,6 +214,13 @@ class MainPane {
                     swapPane.updateBalance(SwapPane.inputs.two, true)
                 }
                 events.updateData(response)
+            })
+    }
+
+    updateNft(){
+        browser.runtime.sendMessage({command: 'getBaseInfos'})
+            .then(function (response) {
+                mainPane.displayNft(response)
             })
     }
 
@@ -438,6 +444,7 @@ class MainPane {
                                 newRow.find("svg").attr("data-jdenticon-value");
 
                                 newRow.click(function () {
+                                    $(".loadingNft").show()
                                     collectionNftPane.displayCollection(collection, data)
                                 });
 

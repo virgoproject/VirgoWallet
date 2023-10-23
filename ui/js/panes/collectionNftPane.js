@@ -7,6 +7,7 @@ class CollectionNftPane {
 
 
     constructor() {
+
         CollectionNftPane.back.click(function(){
             CollectionNftPane.self.hide()
             CollectionNftPane.walletNft.empty()
@@ -14,8 +15,6 @@ class CollectionNftPane {
     }
 
     displayCollection(collection,data){
-        $(".loadingNft").show()
-
         let title = collection.charAt(0).toUpperCase() + collection.slice(1)
         CollectionNftPane.titleCollection.html(title)
         console.log(collection)
@@ -31,7 +30,6 @@ class CollectionNftPane {
                 let tokenId = data.wallets[data.selectedWallet].wallet.nft[x].tokenId
                 let elemId = "bal" + contractAdr;
                 let existingElem = $("#" + elemId);
-                console.log(existingElem.length)
                     fetch(uri).then(resp => {
                         resp.json().then(json => {
                             console.log(json)
