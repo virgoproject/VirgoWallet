@@ -26,6 +26,7 @@ class MainPane {
     static walletNft = $("#walletNft")
     static fluctuation = $("#mainPane .header .stats .fluctuation")
     static allAssetdiv = $("#allAssetdiv")
+    static nftDiv = $("#nftDiv")
     static allAssets = $("#allAssets")
     static nft = $("#nft")
     static testnetFaucet = {
@@ -81,6 +82,7 @@ class MainPane {
                 MainPane.walletAssets.show()
                 MainPane.manageTokenBtn.show()
                 MainPane.walletNft.hide()
+                MainPane.walletNft.empty()
                 $('#nftNotfound').hide()
                 MainPane.importNft.removeClass("importNftSelected")
             }

@@ -103,13 +103,13 @@ class NftDetailPane {
                         newSpec.show()
                     }
                 }
+                NftDetailPane.self.show()
+                NftDetailPane.loading.hide()
+                NftDetailPane.detailedPane.self.show()
+                NftDetailPane.detailedPane.infos.show()
+                NftDetailPane.detailedPane.infosLoading.hide()
+                NftDetailPane.detailedPane.infosWrapper.show()
             });
-            NftDetailPane.self.show()
-            NftDetailPane.loading.hide()
-            NftDetailPane.detailedPane.self.show()
-            NftDetailPane.detailedPane.infos.show()
-            NftDetailPane.detailedPane.infosLoading.hide()
-            NftDetailPane.detailedPane.infosWrapper.show()
         });
     }
 

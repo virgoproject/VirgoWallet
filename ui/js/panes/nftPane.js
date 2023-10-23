@@ -9,6 +9,7 @@ class NftPane {
             input: $("#nftListAdd .contract .contractAddr"),
             submit: $("#nftListAdd .contract button"),
             label: $("#nftListAdd .contract .label"),
+            labelId: $("#nftListAdd .contract .labelId"),
             tokenId: $("#nftListAdd .contract .tokenID")
         },
         resume: {
@@ -34,7 +35,13 @@ class NftPane {
         NftPane.add.contract.input.on("input", function(){
             validateAddress(NftPane.add.contract.input.val()).then(function(res){
                 hasAsset(NftPane.add.contract.input.val()).then(function(hasAsset){
-                    NftPane.add.contract.submit.attr("disabled", !res || hasAsset)
+                    NftPane.add.contract.tokenId.on("input", function (){
+                        if (NftPane.add.contract.tokenId.val() !== ""){
+                            NftPane.add.contract.submit.attr("disabled", !res || hasAsset)
+                        }else{
+                            NftPane.add.contract.submit.attr("disabled", true)
+                        }
+                    })
                 })
             })
         })
@@ -52,10 +59,18 @@ class NftPane {
                     NftPane.add.contract.label.addClass("text-danger")
                     NftPane.add.contract.label.html("Invalid contract")
 
+                    NftPane.add.contract.input.addClass("is-invalid")
+                    NftPane.add.contract.labelId.addClass("text-danger")
+                    NftPane.add.contract.labelId.html("Invalid token ID")
+
                     setTimeout(function(){
                         NftPane.add.contract.input.removeClass("is-invalid")
                         NftPane.add.contract.label.removeClass("text-danger")
                         NftPane.add.contract.label.html("Contract address")
+
+                        NftPane.add.contract.input.removeClass("is-invalid")
+                        NftPane.add.contract.labelId.removeClass("text-danger")
+                        NftPane.add.contract.labelId.html("Token ID")
                     }, 2500)
                     return
                 }

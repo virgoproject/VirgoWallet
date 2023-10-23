@@ -14,7 +14,7 @@ class CollectionNftPane {
     }
 
     displayCollection(collection,data){
-        $("#loadingNft").show()
+        $(".loadingNft").show()
 
         let title = collection.charAt(0).toUpperCase() + collection.slice(1)
         CollectionNftPane.titleCollection.html(title)
@@ -58,8 +58,9 @@ class CollectionNftPane {
 
                             CollectionNftPane.walletNft.append(newRow);
                             newRow.show();
+                            $(".loadingNft").hide()
                         });
-                        $("#loadingNft").hide()
+
                         CollectionNftPane.self.show()
                     });
 

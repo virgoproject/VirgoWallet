@@ -213,6 +213,11 @@ border-radius: 50%;
     margin: 0;
 }
 
+.labelId {
+    margin: 0;
+}
+
+
 /* remove input number arrows */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
