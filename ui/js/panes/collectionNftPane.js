@@ -15,6 +15,9 @@ class CollectionNftPane {
     }
 
     displayCollection(collection,data){
+        CollectionNftPane.self.show()
+        $(".loadingNft").show()
+
         let title = collection.charAt(0).toUpperCase() + collection.slice(1)
         CollectionNftPane.titleCollection.html(title)
         console.log(collection)
@@ -30,37 +33,36 @@ class CollectionNftPane {
                 let tokenId = data.wallets[data.selectedWallet].wallet.nft[x].tokenId
                 let elemId = "bal" + contractAdr;
                 let existingElem = $("#" + elemId);
-                    fetch(uri).then(resp => {
-                        resp.json().then(json => {
-                            console.log(json)
-                            // create row for this nft
-                            let newRow = CollectionNftPane.baseNftRow.clone();
-                            if (selectedWallet) {
-                                newRow.attr("id", elemId);
-                            }
 
-                            newRow.find(".title").html(json.name);
-                            newRow.find(".ticker").html();
+                fetch(uri).then(resp => {
+                    resp.json().then(json => {
+                        console.log(json)
+                        // create row for this nft
+                        let newRow = CollectionNftPane.baseNftRow.clone();
+                        if (selectedWallet) {
+                            newRow.attr("id", elemId);
+                        }
 
-                            let url = json.image;
-                            const regex = /\.[^.\\/]*$/;
-                            const extension = url.match(regex);
-                            console.log(extension)
+                        newRow.find(".title").html(json.name);
+                        newRow.find(".ticker").html();
 
-                            newRow.find(".logoNft").attr("src", url);
-                            newRow.find("svg").attr("data-jdenticon-value");
+                        let url = json.image;
+                        const regex = /\.[^.\\/]*$/;
+                        const extension = url.match(regex);
+                        console.log(extension)
 
-                            newRow.click(function () {
-                                nftDetailPane.displayToken(uri,contractAdr,tokenId);
-                            });
+                        newRow.find(".logoNft").attr("src", url);
+                        newRow.find("svg").attr("data-jdenticon-value");
 
-                            CollectionNftPane.walletNft.append(newRow);
-                            newRow.show();
-                            $(".loadingNft").hide()
+                        newRow.click(function () {
+                            nftDetailPane.displayToken(uri,contractAdr,tokenId);
                         });
 
-                        CollectionNftPane.self.show()
+                        CollectionNftPane.walletNft.append(newRow);
+                        newRow.show();
+                        $(".loadingNft").hide()
                     });
+                });
 
                 }
             }

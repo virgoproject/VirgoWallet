@@ -88,22 +88,16 @@ class MainPane {
             }
         })
 
-        MainPane.nft.click(function (){
+        MainPane.nft.click(function(){
             MainPane.nft.addClass("divResumePaneSelected")
             MainPane.allAssets.removeClass("divResumePaneSelected")
             $("#manageAssetsBtn").hide()
             $("#manageNFTsBtn").show()
-            if ( MainPane.nft.hasClass("divResumePaneSelected")){
-                MainPane.manageTokenBtn.hide()
-                    browser.runtime.sendMessage({command: 'getBaseInfos'})
-                        .then(function (response) {
-                                mainPane.displayNft(response)
-                        })
-                MainPane.walletAssets.hide()
-                MainPane.walletNft.show()
-                MainPane.importNft.addClass("importNftSelected")
-            }
-
+            MainPane.manageTokenBtn.hide()
+            mainPane.displayNFTs()
+            MainPane.walletAssets.hide()
+            MainPane.walletNft.show()
+            MainPane.importNft.addClass("importNftSelected")
         })
 
         MainPane.backupPopup.button.click(function(){
@@ -214,13 +208,6 @@ class MainPane {
                     swapPane.updateBalance(SwapPane.inputs.two, true)
                 }
                 events.updateData(response)
-            })
-    }
-
-    updateNft(){
-        browser.runtime.sendMessage({command: 'getBaseInfos'})
-            .then(function (response) {
-                mainPane.displayNft(response)
             })
     }
 
@@ -384,7 +371,8 @@ class MainPane {
         tinysort("#walletAssets > div",{attr:"data-sort", order:'desc'});
     }
 
-    displayNft(data) {
+    async displayNFTs() {
+        const data = await getBaseInfos()
         const selectedWallet = data.wallets[data.selectedWallet].wallet
         let previousCollection = null
         const collectionCount = {};
@@ -395,7 +383,6 @@ class MainPane {
 
                 if (data.wallets[data.selectedWallet].wallet.nft[x].collection !== previousCollection) {
                     previousCollection = data.wallets[data.selectedWallet].wallet.nft[x].collection
-
 
                     let uri = data.wallets[data.selectedWallet].wallet.nft[x].tokenUri;
                     let contractAdr = data.wallets[data.selectedWallet].wallet.nft[x].contract;
@@ -444,7 +431,6 @@ class MainPane {
                                 newRow.find("svg").attr("data-jdenticon-value");
 
                                 newRow.click(function () {
-                                    $(".loadingNft").show()
                                     collectionNftPane.displayCollection(collection, data)
                                 });
 
