@@ -1,9 +1,7 @@
 #nftDetailPane {
     display: block;
-    height: 600px;
+    height: 100%;
     width: 100%;
-    /* transform: scaleY(0); */
-    transform-origin: 50% 0;
     position: absolute;
     top: 0;
     transition: transform 0.25s ease;
@@ -12,14 +10,14 @@
 }
 
 #nftDetailPane .logoNft {
-border-radius: 20px;
+    border-radius: 20px;
 }
 
 #nftDetailPane .content {
     z-index: 99999;
-    padding: 0 1em;
-    overflow-y: scroll;
-    height: 496px;
+    overflow: auto;
+    max-height: 100%;
+    padding: 0 1em 8em;
 }
 
 #sendNftBtn{
@@ -131,7 +129,7 @@ border-radius: 20px;
 }
 
 .attrTitle {
-font-weight: bold;
+    font-weight: bold;
 }
 
 .AddrSpec{
@@ -269,4 +267,6 @@ font-weight: bold;
     border-radius: 0.65em!important;
 }
 
-
+#nftDetailsDetailed {
+    height: 100%;
+}

@@ -46,6 +46,7 @@ display: block;
     padding-right: 0px !important;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 8em;
 }
 
 #mainPane .resume .assets .asset:hover {
