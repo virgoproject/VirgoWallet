@@ -143,7 +143,7 @@
 .tokenIdSpec{
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 80px;
+    max-width: 60px;
     margin-left: 12em;
     overflow: hidden;
 }

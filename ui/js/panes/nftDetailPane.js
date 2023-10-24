@@ -57,11 +57,23 @@ class NftDetailPane {
         NftDetailPane.detailedPane.copyAddr.click(function(e){
             e.stopPropagation()
             copyToClipboard(address);
+
+            NftDetailPane.detailedPane.addrSpec.html("Copied!")
+
+            setTimeout(function(){
+                NftDetailPane.detailedPane.addrSpec.html(address)
+            }, 2500)
         })
 
         NftDetailPane.detailedPane.copyTokenId.click(function(e){
             e.stopPropagation()
             copyToClipboard(tokenId);
+
+            NftDetailPane.detailedPane.tokenIdSpec.html("Copied!")
+
+            setTimeout(function(){
+                NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
+            }, 2500)
         })
 
         NftDetailPane.nftSendBtn.click(function (){
