@@ -483,3 +483,23 @@ iframe {
     top: 0;
     z-index: 10000000000;
 }
+
+#deleteNftPopup .box {
+    background-color: #242424 !important;
+    border-radius: 1em !important;
+}
+
+#deleteNftPopup .button{
+    border-radius: 1em !important;
+    color: black;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+#deleteNftPopup .button:hover{
+    color: white;
+}
+
+#deleteNftPopup #closeNftDelete:hover{
+    cursor: pointer;
+}

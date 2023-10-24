@@ -74,6 +74,7 @@
 
 #nftDetailPane .infos .name, #tokenDetailPane .infos .price {
     margin: 0;
+    margin-left: 2em;
     font-size: 1.4em;
 }
 

@@ -1856,8 +1856,11 @@
         </div>
         <div id="nftDetailsDetailed" style="display: none">
             <div class="row infos">
-                <div class="col-12 mt-2 d-flex justify-content-center align-self-center ">
+                <div class="col-10 mt-2 d-flex justify-content-center align-self-center">
                     <p class="name"></p>
+                </div>
+                <div class="col-2 mt-2 d-flex justify-content-center align-self-center">
+                    <p class="deleteNft">Delete</p>
                 </div>
             </div>
 
@@ -2557,6 +2560,23 @@
                 <div class="col-12">
                     <button class="button">Secure my assets</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="deleteNftPopup" class="popup" style="display: none;">
+        <div class="box text-white">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end mb-3 mt-2">
+                    <div class="col-1 d-flex text-white" id="closeNftDelete">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center justify-content-center">
+                <h2 class="col-10" id="NftDeleteTitle">Are you sure ?</h2>
+                <span class="mt-2 col-11" id="deleteNftCenteredText">You want to delete this Nft of your wallet ? if you delete is just for this wallet you can add again this Nft on your wallet later</span>
+                <button class="button col-4 mt-3 mb-3" id="deleteNftButtonConfirm">Yes</button>
+                <button class="button col-4 mt-3 mb-3" id="deleteNftButtonCancel">No</button>
             </div>
         </div>
     </div>

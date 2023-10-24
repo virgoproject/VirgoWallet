@@ -291,3 +291,9 @@
     border-radius: 0.65em!important;
 }
 
+.deleteNft{
+    margin: 0;
+    color: red;
+    cursor: pointer;
+}
+

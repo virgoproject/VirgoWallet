@@ -5,6 +5,10 @@ class NftDetailPane {
     static nftSendBtn = $("#sendNftBtn")
     static nftSendPane = $("#nftSendPane")
     static sendPaneNft = $('.sendPaneNft')
+    static deleteNft = $('.deleteNft')
+    static deleteNftConfirm = $("#deleteNftButtonConfirm")
+    static deleteNftCancel = $("#deleteNftButtonCancel")
+    static deleteNftBack = $("#closeNftDelete")
     static nftSendPaneRecipient = $(".sendPaneNft .recipient")
     static nftSendConfirm = $("#sendNftConfirmFees")
     static nextStep = $(".nextBtn")
@@ -74,6 +78,32 @@ class NftDetailPane {
             setTimeout(function(){
                 NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
             }, 2500)
+        })
+
+        NftDetailPane.deleteNft.click(function (){
+            $('#deleteNftPopup').show()
+        })
+
+        NftDetailPane.deleteNftBack.click(function (){
+            $('#deleteNftPopup').hide()
+        })
+
+        NftDetailPane.deleteNftConfirm.click(function (){
+            removeNft(address, tokenId)
+            NftDetailPane.deleteNftBack.click()
+            $("#allAssets").addClass("divResumePaneSelected")
+            $("#nft").removeClass("divResumePaneSelected")
+            $("#walletNft").hide()
+            $("#walletAssets").show()
+            $(".importNft").removeClass("importNftSelected")
+            $('.addAsset').show()
+            $("#nftDetailPane").hide()
+            $("#collectionPane").hide()
+            notyf.success("Nft delete!")
+        })
+
+        NftDetailPane.deleteNftCancel.click(function (){
+            NftDetailPane.deleteNftBack.click()
         })
 
         NftDetailPane.nftSendBtn.click(function (){
