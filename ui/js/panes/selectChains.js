@@ -61,6 +61,10 @@ class SelectChains {
                         MainPane.walletAssets.html("")
                         MainPane.walletAssets.append(baseAssetRow)
 
+                        if (MainPane.nft.hasClass("divResumePaneSelected")){
+                            mainPane.displayNFTs()
+                        }
+
                         document.getElementById("resumeTokenBar").innerHTML = ""
 
                         $("[data-networkname]").html(wallet.name + " Testnet")

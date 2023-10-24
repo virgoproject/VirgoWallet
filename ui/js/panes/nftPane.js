@@ -29,6 +29,9 @@ class NftPane {
 
         NftPane.back.click(function(){
             NftPane.self.hide()
+            NftPane.add.contract.tokenId.val("")
+            NftPane.add.contract.input.val("")
+            NftPane.add.contract.submit.attr("disabled", true)
             showStatsBar()
         })
 
@@ -83,9 +86,15 @@ class NftPane {
                 addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
                     if (res == false){
                         notyf.error("You do not own this NFT")
+                        NftPane.add.contract.tokenId.val("")
+                        NftPane.add.contract.input.val("")
+                        NftPane.add.contract.submit.attr("disabled", true)
                         NftPane.back.click()
                     }else if (res == true){
                         notyf.success("NFT Successfully added!")
+                        NftPane.add.contract.tokenId.val("")
+                        NftPane.add.contract.input.val("")
+                        NftPane.add.contract.submit.attr("disabled", true)
                         mainPane.displayNFTs()
                         NftPane.back.click()
                     }
