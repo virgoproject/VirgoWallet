@@ -234,6 +234,14 @@ function grantPendingAuthorization(auth, params){
 
         case "signMessage":
             console.log(auth)
+
+            if(auth.data[1] !== undefined && typeof auth.data[1] === "string"){
+                try {
+                    const parsedData = JSON.parse(auth.data[1])
+                    auth.data[1] = parsedData
+                }catch(e){}
+            }
+
             web3.currentProvider.send({
                 jsonrpc: "2.0",
                 id: Date.now() + "." + Math.random(),
@@ -339,6 +347,10 @@ function handleWeb3Request(origin, method, params, reqId, sender){
 
             signMessage(origin, params, tabId, reqId, method)
             break
+        case "eth_signTypedData":
+        case "eth_signTypedData_v1":
+        case "eth_signTypedData_v2":
+        case "eth_signTypedData_v3":
         case "eth_signTypedData_v4":
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 

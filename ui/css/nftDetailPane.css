@@ -20,15 +20,20 @@
     padding: 0 1em 8em;
 }
 
-#sendNftBtn{
+#sendNftBtn {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     white-space: break-spaces;
-    cursor: pointer;
-    width: 90%;
-    margin-top: 13px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 100%;
+}
 
+#sendNFTBtnWrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    padding: 0 1em;
 }
 
 #nftDetailPane .back {
