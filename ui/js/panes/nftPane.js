@@ -50,7 +50,6 @@ class NftPane {
         })
 
         NftPane.add.contract.submit.click(function(){
-            NftPane.add.contract.input.attr("disabled", true)
             disableLoadBtn($(this))
             getNftDetails(NftPane.add.contract.input.val(), NftPane.add.contract.tokenId.val()).then(function(details){
                 if(!details){
