@@ -450,6 +450,7 @@ class MainPane {
             }
         }else{
             MainPane.walletNft.empty()
+            $(".loadingCollection").hide()
             $('#nftNotfound').show()
         }
     }
