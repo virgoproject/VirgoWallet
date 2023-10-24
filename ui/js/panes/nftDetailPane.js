@@ -9,9 +9,6 @@ class NftDetailPane {
     static deleteNftConfirm = $("#deleteNftButtonConfirm")
     static deleteNftCancel = $("#deleteNftButtonCancel")
     static deleteNftBack = $("#closeNftDelete")
-    static nftSendPaneRecipient = $(".sendPaneNft .recipient")
-    static nftSendConfirm = $("#sendNftConfirmFees")
-    static nextStep = $(".nextBtn")
     static detailedPane = {
         self: $("#nftDetailsDetailed"),
         name: $("#nftDetailPane .name"),
@@ -31,20 +28,9 @@ class NftDetailPane {
     }
 
     constructor() {
-    NftDetailPane.back.click(function(){
-        NftDetailPane.self.hide()
-        NftDetailPane.detailedPane.infosWrapperStats.empty()
-    })
-
-        NftDetailPane.nftSendPaneRecipient.on("input", function(){
-            const input = $(this);
-            if(input.val().length < 42){
-                NftDetailPane.nextStep.attr("disabled", true)
-                return
-            }
-            validateAddress(input.val()).then(function(res){
-                NftDetailPane.nextStep.attr("disabled", !res)
-            })
+        NftDetailPane.back.click(function(){
+            NftDetailPane.self.hide()
+            NftDetailPane.detailedPane.infosWrapperStats.empty()
         })
     }
 
@@ -91,15 +77,10 @@ class NftDetailPane {
         NftDetailPane.deleteNftConfirm.click(function (){
             removeNft(address, tokenId)
             NftDetailPane.deleteNftBack.click()
-            $("#allAssets").addClass("divResumePaneSelected")
-            $("#nft").removeClass("divResumePaneSelected")
-            $("#walletNft").hide()
-            $("#walletAssets").show()
-            $(".importNft").removeClass("importNftSelected")
-            $('.addAsset').show()
             $("#nftDetailPane").hide()
             $("#collectionPane").hide()
-            notyf.success("Nft delete!")
+            $("#allAssets").click()
+            notyf.success("NFT successfully deleted!")
         })
 
         NftDetailPane.deleteNftCancel.click(function (){
@@ -109,18 +90,11 @@ class NftDetailPane {
         NftDetailPane.nftSendBtn.click(function (){
             NftDetailPane.nftSendPane.show()
             NftDetailPane.sendPaneNft.show()
-        })
-
-        NftDetailPane.nextStep.click(function (){
-            NftDetailPane.sendPaneNft.hide()
-            NftDetailPane.nftSendConfirm.show()
-            let recipient = NftDetailPane.nftSendPaneRecipient.val()
-            sendNft.displayInfo(uri ,recipient ,tokenId, address,)
+            sendNft.init(uri, tokenId, address)
         })
 
         fetch(uri).then(resp => {
             resp.json().then(json => {
-                console.log(json)
                 NftDetailPane.detailedPane.name.html(json.name)
                 NftDetailPane.detailedPane.img.attr("src", json.image);
                 NftDetailPane.detailedPane.infosWrapperDesc.html(json.description)

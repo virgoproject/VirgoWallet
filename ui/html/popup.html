@@ -1896,19 +1896,19 @@
                 </div>
             </div>
             <div id="sendNFTBtnWrapper">
-                <button class="button " id="sendNftBtn">Send NFT</button>
+                <button class="button" id="sendNftBtn">Send NFT</button>
             </div>
         </div>
     </div>
     <div id="nftSendPane" style="display: none">
-        <div class="sendPaneNft" style="display: none">
+        <div class="sendPaneNft" id="sendNFTRecipientPane" style="display: none">
             <div class="row mt-3" >
                 <div class="mb-2">
                     <div class="back ">
                         <i class="fas fa-chevron-left"></i>
                     </div>
                     <div class="col-12 title d-flex justify-content-center">
-                        <h5>Send To</h5>
+                        <h5>Send NFT</h5>
                     </div>
                 </div>
             </div>
@@ -1916,37 +1916,39 @@
                 <div class="col-12">
                     <p class="label mb-2">To</p>
                     <div class="input-group col-12" style="font-size: 1.2em">
-                        <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#nftSendPane .submit">
-                        <button class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit" disabled="disabled"></button>
+                        <input type="text" class="input col-10 pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#NFTSendRecipientBtn" id="sendNFTRecipient">
+                        <button class="fa-regular fa-arrow-right d-flex align-items-center ms-0 col-2 submit" disabled="disabled" id="sendNFTRecipientBtn"></button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="loadingNft NftLoadingBody text-center" style="display: none">
+        <div class="loadingNft NftLoadingBody text-center" id="sendNFTLoadingPane" style="display: none">
             <i class="fas fa-spinner fa-pulse"></i>
         </div>
-        <div class="sendConfirm" id="sendNftConfirmFees" style="display: none">
+        <div class="sendConfirm" id="sendNFTConfirmPane" style="display: none">
             <div class="row mb-3">
                 <div class="col-2 back pl-0">
                     <i class=" fas fa-chevron-left"></i>
                 </div>
+                <div class="col-2"></div>
                 <div class="col-8 title d-flex justify-content-center">
-                    <h5>Confirm</h5>
+                    <h5>Send NFT</h5>
                 </div>
                 <div class="col-2"></div>
             </div>
             <div class="row mb-3 from d-flex justify-content-center text-center">
-                <p class="labelFromAndTo">NFT to send</p>
+                <p class="labelFromAndTo">You'll send</p>
                 <div class="identicon col-12 d-flex justify-content-center">
                     <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
                 </div>
+                <p id="sendNFTConfirmName"></p>
             </div>
             <div class="row mb-3 recipient">
                 <p class="labelFromAndTo">To</p>
                 <div class="identicon col-2">
                     <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
                 </div>
-                <p class="detail col-9 value labelAdress"><val></val></p>
+                <p class="detail col-9 value labelAddress"><val id="sendNFTConfirmRecipient"></val></p>
                 <p class="col-1 more">...</p>
             </div>
             <div class="row fees">

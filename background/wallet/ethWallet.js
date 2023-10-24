@@ -516,11 +516,6 @@ class EthWallet {
         return this.tokenSet.has(contract)
     }
 
-    hasContact(contract,tokenId){
-      return this.nftSet.has(contract+tokenId)
-    }
-
-
     addToken(name, ticker, decimals, contract, track = true){
         if(this.hasToken(contract) || !web3.utils.isAddress(contract)) return;
 
@@ -553,44 +548,38 @@ class EthWallet {
 
     }
 
-    addNft(tokenURI, tokenId, owner, contractNft, collec, track = true){
-        if(this.hasContact(contractNft,tokenId)) return false;
-        if (baseWallet.getCurrentAddress() !== owner) return false;
+    addNft(tokenURI, tokenId, owner, contract, collection, track = true){
+        if(this.nftSet.has(contract+tokenId)) return 0
+        if (baseWallet.getCurrentAddress().toLowerCase() !== owner.toLowerCase()) return 1
 
-        console.log(collec)
         const token = {
             "tokenUri": tokenURI,
             "tokenId": tokenId,
-            "collection": collec,
-            "contract": contractNft,
+            "collection": collection,
+            "contract": contract,
             "owner": owner,
             "track": track
         }
 
-        console.log(this.nftSet)
         this.nft.push(token)
         this.nftSet.set(token.contract+token.tokenId, token)
         baseWallet.save()
-        return true
+        return 2
     }
 
     removeNft(contract, tokenId){
         let i = 0;
         for(const nft of this.nft){
-            if(nft.contract == contract){
+            if(nft.contract.toLowerCase() == contract.toLowerCase()){
                 if (nft.tokenId == tokenId) {
                     this.nft.splice(i, 1)
-                    this.tokenSet.delete(nft.contract+nft.tokenId)
+                    this.nftSet.delete(nft.contract+nft.tokenId)
                     baseWallet.save()
-                    return;
+                    return
                 }
             }
             i++
         }
-        console.log(this.nftSet)
-        this.nftSet.delete(contract+tokenId)
-        baseWallet.save()
-        return;
     }
 
     removeToken(contract){

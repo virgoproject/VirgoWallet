@@ -223,25 +223,25 @@
     color: #6e6e6e;
 }
 
-.labelFromAndTo{
+.labelFromAndTo {
     margin: 0;
     font-weight: bold;
     margin-bottom: 12px;
 }
 
-.labelCost{
+.labelCost {
     margin: 0;
     font-weight: bold;
 }
 
-.labelAdress{
+.labelAddress {
     display: flex;
     align-items: center;
     max-width: 220px !important;
     color: #6e6e6e !important;
 }
 
-.more{
+.more {
     padding: 0;
     margin: 0;
     display: flex;
@@ -249,7 +249,7 @@
     align-items: center;
 }
 
-#sendConfirm #showCost{
+#sendConfirm #showCost {
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
@@ -257,7 +257,7 @@
     max-width: 70px;
 }
 
-#sendConfirm .labelCostBox{
+#sendConfirm .labelCostBox {
     background: #F3F3F3;
     padding: 6px;
     border-radius: 20px;
@@ -266,7 +266,7 @@
     margin-right: auto;
 }
 
-#sendConfirmFeesLoading{
+#sendConfirmFeesLoading {
     text-align: center;
     margin-top: 8em;
     font-size: 2em;

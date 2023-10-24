@@ -1,36 +1,56 @@
 class SendNft {
-    static nftSendBtn = $("#sendNftBtn")
     static nftSendBack = $('#nftSendPane .back')
     static nftSendPane = $("#nftSendPane")
-    static nftSendPaneRecipient = $(".sendConfirm .value")
+    static confirmRecipient = $("#sendNFTConfirmRecipient")
     static nftSendConfirm = $("#sendNftConfirmFees")
-    static nextStep = $(".nextBtn")
     static nftImageSend = $('#sendNftConfirmFees .logoNft')
-
+    static confirmName = $("#sendNFTConfirmName")
+    static recipient = $("#sendNFTRecipient")
+    static nftSendConfirm = $("#sendNftConfirmFees")
+    static recipientBtn = $("#sendNFTRecipientBtn")
+    static recipientPane = $("#sendNFTRecipientPane")
 
     constructor() {
         SendNft.nftSendBack.click(function (){
             SendNft.nftSendPane.hide()
             SendNft.nftSendConfirm.hide()
             SendNft.nftImageSend.attr("src", "");
-            SendNft.nftSendPaneRecipient.find("val").html("")
+            SendNft.confirmRecipient.html("")
+        })
+
+        SendNft.recipient.on("input", function(){
+            const input = $(this);
+            if(input.val().length < 42){
+                SendNft.recipientBtn.attr("disabled", true)
+                return
+            }
+            validateAddress(input.val()).then(function(res){
+                SendNft.recipientBtn.attr("disabled", !res)
+            })
         })
     }
 
-    displayInfo(uri ,recipient ,tokenId, addres){
-        console.log(uri)
+    init(uri, tokenId, address){
+        SendNft.recipientBtn.click(function (){
+            SendNft.recipientPane.hide()
+            SendNft.nftSendConfirm.show()
+            let recipient = SendNft.recipient.val()
+            SendNft.displayConfirm(uri, recipient, tokenId, address)
+        })
+    }
+
+    static displayConfirm(uri, recipient, tokenId, address){
         $("#sendNftConfirmFees").hide()
-        $(".loadingNft").show()
+        $("#sendNFTLoadingPane").show()
         fetch(uri).then(resp => {
             resp.json().then(json => {
                 SendNft.nftImageSend.attr("src", json.image);
-                console.log(recipient)
-                SendNft.nftSendPaneRecipient.find("val").html(recipient)
+                SendNft.confirmName.html(json.name)
+                SendNft.confirmRecipient.html(recipient)
                 document.getElementById("to").setAttribute("data-jdenticon-value",recipient)
 
-                estimateSendFeesNft(recipient, tokenId, addres)
+                estimateSendFeesNft(recipient, tokenId, address)
                     .then(function (fees){
-                        console.log(fees)
                         let editFees = document.querySelector("edit-fees");
 
                         editFees.onGasChanged = (gasPrice, gasLimit) => {
@@ -58,19 +78,18 @@ class SendNft {
                         editFees.start(fees.gasLimit);
                         editFees.onGasChanged(fees.gasPrice, fees.gasLimit)
 
-                        $(".loadingNft").hide()
+                        $("#sendNFTLoadingPane").hide()
                         $("#sendNftConfirmFees").show()
 
                         $("#confirmSendNftBtn").click(function(){
-                            console.log("coucou")
                             sendToNft(recipient,
-                                addres,
+                                address,
                                 tokenId,
                                 fees.gasLimit,
                                 fees.gasPrice)
                                 .then(function(res){
                                     notyf.success("Transaction sent!")
-                                    removeNft(addres, tokenId)
+                                    removeNft(address, tokenId)
                                     $("#allAssets").addClass("divResumePaneSelected")
                                     $("#nft").removeClass("divResumePaneSelected")
                                     $("#walletNft").hide()

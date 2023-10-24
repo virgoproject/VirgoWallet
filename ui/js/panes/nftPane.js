@@ -83,20 +83,24 @@ class NftPane {
                 const tokenId = details.tokenID
 
                 addNft(uri,tokenId,details.owner,details.contract,details.collection).then(function(res){
-                    if (res == false){
-                        notyf.error("You do not own this NFT")
-                        NftPane.add.contract.tokenId.val("")
-                        NftPane.add.contract.input.val("")
-                        NftPane.add.contract.submit.attr("disabled", true)
-                        NftPane.back.click()
-                    }else if (res == true){
-                        notyf.success("NFT Successfully added!")
-                        NftPane.add.contract.tokenId.val("")
-                        NftPane.add.contract.input.val("")
-                        NftPane.add.contract.submit.attr("disabled", true)
-                        mainPane.displayNFTs()
-                        NftPane.back.click()
+
+                    switch(res){
+                        case 0:
+                            notyf.error("You already have this NFT.")
+                            break
+                        case 1:
+                            notyf.error("You do not own this NFT!")
+                            break
+                        case 2:
+                            notyf.success("NFT successfully added!")
+                            mainPane.displayNFTs()
+                            break
                     }
+
+                    NftPane.add.contract.tokenId.val("")
+                    NftPane.add.contract.input.val("")
+                    NftPane.add.contract.submit.attr("disabled", true)
+                    NftPane.back.click()
                 })
 
             })
