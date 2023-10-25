@@ -114,7 +114,7 @@ class TokensSelect {
         $(elem).find("img").on('load', function() {
             $(elem).find("svg").hide()
             $(elem).find("img").show()
-        }).attr("src", "https://github.com/virgoproject/tokens/blob/main/"+MAIN_ASSET.ticker+"/"+json.contract+"/logo.png?raw=true")
+        }).attr("src", "https://github.com/virgoproject/tokens/blob/main/"+MAIN_ASSET.chainID+"/"+json.contract+"/logo.png?raw=true")
 
         elem.style.display = "block"
 

@@ -79,7 +79,7 @@ class SwapPane {
                 $("#selectedTokenImg1").on('load', function() {
                     $("#selectedTokenSvg1").hide()
                     $("#selectedTokenImg1").show()
-                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.chainID + "/" + json.contract + "/logo.png?raw=true")
 
                 $("#selectedTokenSvg1").attr("data-jdenticon-value", json.contract)
 
@@ -89,7 +89,7 @@ class SwapPane {
                 $("#swapReviewSelectedTokenImg").on('load', function() {
                     $("#swapReviewSelectedTokenSvg").hide()
                     $("#swapReviewSelectedTokenImg").show()
-                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.chainID + "/" + json.contract + "/logo.png?raw=true")
 
                 $("#swapReviewSelectedTokenSvg").attr("data-jdenticon-value", json.contract)
                 jdenticon()
@@ -115,7 +115,7 @@ class SwapPane {
                 $("#selectedTokenImg2").on('load', function() {
                     $("#selectedTokenSvg2").hide()
                     $("#selectedTokenImg2").show()
-                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.ticker + "/" + json.contract + "/logo.png?raw=true")
+                }).attr("src", "https://github.com/virgoproject/tokens/blob/main/" + MAIN_ASSET.chainID + "/" + json.contract + "/logo.png?raw=true")
 
                 $("#selectedTokenSvg2").attr("data-jdenticon-value", json.contract)
                 jdenticon()
