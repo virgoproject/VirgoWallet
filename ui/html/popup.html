@@ -1047,7 +1047,7 @@
             <h5 class="text-center" id="collectionTitle"></h5>
         </div>
         <div class="content mt-2">
-            <div class="loadingNft text-center mt-2 mb-2">
+            <div class="text-center mt-2 mb-2" id="NFTCollectionLoading">
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
             <div id="walletNftByCollection" class="row">
@@ -1059,7 +1059,6 @@
                         <div class="col-12">
                             <p class="title mt-1">Bitcoin</p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -1856,7 +1855,8 @@
         </div>
         <div id="nftDetailsDetailed" style="display: none">
             <div class="row infos">
-                <div class="col-10 mt-2 d-flex justify-content-center align-self-center">
+                <div class="col-2"></div>
+                <div class="col-8 mt-2 d-flex justify-content-center align-self-center">
                     <p class="name"></p>
                 </div>
                 <div class="col-2 mt-2 d-flex justify-content-center align-self-center">
@@ -1873,23 +1873,33 @@
                         <div class="text-center rank mt-2 mb-1">
                             <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
                         </div>
-
-                            <div class="col-12">
-                                <p class="description mt-3"></p>
+                        <div class="row">
+                            <p class="description mt-3"></p>
+                        </div>
+                        <div class="row NFTDetail copiable" id="NFTDetailsAddress">
+                            <div class="col-4">
+                                <span class="title">Address</span>
                             </div>
-
-                            <div class="col-12 AddrNft" >
-                                <p class="AddrTitle">Address</p>
-                                <p class="AddrSpec">test</p><i class="ms-2 fal fa-copy addrCopy"></i>
+                            <div class="col-8 text-right contentWrapper">
+                                <span class="content">addr</span>
                             </div>
-                            <div class="col-12 tokenIdNft" >
-                                <p class="tokenIdTitle">Token ID</p>
-                                <p class="tokenIdSpec">test</p><i class="ms-2 fal fa-copy tokenIdCopy"></i>
+                        </div>
+                        <div class="row NFTDetail copiable" id="NFTDetailsID">
+                            <div class="col-4">
+                                <span class="title">Token ID</span>
                             </div>
-                        <div class="row stats">
-                            <div class="col-12 baseAttrNft" style="display: none">
-                                <p class="attrTitle"></p>
-                                <p class="attrSpec"></p>
+                            <div class="col-8 text-right contentWrapper">
+                                <span class="content">tokenId</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div id="NFtDetailsBaseAttr" class="row NFTDetail" style="display: none">
+                                <div class="col-4">
+                                    <span class="title"></span>
+                                </div>
+                                <div class="col-8 text-right contentWrapper">
+                                    <span class="content"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1922,7 +1932,7 @@
                 </div>
             </div>
         </div>
-        <div class="loadingNft NftLoadingBody text-center" id="sendNFTLoadingPane" style="display: none">
+        <div class="text-center" id="sendNFTLoadingPane" style="display: none">
             <i class="fas fa-spinner fa-pulse"></i>
         </div>
         <div class="sendConfirm" id="sendNFTConfirmPane" style="display: none">
@@ -1946,7 +1956,7 @@
             <div class="row mb-3 recipient">
                 <p class="labelFromAndTo">To</p>
                 <div class="identicon col-2">
-                    <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
+                    <svg data-jdenticon-value="sesesqqqfse" id="sendNFTRecipientIcon" width="40" height="40"></svg>
                 </div>
                 <p class="detail col-9 value labelAddress"><val id="sendNFTConfirmRecipient"></val></p>
                 <p class="col-1 more">...</p>
@@ -1966,7 +1976,7 @@
                 </div>
             </div>
             <button class="button feesBtn submit mt-5" id="confirmSendNftBtn" disabled="disabled">
-                <val></val>
+                <val>Send NFT</val>
                 <i class="fas fa-spinner fa-pulse" style="display: none"></i>
             </button>
         </div>

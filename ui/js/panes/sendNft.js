@@ -2,13 +2,14 @@ class SendNft {
     static nftSendBack = $('#nftSendPane .back')
     static nftSendPane = $("#nftSendPane")
     static confirmRecipient = $("#sendNFTConfirmRecipient")
-    static nftSendConfirm = $("#sendNftConfirmFees")
-    static nftImageSend = $('#sendNftConfirmFees .logoNft')
+    static nftSendConfirm = $("#sendNFTConfirmPane")
+    static nftImageSend = $('#sendNFTConfirmPane .logoNft')
     static confirmName = $("#sendNFTConfirmName")
     static recipient = $("#sendNFTRecipient")
-    static nftSendConfirm = $("#sendNftConfirmFees")
     static recipientBtn = $("#sendNFTRecipientBtn")
     static recipientPane = $("#sendNFTRecipientPane")
+
+    static loadingPane = $("#sendNFTLoadingPane")
 
     constructor() {
         SendNft.nftSendBack.click(function (){
@@ -31,23 +32,24 @@ class SendNft {
     }
 
     init(uri, tokenId, address){
+        SendNft.recipient.val("")
+        SendNft.recipientBtn.attr("disabled", true)
+
         SendNft.recipientBtn.click(function (){
             SendNft.recipientPane.hide()
-            SendNft.nftSendConfirm.show()
             let recipient = SendNft.recipient.val()
             SendNft.displayConfirm(uri, recipient, tokenId, address)
         })
     }
 
     static displayConfirm(uri, recipient, tokenId, address){
-        $("#sendNftConfirmFees").hide()
-        $("#sendNFTLoadingPane").show()
+        SendNft.loadingPane.show()
         fetch(uri).then(resp => {
             resp.json().then(json => {
                 SendNft.nftImageSend.attr("src", json.image);
                 SendNft.confirmName.html(json.name)
                 SendNft.confirmRecipient.html(recipient)
-                document.getElementById("to").setAttribute("data-jdenticon-value",recipient)
+                document.getElementById("sendNFTRecipientIcon").setAttribute("data-jdenticon-value",recipient)
 
                 estimateSendFeesNft(recipient, tokenId, address)
                     .then(function (fees){
@@ -62,7 +64,7 @@ class SendNft {
                                     totalNative += Number(SendPane.amount.val())
 
                                 if (totalNative <= Utils.formatAmount(mainBal.balance, mainBal.decimals)) {
-                                    $("#confirmSendNftBtn").find("val").html("Send " + MAIN_ASSET.ticker)
+                                    $("#confirmSendNftBtn").find("val").html("Send NFT")
                                     $("#confirmSendNftBtn").attr("disabled", false)
                                 } else {
                                     $("#confirmSendNftBtn").find("val").html("Insufficient " + MAIN_ASSET.ticker + " balance")
@@ -78,16 +80,20 @@ class SendNft {
                         editFees.start(fees.gasLimit);
                         editFees.onGasChanged(fees.gasPrice, fees.gasLimit)
 
-                        $("#sendNFTLoadingPane").hide()
-                        $("#sendNftConfirmFees").show()
+                        SendNft.loadingPane.hide()
+                        SendNft.nftSendConfirm.show()
+
+                        console.log("heyy")
 
                         $("#confirmSendNftBtn").click(function(){
+                            disableLoadBtn($("#confirmSendNftBtn"))
                             sendToNft(recipient,
                                 address,
                                 tokenId,
                                 fees.gasLimit,
                                 fees.gasPrice)
                                 .then(function(res){
+                                    enableLoadBtn($("#confirmSendNftBtn"))
                                     notyf.success("Transaction sent!")
                                     removeNft(address, tokenId)
                                     $("#allAssets").addClass("divResumePaneSelected")
@@ -102,8 +108,7 @@ class SendNft {
                                     SendNft.nftSendConfirm.hide()
                                     $("#nftDetailPane").hide()
                                     $("#collectionPane").hide()
-                           })
-
+                                })
                         })
                     })
             });

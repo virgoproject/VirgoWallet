@@ -18,13 +18,11 @@ class NftDetailPane {
         infosWrapper: $("#nftInfosWrapper"),
         infosWrapperStats: $("#nftInfosWrapper .stats"),
         infosWrapperDesc: $("#nftInfosWrapper .description"),
-        baseAttrNft: $("#nftInfosWrapper .baseAttrNft"),
-        baseAttrNftTitle: $("#baseAttrNft .attrTitle"),
-        baseAttrNftSpec: $("#baseAttrNft .attrSpec"),
-        addrSpec: $("#nftInfosWrapper .AddrNft .AddrSpec"),
-        tokenIdSpec: $("#nftInfosWrapper  .tokenIdNft .tokenIdSpec"),
-        copyAddr: $("#nftInfosWrapper  .AddrNft .addrCopy"),
-        copyTokenId: $("#nftInfosWrapper  .tokenIdNft .tokenIdCopy"),
+        baseAttrNft: $("#NFtDetailsBaseAttr"),
+        address: $("#NFTDetailsAddress"),
+        addrSpec: $("#NFTDetailsAddress .content"),
+        id: $("#NFTDetailsID"),
+        tokenIdSpec: $("#NFTDetailsID .content"),
     }
 
     constructor() {
@@ -44,7 +42,7 @@ class NftDetailPane {
         NftDetailPane.detailedPane.addrSpec.html(address)
         NftDetailPane.detailedPane.tokenIdSpec.html(tokenId)
 
-        NftDetailPane.detailedPane.copyAddr.click(function(e){
+        NftDetailPane.detailedPane.address.click(function(e){
             e.stopPropagation()
             copyToClipboard(address);
 
@@ -55,7 +53,7 @@ class NftDetailPane {
             }, 2500)
         })
 
-        NftDetailPane.detailedPane.copyTokenId.click(function(e){
+        NftDetailPane.detailedPane.id.click(function(e){
             e.stopPropagation()
             copyToClipboard(tokenId);
 
@@ -101,19 +99,18 @@ class NftDetailPane {
                 if (json.attributes && Array.isArray(json.attributes)) {
                     for (let x = 0; x < json.attributes.length; x++) {
                         let newSpec = NftDetailPane.detailedPane.baseAttrNft.clone();
-                        console.log(newSpec)
+
                         if ("trait_type" in json.attributes[x]) {
                             let title = json.attributes[x].trait_type;
                             console.log(title)
-                            newSpec.find(".attrTitle").html(title);
+                            newSpec.find(".title").html(title);
                         }
 
                         if ("value" in json.attributes[x]) {
                             let value = json.attributes[x].value;
                             console.log(value)
-                            newSpec.find(".attrSpec").html(value);
+                            newSpec.find(".content").html(value);
                         }
-
 
                         NftDetailPane.detailedPane.infosWrapperStats.append(newSpec)
                         newSpec.show()

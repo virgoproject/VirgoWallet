@@ -80,3 +80,7 @@
 #collectionPane .asset .ticker {
     font-weight: 600;
 }
+
+#NFTCollectionLoading {
+    margin-top: 45vh;
+}

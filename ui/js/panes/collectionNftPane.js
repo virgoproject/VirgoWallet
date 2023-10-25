@@ -5,7 +5,6 @@ class CollectionNftPane {
     static walletNft = $("#walletNftByCollection")
     static baseNftRow = $("#baseNftRowByCollection")
 
-
     constructor() {
 
         CollectionNftPane.back.click(function(){
@@ -16,7 +15,7 @@ class CollectionNftPane {
 
     displayCollection(collection,data){
         CollectionNftPane.self.show()
-        $(".loadingNft").show()
+        $("#NFTCollectionLoading").show()
 
         let title = collection.charAt(0).toUpperCase() + collection.slice(1)
         CollectionNftPane.titleCollection.html(title)
@@ -60,7 +59,7 @@ class CollectionNftPane {
 
                         CollectionNftPane.walletNft.append(newRow);
                         newRow.show();
-                        $(".loadingNft").hide()
+                        $("#NFTCollectionLoading").hide()
                     });
                 });
 

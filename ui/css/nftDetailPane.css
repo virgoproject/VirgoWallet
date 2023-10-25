@@ -77,13 +77,12 @@
     margin-top: 4px;
 }
 
-#nftDetailPane .infos .name, #tokenDetailPane .infos .price {
+#nftDetailPane .infos .name {
     margin: 0;
-    margin-left: 2em;
     font-size: 1.4em;
 }
 
-#nftDetailPane .infos .ticker, #tokenDetailPane .infos .change {
+#nftDetailPane .infos .ticker {
     margin: 0;
     font-size: 0.75em;
     color: #666;
@@ -113,98 +112,6 @@
     overflow: hidden;
     overflow-y: auto;
     padding-bottom: 2em;
-}
-
-#nftInfos .stats {
-    padding: 0 1em;
-}
-
-#nftInfos .stats div {
-    border-bottom: 1px solid #00000015;
-    padding-top: 0.5em;
-    padding-left: 0;
-    padding-right: 0;
-    display: inline-flex;
-}
-
-.baseAttrNft {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 60px;
-}
-
-.attrTitle {
-    font-weight: bold;
-}
-
-.AddrSpec{
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 80px;
-    margin-left: 12em;
-    overflow: hidden;
-}
-
-.tokenIdSpec{
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 60px;
-    margin-left: 12em;
-    overflow: hidden;
-}
-
-.addrCopy{
-    margin-bottom: 1.5em;
-    cursor: pointer;
-}
-
-.addrCopy:hover {
-    margin-bottom: 1.5em;
-    cursor: pointer;
-    color: var(--mainColor);;
-}
-
-.tokenIdCopy{
-    margin-bottom: 1.5em;
-    cursor: pointer;
-}
-
-.tokenIdCopy:hover {
-    margin-bottom: 1.5em;
-    cursor: pointer;
-    color: var(--mainColor);;
-}
-
-.AddrNft, .tokenIdNft {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 60px;
-}
-
-.AddrTitle, .tokenIdTitle {
-    font-weight: bold;
-}
-
-
-
-#nftInfos .stats .title {
-    color: #000000ab;
-}
-
-#nftInfos .stats p {
-    margin-bottom: 0.5em;
-}
-
-#nftInfos .rank p {
-    margin-bottom: 0;
-    font-size: 1.75em;
-    line-height: 0.65em;
-}
-
-#nftInfos .rank b {
-    font-size: 0.65em;
 }
 
 #nftInfos .additionalBtn {
@@ -237,18 +144,6 @@
     overflow: hidden;
 }
 
-#nftInfos .readmore {
-    display: none;
-    color: var(--mainColor);
-    text-decoration: none;
-    font-size: 0.9em;
-    transition: all 0.25s ease-in;
-}
-
-#nftInfos .readmore:hover {
-    color: var(--mainColorLight20)
-}
-
 #nftInfosLoading {
     text-align: center;
     font-size: 2em;
@@ -256,11 +151,15 @@
 }
 
 #nftDetailsPaneLoading {
-    font-size: 2em;
     position: absolute;
     text-align: center;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    top: 8.5em;
 }
 
 #nftDetailsSimple .resume {
@@ -275,4 +174,37 @@
 
 #nftDetailsDetailed {
     height: 100%;
+}
+
+#nftInfosWrapper .NFTDetail .title {
+    font-weight: 600;
+}
+
+#nftInfosWrapper .NFTDetail .contentWrapper {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#nftInfosWrapper .NFTDetail .content {
+    padding: 0;
+}
+
+#nftInfosWrapper .NFTDetail {
+    margin-bottom: 0.75em;
+    padding: 0 0.25em;
+}
+
+#nftInfosWrapper .NFTDetail.copiable {
+    cursor: pointer;
+    transition: all ease 0.25s;
+    border-radius: 0.5em;
+    padding: 0.25em;
+}
+
+#nftInfosWrapper .NFTDetail.copiable:hover {
+    background-color: var(--whiteBackground);
+}
+
+#NFTDetailsID {
+    margin-bottom: 2em !important;
 }

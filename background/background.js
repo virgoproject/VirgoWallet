@@ -371,7 +371,7 @@ async function onBackgroundMessage(request, sender, sendResponse){
             break
 
         case "sendToNft":
-            sendToNft(request, sendResponse)
+            bg_sendToNft(request, sendResponse)
             break
 
         case "getTokenDetails":
@@ -1225,7 +1225,7 @@ function fetchNotifs() {
         })
 }
 
-function sendToNft(request, sendResponse){
+function bg_sendToNft(request, sendResponse){
     let txResume = null
 
     web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function (nonce){
@@ -1286,7 +1286,7 @@ function sendToNft(request, sendResponse){
         }).catch(e => {
             if(e.code == -32000){
                 baseWallet.selectWallet(baseWallet.selectedWallet)
-                sendToNft(request, sendResponse)
+                bg_sendToNft(request, sendResponse)
             }
         })
     })

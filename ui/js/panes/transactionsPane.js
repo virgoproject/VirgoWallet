@@ -169,7 +169,7 @@ class TransactionsPane {
             case "UNWRAP":
                 await this.showWrapTransaction(selectedWallet, transaction)
             case 'NFT':
-                this.showNftTransaction(selectedWallet, transaction)
+                await this.showNftTransaction(selectedWallet, transaction)
                 break
             default:
                 this.showBasicTransaction(selectedWallet, transaction)
@@ -854,110 +854,107 @@ class TransactionsPane {
         }
     }
 
-    showNftTransaction(selectedWallet, transaction){
+    async showNftTransaction(selectedWallet, transaction){
         try {
-            console.log("nft")
+
             let elem = TransactionsPane.list.nftTx.clone()
             elem.attr("id", "tx"+transaction.hash)
 
-            getNftDetails(transaction.contractNft, transaction.tokenId).then(function (detail){
-                fetch(detail.tokenURI).then(resp => {
-                    resp.json().then(json => {
-                        elem.find(".amount val").html(json.name)
-                        elem.find(".collectionName").html(detail.collection)
-                    });
-                })
-                console.log(detail)
+            const detail = await getNftDetails(transaction.contractNft, transaction.tokenId)
 
-                const date = new Date(transaction.date)
+            const detailsReq = await fetch(detail.tokenURI)
+            const json = await detailsReq.json()
 
-                elem.find(".recipient").html(transaction.recipient)
-                elem.find(".addr val").html(transaction.recipient)
+            elem.find(".amount val").html(json.name)
+            elem.find(".collectionName").html(detail.collection)
 
-                elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
-                elem.find(".details .recipient").click(function(){
-                    copyToClipboard($(this).get(0))
-                    elem.find(".recipientTitle").hide()
-                    elem.find(".recipientCopied").show()
-                    setTimeout(function (){
-                        elem.find(".recipientTitle").show()
-                        elem.find(".recipientCopied").hide()
-                    }, 2000)
-                })
+            const date = new Date(transaction.date)
 
+            elem.find(".recipient").html(transaction.recipient)
+            elem.find(".addr val").html(transaction.recipient)
 
-                elem.attr("data-date", transaction.date)
-                let options = {hour: "2-digit", minute: "2-digit"}
-
-                if (transaction.status === false){
-                    elem.find(".status").html("Canceled")
-                    elem.addClass('refusedTx').removeClass('pendingTx');
-                }
-
-                if (transaction.status === true){
-                    elem.find(".status").html("Confirmed")
-                    elem.addClass('confirmedTx').removeClass('pendingTx');
-                }
-
-                options = {month: "short", day: "numeric"};
-                elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
-
-                options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
-                elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
-
-                elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
-                elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
-                console.log(transaction)
-                elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
-                elem.find(".totalFees span").html(selectedWallet.ticker)
-
-                if(selectedWallet.explorer === undefined)
-                    elem.find("button").hide()
-                else
-                    elem.find("button").click(function(){
-                        window.open(selectedWallet.explorer + transaction.hash, "_blank")
-                    })
-
-                elem.click(function(){
-                    if(elem.hasClass("opened")) return
-
-                    elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
-                    $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
-                    elem.addClass("opened")
-                })
-
-                elem.find(".closeChevron").click(function(){
-                    if(!elem.hasClass("opened")) return
-                    elem.removeClass("opened")
-                    elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
-                    return false
-                })
-
-                if(transaction.status !== undefined){
-                    elem.find(".tweakBtns").hide()
-                    elem.find(".badge-warning").hide()
-                    if(!transaction.status && transaction.canceling)
-                        elem.find(".badge-secondary").show()
-                    else
-                        elem.find(".badge-secondary").hide()
-
-                }else{
-                    elem.find(".speed-up").click(function(){
-                        transactionsPane.confirmSpeedup(transaction, elem)
-                    })
-                    if(transaction.canceling){
-                        elem.find(".cancel").hide()
-                        elem.find(".badge-warning").show()
-                    } else
-                        elem.find(".cancel").click(function(){
-                            transactionsPane.confirmCancel(transaction, elem)
-                        })
-                }
-
-
-                TransactionsPane.list.self.append(elem)
-                elem.show()
+            elem.find(" .time").html(date.toLocaleTimeString("fr-EU", {hour: "2-digit", minute: "2-digit"}))
+            elem.find(".details .recipient").click(function(){
+                copyToClipboard($(this).get(0))
+                elem.find(".recipientTitle").hide()
+                elem.find(".recipientCopied").show()
+                setTimeout(function (){
+                    elem.find(".recipientTitle").show()
+                    elem.find(".recipientCopied").hide()
+                }, 2000)
             })
+
+            elem.attr("data-date", transaction.date)
+            let options = {hour: "2-digit", minute: "2-digit"}
+
+            if (transaction.status === false){
+                elem.find(".status").html("Canceled")
+                elem.addClass('refusedTx').removeClass('pendingTx');
+            }
+
+            if (transaction.status === true){
+                elem.find(".status").html("Confirmed")
+                elem.addClass('confirmedTx').removeClass('pendingTx');
+            }
+
+            options = {month: "short", day: "numeric"};
+            elem.find(".smallDetails .date").html(date.toLocaleDateString("en-US", options))
+
+            options = {month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"}
+            elem.find(".details .date").html(date.toLocaleDateString("en-US", options))
+
+            elem.find(".gasPrice val").html(Math.round((transaction.gasPrice/1000000000)))
+            elem.find(".gasLimit").html(transaction.gasLimit.toLocaleString('en-US'))
+
+            elem.find(".totalFees val").html(Utils.formatAmount(transaction.gasPrice*transaction.gasLimit, selectedWallet.decimals))
+            elem.find(".totalFees span").html(selectedWallet.ticker)
+
+            if(selectedWallet.explorer === undefined)
+                elem.find("button").hide()
+            else
+                elem.find("button").click(function(){
+                    window.open(selectedWallet.explorer + transaction.hash, "_blank")
+                })
+
+            elem.click(function(){
+                if(elem.hasClass("opened")) return
+
+                elem.find(".closeChevron").addClass("fa-xmark").removeClass("fa-chevron-right")
+                $("#pendingTxsPane .list .listItem.opened").removeClass("opened")
+                elem.addClass("opened")
+            })
+
+            elem.find(".closeChevron").click(function(){
+                if(!elem.hasClass("opened")) return
+                elem.removeClass("opened")
+                elem.find(".closeChevron").removeClass("fa-xmark").addClass("fa-chevron-right")
+                return false
+            })
+
+            if(transaction.status !== undefined){
+                elem.find(".tweakBtns").hide()
+                elem.find(".badge-warning").hide()
+                if(!transaction.status && transaction.canceling)
+                    elem.find(".badge-secondary").show()
+                else
+                    elem.find(".badge-secondary").hide()
+
+            }else{
+                elem.find(".speed-up").click(function(){
+                    transactionsPane.confirmSpeedup(transaction, elem)
+                })
+                if(transaction.canceling){
+                    elem.find(".cancel").hide()
+                    elem.find(".badge-warning").show()
+                } else
+                    elem.find(".cancel").click(function(){
+                        transactionsPane.confirmCancel(transaction, elem)
+                    })
+            }
+
+
+            TransactionsPane.list.self.append(elem)
+            elem.show()
 
         }catch(e){
             console.log(e)
