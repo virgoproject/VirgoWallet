@@ -96,6 +96,7 @@ class NftDetailPane {
                 NftDetailPane.detailedPane.name.html(json.name)
                 NftDetailPane.detailedPane.img.attr("src", json.image);
                 NftDetailPane.detailedPane.infosWrapperDesc.html(json.description)
+
                 if (json.attributes && Array.isArray(json.attributes)) {
                     for (let x = 0; x < json.attributes.length; x++) {
                         let newSpec = NftDetailPane.detailedPane.baseAttrNft.clone();
@@ -114,14 +115,15 @@ class NftDetailPane {
 
                         NftDetailPane.detailedPane.infosWrapperStats.append(newSpec)
                         newSpec.show()
-                        NftDetailPane.self.show()
-                        NftDetailPane.loading.hide()
-                        NftDetailPane.detailedPane.self.show()
-                        NftDetailPane.detailedPane.infos.show()
-                        NftDetailPane.detailedPane.infosLoading.hide()
-                        NftDetailPane.detailedPane.infosWrapper.show()
                     }
                 }
+
+                NftDetailPane.self.show()
+                NftDetailPane.loading.hide()
+                NftDetailPane.detailedPane.self.show()
+                NftDetailPane.detailedPane.infos.show()
+                NftDetailPane.detailedPane.infosLoading.hide()
+                NftDetailPane.detailedPane.infosWrapper.show()
             });
         });
     }

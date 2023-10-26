@@ -11,6 +11,7 @@
 
 #nftDetailPane .logoNft {
     border-radius: 20px;
+    max-height: 50vh;
 }
 
 #nftDetailPane .content {
@@ -80,6 +81,7 @@
 #nftDetailPane .infos .name {
     margin: 0;
     font-size: 1.4em;
+    max-width: 100%;
 }
 
 #nftDetailPane .infos .ticker {
@@ -207,4 +209,10 @@
 
 #NFTDetailsID {
     margin-bottom: 2em !important;
+}
+
+#NFTDetailsTitleWrapper {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
