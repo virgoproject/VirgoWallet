@@ -528,27 +528,27 @@ class TransactionsPane {
                 let token1;
 
                 let logo1 = transaction.swapInfos.route[0]
-                if(logo1 == selectedWallet.contract){
+                if(logo1.toLowerCase() == selectedWallet.contract.toLowerCase()){
                     token1 = {
                         decimals: selectedWallet.decimals,
                         ticker: selectedWallet.ticker
                     }
                     logo1 = selectedWallet.ticker
                 }else
-                    token1 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[0])[0]
+                    token1 = selectedWallet.tokens.filter(record => record.contract.toLowerCase() == transaction.swapInfos.route[0].toLowerCase())[0]
 
 
                 let token2;
 
                 let logo2 = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
-                if(logo2 == selectedWallet.contract){
+                if(logo2.toLowerCase() == selectedWallet.contract.toLowerCase()){
                     token2 = {
                         decimals: selectedWallet.decimals,
                         ticker: selectedWallet.ticker
                     }
                     logo2 = selectedWallet.ticker
                 }else
-                    token2 = selectedWallet.tokens.filter(record => record.contract == transaction.swapInfos.route[transaction.swapInfos.route.length-1])[0]
+                    token2 = selectedWallet.tokens.filter(record => record.contract.toLowerCase() == transaction.swapInfos.route[transaction.swapInfos.route.length-1].toLowerCase())[0]
 
 
 
