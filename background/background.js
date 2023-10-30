@@ -56,6 +56,8 @@ browser.storage.local.get("notifications").then(function (res) {
 
 let selectedCurrency = "usd"
 
+let selectedLanguage = "en_US"
+
 const pendingTransactions = {}
 const pendingSigns = {}
 
@@ -89,6 +91,13 @@ BaseWallet.loadFromJSON().then(() => {
             selectedCurrency = res.selectedCurrency
 
         loadedElems["selectedCurrency"] = true
+    })
+
+    browser.storage.local.get("selectedLanguage").then(function(res){
+        if(res.selectedLanguage !== undefined)
+            selectedLanguage = res.selectedLanguage
+
+        loadedElems["selectedLanguage"] = true
     })
 
     browser.storage.local.get("pendingAuthorizations").then(function(res){
@@ -252,6 +261,11 @@ async function onBackgroundMessage(request, sender, sendResponse){
         case "setSelectedCurrency":
             selectedCurrency = request.currency
             browser.storage.local.set({"selectedCurrency": request.currency})
+            break
+
+        case "setSelectedLanguage":
+            selectedLanguage = request.language
+            browser.storage.local.set({"selectedLanguage": request.language})
             break
 
         case "unlockWallet":
@@ -1043,6 +1057,7 @@ function bg_getBaseInfos(){
         "notifications" : notifications,
         "notificationsCount" : notifCounter,
         "selectedCurrency" : selectedCurrency,
+        "selectedLanguage" : selectedLanguage,
         "setupDone" : setupDone,
         "biometricsEnabled": biometricsEnabled
     }

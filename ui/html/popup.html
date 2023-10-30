@@ -98,7 +98,7 @@
         </div>
         <div class="stats row">
             <div class="d-flex balanceTitle align-items-center">
-                <h1 class="title m-0">Available Balance</h1>
+                <h1 class="title m-0">{availableBalance}</h1>
                 <div class="addressContainer">
                     <div class="d-flex align-items-center copy">
                         <p id="walletAddress" class="value adress m-0" data-address=""></p>
@@ -147,12 +147,12 @@
                 <div class="title col-12 m-0 p-0">
                     <div class="row">
                         <div class="col-3 mb-3  " id="allAssetdiv">
-                            <p class=" mb-0 resumePane divResumePane divResumePaneSelected" id="allAssets">Assets</p>
+                            <p class=" mb-0 resumePane divResumePane divResumePaneSelected" id="allAssets">{assets}</p>
                         </div>
                         <div class="col-3 mb-3 " id="nftDiv">
-                            <p class=" mb-0 resumePane divResumePane" id="nft">NFTs</p>
+                            <p class=" mb-0 resumePane divResumePane" id="nft">{NFTs}</p>
                         </div>
-                        <div class="col-6 mb-3 text-right"><p class="mb-0" id="manageAssetsBtn">Manage Tokens</p><p class="mb-0" style="display: none" id="manageNFTsBtn">Import NFTs</p></div>
+                        <div class="col-6 mb-3 text-right"><p class="mb-0" id="manageAssetsBtn">{manageTokens}</p><p class="mb-0" style="display: none" id="manageNFTsBtn">{importNFTs}</p></div>
                     </div>
                 </div>
                 <div>
@@ -164,9 +164,9 @@
                                     <svg data-jdenticon-value="" width="32" height="32" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet"></svg>
                                 </div>
                                 <div class="col-6">
-                                    <p class="title">Bitcoin</p>
+                                    <p class="title"></p>
                                     <p class="amount">
-                                        <val class="balance">0</val>
+                                        <val class="balance"></val>
                                         <b class="ticker"></b></p>
                                 </div>
                                 <div class="col-4 text-right">
@@ -182,7 +182,7 @@
                 <div>
                     <div class="text-center " style="display: none" id="nftNotfound">
                         <img src="../images/noNFT.png" width="70%" class="img-fluid">
-                        <p class="noNftTitle">You do not have NFTs</p>
+                        <p class="noNftTitle">{noNFTs}</p>
                     </div>
                     <div class="loadingCollection NftLoadingBody text-center" style="display: none">
                         <i class="fas fa-spinner fa-pulse"></i>
@@ -195,7 +195,7 @@
                                     <img class="logoNft" crossorigin="anonymous" style=""/>
                                 </div>
                                 <div class="col-7 d-flex justify-content-center align-items-center">
-                                    <p class="title text-center">Bitcoin</p>
+                                    <p class="title text-center"></p>
                                 </div>
                                 <div class="col-3 align-self-center text-right">
                                     <p class="title nftInCollection"></p>
@@ -211,25 +211,25 @@
             <div class="row sendForm">
                 <div class="mb-2">
                     <div class="col-12 title d-flex justify-content-center">
-                        <h5>Send To</h5>
+                        <h5>{sendTo}</h5>
                     </div>
                 </div>
                 <div class="col-12 mb-2">
                     <div class="row">
                         <div class="col-4 p-0 pr-2">
-                            <button class="button w-100" id="sendSampleBtn"><i class="fa-solid fa-arrow-up"></i> Send</button>
+                            <button class="button w-100" id="sendSampleBtn"><i class="fa-solid fa-arrow-up"></i> {send}</button>
                         </div>
                         <div class="col-4 px-1">
-                            <button class="button w-100" id="receive-qr"><i class="fa-solid fa-arrow-down"></i> Receive</button>
+                            <button class="button w-100" id="receive-qr"><i class="fa-solid fa-arrow-down"></i> {receiveQR}</button>
                         </div>
                         <div class="col-4 p-0 pl-2">
-                            <button class="button w-100" id="buyBtn"><i class="fa-solid fa-dollar-sign"></i> Buy</button>
-                            <span id="buyBtnSoon">soon!</span>
+                            <button class="button w-100" id="buyBtn"><i class="fa-solid fa-dollar-sign"></i> {buy}</button>
+                            <span id="buyBtnSoon">{buyBtnSoon}</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 p-0 mb-4">
-                    <p class="label mb-2">To</p>
+                    <p class="label mb-2">{to}</p>
                     <div class="input-group col-12" style="font-size: 1.2em">
                         <i class="fas fa-address-book d-flex align-items-center contactButton col-2"></i>
                         <input type="text" class="input col-8 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#body .send .sendForm .submit">
@@ -237,7 +237,7 @@
                     </div>
                 </div>
                 <div class="col-12 mb-3 p-0">
-                    <p class="label">Recent</p>
+                    <p class="label">{recent}</p>
                     <div class="text-center mt-5 mb-5" style="" id="sendRecentNotfound">
                         <img src="../images/noContact.png" class="img-fluid" alt="nocontact">
                     </div>
@@ -250,8 +250,8 @@
                                 <svg data-jdenticon-value="" width="36" height="36"></svg>
                             </div>
                             <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
-                                <span class="contactName">Contact name</span>
-                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+                                <span class="contactName"></span>
+                                <span class="fw-bold textAddress"></span>
                             </div>
                             <div class="col-2 align-self-center">
                                 <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
@@ -264,7 +264,7 @@
                                 <svg data-jdenticon-value="" width="36" height="36"></svg>
                             </div>
                             <div class="col-8 text-left addressWrapper justify-content-center align-self-center">
-                                <span class="fw-bold textAddress">0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
+                                <span class="fw-bold textAddress"></span>
                             </div>
                             <div class="col-2 align-self-center">
                                 <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
@@ -279,7 +279,7 @@
                         <div class="col-12 d-flex justify-content-center align-items-center text-center mt-3">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <h5 class="mb-1">Receive</h5>
+                                <h5 class="mb-1">{receiveQR}</h5>
                             </div>
                             <div class="col-2 close">
                                 <i class="fa-solid fa-xmark"></i>
@@ -298,19 +298,19 @@
         </div>
         <div class="bodyElem swap" style="display: none" id="swapPane">
             <div id="swapParams">
-                <h5 class="text-center mb-4">Swap</h5>
+                <h5 class="text-center mb-4">{swap}</h5>
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
-                        <p class="m-0">You send</p>
+                        <p class="m-0">{youSend}</p>
                     </div>
                     <div class="col-9 pr-0 text-right">
-                        <p class="m-0">Available: <span class="amount" id="swapBalance1">-</span> <span class="ticker" id="swapTicker1"></span></p>
+                        <p class="m-0">{available} <span class="amount" id="swapBalance1">-</span> <span class="ticker" id="swapTicker1"></span></p>
                     </div>
                 </div>
                 <div class="row swapInput pt-1 pb-1">
                     <div class="col-7 p-0">
                         <input type="text" class="amountInput resizeOnInput" placeholder="0.0" id="swapInput1">
-                        <span class="maxBtn" id="swapMaxBtn1">Max</span>
+                        <span class="maxBtn" id="swapMaxBtn1">{max}</span>
                     </div>
                     <div class="col-5">
                         <div class="row tokenSelect" id="tokenSelectBtn1">
@@ -333,10 +333,10 @@
                 </div>
                 <div class="row inputHeader">
                     <div class="col-3 pl-0">
-                        <p class="m-0">You get</p>
+                        <p class="m-0">{youGet}</p>
                     </div>
                     <div class="col-9 pr-0 text-right">
-                        <p class="m-0">Available: <span class="amount" id="swapBalance2">-</span> <span class="ticker" id="swapTicker2"></span></p>
+                        <p class="m-0">{available} <span class="amount" id="swapBalance2">-</span> <span class="ticker" id="swapTicker2"></span></p>
                     </div>
                 </div>
                 <div class="row swapInput pt-1 pb-1">
@@ -361,20 +361,20 @@
                 </div>
                 <div class="row mt-2" >
                     <div class="col-12 text-center" id="swapRateLoading" style="visibility: hidden">
-                        <p><i class="fas fa-spinner fa-pulse"></i> Fetching best price</p>
+                        <p><i class="fas fa-spinner fa-pulse"></i> {swapFetchBestPrice}</p>
                     </div>
                     <div class="alert alert-warning align-items-center p-2" role="alert" id="swapRouteNotFound" style="display: none">
                         <div>
-                            <i class="far fa-exclamation-circle"></i> Not enough liquidity for this trade
+                            <i class="far fa-exclamation-circle"></i> {swapNotEnougthLiquidity}
                         </div>
                     </div>
                     <div class="alert alert-warning align-items-center p-2" role="alert" id="swapServiceUnavailable" style="display: none">
                         <div>
-                            <i class="far fa-exclamation-circle"></i> Service unavailable, please try again later.
+                            <i class="far fa-exclamation-circle"></i> {swapServiceUnavailable}
                         </div>
                     </div>
                     <div class="col-12 p-0" style="margin-top: 1.25em;">
-                        <button class="button w-100" id="initSwapBtn" disabled="true">NEXT</button>
+                        <button class="button w-100" id="initSwapBtn" disabled="true">{next}</button>
                     </div>
                 </div>
             </div>
@@ -382,9 +382,9 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>
             <div id="swapComing" class="text-center mt-5" style="display: none">
-                <h3>Coming soon!</h3>
+                <h3>{comingSoon}</h3>
                 <div><i class="fas fa-retweet"></i></div>
-                <p>Swaps are not available for this network yet</p>
+                <p>{swapNotAvailable}</p>
             </div>
             <div id="swapReview" style="display: none">
                 <div class="row mb-2">
@@ -392,19 +392,19 @@
                         <p class="m-0" id="swapReviewBack"><i class="fas fa-chevron-left"></i></p>
                     </div>
                     <div class="col-10 title">
-                        <h5>Swap details</h5>
+                        <h5>{swapDetails}</h5>
                     </div>
                     <div class="col-1">
 
                     </div>
                 </div>
                 <div class="receiveAmount mb-4">
-                    <p class="m-0">You will receive</p>
+                    <p class="m-0">{swapReceive}</p>
                     <p class="amount" style="font-weight: bold">~ <span id="swapReviewAmountOut"></span> <span class="ticker" id="swapReviewTickerOut"></span></p>
                 </div>
                 <div class="row mb-4" id="swapReviewTransferAmount">
                     <div class="col-12">
-                        <p style="font-weight: bold">You transfer</p>
+                        <p style="font-weight: bold">{swapTransfer}</p>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-center">
                         <img src='https://github.com/virgoproject/tokens/blob/main/BNB/BNB/logo.png?raw=true' id="swapReviewSelectedTokenImg" style="display: none">
@@ -417,19 +417,19 @@
                 <div class="row details mt-2">
 
                     <div class="col-4 mt-3 mb-2">
-                        <p class="title">Swap fees</p>
+                        <p class="title">{swapFees}</p>
                     </div>
                     <div class="col-8 mt-3 mb-2">
-                        <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker">USDT</span></p>
+                        <p class="value"><span id="swapReviewSwapFees"></span> <span class="ticker" id="swapReviewSwapFeesTicker"></span></p>
                     </div>
                     <div class="col-4  mb-2">
-                        <p class="title">Slippage</p>
+                        <p class="title">{slippage}</p>
                     </div>
                     <div class="col-8">
-                        <p class="value">Auto</p>
+                        <p class="value">{auto}</p>
                     </div>
                     <div class="col-4 mb-2" style="display: inline-flex">
-                        <p class="titleNet">Fees <span class="titleFees editFees">Edit</span></p>
+                        <p class="titleNet">{fees} <span class="titleFees editFees">{editFees}</span></p>
                     </div>
                     <div class="col-8  mb-2">
                         <p class="valueNet">~ <span id="swapReviewNetFees"></span> <span class="ticker" id="swapReviewNetFeesTicker"></span></p>
@@ -437,7 +437,7 @@
                 </div>
 
                 <button class="button " disabled="disabled" id="confirmSwapBtn">
-                    <val>Init swap</val>
+                    <val>{initSwap}</val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
@@ -449,13 +449,14 @@
                         <div class="address wallet-address">
                             <div class="d-flex address-bloc align-items-center">
                                 <div class="col-4 d-flex justify-content-center">
-                                    <p class="title m-0"><span id="airdropsParticipationCount"></span> participations</p>
+                                    <p class="title m-0"><span id="airdropsParticipationCount"></span> {airdropParticipate}</p>
                                 </div>
                                 <div class="col-4 d-flex justify-content-center">
-                                    <p class="title m-0" style="padding: .575em 2em"><span class="fluctuation wondrops"></span> wins</p>
+                                    <p class="title m-0" style="padding: .575em 2em"><span class="fluctuation wondrops"></span>
+                                        {airdropWins}</p>
                                 </div>
                                 <div class="col-4 d-flex justify-content-center">
-                                    <button class=" button claimDropReward position-relative">Claim rewards
+                                    <button class=" button claimDropReward position-relative">{airdropClaimRewards}
                                         <span class="notifReward" style="display: none"></span>
                                     </button>
                                 </div>
@@ -465,12 +466,12 @@
                     <div class="row justify-content-between align-items-center p-3">
                         <div class="col-8 flex-column">
                             <div class="d-flex balanceTitle">
-                                <h1 class="title">Total earnings</h1>
+                                <h1 class="title">{airdropTotalEarnings}</h1>
                             </div>
                             <div class="d-flex balance-header">
-                                <h1 class="values winnedAmmount">0</h1>
+                                <h1 class="values winnedAmmount"></h1>
                                 <h1 class="values decimalValue"></h1>
-                                <span class="dollars">$</span>
+                                <span class="dollars"></span>
                             </div>
                         </div>
                     </div>
@@ -478,19 +479,19 @@
             </div >
             <div class="row airdropBody d-none justify-content-center overflow-auto">
                 <div id="onGoingAirdrop" class="row airdropActive mt-1 d-flex justify-content-center">
-                    <p class="p-0 m-0">On-going airdrops</p>
+                    <p class="p-0 m-0">{airdropOnGoing}</p>
                     <div class="row airdropCard d-none align-items-center p-0 airdropExemple mt-2">
                         <div class="col-2">
                             <img src="" alt="coinLogo" class="rounded-circle airdropedCoinImg" width="32px"
                                  height="32px"/>
                         </div>
                         <div class="col-5 flex-column pr-0" style="font-size: 0.9em;">
-                            <p class="m-0 fw-bold coinName">Virgo</p>
-                            <p class="m-0 coinTicker">VGO</p>
+                            <p class="m-0 fw-bold coinName"></p>
+                            <p class="m-0 coinTicker"></p>
                         </div>
                         <div class="col-3 airdropGains p-0">
                             <div class="d-flex flex-column">
-                                <p class="m-0 fw-bold earningsTitle">Earn</p>
+                                <p class="m-0 fw-bold earningsTitle">{airdropEarn}</p>
                                 <p class="m-0 earnCoin"></p>
                             </div>
                         </div>
@@ -500,28 +501,28 @@
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Time left</p>
-                                    <p class="m-0 fw-bold"><span class="timeLeft"></span> days</p>
+                                    <p class="m-0">{airdropTimeLeft}</p>
+                                    <p class="m-0 fw-bold"><span class="timeLeft"></span> {airdropDays}</p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Earn</p>
+                                    <p class="m-0">{airdropEarn}</p>
                                     <p class="m-0 fw-bold earnCoinsDesc"></p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Winners</p>
+                                    <p class="m-0">{airdropWinner}</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 winnerCount d-flex justify-content-between">
-                                    <p class="m-0">Joined</p>
+                                    <p class="m-0">{airdropJoined}</p>
                                     <p class="usersJoined m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
@@ -529,7 +530,7 @@
                                 </div>
                                 <div class="col-12 cryptoDesc">
                                     <div class="col-12 d-flex justify-content-between align-items-center">
-                                        <p class="m-0">About</p>
+                                        <p class="m-0">{about}</p>
                                         <i class="fa-light fa-circle-info"></i>
                                     </div>
                                     <p class="m-0 airdropDesc"></p>
@@ -538,7 +539,7 @@
                             </div>
 
                             <div class="col-12 d-flex mt-3 justify-content-center">
-                                <button class="button w-75 joinDrop">Join This Airdrop</button>
+                                <button class="button w-75 joinDrop">{airdropJoin}</button>
                             </div>
                             <div class="col-12 d-flex cryptoMedia mt-3 justify-content-center">
                                 <div class="col-2 d-none twitter"><a class="fa-brands fa-twitter "></a></div>
@@ -551,19 +552,19 @@
                     </div>
                 </div>
                 <div id="upcomingAirdrop" class="row airdropActive airdropPaddingModifier  upcomingAirdrop d-flex justify-content-center">
-                    <p class="p-0 m-0">Upcoming airdrops</p>
+                    <p class="p-0 m-0">{upcomingAirdrop}</p>
                     <div class="row airdropCard d-none align-items-center p-0 upcomingAirdropExemple mt-2">
                         <div class="col-2">
                             <img src="" alt="coinLogo" class="rounded-circle airdropedCoinImg" width="32px"
                                  height="32px"/>
                         </div>
                         <div class="col-5 flex-column pr-0" style="font-size: 0.9em;">
-                            <p class="m-0 fw-bold coinName">Virgo</p>
-                            <p class="m-0 coinTicker">VGO</p>
+                            <p class="m-0 fw-bold coinName"></p>
+                            <p class="m-0 coinTicker"></p>
                         </div>
                         <div class="col-3 airdropGains p-0">
                             <div class="d-flex flex-column">
-                                <p class="m-0 fw-bold earningsTitle">Earn</p>
+                                <p class="m-0 fw-bold earningsTitle">{airdropEarn}</p>
                                 <p class="m-0 earnCoin"></p>
                             </div>
                         </div>
@@ -572,7 +573,7 @@
                         </div>
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
                             <div class="col-12 userEntered d-flex justify-content-between">
-                                <p class="m-0">Earn</p>
+                                <p class="m-0">{airdropEarn}</p>
                                 <p class="m-0 fw-bold earnCoinsDesc"></p>
                             </div>
                             <div class="col-12">
@@ -580,14 +581,14 @@
                             </div>
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Winners</p>
+                                    <p class="m-0">{airdropWinner}</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 winnerCount d-flex justify-content-between">
-                                    <p class="m-0">Joined</p>
+                                    <p class="m-0">{airdropJoined}</p>
                                     <p class="usersJoined m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
@@ -595,7 +596,7 @@
                                 </div>
                                 <div class="col-12 cryptoDesc">
                                     <div class="col-12 d-flex justify-content-between align-items-center">
-                                        <p class="m-0">About</p>
+                                        <p class="m-0">{about}</p>
                                         <i class="fa-light fa-circle-info"></i>
                                     </div>
                                     <p class="m-0 airdropDesc"></p>
@@ -604,7 +605,7 @@
                             </div>
 
                             <div class="col-12 d-flex mt-3 justify-content-center">
-                                <button class="button w-75 joinDrop">Join This Airdrop</button>
+                                <button class="button w-75 joinDrop">{airdropJoin}</button>
                             </div>
                             <div class="col-12 d-flex cryptoMedia mt-3 justify-content-center">
                                 <div class="col-2 d-none twitter"><a class="fa-brands fa-twitter "></a></div>
@@ -617,19 +618,19 @@
                     </div>
                 </div>
                 <div id="endedAirdrop" class="row airdropActive airdropPaddingModifier endedAirdrop d-flex justify-content-center">
-                    <p class="p-0 m-0">Ended airdrops</p>
+                    <p class="p-0 m-0">{endedAirdrop}</p>
                     <div class="row airdropCard d-none align-items-center p-0 endedAirdropExemple mt-2">
                         <div class="col-2">
                             <img src="" alt="coinLogo" class="rounded-circle airdropedCoinImg" width="32px"
                                  height="32px"/>
                         </div>
                         <div class="col-5 flex-column pr-0" style="font-size: 0.9em;">
-                            <p class="m-0 fw-bold coinName">Virgo</p>
-                            <p class="m-0 coinTicker">VGO</p>
+                            <p class="m-0 fw-bold coinName"></p>
+                            <p class="m-0 coinTicker"></p>
                         </div>
                         <div class="col-3 airdropGains p-0">
                             <div class="d-flex flex-column">
-                                <p class="m-0 fw-bold earningsTitle">Earn</p>
+                                <p class="m-0 fw-bold earningsTitle">{airdropEarn}</p>
                                 <p class="m-0 earnCoin"></p>
                             </div>
                         </div>
@@ -639,21 +640,21 @@
                         <div class="row d-flex airdropCoinInfos m-0 p-0">
                             <div class="row d-flex justify-content-center m-0 mt-3">
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Earn</p>
+                                    <p class="m-0">{airdropEarn}</p>
                                     <p class="m-0 fw-bold earnCoinsDesc"></p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 userEntered d-flex justify-content-between">
-                                    <p class="m-0">Winners</p>
+                                    <p class="m-0">{airdropWinner}</p>
                                     <p class="winnersCount m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
                                     <hr class="mt-2 mb-2">
                                 </div>
                                 <div class="col-12 winnerCount d-flex justify-content-between">
-                                    <p class="m-0">Joined</p>
+                                    <p class="m-0">{airdropJoined}</p>
                                     <p class="usersJoined m-0 fw-bold"></p>
                                 </div>
                                 <div class="col-12">
@@ -661,7 +662,7 @@
                                 </div>
                                 <div class="col-12 cryptoDesc">
                                     <div class="col-12 d-flex justify-content-between align-items-center">
-                                        <p class="m-0">About</p>
+                                        <p class="m-0">{about}</p>
                                         <i class="fa-light fa-circle-info"></i>
                                     </div>
                                     <p class="m-0 airdropDesc"></p>
@@ -670,7 +671,7 @@
                             </div>
 
                             <div class="col-12 d-flex mt-3 justify-content-center">
-                                <button class="button w-75 joinDrop">Join This Airdrop</button>
+                                <button class="button w-75 joinDrop">{airdropJoin}</button>
                             </div>
                             <div class="col-12 d-flex cryptoMedia mt-3 justify-content-center">
                                 <div class="col-2 d-none twitter"><a class="fa-brands fa-twitter "></a></div>
@@ -684,8 +685,8 @@
                 </div>
                 <div id="noDropsElems" class="row airdropActive airdropPaddingModifier d-none justify-content-center text-center">
                     <img src="../images/noAirdrops.png" alt="soon" class="img-fluid" >
-                    <h4>No Airdrops listed &#128546;</h4>
-                    <p>Come back later </p>
+                    <h4>{noAirdropListed} &#128546;</h4>
+                    <p>{airdropComeBack}</p>
                 </div>
             </div>
             <div class="loadingAirdrop airdropLoadingBody text-center">
@@ -695,10 +696,10 @@
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-9 d-flex justify-content-center align-items-center bg-light flex-column rounded-1">
                         <img src="../images/Virgo_win.png" alt="win" height="250px" class="winImg">
-                        <p class="m-0 p-0 wonText">You won</p>
-                        <h1 class="mb-4 winAmmount">100 VGO</h1>
+                        <p class="m-0 p-0 wonText"></p>
+                        <h1 class="mb-4 winAmmount"></h1>
                         <a  href="https://twitter.com/intent?text=This%20photo%20is%20awesome!%20Check%20it%20out:%20pic.twitter.com/9Ee63f7aVp" class="button mb-2 rounded-1 twitter-btn">Share it on Twitter</a>
-                        <a class="mb-2 closeBtn" href="#">Close</a>
+                        <a class="mb-2 closeBtn" href="#">{close}</a>
                     </div>
 
                 </div>
@@ -722,17 +723,18 @@
                         </div>
                             <p>1 of 2</p>
                         <div class="col-10">
-                            <p class="text-center fw-bold">Rules to participate </p>
+                            <p class="text-center fw-bold"> {airdropRule}</p>
                             <ul class="rulesDrop mt-3">
-                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> Follow on Twitter : </li>
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i>
+                                    {airdropFollowTwitter} </li>
                                 <div class="cloneLinkAirdrop">
                                     <a href="#" id="exempleLink" class="linkAirdrop"></a>
                                 </div>
-                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i> RT the airdrop tweet</li>
+                                <li class="rulesDropli d-flex mt-2"><i class="fa-solid fa-period me-1"></i>{airdropRT} </li>
                             </ul>
 
                             <div class="col-12 d-flex justify-content-center">
-                                <button class="button buttonModal mt-4 mb-3"> I understand</button>
+                                <button class="button buttonModal mt-4 mb-3"> {airdropUnderstand}</button>
                             </div>
 
                         </div>
@@ -753,10 +755,10 @@
                         </div>
                         <p>2 of 2</p>
                         <div class="col-10">
-                            <span>Enter your Twitter Username to verify your eligibility</span>
+                            <span>{airdropEnterUsername}</span>
                             <input type="text" class="input checkTwitterNameInput col-12" placeholder="Twitter Username" maxlength="42">
                             <div class="col-12 d-flex justify-content-center">
-                                <button class="button buttonModal mt-4 mb-3 BtnCheckTwitter">Join Airdrop</button>
+                                <button class="button buttonModal mt-4 mb-3 BtnCheckTwitter">{airdropRuleJoin}</button>
                             </div>
 
                         </div>
@@ -769,25 +771,25 @@
         <div class="footerElem col-3 selected" data-target="resume">
             <div>
                 <i class="fas fa-home"></i>
-                <p>Home</p>
+                <p>{footerHome}</p>
             </div>
         </div>
         <div class="footerElem col-3" data-target="send" id="footerBtnSend">
             <div>
                 <i class="fas fa-dollar-sign"></i>
-                <p>Pay</p>
+                <p>{footerPay}</p>
             </div>
         </div>
         <div class="footerElem col-3" data-target="swap">
             <div>
                 <i class="fas fa-retweet"></i>
-                <p>Swap</p>
+                <p>{footerSwap}</p>
             </div>
         </div>
         <div class="footerElem col-3" data-target="airdrop">
             <div>
                 <i class="fa-solid fa-gift"></i>
-                <p>Airdrop</p>
+                <p>{footerAirdrop}</p>
             </div>
         </div>
     </div>
@@ -798,7 +800,7 @@
                 <i class=" fas fa-chevron-left"></i>
             </div>
             <div class="col-8 title d-flex justify-content-center">
-                <h5>Amount</h5>
+                <h5>{amount}</h5>
             </div>
             <div class="col-2"></div>
         </div>
@@ -812,16 +814,16 @@
                 <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
             </div>
             <div class="col-12 d-flex justify-content-center inputWButton">
-                <a class="col-2 max">Use max</a>
+                <a class="col-2 max">{useMax}</a>
             </div>
             <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
                 <p class="value labelCost"><span id="showCost">-</span> <span class="dollars">$</span></p>
             </div>
             <div class="col-12 d-flex justify-content-center inputWButton">
-                <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
+                <p class="balance">{balance}<val class="balanceSize"></val> <span class="ticker"></span></p>
             </div>
         </div>
-        <button class="button sendBtn" id="sendNextStep" disabled="disabled">Next</button>
+        <button class="button sendBtn" id="sendNextStep" disabled="disabled">{next}</button>
     </div>
     <div id="sendConfirmFeesLoading" style="display: none">
         <i class="fas fa-spinner fa-pulse"></i>
@@ -832,16 +834,16 @@
                 <i class=" fas fa-chevron-left"></i>
             </div>
             <div class="col-8 title d-flex justify-content-center">
-                <h5>Confirm</h5>
+                <h5>{confirm}</h5>
             </div>
             <div class="col-2"></div>
         </div>
         <div class="row sendAmount mb-4 amount">
-            <p class="m-0 ">Sending</p>
+            <p class="m-0 ">{sending}</p>
             <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
         </div>
         <div class="row mb-3 from">
-                <p class="labelFromAndTo">From</p>
+                <p class="labelFromAndTo">{from}</p>
                 <div class="identicon col-2">
                     <svg data-jdenticon-value="sesesqqqfse" id="from" width="40" height="40"></svg>
                 </div>
@@ -849,7 +851,7 @@
                 <p class="col-1 more">...</p>
             </div>
         <div class="row mb-3 recipient">
-            <p class="labelFromAndTo">To</p>
+            <p class="labelFromAndTo">{to}</p>
             <div class="identicon col-2">
                 <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
             </div>
@@ -858,13 +860,13 @@
         </div>
         <div class="row fees">
                 <div class="col-3 mt-3 mb-1" style="display: inline-flex">
-                    <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
+                    <p class="labelTitle">{fees}<p class="title editFees">{editFees}</p></p>
                 </div>
                 <div class="col-9 text-right mt-3 mb-1">
                     <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
                 </div>
                 <div class="col-5 mb-3">
-                    <p class="labelCost">Total Cost</p>
+                    <p class="labelCost">{totalcost}</p>
                 </div>
                 <div class="col-7 text-right">
                     <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
@@ -881,7 +883,8 @@
         <div class="row gx-2 mt-2" id="chainsContainer">
 
         </div>
-        <div class="text-center" id="atomicSwapAccess1Wrapper"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
+        <div class="text-center" id="atomicSwapAccess1Wrapper"><button class="button" id="atomicSwapAccess1">
+            {atomicSwap}</button></div>
         <div class="col-4" id="baseChainRow" style="display: none">
             <div class="chain">
                 <div class="row">
@@ -891,7 +894,7 @@
                     <div class="col-12">
                         <div>
                             <div>
-                                <span class="badge bg-success testnet">Testnet</span>
+                                <span class="badge bg-success testnet">{testnet}</span>
                             </div>
                             <img class="logo" src="" style="display: none">
                             <svg data-jdenticon-value="" width="32" height="32"></svg>
@@ -909,7 +912,7 @@
             <div class="back">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <h5 class="text-center" id="assetListTitle">My Assets</h5>
+            <h5 class="text-center" id="assetListTitle">{myAssets}</h5>
         </div>
         <div class="row" id="assetsListSearchWrapper">
             <div class="col-10 p-0">
@@ -927,8 +930,8 @@
                         <svg data-jdenticon-value="" width="32" height="32"></svg>
                     </div>
                     <div class="col-8">
-                        <p class="name">Ethereum</p>
-                        <p class="ticker">ETH</p>
+                        <p class="name"></p>
+                        <p class="ticker"></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center">
                         <i class="fas fa-check stateCoin"></i>
@@ -936,13 +939,13 @@
                 </div>
             </div>
             <div class="listEnd text-center mt-5 mb-5" style="display: none">
-                <h4>That's it!</h4>
-                <p>Didn't see the asset you want? <br><span>Add it now!</span></p>
+                <h4>{listEndedH4}</h4>
+                <p>{listEndedP} <br><span>{listEndedSpan}</span></p>
             </div>
             <div class="searchNotFound text-center mt-5 mb-5" style="display: none">
                 <img src="../images/notFound.png" class="img-fluid" alt="nocontact" />
-                <h4>Not found!</h4>
-                <p>Really want this asset? <br><span>Add it now!</span></p>
+                <h4>{searchNotFoundH4}</h4>
+                <p>{searchNotFoundP} <br><span>{searchNotFoundSpan}</span></p>
             </div>
             <div class="listWrap mt-3">
                 <div class="row list">
@@ -954,29 +957,29 @@
             <div class="p-2" id="assetsListAdd" style="display: none">
                 <div class="row contract">
                     <div>
-                        <p class="label text-left">Contract address</p>
-                        <input type="text" class="input col-12" placeholder="Enter the asset's contract address">
+                        <p class="label text-left">{contractAdress}</p>
+                        <input type="text" class="input col-12" placeholder="{contactInputPlaceholder}">
                     </div>
                     <button class="button col-12 submit mt-3" disabled="disabled">
-                        <val>Next</val>
+                        <val>{next}</val>
                         <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                     </button>
                 </div>
                 <div class="row resume" style="display: none">
                     <div>
-                        <p class="label text-left">Asset name</p>
+                        <p class="label text-left">{assetName}</p>
                         <input type="text" class="input col-12 name" placeholder="" disabled>
                     </div>
                     <div>
-                        <p class="label text-left">Symbol</p>
+                        <p class="label text-left">{symbol}</p>
                         <input type="text" class="input col-12 symbol" placeholder="" disabled>
                     </div>
                     <div>
-                        <p class="label text-left">Decimals</p>
+                        <p class="label text-left">{decimals}</p>
                         <input type="text" class="input col-12 decimals" placeholder="" disabled>
                     </div>
                     <button class="button col-12 submit mt-3">
-                        <val>Add <span class="ticker"></span></val>
+                        <val>{add} <span class="ticker"></span></val>
                     </button>
                 </div>
             </div>
@@ -986,7 +989,7 @@
                     padding: 0 2em;
                     padding-top: 1.5em;
                 ">
-            <button class="button" id="addTokenBtn">Add custom token</button>
+            <button class="button" id="addTokenBtn">{addCustomToken}</button>
         </div>
     </div>
     <div id="nftAddPane" style="display: none">
@@ -994,7 +997,7 @@
         <div class="back">
             <i class="fas fa-chevron-left"></i>
         </div>
-        <h5 class="text-center" id="nftListTitle">Add an NFT</h5>
+        <h5 class="text-center" id="nftListTitle">{addNFTs}</h5>
     </div>
     <div class="content">
         <div class="loading text-center mt-2 mb-2">
@@ -1003,33 +1006,33 @@
         <div class="p-2" id="nftListAdd">
             <div class="row contract">
                 <div class="mt-3">
-                    <p class="label text-left">Contract address</p>
-                    <input type="text" class="input col-12 contractAddr" placeholder="Enter the asset's contract address">
+                    <p class="label text-left">{contractAdress}</p>
+                    <input type="text" class="input col-12 contractAddr" placeholder="{contractInputPlaceholder}">
                 </div>
                 <div class="mt-3">
-                <p class="labelId text-left">Token ID</p>
-                <input type="text" class="input col-12 tokenID" placeholder="Enter the asset's Token Id">
+                <p class="labelId text-left">{tokenId}</p>
+                <input type="text" class="input col-12 tokenID" placeholder="{inputTokenIdPlaceholder}">
                 </div>
                 <button class="button col-12 submit mt-4" disabled="disabled">
-                    <val>Next</val>
+                    <val>{next}</val>
                     <i class="fas fa-spinner fa-pulse" style="display: none"></i>
                 </button>
             </div>
             <div class="row resume" style="display: none">
                 <div>
-                    <p class="label text-left">Asset name</p>
+                    <p class="label text-left">{assetName}</p>
                     <input type="text" class="input col-12 name" placeholder="" disabled>
                 </div>
                 <div>
-                    <p class="label text-left">URI</p>
+                    <p class="label text-left">{uri}</p>
                     <input type="text" class="input col-12 uri" placeholder="" disabled>
                 </div>
                 <div>
-                    <p class="label text-left">tokenId</p>
+                    <p class="label text-left">{tokenId}</p>
                     <input type="text" class="input col-12 tokenId" placeholder="" disabled>
                 </div>
                 <div>
-                    <p class="label text-left">owner</p>
+                    <p class="label text-left">{owner}</p>
                     <input type="text" class="input col-12 owner" placeholder="" disabled>
                 </div>
             </div>
@@ -1057,7 +1060,7 @@
                             <img class="logoNft" crossorigin="anonymous" style=""/>
                         </div>
                         <div class="col-12">
-                            <p class="title mt-1">Bitcoin</p>
+                            <p class="title mt-1"></p>
                         </div>
 
                     </div>
@@ -1071,16 +1074,16 @@
                 <i class=" fas fa-chevron-left"></i>
             </div>
             <div class="col-8 title d-flex justify-content-center">
-                <h5>History</h5>
+                <h5>{history}</h5>
             </div>
             <div class="col-2"></div>
         </div>
         <div class="row">
             <div class="col-6 d-flex justify-content-center pane paneSelected" id="all">
-                <p class="paneTitle" id="paneAll">All</p>
+                <p class="paneTitle" id="paneAll">{all}</p>
             </div>
             <div class="col-6 d-flex justify-content-center pane" id="transac">
-                <p class="paneTitle" id="paneTransac">Transactions</p>
+                <p class="paneTitle" id="paneTransac">{transactions}</p>
             </div>
         </div>
         <div class="content" id="showAll">
@@ -1097,16 +1100,16 @@
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-9 justify-content-center align-self-center">
-                        <p class="amount "><val></val> <span class="ticker">ETH</span> </p>
-                        <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
+                        <p class="amount "><val></val> <span class="ticker"></span> </p>
+                        <p class="addr">{to} <val class="addrRecipient"></val><span class="time"></span></p>
                     </div>
                     <div class="col-1 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                     <div class="row mt-2 tweakBtns">
-                        <div class="col-6 text-center"><a class="speed-up">Speed Up</a></div>
-                        <div class="col-6 text-center"><a class="cancel">Cancel</a></div>
+                        <div class="col-6 text-center"><a class="speed-up">{speedUp}</a></div>
+                        <div class="col-6 text-center"><a class="cancel">{cancel}</a></div>
                     </div>
                     </div>
                 </div>
@@ -1114,21 +1117,21 @@
                     <div class="detail">
                         <div class="row" style="margin-bottom: -7px">
                             <div class="col-6">
-                                <p class="title">Send</p>
+                                <p class="title">{send}</p>
                             </div>
                             <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
                         <div class="row">
-                            <p class="title col-4">Date</p>
+                            <p class="title col-4">{date}</p>
                             <p class="body date col-8 bold text-right">-</p>
                         </div>
                     </div>
                     <div class="detail " style="margin-bottom: 20px">
                         <div class="row">
-                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
-                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                            <p class="title recipientTitle col-4">{recipient}&ensp; <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-4" style="display: none">{copied}</p>
                             <p class="body recipient bold col-8 text-right">-</p>
                         </div>
                     </div>
@@ -1136,15 +1139,16 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title text-left col-6">Gas Price</p>
-                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                    <p class="title text-left col-6">{gasPrice}</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val>
+                                        {gwei}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="title text-left col-6">{gasLimit}</p>
                                     <p class="body text-right  gasLimit col-6">-</p>
                                 </div>
                             </div>
@@ -1152,7 +1156,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="title text-left col-6">{gasUsed}</p>
                                     <p class="body text-right  gasUsed col-6">-</p>
                                 </div>
                             </div>
@@ -1160,13 +1164,13 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title bold text-left col-5">Total fees</p>
-                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title bold text-left col-5">{totalFees}</p>
+                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <button class="button w-100 mt-1">{openInExplorer}</button>
                 </div>
             </div>
             <div class="listItem mb-2 basicTx pendingTx" id="transactionsNftTx" style="display: none">
@@ -1177,15 +1181,15 @@
                     </div>
                     <div class="col-9 justify-content-center align-self-center">
                         <p class="amount "><val></val> </p>
-                        <p class="addr">To <val class="addrRecipient"></val><span class="time"></span></p>
+                        <p class="addr">{to} <val class="addrRecipient"></val><span class="time"></span></p>
                     </div>
                     <div class="col-1 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up</a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel</a></div>
+                            <div class="col-6 text-center"><a class="speed-up">{speedUp}</a></div>
+                            <div class="col-6 text-center"><a class="cancel">{cancel}</a></div>
                         </div>
                     </div>
                 </div>
@@ -1193,27 +1197,27 @@
                     <div class="detail">
                         <div class="row" style="margin-bottom: -7px">
                             <div class="col-6">
-                                <p class="title">Send</p>
+                                <p class="title">{send}</p>
                             </div>
                             <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail" style="margin-bottom: 20px">
                         <div class="row">
-                            <p class="title col-4">Date</p>
+                            <p class="title col-4">{date}</p>
                             <p class="body date col-8 bold text-right">-</p>
                         </div>
                     </div>
                     <div class="detail " style="margin-bottom: 20px">
                         <div class="row">
-                            <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
-                            <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                            <p class="title recipientTitle col-4">{recipient}&ensp; <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-4" style="display: none">{copied}</p>
                             <p class="body recipient bold col-8 text-right">-</p>
                         </div>
                     </div>
                     <div class="detail " style="margin-bottom: 20px">
                         <div class="row">
-                            <p class="title collectionTitle col-4">Collection</p>
+                            <p class="title collectionTitle col-4">{collection}</p>
                             <p class="body collectionName bold col-8 text-right">-</p>
                         </div>
                     </div>
@@ -1221,15 +1225,16 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title text-left col-6">Gas Price</p>
-                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                    <p class="title text-left col-6">{gasPrice}</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val>
+                                        {gwei}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="title text-left col-6">{gasLimit}</p>
                                     <p class="body text-right  gasLimit col-6">-</p>
                                 </div>
                             </div>
@@ -1237,7 +1242,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="title text-left col-6">{gasUsed}</p>
                                     <p class="body text-right  gasUsed col-6">-</p>
                                 </div>
                             </div>
@@ -1245,13 +1250,13 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title bold text-left col-5">Total fees</p>
-                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title bold text-left col-5">{totalFees}</p>
+                                    <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <button class="button w-100 mt-1">{openInExplorer}</button>
                 </div>
             </div>
             <div class="listItem mb-2 notifTx pendingTx" id="transactionsNotifTx" style="display: none">
@@ -1275,7 +1280,7 @@
                         <div class="detail">
                             <div class="row" style="margin-bottom: -7px">
                                 <div class="col-6">
-                                    <p class="title">Send</p>
+                                    <p class="title">{send}</p>
                                 </div>
 
                                 <p class="body amount text-right col-6 bold"><span class="status"></span></p>
@@ -1283,14 +1288,14 @@
                         </div>
                         <div class="detail" style="margin-bottom: 20px">
                             <div class="row">
-                                <p class="title col-4">Date</p>
+                                <p class="title col-4">{date}</p>
                                 <p class="body date col-8 bold text-right">-</p>
                             </div>
                         </div>
                         <div class="detail " style="margin-bottom: 20px">
                             <div class="row">
-                                <p class="title recipientTitle col-4">Recipient&ensp; <i class="far fa-copy copy"></i></p>
-                                <p class="title recipientCopied col-4" style="display: none">Copied!</p>
+                                <p class="title recipientTitle col-4">{recipient}&ensp; <i class="far fa-copy copy"></i></p>
+                                <p class="title recipientCopied col-4" style="display: none">{copied}</p>
                                 <p class="body recipient bold col-8 text-right">-</p>
                             </div>
                         </div>
@@ -1299,14 +1304,15 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title text-left col-6">Gas Price</p>
-                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                    <p class="title text-left col-6">{gasPrice}</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val>
+                                        {gwei}</p>
                                 </div>
                             </div>
                             <div class="col-12 text-center">
                                 <div class="detail">
                                     <div class="row gas">
-                                        <p class="title text-left col-6">Gas Limit</p>
+                                        <p class="title text-left col-6">{gasLimit}</p>
                                         <p class="body text-right  gasLimit col-6">-</p>
                                     </div>
                                 </div>
@@ -1314,7 +1320,7 @@
                             <div class="col-12 text-center">
                                 <div class="detail">
                                     <div class="row gas">
-                                        <p class="title text-left col-6">Gas Used</p>
+                                        <p class="title text-left col-6">{gasUsed}</p>
                                         <p class="body text-right  gasUsed col-6">-</p>
                                     </div>
                                 </div>
@@ -1322,13 +1328,13 @@
                             <div class="col-12 text-center">
                                 <div class="detail">
                                     <div class="row">
-                                        <p class="title bold text-left col-5">Total fees</p>
-                                        <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                        <p class="title bold text-left col-5">{totalFees}</p>
+                                        <p class="body totalFees bold col-7 text-right"><val>-</val> <span class="ticker"></span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="button w-100 mt-1">Open in explorer</button>
+                        <button class="button w-100 mt-1">{openInExplorer}</button>
                     </div>
                 </div>
             </div>
@@ -1339,16 +1345,17 @@
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
-                        <p class="title">Swap <val class="ticker tickerA">BNB</val> to <val class="ticker tickerB">BNB</val></p>
-                        <p class="addr">With Atomic Swap <span class="time"></span></p>
+                        <p class="title">{swap} <val class="ticker tickerA"></val>
+                            {to} <val class="ticker tickerB"></val></p>
+                        <p class="addr">{withAtomic} <span class="time"></span></p>
                     </div>
                     <div class="col-2 text-right justify-content-center align-self-center p-0">
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                            <div class="col-6 text-center"><a class="speed-up">{speedUp} </a></div>
+                            <div class="col-6 text-center"><a class="cancel">{cancel} </a></div>
                         </div>
                     </div>
                 </div>
@@ -1356,24 +1363,24 @@
                     <div class="detail">
                         <div class="row">
                             <div class="col-4">
-                                <p class="title">Amount in</p>
+                                <p class="title">{amoutIn}</p>
                             </div>
                             <div class="col-4 text-right" style="display: none">
-                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
-                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                                <span class="badge badge-secondary" style="display: none">{canceledByUser}</span>
+                                <span class="badge badge-warning" style="display: none">{canceling}</span>
                             </div>
-                            <p class="body amountIn col-8 text-right"><val>-</val> <span class="ticker one">ETH</span></p>
+                            <p class="body amountIn col-8 text-right"><val>-</val> <span class="ticker one"></span></p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
-                            <p class="title col-4">Amount out</p>
-                            <p class="body amountOut col-8 text-right"><val>-</val> <span class="ticker two">ETH</span></p>
+                            <p class="title col-4">{amountOut}</p>
+                            <p class="body amountOut col-8 text-right"><val>-</val> <span class="ticker two"></span></p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
-                            <p class="title col-6">Date</p>
+                            <p class="title col-6">{date}</p>
                             <p class="body date col-6">-</p>
                         </div>
                     </div>
@@ -1381,15 +1388,15 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Price</p>
-                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                    <p class="title col-6 text-left">{gasPrice}</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >{gwei}</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="title col-6 text-left">{gasLimit}</p>
                                     <p class="body gasLimit col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1397,7 +1404,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="title col-6 text-left">{gasUsed}</p>
                                     <p class="body gasUsed col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1405,8 +1412,8 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Total fees</p>
-                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title col-6 text-left">{totalFees}</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -1420,16 +1427,16 @@
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-9">
-                        <p class="title">Swap <span class="ticker one">BNB</span> for <span class="ticker two">VGO</span></p>
-                        <p class="addr"><span class="site">On Virgo Wallet</span> <span class="time"></span></p>
+                        <p class="title">{swap} <span class="ticker one"></span> {for} <span class="ticker two"></span></p>
+                        <p class="addr"><span class="site">{onVirgo}</span> <span class="time"></span></p>
                     </div>
                     <div class="col-1 text-right justify-content-center align-self-center p-0">
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                            <div class="col-6 text-center"><a class="speed-up">{speedUp} </a></div>
+                            <div class="col-6 text-center"><a class="cancel">{cancel} </a></div>
                         </div>
                     </div>
                 </div>
@@ -1437,48 +1444,48 @@
                     <div class="detail">
                         <div class="row">
                             <div class="col-6">
-                                <p class="title">Status</p>
+                                <p class="title">{status}</p>
                             </div>
                             <p class="body amount text-right col-6"><val> </val> <span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail mb-3">
                         <div class="row">
-                            <p class="title col-4">Date</p>
+                            <p class="title col-4">{date}</p>
                             <p class="body date col-8 text-right">-</p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
                             <div class="col-4">
-                                <p class="title">Amount in</p>
+                                <p class="title">{amountIn}</p>
                             </div>
                             <div class="col-8 text-right" style="display: none">
-                                <span class="badge badge-secondary" style="display: none">Canceled by user</span>
-                                <span class="badge badge-warning" style="display: none">Canceling..</span>
+                                <span class="badge badge-secondary" style="display: none">{canceledByUser}</span>
+                                <span class="badge badge-warning" style="display: none">{canceling}</span>
                             </div>
-                            <p class="body amountIn col-8 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker one">ETH</span></p>
+                            <p class="body amountIn col-8 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker one"></span></p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
-                            <p class="title col-4">Amount out</p>
-                            <p class="body amountOut col-8 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker two">ETH</span></p>
+                            <p class="title col-4">{amountOut}</p>
+                            <p class="body amountOut col-8 text-right"><span class="amountOverflow"><val></val></span> <span class="ticker two"></span></p>
                         </div>
                     </div>
                     <div class="row fees mb-3">
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Price</p>
-                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                    <p class="title col-6 text-left">{gasPrice}</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >{gwei}</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="title col-6 text-left">{gasLimit}</p>
                                     <p class="body gasLimit col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1486,7 +1493,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="title col-6 text-left">{gasUsed}</p>
                                     <p class="body gasUsed col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1494,13 +1501,13 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Total fees</p>
-                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title col-6 text-left">{totalFees}</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <button class="button w-100 mt-1">{openInExplorer}</button>
                 </div>
             </div>
             <div class="listItem mb-2 swapTx pendingTx transactionWrapTx" id="transactionsWrapTx" style="display: none">
@@ -1510,16 +1517,16 @@
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-9">
-                        <p class="title"><span class="wrapType">Wrap</span> <span class="ticker one">BNB</span></p>
-                        <p class="addr"><span class="amountIn"></span> <span class="ticker one">BNB</span><span class="time"></span></p>
+                        <p class="title"><span class="wrapType">{wrap}</span> <span class="ticker one"></span></p>
+                        <p class="addr"><span class="amountIn"></span> <span class="ticker one"></span><span class="time"></span></p>
                     </div>
                     <div class="col-1 text-right justify-content-center align-self-center p-0">
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                            <div class="col-6 text-center"><a class="speed-up">{speedUp} </a></div>
+                            <div class="col-6 text-center"><a class="cancel">{cancel} </a></div>
                         </div>
                     </div>
                 </div>
@@ -1527,14 +1534,14 @@
                     <div class="detail">
                         <div class="row">
                             <div class="col-6">
-                                <p class="title">Status</p>
+                                <p class="title">{status}</p>
                             </div>
                             <p class="body amount text-right col-6"><val> </val> <span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail mb-3">
                         <div class="row">
-                            <p class="title col-4">Date</p>
+                            <p class="title col-4">{date}</p>
                             <p class="body date col-8 text-right">-</p>
                         </div>
                     </div>
@@ -1542,15 +1549,15 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Price</p>
-                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >Gwei</span></p>
+                                    <p class="title col-6 text-left">{gasPrice}</p>
+                                    <p class="body gasPrice col-6 text-right"><val>-</val> <span >{gwei}</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Limit</p>
+                                    <p class="title col-6 text-left">{gasLimit}</p>
                                     <p class="body gasLimit col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1558,7 +1565,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Gas Used</p>
+                                    <p class="title col-6 text-left">{gasUsed}</p>
                                     <p class="body gasUsed col-6 text-right">-</p>
                                 </div>
                             </div>
@@ -1566,13 +1573,13 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title col-6 text-left">Total fees</p>
-                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title col-6 text-left">{totalFees}</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <button class="button w-100 mt-1">openInExplorer</button>
                 </div>
             </div>
             <div class="listItem mb-2 approvedTx pendingTx" id="transactionsApproveTx" style="display: none" >
@@ -1582,16 +1589,16 @@
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-9 justify-content-center align-self-center">
-                        <p class="title">Allow <span class="ticker token" ></span></p>
-                        <p class="addr">On <span class="site"></span> <span class="time"></span></p>
+                        <p class="title">{allow} <span class="ticker token" ></span></p>
+                        <p class="addr">{on} <span class="site"></span> <span class="time"></span></p>
                     </div>
                     <div class="col-1 text-right justify-content-center align-self-center p-0" >
                         <i class="fas fa-chevron-right closeChevron"></i>
                     </div>
                     <div class="col-12">
                         <div class="row mt-2 tweakBtns">
-                            <div class="col-6 text-center"><a class="speed-up">Speed Up </a></div>
-                            <div class="col-6 text-center"><a class="cancel">Cancel </a></div>
+                            <div class="col-6 text-center"><a class="speed-up">{speedUp} </a></div>
+                            <div class="col-6 text-center"><a class="cancel">{cancel} </a></div>
                         </div>
                     </div>
                 </div>
@@ -1599,26 +1606,26 @@
                     <div class="detail">
                         <div class="row" style="margin-bottom: -7px">
                             <div class="col-6">
-                                <p class="title">Permission</p>
+                                <p class="title">{permission}</p>
                             </div>
                             <p class="body amount text-right col-6 bold"><span class="status"></span></p>
                         </div>
                     </div>
                     <div class="detail mb-3">
                         <div class="row">
-                            <p class="title col-4">Date</p>
+                            <p class="title col-4">{date}</p>
                             <p class="body date col-8 text-right">-</p>
                         </div>
                     </div>
                     <div class="detail">
                         <div class="row">
-                            <p class="title SiteTitle col-7">Spender address <i class="far fa-copy copy"></i></p>
-                            <p class="title SiteCopied col-7" style="display: none">Copied!</p>
+                            <p class="title SiteTitle col-7">{spenderAddress} <i class="far fa-copy copy"></i></p>
+                            <p class="title SiteCopied col-7" style="display: none">{copied}</p>
                             <p class="body siteAdress bold col-5 text-right">-</p>
                         </div>
                         <div class="row">
-                            <p class="title recipientTitle col-7">Token address <i class="far fa-copy copy"></i></p>
-                            <p class="title recipientCopied col-7" style="display: none">Copied!</p>
+                            <p class="title recipientTitle col-7">tokenAddress <i class="far fa-copy copy"></i></p>
+                            <p class="title recipientCopied col-7" style="display: none">{copied}</p>
                             <p class="body recipient bold col-5 text-right">-</p>
                         </div>
                     </div>
@@ -1626,15 +1633,16 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title text-left col-6">Gas Price</p>
-                                    <p class="body text-right  gasPrice col-6"><val>-</val> Gwei</p>
+                                    <p class="title text-left col-6">{gasPrice}</p>
+                                    <p class="body text-right  gasPrice col-6"><val>-</val>
+                                        {gwei}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Limit</p>
+                                    <p class="title text-left col-6">{gasLimit}</p>
                                     <p class="body text-right  gasLimit col-6">-</p>
                                 </div>
                             </div>
@@ -1642,7 +1650,7 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row gas">
-                                    <p class="title text-left col-6">Gas Used</p>
+                                    <p class="title text-left col-6">{gasUsed}</p>
                                     <p class="body text-right  gasUsed col-6">-</p>
                                 </div>
                             </div>
@@ -1650,13 +1658,13 @@
                         <div class="col-12 text-center">
                             <div class="detail">
                                 <div class="row">
-                                    <p class="title  text-left col-6">Total fees</p>
-                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker">ETH</span></p>
+                                    <p class="title  text-left col-6">{totalFees}</p>
+                                    <p class="body totalFees col-6 text-right"><val>-</val> <span class="ticker"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="button w-100 mt-1">Open in explorer</button>
+                    <button class="button w-100 mt-1">{openInExplorer}</button>
                 </div>
             </div>
             <div class="listWrap mt-1">
@@ -1668,8 +1676,8 @@
             </div>
             <div class="listEmpty text-center mt-5 mb-5" style="display: none" id="noTransactionMsg">
                 <img src="../images/noTransactions.png" class="img-fluid" alt="nocontact" />
-                <h4>Nothing to show!</h4>
-                <p>Your wallet activity will appear here.</p>
+                <h4>{nothingToShow}</h4>
+                <p>{walletActivity}</p>
             </div>
         </div>
     </div>
@@ -1693,23 +1701,23 @@
             </div>
             <div class="row resume">
                 <div class="pt-2">
-                    <p class="label text-left">Asset name</p>
+                    <p class="label text-left">{assetName}</p>
                     <input type="text" class="input col-12 name" placeholder="" disabled="">
                 </div>
                 <div class="pt-2">
-                    <p class="label text-left">Symbol</p>
+                    <p class="label text-left">{symbol}</p>
                     <input type="text" class="input col-12 symbol" placeholder="" disabled="">
                 </div>
                 <div class="pt-2">
-                    <p class="label text-left">Decimals</p>
+                    <p class="label text-left">{decimals}</p>
                     <input type="text" class="input col-12 decimals" placeholder="" disabled="">
                 </div>
                 <div class="pt-2">
-                    <p class="label text-left">Contract address</p>
+                    <p class="label text-left">{contractAddress}</p>
                     <input type="text" class="input col-12 address" placeholder="" disabled="">
                 </div>
                 <div class="pt-3">
-                    <button class="button w-100" id="tokenDetailSimpleDel">Remove <span>TICKER</span></button>
+                    <button class="button w-100" id="tokenDetailSimpleDel">Remove <span>{ticker}</span></button>
                 </div>
 
             </div>
@@ -1755,10 +1763,10 @@
             <div class="content">
                 <div class="row menu">
                     <div class="col-6 selected" id="tokenNewsBtn">
-                        <p>News</p>
+                        <p>{news}</p>
                     </div>
                     <div class="col-6" id="tokenInfosBtn">
-                        <p>Infos</p>
+                        <p>{infos}</p>
                     </div>
                 </div>
                 <div id="tokenNews">
@@ -1771,8 +1779,8 @@
                     <div class="row news" id="sampleTokenNews" style="display: none">
                         <div class="wrapper">
                             <div class="content">
-                                <p class="title">Bitcoin bulls aim for $25K price on Friday's $510M options expiry</p>
-                                <p class="subtitle">Cointelegraph.com News - 2 hours ago</p>
+                                <p class="title"></p>
+                                <p class="subtitle"></p>
                             </div>
                         </div>
                     </div>
@@ -1788,44 +1796,44 @@
                         </div>
                         <div class="row stats">
                             <div class="col-6">
-                                <p class="title">Market Cap</p>
+                                <p class="title">{marketCap}</p>
                             </div>
                             <div class="col-6 text-right">
                                 <p class="value marketcap">-</p>
                             </div>
                             <div class="col-6">
-                                <p class="title">Volume (24h)</p>
+                                <p class="title">{volume24h}</p>
                             </div>
                             <div class="col-6 text-right">
                                 <p class="value volume">-</p>
                             </div>
                             <div style="display: none" class="additional">
                                 <div class="col-6">
-                                    <p class="title">Circulating supply</p>
+                                    <p class="title">{circulatingSupply}</p>
                                 </div>
                                 <div class="col-6 text-right">
                                     <p class="value circulating">-</p>
                                 </div>
                                 <div class="col-6">
-                                    <p class="title">Total supply</p>
+                                    <p class="title">{totalSupply}</p>
                                 </div>
                                 <div class="col-6 text-right">
                                     <p class="value totalSupply">-</p>
                                 </div>
                                 <div class="col-6">
-                                    <p class="title">Max Supply</p>
+                                    <p class="title">{maxSupply}</p>
                                 </div>
                                 <div class="col-6 text-right">
                                     <p class="value maxSupply">-</p>
                                 </div>
                                 <div class="col-6">
-                                    <p class="title">All Time High</p>
+                                    <p class="title">{AllTime}</p>
                                 </div>
                                 <div class="col-6 text-right">
                                     <p class="value ath">-</p>
                                 </div>
                                 <div class="col-6">
-                                    <p class="title">All Time Low</p>
+                                    <p class="title">{allTimeLow}</p>
                                 </div>
                                 <div class="col-6 text-right">
                                     <p class="value atl">-</p>
@@ -1836,9 +1844,9 @@
                             </div>
                         </div>
                         <div class="description">
-                            <p class="title">About</p>
+                            <p class="title">{about}</p>
                             <p class="desc"></p>
-                            <a href="" class="readmore">Read more</a>
+                            <a href="" class="readmore">{readMore}</a>
                         </div>
                     </div>
                 </div>
@@ -1860,7 +1868,7 @@
                     <p class="name"></p>
                 </div>
                 <div class="col-2 mt-2 d-flex justify-content-center align-self-center">
-                    <p class="deleteNft">Delete</p>
+                    <p class="deleteNft">{delete}</p>
                 </div>
             </div>
 
@@ -1879,12 +1887,12 @@
                             </div>
 
                             <div class="col-12 AddrNft" >
-                                <p class="AddrTitle">Address</p>
-                                <p class="AddrSpec">test</p><i class="ms-2 fal fa-copy addrCopy"></i>
+                                <p class="AddrTitle">{address}</p>
+                                <p class="AddrSpec"></p><i class="ms-2 fal fa-copy addrCopy"></i>
                             </div>
                             <div class="col-12 tokenIdNft" >
-                                <p class="tokenIdTitle">Token ID</p>
-                                <p class="tokenIdSpec">test</p><i class="ms-2 fal fa-copy tokenIdCopy"></i>
+                                <p class="tokenIdTitle">{tokenId}</p>
+                                <p class="tokenIdSpec"></p><i class="ms-2 fal fa-copy tokenIdCopy"></i>
                             </div>
                         <div class="row stats">
                             <div class="col-12 baseAttrNft" style="display: none">
@@ -1896,7 +1904,7 @@
                 </div>
             </div>
             <div id="sendNFTBtnWrapper">
-                <button class="button " id="sendNftBtn">Send NFT</button>
+                <button class="button " id="sendNftBtn">{sendNFTs}</button>
             </div>
         </div>
     </div>
@@ -1908,15 +1916,15 @@
                         <i class="fas fa-chevron-left"></i>
                     </div>
                     <div class="col-12 title d-flex justify-content-center">
-                        <h5>Send To</h5>
+                        <h5>{sendTo}</h5>
                     </div>
                 </div>
             </div>
             <div class="row p-3">
                 <div class="col-12">
-                    <p class="label mb-2">To</p>
+                    <p class="label mb-2">{to}</p>
                     <div class="input-group col-12" style="font-size: 1.2em">
-                        <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="Recipient address" data-inputTarget="#nftSendPane .submit">
+                        <input type="text" class="input col-10 recipient pr-0" style="padding-right: 1em !important;" placeholder="{recipientAddress}" data-inputTarget="#nftSendPane .submit">
                         <button class="fa-regular fa-arrow-right d-flex align-items-center nextBtn ms-0 col-2 submit" disabled="disabled"></button>
                     </div>
                 </div>
@@ -1931,18 +1939,18 @@
                     <i class=" fas fa-chevron-left"></i>
                 </div>
                 <div class="col-8 title d-flex justify-content-center">
-                    <h5>Confirm</h5>
+                    <h5>{confirm}</h5>
                 </div>
                 <div class="col-2"></div>
             </div>
             <div class="row mb-3 from d-flex justify-content-center text-center">
-                <p class="labelFromAndTo">NFT to send</p>
+                <p class="labelFromAndTo">{nftToSend}</p>
                 <div class="identicon col-12 d-flex justify-content-center">
                     <img class="logoNft" width="100%" crossorigin="anonymous" style=""/>
                 </div>
             </div>
             <div class="row mb-3 recipient">
-                <p class="labelFromAndTo">To</p>
+                <p class="labelFromAndTo">{to}</p>
                 <div class="identicon col-2">
                     <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
                 </div>
@@ -1951,13 +1959,13 @@
             </div>
             <div class="row fees">
                 <div class="col-3 mt-3 mb-1" style="display: inline-flex">
-                    <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
+                    <p class="labelTitle">{fees}<p class="title editFees">{editFees}</p></p>
                 </div>
                 <div class="col-9 text-right mt-3 mb-1">
                     <p class="value labelTitle"><span id="sendNftReviewNetFees"></span> <span class="ticker" id="sendNftReviewNetFeesTicker" data-networkticker></span></p>
                 </div>
                 <div class="col-5 mb-3">
-                    <p class="labelCost">Total Cost</p>
+                    <p class="labelCost">{totalCost}</p>
                 </div>
                 <div class="col-7 text-right">
                     <p class="value labelCost"><span id="sendNftReviewCost"></span> <span id="sendNftReviewCostTicker" class="ticker"></span></p>
@@ -1973,14 +1981,14 @@
     <div id="settings" class="pt-2">
         <div>
             <div class="col-12 title d-flex justify-content-center  settingTitle">
-                <p class="text-center ">My Wallet</p>
+                <p class="text-center ">{myWallet}</p>
             </div>
         </div>
 
         <div class="mt-4 p-4 pt-0 mainPane">
             <div class="row p-2 pb-0">
                 <p class="col-6 mb-0"></p>
-                <div class="col-6"><p class="mb-0 addAccount"><i class="fas fa-plus"></i> Add</p></div>
+                <div class="col-6"><p class="mb-0 addAccount"><i class="fas fa-plus"></i> {add}</p></div>
             </div>
             <div class="accounts p-2 pb-0 pt-0 row d-flex justify-content-center">
                 <div class="row account mt-2 pl-0 pr-0" style="display: none" id="baseAccountRow">
@@ -2004,10 +2012,10 @@
             </div>
             <div class="row mt-2 p-2 pt-0" style="flex: 0 1 8em;">
                 <div class="col-6 pl-0 pr-1">
-                    <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
+                    <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>{settings}</button>
                 </div>
                 <div class="col-6 pl-1 pr-0">
-                    <button class="button w-100 openSupport"><i class="fas fa-headset settingLogo"></i>Support</button>
+                    <button class="button w-100 openSupport"><i class="fas fa-headset settingLogo"></i>{support}</button>
                 </div>
             </div>
         </div>
@@ -2019,7 +2027,7 @@
                 <div class="row tab" data-target="general" id="general">
                     <div class="col-10 d-flex align-items-center">
                         <i class="fa-solid fa-gear me-3 col-2"></i>
-                        <h5 class="m-0 col-10">General</h5>
+                        <h5 class="m-0 col-10">{general}</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
@@ -2029,7 +2037,7 @@
                 <div class="row tab" data-target="security">
                     <div class="col-10 d-flex align-items-center">
                         <i class="fa-solid fa-lock-keyhole me-3 col-2"></i>
-                        <h5 class="m-0 col-10">Security & Privacy</h5>
+                        <h5 class="m-0 col-10">{securityPrivacy}</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
@@ -2039,7 +2047,7 @@
                 <div class="row tab" data-target="connectedWebsites" id="connectedWebsites">
                     <div class="col-10 d-flex align-items-center">
                         <i class="fa-solid fa-sitemap me-3 col-2"></i>
-                        <h5 class="m-0 col-10">Connected Websites</h5>
+                        <h5 class="m-0 col-10">{connectedWebSites}</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
@@ -2049,7 +2057,7 @@
                 <div class="row tab" data-target="manageNetworks" id="manageNetworks">
                     <div class="col-10 d-flex align-items-center">
                         <i class="fa-solid fa-sitemap me-3 col-2"></i>
-                        <h5 class="m-0 col-10">Manage Networks</h5>
+                        <h5 class="m-0 col-10">{manageNetworks}</h5>
                     </div>
                     <div class="col-2 justify-content-center align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
@@ -2058,58 +2066,58 @@
             </div>
             <div class="settingsCat" data-settingId="security" data-title="Security & Privacy" data-settingsLevel="1">
                 <div class="row securityPane">
-                    <h5 class="securitytitles">Backup seed phrase</h5>
-                    <p class="securitydesc">Reveal your current seed phrase to backup your wallet.</p>
-                    <button class="button tab" id="revealSeed" data-target="setupPassword">Reveal Seed Phrase</button>
+                    <h5 class="securitytitles">{backupPhrase}</h5>
+                    <p class="securitydesc">{backupDesc}</p>
+                    <button class="button tab" id="revealSeed" data-target="setupPassword">{revealSeedPhrase}</button>
                 </div>
                 <div class="row securityPane">
-                    <h5 class="securitytitles">Protect Your Wallet</h5>
-                    <p class="securitydesc">Setup a password that will be asked to unlock the wallet after inactivity.</p>
-                    <button class="buttonEmpty tab" id="change_password" data-target="setupPassword">Setup/Change password</button>
+                    <h5 class="securitytitles">{protectYourWallet}</h5>
+                    <p class="securitydesc">{protectYourWalletDesc}</p>
+                    <button class="buttonEmpty tab" id="change_password" data-target="setupPassword">
+                        {setupChangePassword}</button>
                 </div>
                 <div class="row securityPane">
-                    <h5 class="securitytitles">Restore account</h5>
-                    <p class="securitydesc">Import an already existing seed phrase into the wallet.</p>
-                    <button class="buttonEmpty tab" id="import_mnemonic" data-target="importMnemonic">Import seed phrase</button>
+                    <h5 class="securitytitles">{restoreAccount}</h5>
+                    <p class="securitydesc">{restoreAccountDesc}</p>
+                    <button class="buttonEmpty tab" id="import_mnemonic" data-target="importMnemonic">{importSeedPhrase}</button>
                 </div>
                 <div class="row securityPane">
-                    <h5 class="securitytitles">Auto-Lock</h5>
-                    <p class="securitydesc">Choose the amount of time before the wallet automatically locks.</p>
+                    <h5 class="securitytitles">{autoLock}</h5>
+                    <p class="securitydesc">{autoLockDesc}</p>
                     <select class="form-select" id="autolockDelaySetting">
-                        <option value="5">5 minutes</option>
-                        <option value="10">10 minutes</option>
-                        <option value="30">30 minutes</option>
-                        <option value="60" selected="">1 hour</option>
-                        <option value="120">2 hours</option>
-                        <option value="360">6 hours</option>
-                        <option value="720">12 hours</option>
-                        <option value="1440">1 day</option>
+                        <option value="5">{minute5}</option>
+                        <option value="10">{minute10}</option>
+                        <option value="30">{minute30}</option>
+                        <option value="60" selected="">{hour1}</option>
+                        <option value="120">{hour2}</option>
+                        <option value="360">{hour6}</option>
+                        <option value="720">{hour12}</option>
+                        <option value="1440">{day1}</option>
                     </select>
                     <div class="form-check form-switch mt-2">
                         <input class="form-check-input" type="checkbox" id="autolockEnabledSetting">
-                        <label class="form-check-label" for="autolockEnabledSetting">Enable autolock</label>
+                        <label class="form-check-label" for="autolockEnabledSetting">{enableAutoLock}</label>
                     </div>
                     <div class="form-check form-switch mt-2" id="biometricsEnabledSettingContainer" style="display: none">
                         <input class="form-check-input" type="checkbox" id="biometricsEnabledSetting">
-                        <label class="form-check-label" for="biometricsEnabledSetting">Enable biometrics unlock</label>
+                        <label class="form-check-label" for="biometricsEnabledSetting">{enableBiometricsUnlock}</label>
                     </div>
                 </div>
             </div>
             <div class="settingsCat p-3 text-center setupPassword" data-settingId="setupPassword"
                  data-settingsLevel="2" id="settings_setuppassword">
                 <div class="writeMnemonic" id="writeMnemonic" style="display: none">
-                    <h3>Write down your Secret Recovery Phrase</h3>
-                    <p style="font-size: 0.9em">It permits you to recover your wallet in case of loss. <b>Write it down
-                        on paper and keep it safe</b>, away from regard.</p>
+                    <h3>{writeScretPhrase}</h3>
+                    <p style="font-size: 0.9em">{writeScretPhraseDesc}<b>{writeScretPhraseDescB}</b>{writeScretPhraseDescP}</p>
                     <div>
                         <div class="row g-1">
                             <div class="col-4">
-                                <p class="word"><i>1.</i>
+                                <p class="word"><i>{one}</i>
                                     <val></val>
                                 </p>
                             </div>
                             <div class="col-4">
-                                <p class="word"><i>2.</i>
+                                <p class="word"><i>{two}</i>
                                     <val></val>
                                 </p>
                             </div>
@@ -2537,6 +2545,13 @@
                         <option value="cad" selected>CAD - Canadian Dollar</option>
                         <option value="hkd" selected>HKD - Hong Kong Dollar</option>
                         <option value="ngn" selected>NGN - Nigerian Naira</option>
+                    </select>
+                </div>
+                <div class="row languageChange">
+                    <h5 class="languageChangeTitle">Language Selection</h5>
+                    <select name="language" id="languageChange">
+                        <option value="en_US" selected>Anglais</option>
+                        <option value="fr_FR" >Francais</option>
                     </select>
                 </div>
             </div>

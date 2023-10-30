@@ -261,6 +261,10 @@ async function setSelectedCurrency(currency) {
     return await browser.runtime.sendMessage({command: 'setSelectedCurrency', currency})
 }
 
+async function setSelectedLanguage(language) {
+    return await browser.runtime.sendMessage({command: 'setSelectedLanguage', language})
+}
+
 async function getNotifications(){
     return await browser.runtime.sendMessage({command: 'getNotifications'})
 }

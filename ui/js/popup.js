@@ -127,3 +127,4 @@ $(".bottomPopup .background").click(function(){
 $(".bottomPopup .close").click(function(){
     $(this).closest(".bottomPopup").hide()
 })
+

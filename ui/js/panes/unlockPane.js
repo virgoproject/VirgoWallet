@@ -64,6 +64,7 @@ class UnlockPane {
                         UnlockPane.passSubmit.prop("disabled", true)
                         UnlockPane.password.addClass("is-invalid");
                         UnlockPane.passWrong.show();
+                        UnlockPane.passWrong.html(Language.get("wrongPassword"))
                         UnlockPane.passBase.hide();
 
                         setTimeout(function (){
@@ -149,7 +150,6 @@ class UnlockPane {
                 }
             })
         }
-
     }
 
 }
