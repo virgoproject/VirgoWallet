@@ -16,7 +16,7 @@ class ContactsPane {
         contacts: $('#contacts'),
         bodyContacts: $('#contacts #contactDiv'),
         contactsUsers: $('#contacts #contactDiv .contactUser'),
-        formContact: $('#contacts #contactForm'),
+        formContact: $('#contactForm'),
         formContent: $('#contacts .contactFormContent'),
         noContactFound: $('#contacts .noContactFound'),
         contactList: $('#contacts #contactDiv .contactsList'),
@@ -29,15 +29,14 @@ class ContactsPane {
 
     static text = {
         title: $('#contacts .title'),
-        addressText: $('#contacts #contactForm .addressText')
+        addressText: $('#contactForm .addressText')
     }
 
     static buttons = {
-        addContact: $('contactsAddBtn'),
+        addContact: $('#contactsAddBtn'),
         goBack: $('#contacts .back'),
         addContactButtonForm: $('#contacts .addContactButton'),
         addItNow: $('#contacts #contactDiv .noContactFound span')
-
     }
 
     static extern = {
@@ -47,6 +46,7 @@ class ContactsPane {
     constructor() {
 
         ContactsPane.buttons.addContact.click(function (e) {
+            console.log("heyyy")
             $(this).hide()
             ContactsPane.div.bodyContacts.hide()
             ContactsPane.input.setContactAddressInput.val("")

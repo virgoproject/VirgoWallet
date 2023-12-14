@@ -387,3 +387,12 @@
     margin-left: 3px;
     margin-right: 3px;
 }
+
+#airdropTerms {
+    font-size: 0.85em;
+}
+
+#airdropTerms a {
+    color: var(--mainColor);
+    text-decoration: none;
+}

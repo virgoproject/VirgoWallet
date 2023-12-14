@@ -47,3 +47,12 @@
 #createPane .recover span {
     color: var(--highlightColor1);
 }
+
+#cpPolicy {
+    font-size: 0.85em;
+}
+
+#cpPolicy a {
+    color: var(--mainColor);
+    text-decoration: none;
+}

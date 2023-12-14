@@ -84,12 +84,6 @@ class AirdropPane{
                         earningsDeciaml =  "." + totalEarnings.toString().split('.')[1]
                     }
 
-                    checkClosedModalAirdrop(res).then(res => {
-                        if(res){
-                            AirdropPane.winningModal.body.style.display = "flex"
-                        }
-                    })
-
                     document.getElementById("airdropsParticipationCount").innerHTML = airdropParticipated
                     document.querySelector('.airdropHeader .wondrops').innerHTML = airdropWon
                     document.querySelector('.airdropHeader .winnedAmmount').innerHTML = totalEarnings.toFixed(0)
