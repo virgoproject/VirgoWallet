@@ -71,7 +71,21 @@ const mobileScripts = [
     "../../background/background.js",
     "../js/utils/html5-qrcode.js",
     "../js/panes/qrScannerPane.js",
-    "../../background/mobile/walletConnect/walletConnect.js"
+    "../../background/mobile/walletConnect/walletConnect.js",
+    "../../background/messageHandlers/settings/connectedWebsites.js",
+    "../../background/messageHandlers/settings/general.js",
+    "../../background/messageHandlers/settings/networks.js",
+    "../../background/messageHandlers/settings/security.js",
+    "../../background/messageHandlers/airdrops.js",
+    "../../background/messageHandlers/atomicSwap.js",
+    "../../background/messageHandlers/contacts.js",
+    "../../background/messageHandlers/misc.js",
+    "../../background/messageHandlers/NFTs.js",
+    "../../background/messageHandlers/swap.js",
+    "../../background/messageHandlers/tokens.js",
+    "../../background/messageHandlers/transactions.js",
+    "../../background/messageHandlers/wallet.js",
+    "../../background/messageHandlers/web3.js",
 ]
 
 const mobileScriptsAfter = [
