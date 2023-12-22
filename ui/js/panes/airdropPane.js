@@ -334,8 +334,6 @@ class AirdropPane{
                                     })
                                 })
 
-
-
                                 if (socials.twitter !== ''){
                                     elem.querySelector('.fa-twitter').href = socials.twitter
                                     elem.querySelector('.twitter').classList.remove('d-none')

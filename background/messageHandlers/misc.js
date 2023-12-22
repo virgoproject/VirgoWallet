@@ -2,6 +2,18 @@ class MiscHandlers {
 
     static register(){
         addBgMessageHandler("validateAddress", this.validateAddress)
+        addBgMessageHandler("getGasPrice", this.getGasPrice)
+        addBgMessageHandler("closedBackupPopup", this.closedBackupPopup)
+        addBgMessageHandler("closedUpdatePopup", this.closedUpdatePopup)
+        addBgMessageHandler("tickerFromChainID", this.tickerFromChainID)
+        addBgMessageHandler("checkClosedModal", this.checkClosedModal)
+        addBgMessageHandler("changeModalStatus", this.changeModalStatus)
+        addBgMessageHandler("getNotifications", this.getNotifications)
+        addBgMessageHandler("hideNotification", this.hideNotification)
+        addBgMessageHandler("setSetupDone", this.setSetupDone)
+        addBgMessageHandler("tutorialDone", this.tutorialDone)
+        addBgMessageHandler("setupNot", this.setupNot)
+        addBgMessageHandler("setSetupDone", this.setSetupDone)
     }
 
     static validateAddress(request, sender, sendResponse){
