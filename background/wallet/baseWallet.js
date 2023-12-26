@@ -41,7 +41,8 @@ class BaseWallet {
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce,
-            shareNonce: false
+            shareNonce: false,
+            pollingInterval: 10000
         })
 
         this.setProvider(provider)
@@ -63,7 +64,7 @@ class BaseWallet {
                 return
             }
             baseWallet.getCurrentWallet().update()
-        }, 2500)
+        }, 10000)
 
         const startupWait = setInterval(() => {
             if(baseWallet.getCurrentWallet().getAddressesJSON().length == 0) return
@@ -138,210 +139,6 @@ class BaseWallet {
                     "lockerAddress": "0x07AF5E2075BB32FfdFF5Ac2Ffb492bdE5D98D65b",
                     "orders": []
                 }
-            }
-        }
-
-        wallets[1] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Goerli",
-                "asset": "Ethereum",
-                "ticker": "GETH",
-                "decimals": 18,
-                "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                "RPC": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-                "chainID": 5,
-                "tokens": [],
-                "nft":[],
-                "transactions": [],
-                "explorer": "https://goerli.etherscan.io/tx/",
-                "testnet": true
-            }
-        }
-
-        wallets[2] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Smart Chain",
-                "asset": "Binance Coin",
-                "ticker": "BNB",
-                "decimals": 18,
-                "contract": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
-                "RPC": "https://bsc-dataseed.binance.org/",
-                "chainID": 56,
-                "tokens": [
-                    {
-                        "name": "Virgo",
-                        "ticker": "VGO",
-                        "decimals": 8,
-                        "contract": "0xfb526228ff1c019e4604c7e7988c097d96bd5b70",
-                        "tracked": true
-                    }
-                ],
-                "nft":[],
-                "transactions": [],
-                "explorer": "https://bscscan.com/tx/",
-                "testnet": false,
-                "atomicSwap": {
-                    "lockerAddress": "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
-                    "orders": []
-                }
-            }
-        }
-
-        wallets[3] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Polygon",
-                "asset": "Polygon",
-                "ticker": "MATIC",
-                "decimals": 18,
-                "contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-                "RPC": "https://rpc.ankr.com/polygon",
-                "chainID": 137,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://polygonscan.com/tx/",
-                "testnet": false,
-                "atomicSwap": {
-                    "lockerAddress": "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0"
-                }
-            }
-        }
-
-        wallets[4] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Avalanche",
-                "asset": "Avalanche",
-                "ticker": "AVAX",
-                "decimals": 18,
-                "contract": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
-                "RPC": "https://api.avax.network/ext/bc/C/rpc",
-                "chainID": 43114,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://snowtrace.io/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[5] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Fantom",
-                "asset": "Fantom",
-                "ticker": "FTM",
-                "decimals": 18,
-                "contract": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
-                "RPC": "https://rpc.ftm.tools/",
-                "chainID": 250,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://ftmscan.com/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[6] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Heco Chain",
-                "asset": "Huobi Token",
-                "ticker": "HT",
-                "decimals": 18,
-                "contract": "0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f",
-                "RPC": "https://http-mainnet.hecochain.com/",
-                "chainID": 128,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://hecoinfo.com/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[7] = {
-            "type": "web3",
-            "wallet": {
-                "name": "KuCoin Chain",
-                "asset": "KuCoin Token",
-                "ticker": "KCS",
-                "decimals": 18,
-                "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521",
-                "RPC": "https://rpc-mainnet.kcc.network/",
-                "chainID": 321,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://explorer.kcc.io/en/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[8] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Cronos Chain",
-                "asset": "Cronos",
-                "ticker": "CRO",
-                "decimals": 18,
-                "contract": "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
-                "RPC": "https://evm-cronos.crypto.org/",
-                "chainID": 25,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://cronoscan.com/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[9] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Ether PoW",
-                "asset": "EthereumPoW",
-                "ticker": "ETHW",
-                "decimals": 18,
-                "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-                "RPC": "https://mainnet.ethereumpow.org/",
-                "chainID": 10001,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://www.oklink.com/en/ethw/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[10] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Ether Classic",
-                "asset": "Ethereum Classic",
-                "ticker": "ETC",
-                "decimals": 18,
-                "contract": "0x82A618305706B14e7bcf2592D4B9324A366b6dAd",
-                "RPC": "https://geth-de.etc-network.info",
-                "chainID": 61,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://blockscout.com/etc/mainnet/tx/",
-                "testnet": false
-            }
-        }
-
-        wallets[11] = {
-            "type": "web3",
-            "wallet": {
-                "name": "Ether Fair",
-                "asset": "Ethereum Fair",
-                "ticker": "ETHF",
-                "decimals": 18,
-                "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-                "RPC": "https://rpc.etherfair.org/",
-                "chainID": 513100,
-                "tokens": [],
-                "transactions": [],
-                "explorer": "https://explorer.etherfair.org/tx/",
-                "testnet": false
             }
         }
 
@@ -493,7 +290,8 @@ class BaseWallet {
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce,
-            shareNonce: false
+            shareNonce: false,
+            pollingInterval: 10000
         })
         this.setProvider(newProvider)
         provider = newProvider
@@ -507,7 +305,8 @@ class BaseWallet {
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce,
-            shareNonce: false
+            shareNonce: false,
+            pollingInterval: 10000
         })
         this.setProvider(newProvider)
         provider.engine.stop()
@@ -558,7 +357,8 @@ class BaseWallet {
             providerOrUrl: chain.rpcURL,
             chainId: chain.chainID,
             numberOfAddresses: this.nonce,
-            shareNonce: false
+            shareNonce: false,
+            pollingInterval: 10000
         })
 
         const w3 = new Web3(newProvider)
