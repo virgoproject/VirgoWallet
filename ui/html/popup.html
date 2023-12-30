@@ -147,10 +147,10 @@
             <div class="assets row">
                 <div class="title col-12 m-0 p-0">
                     <div class="row">
-                        <div class="col-3 mb-3  " id="allAssetdiv">
+                        <div class="col-3 mb-3" id="allAssetdiv">
                             <p class=" mb-0 resumePane divResumePane divResumePaneSelected" id="allAssets">Assets</p>
                         </div>
-                        <div class="col-3 mb-3 " id="nftDiv">
+                        <div class="col-3 mb-3" id="nftDiv">
                             <p class=" mb-0 resumePane divResumePane" id="nft">NFTs</p>
                         </div>
                         <div class="col-6 mb-3 text-right"><p class="mb-0" id="manageAssetsBtn">Manage Tokens</p><p class="mb-0" style="display: none" id="manageNFTsBtn">Import NFTs</p></div>
@@ -767,116 +767,116 @@
         </div>
 
     </div>
-    <div id="footer" class="row">
-        <div class="footerElem col-3 selected" data-target="resume">
-            <div>
-                <i class="fas fa-home"></i>
-                <p>Home</p>
-            </div>
-        </div>
-        <div class="footerElem col-3" data-target="send" id="footerBtnSend">
-            <div>
-                <i class="fas fa-dollar-sign"></i>
-                <p>Pay</p>
-            </div>
-        </div>
-        <div class="footerElem col-3" data-target="swap">
-            <div>
-                <i class="fas fa-retweet"></i>
-                <p>Swap</p>
-            </div>
-        </div>
-        <div class="footerElem col-3" data-target="airdrop">
-            <div>
-                <i class="fa-solid fa-gift"></i>
-                <p>Airdrop</p>
-            </div>
-        </div>
-    </div>
-    <edit-fees style="display: none" data-decimal="" data-limit="" data-ticker></edit-fees>
-    <div class="sendConfirm" id="sendConfirm" style="display: none">
-        <div class="row mb-5">
-            <div class="col-2 back pl-0">
-                <i class=" fas fa-chevron-left"></i>
-            </div>
-            <div class="col-8 title d-flex justify-content-center">
-                <h5>Amount</h5>
-            </div>
-            <div class="col-2"></div>
-        </div>
-        <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
-            <div class="justify-content-center align-self-center">
-                <select class="selectpicker w-100" id="sendAssetSelect" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 d-flex justify-content-center p-0">
-                <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
-            </div>
-            <div class="col-12 d-flex justify-content-center inputWButton">
-                <a class="col-2 max">Use max</a>
-            </div>
-            <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
-                <p class="value labelCost"><span id="showCost">-</span> <span class="dollars">$</span></p>
-            </div>
-            <div class="col-12 d-flex justify-content-center inputWButton">
-                <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
-            </div>
-        </div>
-        <button class="button sendBtn" id="sendNextStep" disabled="disabled">Next</button>
-    </div>
-    <div id="sendConfirmFeesLoading" style="display: none">
-        <i class="fas fa-spinner fa-pulse"></i>
-    </div>
-    <div class="sendConfirm" id="sendConfirmFees" style="display: none">
-        <div class="row mb-5">
-            <div class="col-2 back pl-0">
-                <i class=" fas fa-chevron-left"></i>
-            </div>
-            <div class="col-8 title d-flex justify-content-center">
-                <h5>Confirm</h5>
-            </div>
-            <div class="col-2"></div>
-        </div>
-        <div class="row sendAmount mb-4 amount">
-            <p class="m-0 ">Sending</p>
-            <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
-        </div>
-        <div class="row mb-3 from">
-                <p class="labelFromAndTo">From</p>
-                <div class="identicon col-2">
-                    <svg data-jdenticon-value="sesesqqqfse" id="from" width="40" height="40"></svg>
+        <div id="footer" class="row">
+            <div class="footerElem col-3 selected" data-target="resume">
+                <div>
+                    <i class="fas fa-home"></i>
+                    <p>Home</p>
                 </div>
-                <p class="col-9 detail value labelAdress"><val></val></p>
+            </div>
+            <div class="footerElem col-3" data-target="send" id="footerBtnSend">
+                <div>
+                    <i class="fas fa-dollar-sign"></i>
+                    <p>Pay</p>
+                </div>
+            </div>
+            <div class="footerElem col-3" data-target="swap">
+                <div>
+                    <i class="fas fa-retweet"></i>
+                    <p>Swap</p>
+                </div>
+            </div>
+            <div class="footerElem col-3" data-target="airdrop">
+                <div>
+                    <i class="fa-solid fa-gift"></i>
+                    <p>Airdrop</p>
+                </div>
+            </div>
+        </div>
+        <edit-fees style="display: none" data-decimal="" data-limit="" data-ticker></edit-fees>
+        <div class="sendConfirm" id="sendConfirm" style="display: none">
+            <div class="row mb-5">
+                <div class="col-2 back pl-0">
+                    <i class=" fas fa-chevron-left"></i>
+                </div>
+                <div class="col-8 title d-flex justify-content-center">
+                    <h5>Amount</h5>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center p-0" id="selectAssetSend">
+                <div class="justify-content-center align-self-center">
+                    <select class="selectpicker w-100" id="sendAssetSelect" data-live-search="true"  data-width="200px" data-size="6" title="To asset"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center p-0">
+                    <input type="number" class="inputAmount amount resizeOnInput" id="amountSend" placeholder="0.00" data-inputTarget="#body .send .sendForm .submit">
+                </div>
+                <div class="col-12 d-flex justify-content-center inputWButton">
+                    <a class="col-2 max">Use max</a>
+                </div>
+                <div class="col-12 d-flex justify-content-center labelCostBox inputWButton">
+                    <p class="value labelCost"><span id="showCost">-</span> <span class="dollars">$</span></p>
+                </div>
+                <div class="col-12 d-flex justify-content-center inputWButton">
+                    <p class="balance">Balance: <val class="balanceSize"></val> <span class="ticker"></span></p>
+                </div>
+            </div>
+            <button class="button sendBtn" id="sendNextStep" disabled="disabled">Next</button>
+        </div>
+        <div id="sendConfirmFeesLoading" style="display: none">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div>
+        <div class="sendConfirm" id="sendConfirmFees" style="display: none">
+            <div class="row mb-5">
+                <div class="col-2 back pl-0">
+                    <i class=" fas fa-chevron-left"></i>
+                </div>
+                <div class="col-8 title d-flex justify-content-center">
+                    <h5>Confirm</h5>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row sendAmount mb-4 amount">
+                <p class="m-0 ">Sending</p>
+                <p class="detail sending"><span class="value valueSend"></span> <span class="ticker" style="font-weight: bold"></span></p>
+            </div>
+            <div class="row mb-3 from">
+                    <p class="labelFromAndTo">From</p>
+                    <div class="identicon col-2">
+                        <svg data-jdenticon-value="sesesqqqfse" id="from" width="40" height="40"></svg>
+                    </div>
+                    <p class="col-9 detail value labelAdress"><val></val></p>
+                    <p class="col-1 more">...</p>
+                </div>
+            <div class="row mb-3 recipient">
+                <p class="labelFromAndTo">To</p>
+                <div class="identicon col-2">
+                    <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
+                </div>
+                <p class="detail col-9 value labelAdress"><val></val></p>
                 <p class="col-1 more">...</p>
             </div>
-        <div class="row mb-3 recipient">
-            <p class="labelFromAndTo">To</p>
-            <div class="identicon col-2">
-                <svg data-jdenticon-value="sesesqqqfse" id="to" width="40" height="40"></svg>
+            <div class="row fees">
+                    <div class="col-3 mt-3 mb-1" style="display: inline-flex">
+                        <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
+                    </div>
+                    <div class="col-9 text-right mt-3 mb-1">
+                        <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
+                    </div>
+                    <div class="col-5 mb-3">
+                        <p class="labelCost">Total Cost</p>
+                    </div>
+                    <div class="col-7 text-right">
+                        <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
+                    </div>
             </div>
-            <p class="detail col-9 value labelAdress"><val></val></p>
-            <p class="col-1 more">...</p>
+            <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
+                <val></val>
+                <i class="fas fa-spinner fa-pulse" style="display: none"></i>
+            </button>
         </div>
-        <div class="row fees">
-                <div class="col-3 mt-3 mb-1" style="display: inline-flex">
-                    <p class="labelTitle">Fees<p class="title editFees">Edit</p></p>
-                </div>
-                <div class="col-9 text-right mt-3 mb-1">
-                    <p class="value labelTitle"><span id="sendReviewNetFees"></span> <span class="ticker" id="sendReviewNetFeesTicker" data-networkticker></span></p>
-                </div>
-                <div class="col-5 mb-3">
-                    <p class="labelCost">Total Cost</p>
-                </div>
-                <div class="col-7 text-right">
-                    <p class="value labelCost"><span id="sendReviewCost"></span> <span id="sendReviewCostTicker" class="ticker"></span></p>
-                </div>
-        </div>
-        <button class="button feesBtn submit mt-5" id="confirmSendBtn" disabled="disabled">
-            <val></val>
-            <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-        </button>
-    </div>
     </div>
 
     <div id="chainSelector" class="p-4 pt-0">
@@ -2461,18 +2461,11 @@
                 </div>
             </div>
             <div class="settingsCat" data-settingId="connectedWebsites" data-title="Connected Websites" data-settingsLevel="1">
-                <div class="noTracked text-center" style="display: none">
-                    <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
-                    <p class="m-0">No connected websites</p>
-                    <p class="p-0 m-0">Web3 connections will appear here</p>
-                </div>
+                <connected-websites></connected-websites>
                 <div class="row trakeExemple justify-content-center align-items-center p-2 mt-2" id="trakeExemple" style="display: none">
                     <img class="col-3 imgAffiliated img-fluid" src="/"/>
                     <span class="col-7 signedSite"></span>
                     <i class="far fa-unlink col-2"></i>
-                </div>
-                <div class="listSite">
-
                 </div>
             </div>
             <div class="settingsCat" data-settingId="manageNetworks" data-title="Manage Networks" data-settingsLevel="1">

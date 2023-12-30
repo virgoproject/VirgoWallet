@@ -13,6 +13,7 @@ const commonScripts = [
     "../js/utils/tokensSelect.js",
     "../js/utils/getDominantColor.js",
     "../js/utils/currencyToSymbol.js",
+    "../js/utils/stateful.js",
     "../../commonJS/qrcode.min.js",
     "../js/events.js",
     "../js/popup.js",
@@ -31,7 +32,6 @@ const commonScripts = [
     "../js/web3/editFees.js",
     "../js/panes/tutorialPane.js",
     "../js/panes/unlockPane.js",
-    "../js/panes/settings/connectedWebsites.js",
     "../js/panes/settings/changeCurrency.js",
     "../js/panes/settings/importMnemonic.js",
     "../js/panes/settings/passwordSetup.js",
@@ -40,8 +40,9 @@ const commonScripts = [
     "../js/panes/nftDetailPane.js",
     "../js/panes/nftPane.js",
     "../js/panes/sendNft.js",
-    "../js/panes/settings/manageNetworks.js"
-
+    "../js/panes/settings/manageNetworks.js",
+    "../js/panes/settings/connectedWebsites/connectedWebsite.js",
+    "../js/panes/settings/connectedWebsites/connectedWebsites.js",
 ]
 
 const browserScripts = [
