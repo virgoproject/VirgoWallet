@@ -2462,11 +2462,6 @@
             </div>
             <div class="settingsCat" data-settingId="connectedWebsites" data-title="Connected Websites" data-settingsLevel="1">
                 <connected-websites></connected-websites>
-                <div class="row trakeExemple justify-content-center align-items-center p-2 mt-2" id="trakeExemple" style="display: none">
-                    <img class="col-3 imgAffiliated img-fluid" src="/"/>
-                    <span class="col-7 signedSite"></span>
-                    <i class="far fa-unlink col-2"></i>
-                </div>
             </div>
             <div class="settingsCat" data-settingId="manageNetworks" data-title="Manage Networks" data-settingsLevel="1">
                 <div id="settingsNetworksList" class="row">
@@ -2521,31 +2516,7 @@
                 <p class="text-danger mt-2 text-center" style="display: none" id="settingsNetworkAddError"></p>
             </div>
             <div class="settingsCat" data-settingId="general" data-title="General" data-settingsLevel="1">
-                <div class="row currencyConversion">
-                    <h5 class="currencyConversionTitle">Currency Conversion</h5>
-                    <p class="currencyConversionDesc">Display fiat values in using a specific currency throughout the application.</p>
-                    <select name="currency" id="currencyConversion">
-                        <option value="usd">USD - United States Dollar</option>
-                        <option value="eur" selected>EUR - Euro</option>
-                        <option value="jpy" selected>JPY - Japanese Yen</option>
-                        <option value="gbp" selected>GBP - Great Britain Pound</option>
-                        <option value="idr" selected>IDR - Indonesian Rupiah</option>
-                        <option value="php" selected>PHP - Philippine Peso</option>
-                        <option value="php" selected>PHP - Philippine Peso</option>
-                        <option value="pkr" selected>PKR - Pakistani Rupee</option>
-                        <option value="sgd" selected>SGD - Singapore Dollar</option>
-                        <option value="inr" selected>INR - Indian Rupee</option>
-                        <option value="cny" selected>CNY - Chinese Yuan</option>
-                        <option value="krw" selected>KRW - South Korean Won</option>
-                        <option value="myr" selected>MYR - Malaysian Ringgit</option>
-                        <option value="thb" selected>THB - Thai Baht</option>
-                        <option value="rub" selected>RUB - Russian Ruble</option>
-                        <option value="aud" selected>AUD - Australian Dollar</option>
-                        <option value="cad" selected>CAD - Canadian Dollar</option>
-                        <option value="hkd" selected>HKD - Hong Kong Dollar</option>
-                        <option value="ngn" selected>NGN - Nigerian Naira</option>
-                    </select>
-                </div>
+                <select-currency></select-currency>
             </div>
         </div>
     </div>

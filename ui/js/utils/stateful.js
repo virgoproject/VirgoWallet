@@ -51,7 +51,9 @@ class StatefulElement extends HTMLElement {
 
     _renderContent(){
         this.content.innerHTML = this.sanitizeHTML(this.render());
-        this.eventHandlers();
+        requestAnimationFrame(() => {
+            this.eventHandlers();
+        });
     }
 
     eventHandlers(){
@@ -67,7 +69,6 @@ class StatefulElement extends HTMLElement {
     }
 
     useStylesheet(href) {
-        console.log(this.tagName);
         const scriptUrl = new URL(Stateful.elementsLocations[this.tagName]);
 
         // Resolve the relative path based on the script's location

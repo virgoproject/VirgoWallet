@@ -32,7 +32,7 @@ const commonScripts = [
     "../js/web3/editFees.js",
     "../js/panes/tutorialPane.js",
     "../js/panes/unlockPane.js",
-    "../js/panes/settings/changeCurrency.js",
+    "../js/panes/settings/selectCurrency.js",
     "../js/panes/settings/importMnemonic.js",
     "../js/panes/settings/passwordSetup.js",
     "../js/panes/settings/showMnemonic.js",
