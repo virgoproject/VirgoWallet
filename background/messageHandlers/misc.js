@@ -13,7 +13,7 @@ class MiscHandlers {
         addBgMessageHandler("setSetupDone", this.setSetupDone)
         addBgMessageHandler("tutorialDone", this.tutorialDone)
         addBgMessageHandler("setupNot", this.setupNot)
-        addBgMessageHandler("setSetupDone", this.setSetupDone)
+        addBgMessageHandler("setTutorialDone", this.setTutorialDone)
     }
 
     static validateAddress(request, sender, sendResponse){
@@ -98,12 +98,12 @@ class MiscHandlers {
         sendResponse(tutorialDone)
     }
 
-    static setupNot(request, sender, sendResponse){
+    static setTutorialDone(request, sender, sendResponse){
         browser.storage.local.set({"tutorialDone": true})
         tutorialDone = true
     }
 
-    static setSetupDone(request, sender, sendResponse){
+    static setupNot(request, sender, sendResponse){
         browser.storage.local.set({"setupDone": false})
         setupDone = false
     }
