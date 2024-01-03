@@ -43,6 +43,7 @@ const commonScripts = [
     "../js/panes/settings/manageNetworks.js",
     "../js/panes/settings/connectedWebsites/connectedWebsite.js",
     "../js/panes/settings/connectedWebsites/connectedWebsites.js",
+    "../js/panes/settings/menu.js"
 ]
 
 const browserScripts = [

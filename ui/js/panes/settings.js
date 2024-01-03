@@ -112,10 +112,13 @@ class SettingsPane {
         })
 
         SettingsPane.openSettingsBtn.click(function(){
-            SettingsPane.main.hide()
+            const elem = document.createElement("settings-menu")
+            document.body.appendChild(elem)
+            /**SettingsPane.main.hide()
             hideStatsBar()
             SettingsPane.settingsMain.show()
             SettingsPane.settingsTitle.html("Settings")
+            **/
         })
 
         SettingsPane.settingsBackBtn.click(async function(){
