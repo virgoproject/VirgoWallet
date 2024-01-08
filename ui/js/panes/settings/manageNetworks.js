@@ -12,8 +12,6 @@ document.getElementById("manageNetworks").onclick = () => {
         for(let wallet of infos.wallets){
             wallet = wallet.wallet
 
-            console.log(wallet)
-
             const elem = baseListElem.cloneNode(true)
             elem.id = ""
             elem.walletIndex = i

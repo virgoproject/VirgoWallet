@@ -130,3 +130,4 @@ $(".bottomPopup .close").click(function(){
 
 Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.css");
 Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
+Stateful.addGlobalStylesheet("../css/main.css");

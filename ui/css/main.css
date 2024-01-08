@@ -503,3 +503,12 @@ iframe {
 #deleteNftPopup #closeNftDelete:hover{
     cursor: pointer;
 }
+
+.fullpageSection {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+}

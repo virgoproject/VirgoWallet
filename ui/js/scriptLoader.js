@@ -32,7 +32,6 @@ const commonScripts = [
     "../js/web3/editFees.js",
     "../js/panes/tutorialPane.js",
     "../js/panes/unlockPane.js",
-    "../js/panes/settings/selectCurrency.js",
     "../js/panes/settings/importMnemonic.js",
     "../js/panes/settings/passwordSetup.js",
     "../js/panes/settings/showMnemonic.js",
@@ -43,7 +42,12 @@ const commonScripts = [
     "../js/panes/settings/manageNetworks.js",
     "../js/panes/settings/connectedWebsites/connectedWebsite.js",
     "../js/panes/settings/connectedWebsites/connectedWebsites.js",
-    "../js/panes/settings/menu.js"
+    "../js/panes/settings/menu.js",
+    "../js/panes/settings/general/general.js",
+    "../js/panes/settings/general/selectCurrency.js",
+    "../js/panes/settings/networks/manage.js",
+    "../js/panes/settings/networks/networkRow.js",
+    "../js/components/sectionHeader.js",
 ]
 
 const browserScripts = [
