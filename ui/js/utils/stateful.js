@@ -94,6 +94,8 @@ class StatefulElement extends HTMLElement {
     }
 
     _renderContent(){
+        const active = this.shadow.activeElement
+
         this.content.innerHTML = this.sanitizeHTML(this.render());
 
         const _this = this
@@ -102,6 +104,10 @@ class StatefulElement extends HTMLElement {
             try {
                 _this.eventHandlers();
                 _this.renderFuncs();
+
+                if(active && active.id){
+                    this.shadowRoot.querySelector("#"+active.id).focus()
+                }
             }catch (e){
                 setTimeout(() => {
                     after()

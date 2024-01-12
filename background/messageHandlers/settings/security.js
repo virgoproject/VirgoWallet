@@ -17,16 +17,12 @@ class SecurityHandlers {
     }
 
     static setPassword(request, sender, sendResponse){
-        if(baseWallet.isEncrypted() && !baseWallet.passwordMatch(request.oldPassword)){
-            sendResponse(false)
-            return
-        }
-
         baseWallet.encrypt(request.password)
         baseWallet.save()
 
-        if(reactMessaging != undefined)
+        try {
             reactMessaging.storePassword(request.password)
+        }catch(e){}
 
         sendResponse(true)
     }

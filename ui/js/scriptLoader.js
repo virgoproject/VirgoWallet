@@ -39,7 +39,6 @@ const commonScripts = [
     "../js/panes/nftDetailPane.js",
     "../js/panes/nftPane.js",
     "../js/panes/sendNft.js",
-    "../js/panes/settings/manageNetworks.js",
     "../js/panes/settings/connectedWebsites/connectedWebsite.js",
     "../js/panes/settings/connectedWebsites/connectedWebsites.js",
     "../js/panes/settings/menu.js",
@@ -47,7 +46,14 @@ const commonScripts = [
     "../js/panes/settings/general/selectCurrency.js",
     "../js/panes/settings/networks/manage.js",
     "../js/panes/settings/networks/networkRow.js",
+    "../js/panes/settings/networks/add.js",
+    "../js/panes/settings/security/security.js",
+    "../js/panes/settings/security/autolock.js",
+    "../js/panes/settings/security/askPassword.js",
+    "../js/panes/settings/security/backup.js",
+    "../js/panes/settings/security/newPassword.js",
     "../js/components/sectionHeader.js",
+    "../js/components/bottomPopup.js",
 ]
 
 const browserScripts = [
@@ -92,6 +98,7 @@ const mobileScripts = [
     "../../background/messageHandlers/transactions.js",
     "../../background/messageHandlers/wallet.js",
     "../../background/messageHandlers/web3.js",
+    "../js/panes/settings/security/biometrics.js",
 ]
 
 const mobileScriptsAfter = [

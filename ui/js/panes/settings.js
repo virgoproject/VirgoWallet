@@ -170,27 +170,6 @@ class SettingsPane {
             })
         })
 
-        getAutolock().then(function(res){
-            SettingsPane.autolock.enabled.prop("checked", res.enabled)
-            SettingsPane.autolock.delay.val(res.delay)
-        })
-
-        SettingsPane.autolock.enabled.change(function() {
-            setAutolock($(this).is(':checked'), parseInt(SettingsPane.autolock.delay.val()))
-        })
-
-        SettingsPane.autolock.delay.change(function(){
-            setAutolock(SettingsPane.autolock.enabled.is(':checked'), parseInt($(this).val()))
-        })
-
-        getBiometrics().then(function(res){
-            SettingsPane.biometrics.enabled.prop("checked", res)
-        })
-
-        SettingsPane.biometrics.enabled.change(function() {
-            setBiometrics($(this).is(':checked'))
-        })
-
     }
 
     setSettings(data){

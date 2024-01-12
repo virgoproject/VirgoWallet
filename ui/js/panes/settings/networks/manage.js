@@ -4,6 +4,13 @@ class ManageNetworks extends StatefulElement {
         super();
     }
 
+    eventHandlers() {
+        this.querySelector("#addBtn").onclick = () => {
+            const elem = document.createElement("settings-add-network")
+            document.body.appendChild(elem)
+        }
+    }
+
     render() {
         const _this = this
 
@@ -48,6 +55,9 @@ class ManageNetworks extends StatefulElement {
                         ${rows}    
                     </div>
                 </div>
+                <div class="row" id="addRow">
+                    <button class="button tab" id="addBtn">Add custom network</button>
+                </div>
             </div>
         `
     }
@@ -61,7 +71,16 @@ class ManageNetworks extends StatefulElement {
             }
         
             #list {
-                padding-bottom: 5em;
+                padding-bottom: 10em;
+            }
+            
+            #addRow {
+                background: white;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 1em 2em;
             }
             
         `;
