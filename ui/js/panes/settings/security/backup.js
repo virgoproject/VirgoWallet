@@ -60,7 +60,7 @@ class SettingsBackupSeed extends StatefulElement {
         let i = 1;
 
         for(const word of data.split(" ")){
-            words.push(`<div class="col-6 wordWrapper ${i % 2 == 0 ? "right" : "left"}"><p class="word"><span>${i}.</span> ${word}</p></div>`)
+            words.push(`<div class="col-6 wordWrapper ${i % 2 == 0 ? "right" : "left"}"><p class="word"><span class="wordIndex">${i}. </span>${word}</p></div>`)
             i++
         }
 
@@ -254,6 +254,10 @@ class SettingsBackupSeed extends StatefulElement {
                 background-color: var(--mainColor)!important;
                 color: white!important;
                 border-color: var(--mainColor)!important;
+            }
+            
+            .wordIndex {
+                user-select: none !important;
             }
         `;
     }
