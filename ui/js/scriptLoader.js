@@ -27,23 +27,33 @@ const commonScripts = [
     "../js/panes/tokenDetailPane.js",
     "../js/panes/contactsPane.js",
     "../js/panes/atomicSwapPane.js",
-    "../js/panes/airdropPane.js",
+    "../js/panes/airdrops/airdrops.js",
+    "../js/panes/airdrops/header.js",
+    "../js/panes/airdrops/airdropCard.js",
     "../js/panes/createPane.js",
     "../js/web3/editFees.js",
     "../js/panes/tutorialPane.js",
     "../js/panes/unlockPane.js",
-    "../js/panes/settings/selectCurrency.js",
-    "../js/panes/settings/importMnemonic.js",
-    "../js/panes/settings/passwordSetup.js",
-    "../js/panes/settings/showMnemonic.js",
     "../js/panes/collectionNftPane.js",
     "../js/panes/nftDetailPane.js",
     "../js/panes/nftPane.js",
     "../js/panes/sendNft.js",
-    "../js/panes/settings/manageNetworks.js",
     "../js/panes/settings/connectedWebsites/connectedWebsite.js",
     "../js/panes/settings/connectedWebsites/connectedWebsites.js",
-    "../js/panes/settings/menu.js"
+    "../js/panes/settings/menu.js",
+    "../js/panes/settings/general/general.js",
+    "../js/panes/settings/general/selectCurrency.js",
+    "../js/panes/settings/networks/manage.js",
+    "../js/panes/settings/networks/networkRow.js",
+    "../js/panes/settings/networks/add.js",
+    "../js/panes/settings/security/security.js",
+    "../js/panes/settings/security/autolock.js",
+    "../js/panes/settings/security/askPassword.js",
+    "../js/panes/settings/security/backup.js",
+    "../js/panes/settings/security/newPassword.js",
+    "../js/panes/settings/security/import.js",
+    "../js/components/sectionHeader.js",
+    "../js/components/bottomPopup.js",
 ]
 
 const browserScripts = [
@@ -88,6 +98,7 @@ const mobileScripts = [
     "../../background/messageHandlers/transactions.js",
     "../../background/messageHandlers/wallet.js",
     "../../background/messageHandlers/web3.js",
+    "../js/panes/settings/security/biometrics.js",
 ]
 
 const mobileScriptsAfter = [

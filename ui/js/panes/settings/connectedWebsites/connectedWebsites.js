@@ -5,8 +5,11 @@ class ConnectedWebsites extends StatefulElement {
     }
 
     render(){
+        const _this = this
+
         const {data: connectedWebsites, loading} = this.useInterval(async () => {
             const baseInfos = await getBaseInfos()
+
             return baseInfos.connectedSites
         }, 1000)
 
@@ -14,27 +17,46 @@ class ConnectedWebsites extends StatefulElement {
             return
         }
 
+        let content;
+
         if(connectedWebsites.length <= 0 || connectedWebsites.length === undefined){
-            return this.noConnectedWebsites()
+            content = `
+                <NoConnectedWebsites class="text-center">
+                    <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
+                    <p class="m-0">No connected websites</p>
+                    <p class="p-0 m-0">Web3 connections will appear here</p>
+                </NoConnectedWebsites>
+            `
+        }else{
+            const rows = []
+
+            for(const connectedWebsite of connectedWebsites){
+                rows.push(`<connected-website data="${connectedWebsite}"></connected-website>`)
+            }
+
+            content = `<list>${rows}</list>`
         }
 
-        const rows = []
+        const back = this.registerFunction(() => {
+            _this.remove()
+        })
 
-        for(const connectedWebsite of connectedWebsites){
-            rows.push(`<connected-website data="${connectedWebsite}"></connected-website>`)
-        }
-
-        return `<list>${rows}</list>`
-
+        return `
+            <div class="fullpageSection">
+                <section-header title="Connected websites" backfunc="${back}"></section-header>
+                <div id="content">
+                    ${content}
+                </div>
+                
+            </div>
+        `
     }
 
-    noConnectedWebsites(){
+    style() {
         return `
-        <NoConnectedWebsites class="text-center">
-            <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
-            <p class="m-0">No connected websites</p>
-            <p class="p-0 m-0">Web3 connections will appear here</p>
-        </NoConnectedWebsites>
+            #content {
+                padding: 0 2em;
+            }
         `
     }
 

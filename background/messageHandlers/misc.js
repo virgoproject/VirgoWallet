@@ -98,14 +98,14 @@ class MiscHandlers {
         sendResponse(tutorialDone)
     }
 
-    static setTutorialDone(request, sender, sendResponse){
-        browser.storage.local.set({"tutorialDone": true})
-        tutorialDone = true
-    }
-
     static setupNot(request, sender, sendResponse){
         browser.storage.local.set({"setupDone": false})
         setupDone = false
+    }
+
+    static setTutorialDone(request, sender, sendResponse){
+        browser.storage.local.set({"tutorialDone": true})
+        tutorialDone = true
     }
 
 }

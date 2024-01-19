@@ -69,8 +69,8 @@ async function getMnemonic(){
     return await browser.runtime.sendMessage({command: 'getMnemonic'})
 }
 
-async function setPassword(password, oldPassword){
-    return await browser.runtime.sendMessage({command: 'setPassword', password, oldPassword})
+async function setPassword(password){
+    return await browser.runtime.sendMessage({command: 'setPassword', password})
 }
 
 async function passwordMatch(password){
