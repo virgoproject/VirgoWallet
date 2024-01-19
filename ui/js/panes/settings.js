@@ -12,66 +12,6 @@ class SettingsPane {
     static settingsTitle = $("#settings .title")
     static openSettingsBtn = $("#settings .mainPane .openSettings")
     static openSupportBtn = $("#settings .mainPane .openSupport")
-    static setupPassword = {
-        mnemonic: $("#writeMnemonic"),
-        self: $("#settings_setuppassword"),
-        test: $("#settings .setupPassword .mnemonicTest"),
-        testText: $("#settings .setupPassword .mnemonicTest textarea"),
-        testBtn: $("#settings .setupPassword .mnemonicTest button"),
-        setup: $("#settings .setupPassword .setupPassword"),
-        setupInput: $("#settings .setupPassword .setupPassword input"),
-        setupBtn: $("#settings .setupPassword .setupPassword button"),
-        setupErr: $("#settings .setupPassword .setupPassword .error"),
-        oldPassword: $("#settings .setupPassword .getOldPassword"),
-        oldPasswordInput: $("#settings .setupPassword .getOldPassword input"),
-        oldPasswordBtn: $("#settings .setupPassword .getOldPassword button"),
-        writeWords: $("#settings .setupPassword .writeMnemonic .word"),
-        writeBtn: $("#settings .setupPassword .writeMnemonic button")
-    }
-    static oldPassword = {
-        input: $("#settings .settingsPane .getOldPassword input"),
-        err: $("#settings .setupPassword .getOldPassword .error")
-    }
-    static getMnemonic = {
-        self : $("#get_mnemonic"),
-        write: $("#settings .getMnemonic .writeMnemonic"),
-        password: $("#settings .getMnemonic .getPassword"),
-        passwordInput: $("#settings .getMnemonic .getPassword input"),
-        passwordBtn: $("#settings .getMnemonic .getPassword button"),
-        passwordErr: $("#settings .getMnemonic .getPassword .error"),
-        words: $("#settings .getMnemonic .writeMnemonic .word"),
-        additionalWords : $('#settings .getMnemonic .writeMnemonic .additionalLength')
-    }
-    static importMnemonic = {
-        self: $("#settings .importMnemonic"),
-        warn: $("#settings .importMnemonic .mnemonicWarn"),
-        warnBtn: $("#settings .importMnemonic .mnemonicWarn button"),
-        ask: $("#settings .importMnemonic .mnemonicAsk"),
-        askText: $("#settings .importMnemonic .mnemonicAsk textarea"),
-        askBtn: $("#settings .importMnemonic .mnemonicAsk #grantAccess"),
-        importBtn : $("#settings .importMnemonic .mnemonicAsk #importPhrase"),
-        askInput: $("#settings .importMnemonic .mnemonicAsk input"),
-        showWords : $('#settings .importMnemonic .fa-eye'),
-        hideWords : $('#settings .importMnemonic .fa-eye-slash'),
-        inputWords : $('#settings .importMnemonic .lengtInput'),
-        selectPhrase : $('#settings .importMnemonic #phraseLength'),
-        shortWords : $('#settings .importMnemonic #12-length'),
-        longWords : $('#settings .importMnemonic #24-length'),
-        importFileInput : $("#settings .importMnemonic #importPhraseInput"),
-        label: {
-            err: $("#settings .importMnemonic .mnemonicAsk .label.error"),
-            normal: $("#settings .importMnemonic .mnemonicAsk .label.normal")
-        }
-    }
-    static autolock = {
-        enabled: $("#autolockEnabledSetting"),
-        delay: $("#autolockDelaySetting")
-    }
-
-    static biometrics = {
-        enabled: $("#biometricsEnabledSetting"),
-        container: $("#biometricsEnabledSettingContainer")
-    }
 
     constructor() {
         let mainSettingsBackLevel = 0;
@@ -119,36 +59,6 @@ class SettingsPane {
             SettingsPane.settingsMain.show()
             SettingsPane.settingsTitle.html("Settings")
             **/
-        })
-
-        SettingsPane.settingsBackBtn.click(async function(){
-            const res = await getBaseInfos()
-            if (!res.setupDone){
-                CreatePane.self.show()
-                SettingsPane.accountSelectionHeader.show()
-                SettingsPane.settings.removeClass("opened")
-                SettingsPane.accountSelectionHeader.removeClass("opened")
-                SettingsPane.settings.removeClass("walletSetup")
-                SettingsPane.settingsMain.hide()
-                SettingsPane.importMnemonic.self.hide()
-            }else{
-                if(mainSettingsBackLevel == 0){
-                    SettingsPane.main.show()
-                    showStatsBar()
-                    SettingsPane.settingsMain.hide()
-                    SettingsPane.settingsTitle.html("My Wallet")
-                    return
-                }
-
-                $("[data-settingsLevel="+mainSettingsBackLevel+"]").hide()
-
-                if(mainSettingsBackLevel == 1)
-                    SettingsPane.settingsTitle.html("Settings")
-                else
-                    SettingsPane.settingsTitle.html(lastSettingsTitle)
-
-                mainSettingsBackLevel--
-            }
         })
 
         $("#settings .settingsPane .tab").click(function(){
@@ -227,24 +137,6 @@ class SettingsPane {
         jdenticon()
     }
 
-    assembleMnemonic(){
-        let phraseSeed = ""
-        for(let i = 0; i < SettingsPane.importMnemonic.inputWords.length; i++){
-            const inputVal = SettingsPane.importMnemonic.inputWords[i].value
-            if(inputVal !== ""){
-                phraseSeed = phraseSeed +inputVal+ " "
-            }
-        }
-        return phraseSeed.substring(0, phraseSeed.length - 1);
-    }
-
-    verifyMnemonic(){
-        if (SettingsPane.importMnemonic.selectPhrase.find(":selected").val() === "12"){
-            SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.assembleMnemonic().split(" ").length < 12);
-        }else {
-            SettingsPane.importMnemonic.askBtn.prop("disabled", settingsPane.assembleMnemonic().split(" ").length < 24);
-        }
-    }
 }
 
 const settingsPane = new SettingsPane()

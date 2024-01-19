@@ -102,8 +102,8 @@ class StatefulElement extends HTMLElement {
 
         let after = () => {
             try {
-                _this.eventHandlers();
                 _this.renderFuncs();
+                _this.eventHandlers();
 
                 if(active && active.id){
                     this.shadowRoot.querySelector("#"+active.id).focus()

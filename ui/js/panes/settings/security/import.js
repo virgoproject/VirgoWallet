@@ -103,15 +103,18 @@ class SettingsImportMnemonic extends StatefulElement {
                         notyf.success("Wallet recovered!")
                         SettingsPane.accountSelectionHeader.click()
 
+                        document.querySelector("settings-menu").remove()
+                        document.querySelector("security-settings").remove()
+
                         _this.remove()
                     })
                 }, 2000)
             })
 
-
+            setLoading(true)
         })
 
-        let button = `<button class="button w-100" id="confirm" disabled onclick="${onClick}">I understand, proceed</button>`
+        let button = `<button class="button w-100" id="confirm" onclick="${onClick}">I understand, proceed</button>`
 
         if(loading) button = `<button class="button w-100" id="confirm" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
@@ -119,6 +122,7 @@ class SettingsImportMnemonic extends StatefulElement {
             <div class="fullpageSection">
                 <section-header title="Recover a wallet" backfunc="${back}"></section-header>
                 <div id="content" class="text-center">
+                    <img src="../images/warning.png">
                     <h3>Warning</h3>
                     <p>Restoring this wallet will erase your current wallet, be sure to have
                         saved your seed phrase!</p>
@@ -155,6 +159,12 @@ class SettingsImportMnemonic extends StatefulElement {
             
             #error {
                 color: #dc3545;
+            }
+            
+            img {
+                width: 100%;
+                margin-bottom: 1em;
+                margin-top: 2em;
             }
         `;
     }

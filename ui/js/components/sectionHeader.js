@@ -6,6 +6,7 @@ class SectionHeader extends StatefulElement {
 
     eventHandlers() {
         const _this = this
+        if(!this.hasAttribute("backfunc")) return
         this.querySelector("#back").onclick = () => {
             _this.backfunc()
         }
@@ -17,7 +18,9 @@ class SectionHeader extends StatefulElement {
 
         return `
             <div class="row px-3 py-1 d-flex align-items-baseline">
-                <div class="col-1"><i class=" fas fa-chevron-left" id="back"></i></div>
+                <div class="col-1">
+                    ${this.hasAttribute("backfunc") ? '<i class=" fas fa-chevron-left" id="back"></i>' : ''}
+                </div>
                 <div class="col-10 p-0 text-center" id="title">${title}</div>
                 <div class="col-1"></div>
             </div>

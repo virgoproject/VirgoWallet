@@ -200,6 +200,9 @@ class SettingsBackupSeed extends StatefulElement {
         })
 
         return `
+            <img src="../images/validated.png">
+            <p><b>Seed phrase successfully saved!</b></p>
+            <p>Don't forget, never share this phrase to anyone, it can be used to steal your funds!</p>
             <div id="nextWrapper">
                 <button class="button w-100" onclick="${btnClick}">Finish</button>
             </div>
@@ -258,6 +261,12 @@ class SettingsBackupSeed extends StatefulElement {
             
             .wordIndex {
                 user-select: none !important;
+            }
+            
+            img {
+                width: 100%;
+                margin-bottom: 1em;
+                margin-top: 2em;
             }
         `;
     }
