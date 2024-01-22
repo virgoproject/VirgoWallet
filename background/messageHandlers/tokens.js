@@ -213,6 +213,38 @@ class TokensHandlers {
         })
     }
 
+    static getTokenDetailsCross(request, sender, sendResponse){
+        const wallet = baseWallet.getChainByID(request.chainID)
+
+        if(wallet.hasToken(request.contract)){
+            sendResponse(wallet.tokenSet.get(request.contract))
+            return
+        }
+
+        const web3_cross = baseWallet.getChainByID(request.chainID)
+
+        const tokenContract = new web3_cross.eth.Contract(ERC20_ABI, request.contract, { from: baseWallet.getCurrentAddress()});
+
+        tokenContract.methods.name().call().then(function(name){
+            tokenContract.methods.decimals().call().then(function(decimals){
+                tokenContract.methods.symbol().call().then(function(symbol){
+                    sendResponse({
+                        contract: request.contract,
+                        name: name,
+                        decimals: decimals,
+                        symbol: symbol
+                    })
+                }).catch(function(){
+                    sendResponse(false)
+                })
+            }).catch(function(){
+                sendResponse(false)
+            })
+        }).catch(function(){
+            sendResponse(false)
+        })
+    }
+
     static getTokenDetails(request, sender, sendResponse){
         if(request.asset === undefined){
             sendResponse(false)

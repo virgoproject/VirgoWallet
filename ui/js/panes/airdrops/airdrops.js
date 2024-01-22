@@ -35,7 +35,7 @@ class AirdropsPane extends StatefulElement {
         const rows = []
 
         for(const airdrop of data.activeAirdrops){
-            rows.push(`<airdrop-card data="${airdrop}" ></airdrop-card>`)
+            rows.push(`<airdrop-card data='${JSON.stringify(airdrop)}'></airdrop-card>`)
         }
 
         return `

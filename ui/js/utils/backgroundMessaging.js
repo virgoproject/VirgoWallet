@@ -109,6 +109,10 @@ async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset})
 }
 
+async function getTokenDetailsCross(contract, chainID){
+    return await browser.runtime.sendMessage({command: 'getTokenDetails', contract, chainID})
+}
+
 async function getNftDetails(asset, tokenID){
     return await browser.runtime.sendMessage({command: 'getNftDetails', asset, tokenID})
 }
