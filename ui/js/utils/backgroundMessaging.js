@@ -36,17 +36,12 @@ async function hasAsset(address){
     return await browser.runtime.sendMessage({command: 'hasAsset', address})
 }
 
-
 async function estimateSendFees(recipient, amount, asset){
     return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient, amount, asset})
 }
 
-async function estimateSendFees(recipient,amount,asset){
-    return await browser.runtime.sendMessage({command: 'estimateSendFees', recipient: recipient, amount: amount, asset: asset})
-}
-
 async function estimateSendFeesNft(recipient ,tokenId, address){
-    return await browser.runtime.sendMessage({command: 'estimateSendFeesNft',recipient: recipient ,tokenId: tokenId, address: address})
+    return await browser.runtime.sendMessage({command: 'estimateSendFeesNft', recipient, tokenId, address})
 }
 
 async function getGasPrice(){
@@ -62,7 +57,7 @@ async function sendTo(recipient, amount, asset, gasLimit, gasPrice){
 }
 
 async function sendToNft(recipient, contractNft, tokenId , gasLimit, gasPrice){
-    return await browser.runtime.sendMessage({command: 'sendToNft', recipient: recipient, contractNft: contractNft, tokenId: tokenId, gasLimit: gasLimit, gasPrice: gasPrice})
+    return await browser.runtime.sendMessage({command: 'sendToNft', recipient, contractNft, tokenId, gasLimit, gasPrice})
 }
 
 async function getMnemonic(){
@@ -110,7 +105,7 @@ async function getTokenDetails(asset){
 }
 
 async function getTokenDetailsCross(contract, chainID){
-    return await browser.runtime.sendMessage({command: 'getTokenDetails', contract, chainID})
+    return await browser.runtime.sendMessage({command: 'getTokenDetailsCross', contract, chainID})
 }
 
 async function getNftDetails(asset, tokenID){
@@ -225,12 +220,12 @@ async function tickerFromChainID(id){
     return await browser.runtime.sendMessage({command: 'tickerFromChainID', id})
 }
 
-async function checkAirdropPlay(address,id){
-    return await browser.runtime.sendMessage({command: 'checkAirdropPlay', address, id})
+async function checkAirdropJoined(id){
+    return await browser.runtime.sendMessage({command: 'checkAirdropJoined', id})
 }
 
-async function setAirdropPlay(address,id){
-    return await browser.runtime.sendMessage({command: 'setAirdropPlay', address, id})
+async function setAirdropJoined(address,id){
+    return await browser.runtime.sendMessage({command: 'setAirdropJoined', address, id})
 }
 
 async function resetAirdrops(){

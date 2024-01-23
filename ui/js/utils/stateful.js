@@ -93,6 +93,10 @@ class StatefulElement extends HTMLElement {
 
     }
 
+    connectedCallback(){
+        this._renderContent();
+    }
+
     _renderContent(){
         const active = this.shadow.activeElement
 
@@ -182,7 +186,7 @@ class StatefulElement extends HTMLElement {
             throw new Error('Invalid parameter: fetchFunction must be a function.');
         }
 
-        if (!Number.isInteger(interval) || interval <= 0) {
+        if (!Number.isInteger(interval)) {
             throw new Error('Invalid parameter: interval must be a positive integer.');
         }
 
@@ -208,16 +212,23 @@ class StatefulElement extends HTMLElement {
             }
         };
 
-        // Use setInterval to fetch data at regular intervals
-        const intervalId = setInterval(fetchData, interval);
+        if(interval > 0){
+            // Use setInterval to fetch data at regular intervals
+            const intervalId = setInterval(fetchData, interval);
 
-        // Cleanup interval when the element is disconnected from the DOM
-        this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
+            // Cleanup interval when the element is disconnected from the DOM
+            this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
+
+        }
 
         // Initial data fetch
         fetchData();
 
         return {data, loading: true};
+    }
+
+    useFunction(func){
+        return this.useInterval(func, -1);
     }
 
     registerFunction(func) {

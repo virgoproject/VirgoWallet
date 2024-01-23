@@ -30,6 +30,7 @@ const commonScripts = [
     "../js/panes/airdrops/airdrops.js",
     "../js/panes/airdrops/header.js",
     "../js/panes/airdrops/airdropCard.js",
+    "../js/panes/airdrops/join.js",
     "../js/panes/createPane.js",
     "../js/web3/editFees.js",
     "../js/panes/tutorialPane.js",

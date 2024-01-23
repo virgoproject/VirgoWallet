@@ -6,6 +6,7 @@ class TokensHandlers {
         addBgMessageHandler("getBalanceCross", this.getBalanceCross)
         addBgMessageHandler("sendTo", this.sendTo)
         addBgMessageHandler("getTokenDetails", this.getTokenDetails)
+        addBgMessageHandler("getTokenDetailsCross", this.getTokenDetailsCross)
         addBgMessageHandler("addToken", this.addToken)
         addBgMessageHandler("hasAsset", this.hasAsset)
         addBgMessageHandler("removeToken", this.removeToken)

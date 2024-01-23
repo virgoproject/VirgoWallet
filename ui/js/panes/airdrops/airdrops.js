@@ -2,7 +2,7 @@ class AirdropsPane extends StatefulElement {
 
     render() {
 
-        const {data, loading} = this.useInterval(async () => {
+        const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
 
             const req1 = await fetch('https://airdrops.virgo.net:2053/api/user/stats',{
@@ -22,7 +22,7 @@ class AirdropsPane extends StatefulElement {
                 stats: userStats,
                 activeAirdrops
             }
-        }, 60000)
+        })
 
         if(loading){
             return `
@@ -41,7 +41,7 @@ class AirdropsPane extends StatefulElement {
         return `
             <section-header title="Airdrops"></section-header>
             <div id="content">
-                <airdrops-header></airdrops-header>
+                <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
                 <p class="title">Active airdrops</p>
                 ${rows}
             </div>

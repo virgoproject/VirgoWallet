@@ -1,16 +1,16 @@
 class AirdropsHandlers {
 
     static register(){
-        addBgMessageHandler("checkAirdropPlay", this.checkAirdropPlay)
-        addBgMessageHandler("setAirdropPlay", this.setAirdropPlay)
+        addBgMessageHandler("checkAirdropJoined", this.checkAirdropJoined)
+        addBgMessageHandler("setAirdropJoined", this.setAirdropJoined)
         addBgMessageHandler("resetAirdrops", this.resetAirdrops)
     }
 
-    static checkAirdropPlay(request, sender, sendResponse){
+    static checkAirdropJoined(request, sender, sendResponse){
         browser.storage.local.get('airdropinfos').then(function(res){
-            let addressUser = request.address
+            let addressUser = baseWallet.addresses[0]
             let airdropID = request.id
-            console.log(res)
+
             if(res === undefined){
                 sendResponse(false)
                 return
@@ -18,14 +18,14 @@ class AirdropsHandlers {
 
             const result = res.airdropinfos.filter(record => record.address == addressUser && record.airdropid == airdropID)
             if (result.length <= 0){
-                sendResponse(true)
-            } else {
                 sendResponse(false)
+            } else {
+                sendResponse(true)
             }
         })
     }
 
-    static setAirdropPlay(request, sender, sendResponse){
+    static setAirdropJoined(request, sender, sendResponse){
         browser.storage.local.get('airdropinfos').then(function(res){
             let addressUser = request.address
             let airdropID = request.id
