@@ -56,10 +56,10 @@ class AirdropCard extends StatefulElement {
                 <img style="display: none">
                 <svg width="36" height="36"></svg>
             </div>
-            <div class="col-5 justify-content-center align-self-center">
+            <div class="col-4 justify-content-center align-self-center">
                 <p id="name">${data.name}</p>
             </div>
-            <div class="col-5 justify-content-center align-self-center text-right">
+            <div class="col-6 justify-content-center align-self-center text-right pl-0">
                 <p id="amount">${json.reward/json.winnersCount} ${data.ticker} <i class="fa-regular fa-chevron-right" id="expand" onclick="${expandClick}"></i></p>
             </div>
             <div class="col-12 mt-3" id="details">
@@ -108,7 +108,7 @@ class AirdropCard extends StatefulElement {
             }
 
             #expand {
-                margin-left: 1em;
+                margin-left: 0.5em;
                 cursor: pointer;
                 transition: all 0.25s ease-in;
             }

@@ -89,7 +89,7 @@ class StatefulElement extends HTMLElement {
         this.content = document.createElement("stateful-content");
         this.shadow.appendChild(this.content);
 
-        this._renderContent();
+        //this._renderContent();
 
     }
 

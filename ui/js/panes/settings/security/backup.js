@@ -20,6 +20,7 @@ class SettingsBackupSeed extends StatefulElement {
 
         if(step == 2 && this.forwardToNewPassword){
             const elem = document.createElement("settings-new-password")
+            elem.bypassShow = true
             document.body.appendChild(elem)
             this.remove()
             return

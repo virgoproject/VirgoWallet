@@ -10,7 +10,7 @@ class SettingsNewPassword extends StatefulElement {
 
         const [show, setShow] = this.useState("show", false)
 
-        if(!show){
+        if(!this.bypassShow && !show){
             isEncrypted().then(res => {
                 if(res){
                     setShow(true)

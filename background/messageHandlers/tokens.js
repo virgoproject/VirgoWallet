@@ -217,6 +217,16 @@ class TokensHandlers {
     static getTokenDetailsCross(request, sender, sendResponse){
         const wallet = baseWallet.getChainByID(request.chainID)
 
+        if(wallet.ticker == request.contract){
+            sendResponse({
+                contract: request.contract,
+                name: wallet.name,
+                decimals: wallet.decimals,
+                ticker: wallet.ticker
+            })
+            return
+        }
+
         if(wallet.hasToken(request.contract)){
             sendResponse(wallet.tokenSet.get(request.contract))
             return
@@ -233,7 +243,7 @@ class TokensHandlers {
                         contract: request.contract,
                         name: name,
                         decimals: decimals,
-                        symbol: symbol
+                        ticker: symbol
                     })
                 }).catch(function(){
                     sendResponse(false)

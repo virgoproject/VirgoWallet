@@ -18,9 +18,16 @@ class AirdropsPane extends StatefulElement {
             })
             const activeAirdrops = await req2.json()
 
+            const req3 = await fetch('https://airdrops.virgo.net:2053/api/endedairdrop', {
+                method : 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            const endedAirdrops = await req3.json()
+
             return {
                 stats: userStats,
-                activeAirdrops
+                activeAirdrops,
+                endedAirdrops
             }
         })
 
@@ -38,12 +45,22 @@ class AirdropsPane extends StatefulElement {
             rows.push(`<airdrop-card data='${JSON.stringify(airdrop)}'></airdrop-card>`)
         }
 
+        const endedRows = []
+
+        for(const airdrop of data.endedAirdrops){
+            endedRows.push(`<airdrop-card data='${JSON.stringify(airdrop)}'></airdrop-card>`)
+        }
+
         return `
             <section-header title="Airdrops"></section-header>
             <div id="content">
                 <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
-                <p class="title">Active airdrops</p>
-                ${rows}
+                <div>
+                    <p class="title">Active airdrops</p>
+                    ${rows}
+                    <p class="title">Ended airdrops</p>
+                    ${endedRows}
+                </div>
             </div>
         `;
     }
