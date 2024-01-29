@@ -54,12 +54,14 @@ class AirdropsPane extends StatefulElement {
         return `
             <section-header title="Airdrops"></section-header>
             <div id="content">
-                <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
-                <div>
+                <div id="headerWrapper">
+                    <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
+                </div>
+                <div id="list">
                     <p class="title">Active airdrops</p>
                     ${rows}
                     <p class="title">Ended airdrops</p>
-                    ${endedRows}
+                    ${endedRows} 
                 </div>
             </div>
         `;
@@ -68,12 +70,13 @@ class AirdropsPane extends StatefulElement {
     style() {
         return `
             #content {
-                padding: 1em 2em;
+                height: 100%;
             }
             
             .title {
-                margin-top: 1em;
+                margin-top: 0.5em;
                 font-size: 1.25em;
+                margin-bottom: 0.5em;
             }
             
             #loading {
@@ -86,6 +89,16 @@ class AirdropsPane extends StatefulElement {
                 align-items: center;
                 justify-content: center;
                 font-size: 1.25em;
+            }
+            
+            #list {
+                height: 100%;
+                overflow: auto;
+                padding: 0em 2em 15em;
+            }
+            
+            #headerWrapper {
+                padding: 1em 2em;
             }
         `;
     }

@@ -512,3 +512,7 @@ iframe {
     background: white;
     z-index: 1000;
 }
+
+#airdropPane {
+    height: 100%;
+}

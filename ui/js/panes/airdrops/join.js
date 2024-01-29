@@ -144,7 +144,7 @@ class JoinAirdrop extends StatefulElement {
             
             .label {
                 font-size: 0.875em;
-                margin-bottom: 0.25em;
+                margin-bottom: 0.25em!important;
             }
             
             .label span {
