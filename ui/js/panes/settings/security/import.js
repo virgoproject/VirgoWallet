@@ -100,11 +100,17 @@ class SettingsImportMnemonic extends StatefulElement {
                         SendPane.assetSelect.html("")
                         sendPane.setSend(data)
 
-                        notyf.success("Wallet recovered!")
-                        SettingsPane.accountSelectionHeader.click()
+                        CreatePane.self.hide()
 
-                        document.querySelector("settings-menu").remove()
-                        document.querySelector("security-settings").remove()
+                        notyf.success("Wallet recovered!")
+                        if(SettingsPane.settings.hasClass("opened")){
+                            SettingsPane.accountSelectionHeader.click()
+                        }
+
+                        try {
+                            document.querySelector("settings-menu").remove()
+                            document.querySelector("security-settings").remove()
+                        }catch(e){}
 
                         _this.remove()
                     })

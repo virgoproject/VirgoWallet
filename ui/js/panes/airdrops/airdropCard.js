@@ -5,14 +5,23 @@ class AirdropCard extends StatefulElement {
 
         const json = JSON.parse(this.getAttribute("data"))
 
-        this.querySelector("svg").innerHTML = jdenticon.toSvg(json.address+json.chainID, 32)
+        this.querySelector("#logoPlaceholder").innerHTML = jdenticon.toSvg(json.address+json.chainID, 36)
 
-        this.querySelector("img").onload = e => {
+        this.querySelector("#logo").onload = e => {
             e.target.style.display = "initial"
-            _this.querySelector("svg").style.display = "none"
+            _this.querySelector("#logoPlaceholder").style.display = "none"
         }
 
-        this.querySelector("img").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/" + json.address + "/logo.png"
+        this.querySelector("#logo").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/" + json.address + "/logo.png"
+
+        this.querySelector("#chainLogoPlaceholder").innerHTML = jdenticon.toSvg(json.chainID, 16)
+
+        this.querySelector("#chainLogo").onload = e => {
+            e.target.style.display = "initial"
+            _this.querySelector("#chainLogoPlaceholder").style.display = "none"
+        }
+
+        this.querySelector("#chainLogo").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/logo.png"
 
     }
 
@@ -41,30 +50,38 @@ class AirdropCard extends StatefulElement {
             wrapper.classList.add("opened")
         })
 
-        const joinClick = this.registerFunction(() => {
+        const joinClick = this.registerFunction(e => {
             const elem = document.createElement("join-airdrop")
             elem.airdropId = json.id
             elem.conditions = json.conditions
             document.body.appendChild(elem)
+            e.stopPropagation()
         })
 
         const timeLeft = this.calcTimeLeft(json.endDate-Date.now())
 
+        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join this airdrop</button></div>`
+
+        if(json.endDate < Date.now())
+            button = ""
+
         return `
-        <div class="row" id="wrapper">
-            <div class="col-2 justify-content-center align-self-center">
-                <img style="display: none">
-                <svg width="36" height="36"></svg>
+        <div class="row" id="wrapper" onclick="${expandClick}">
+            <div class="col-2 logosWrapper">
+                <img style="display: none" id="logo">
+                <svg width="36" height="36" id="logoPlaceholder"></svg>
+                <img style="display: none" id="chainLogo">
+                <svg width="16" height="16" id="chainLogoPlaceholder"></svg>
             </div>
             <div class="col-4 justify-content-center align-self-center">
                 <p id="name">${data.name}</p>
             </div>
             <div class="col-6 justify-content-center align-self-center text-right pl-0">
-                <p id="amount">${json.reward/json.winnersCount} ${data.ticker} <i class="fa-regular fa-chevron-right" id="expand" onclick="${expandClick}"></i></p>
+                <p id="amount">${json.reward/json.winnersCount} ${data.ticker} <i class="fa-regular fa-chevron-right" id="expand"></i></p>
             </div>
             <div class="col-12 mt-3" id="details">
                 <div class="row">
-                    <div class="col-4 text-left">
+                    <div class="col-4 text-center">
                         <p class="detailValue">${json.userJoined}</p>
                         <p class="detailTitle">Participants</p>
                     </div>
@@ -72,11 +89,11 @@ class AirdropCard extends StatefulElement {
                         <p class="detailValue">${json.winnersCount}</p>
                         <p class="detailTitle">Winners</p>
                     </div>
-                    <div class="col-4 text-right">
+                    <div class="col-4 text-center">
                         <p class="detailValue">${timeLeft.value}</p>
                         <p class="detailTitle">${timeLeft.label} left</p>
                     </div>
-                    <div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join this airdrop</button></div>
+                    ${button}
                 </div>
             </div>
         </div>
@@ -89,22 +106,41 @@ class AirdropCard extends StatefulElement {
             #wrapper {
                 padding: 1em 0;
                 border-radius: 0.5em;
+                transition: all 0.2s ease-in;
+                cursor: pointer;
+            }
+            
+            #wrapper:hover {
+                background: var(--whiteBackground);
             }
 
             p {
                 margin-bottom: 0!important;
             }
 
-            img {
+            #logo {
                 height: 36px;
                 width: 36px;
                 border-radius: 50%;
                 background-size: cover;
                 margin: auto;
             }
+            
+            #chainLogo, #chainLogoPlaceholder {
+                position: relative;
+                height: 16px;
+                border-radius: 100%;
+                left: 24px;
+                top: -44px;
+                border: 1px solid white;
+            }
 
-            svg {
+            #logoPlaceholder {
                 border-radius: 50%;
+            }
+            
+            .logosWrapper {
+                height: 36px;
             }
 
             #expand {

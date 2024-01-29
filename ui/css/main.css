@@ -510,7 +510,7 @@ iframe {
     top: 0px;
     position: absolute;
     background: white;
-    z-index: 1000;
+    z-index: 100000;
 }
 
 #airdropPane {

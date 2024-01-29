@@ -18,14 +18,8 @@ class CreatePane {
         })
 
         CreatePane.buttons.importWallet.click(function () {
-            SettingsPane.settings.addClass("walletSetup")
-            CreatePane.self.hide()
-            SettingsPane.accountSelectionHeader.hide()
-            SettingsPane.settings.addClass("opened")
-            SettingsPane.accountSelectionHeader.addClass("opened")
-            SettingsPane.settingsMain.show()
-            SettingsPane.importMnemonic.self.show()
-            MainPane.backupPopup.self.hide()
+            const elem = document.createElement("settings-import-mnemonic")
+            document.body.appendChild(elem)
         })
     }
 }
