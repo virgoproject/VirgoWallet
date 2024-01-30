@@ -311,3 +311,15 @@
 .settingLogo{
     margin-right: 10px;
 }
+
+#openSettingsBtn {
+    font-size: 1.5em;
+    color: #9C9C9C;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#openSettingsBtn:hover {
+    color: #676767;
+}

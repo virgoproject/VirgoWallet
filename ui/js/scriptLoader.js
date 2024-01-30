@@ -54,7 +54,7 @@ const commonScripts = [
     "../js/panes/settings/security/newPassword.js",
     "../js/panes/settings/security/import.js",
     "../js/components/sectionHeader.js",
-    "../js/components/bottomPopup.js",
+    "../js/components/bottomPopup.js"
 ]
 
 const browserScripts = [

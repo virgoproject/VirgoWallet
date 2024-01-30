@@ -10,8 +10,7 @@ class SettingsPane {
     static addAccountBtn = $("#settings .addAccount")
     static settingsBackBtn = $("#settings .settingsPane .back")
     static settingsTitle = $("#settings .title")
-    static openSettingsBtn = $("#settings .mainPane .openSettings")
-    static openSupportBtn = $("#settings .mainPane .openSupport")
+    static openSettingsBtn = $("#openSettingsBtn")
 
     constructor() {
         let mainSettingsBackLevel = 0;
@@ -72,12 +71,6 @@ class SettingsPane {
             target.show()
 
             mainSettingsBackLevel = target.attr("data-settingsLevel")
-        })
-
-        SettingsPane.openSupportBtn.click(function(){
-            browser.windows.create({
-                url: "https://virgo.net/support"
-            })
         })
 
     }

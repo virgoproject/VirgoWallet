@@ -66,7 +66,7 @@ class AirdropCard extends StatefulElement {
             button = ""
 
         return `
-        <div class="row" id="wrapper" onclick="${expandClick}">
+        <div class="row mt-1" id="wrapper" onclick="${expandClick}">
             <div class="col-2 logosWrapper">
                 <img style="display: none" id="logo">
                 <svg width="36" height="36" id="logoPlaceholder"></svg>
@@ -83,7 +83,7 @@ class AirdropCard extends StatefulElement {
                 <div class="row">
                     <div class="col-4 text-center">
                         <p class="detailValue">${json.userJoined}</p>
-                        <p class="detailTitle">Participants</p>
+                        <p class="detailTitle text-red-900">Participants</p>
                     </div>
                     <div class="col-4 text-center">
                         <p class="detailValue">${json.winnersCount}</p>
@@ -104,7 +104,7 @@ class AirdropCard extends StatefulElement {
         return `
 
             #wrapper {
-                padding: 1em 0;
+                padding: 0.75em 0;
                 border-radius: 0.5em;
                 transition: all 0.2s ease-in;
                 cursor: pointer;

@@ -18,12 +18,17 @@ class SettingsMenu extends StatefulElement {
         {
             title: "Connected Websites",
             element: "connected-websites",
-            icon: "fa-sitemap"
+            icon: "fa-globe"
         },
         {
             title: "Manage Networks",
             element: "networks-settings",
-            icon: "fa-sitemap"
+            icon: "fa-network-wired"
+        },
+        {
+            title: "Contact us",
+            element: "contact-settings",
+            icon: "fa-comments"
         },
     ]
 
@@ -32,6 +37,13 @@ class SettingsMenu extends StatefulElement {
 
         this.querySelectorAll(".tab").forEach(tab => {
             tab.onclick = () => {
+                if(tab.getAttribute("toOpen") == "contact-settings"){
+                    browser.windows.create({
+                        url: "https://virgo.net/support"
+                    })
+                    return
+                }
+
                 const elem = document.createElement(tab.getAttribute("toOpen"))
                 document.body.appendChild(elem)
             }
@@ -51,11 +63,13 @@ class SettingsMenu extends StatefulElement {
         for(const cat of SettingsMenu.categories){
             rows.push(
                 `<div class="row tab" toOpen="${cat.element}">
-                    <div class="col-10 d-flex align-items-center">
-                        <i class="fa-solid ${cat.icon} me-3 col-2"></i>
-                        <h5 class="m-0 col-10">${cat.title}</h5>
+                    <div class="col-2 align-self-center text-center">
+                        <i class="fa-regular ${cat.icon}"></i>
                     </div>
-                    <div class="col-2 justify-content-center align-self-center text-right">
+                    <div class="col-8 align-self-center p-0 pl-1">
+                        <p class="m-0">${cat.title}</p>
+                    </div>
+                    <div class="col-2 align-self-center text-right">
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
@@ -83,11 +97,17 @@ class SettingsMenu extends StatefulElement {
             }
             
             .tab p {
-                font-size: 0.9em;
+                font-size: 1.25em;
+                font-weight: 500;
             }
             
             .tab i {
                 font-size: 1.5em;
+                vertical-align: middle;
+            }
+            
+            .tab .fa-chevron-right {
+                font-size: 1.25em;
             }
             
         `

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../css/fontAwesome/css/all.css">
+    <link rel="stylesheet" href="../css/fontAwesome/css/all.min.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/unlockPane.css">
@@ -85,7 +85,7 @@
                 <svg data-jdenticon-value="user127" width="36" height="36"></svg>
             </div>
             <div id="chainSelectionHeader">
-                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-light fa-chevron-down"></i></span></p>
+                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-regular fa-chevron-down"></i></span></p>
             </div>
             <div class="qrCode" id="qrCodeToggleBtn" style="display: none">
                 <p><i class="fa-regular fa-qrcode"></i></p>
@@ -103,7 +103,7 @@
                 <div class="addressContainer">
                     <div class="d-flex align-items-center copy">
                         <p id="walletAddress" class="value adress m-0" data-address=""></p>
-                        <i class="ms-2 fal fa-copy"></i>
+                        <i class="ms-2 fa-regular fa-copy"></i>
                     </div>
                 </div>
             </div>
@@ -290,7 +290,7 @@
                         <div class="col-12 d-flex justify-content-center">
                             <div class="col-6 d-flex justify-content-center address-qr-code">
                                 <p id="address-qr-code"></p>
-                                <i class="ms-2 fal fa-copy"></i>
+                                <i class="ms-2 fa-regular fa-copy"></i>
                             </div>
                         </div>
                     </div>
@@ -597,7 +597,7 @@
                 <input type="text" placeholder="Search for an asset" id="assetsListSearch">
             </div>
             <div class="col-2 p-0 text-right">
-                <i class="fa-light fa-magnifying-glass"></i>
+                <i class="fa-regular fa-magnifying-glass"></i>
             </div>
         </div>
         <div class="content">
@@ -1015,7 +1015,7 @@
             <div class="listItem mb-2 atomicSwapTx pendingTx" id="transactionsAtomicSwapTx" style="display: none">
                 <div class="row header">
                     <div class="col-2 justify-content-center align-self-center position-relative">
-                        <i class="fa-thin fa-regular fa-atom fa-lg statusColor"></i>
+                        <i class="fa-regular fa-atom fa-lg statusColor"></i>
                         <progress-ring stroke="4" radius="25" progress="8" data-progress=""></progress-ring>
                     </div>
                     <div class="col-8">
@@ -1664,9 +1664,13 @@
     </div>
 
     <div id="settings" class="pt-2">
-        <div>
-            <div class="col-12 title d-flex justify-content-center  settingTitle">
-                <p class="text-center ">My Wallet</p>
+        <div class="row mt-1">
+            <div class="col-2"></div>
+            <div class="col-8 title d-flex justify-content-center settingTitle">
+                <p class="text-center mb-0">My Wallet</p>
+            </div>
+            <div class="col-2 justify-content-center align-self-center">
+                <i class="fa-regular fa-gear" id="openSettingsBtn"></i>
             </div>
         </div>
 
@@ -1693,14 +1697,6 @@
                     <div class="col-2 text-right justify-content-center align-self-center">
                         <i class="fas fa-check isSelected"></i>
                     </div>
-                </div>
-            </div>
-            <div class="row mt-2 p-2 pt-0" style="flex: 0 1 8em;">
-                <div class="col-6 pl-0 pr-1">
-                    <button class="button w-100 openSettings"><i class="fas fa-cog settingLogo"></i>Settings</button>
-                </div>
-                <div class="col-6 pl-1 pr-0">
-                    <button class="button w-100 openSupport"><i class="fas fa-headset settingLogo"></i>Support</button>
                 </div>
             </div>
         </div>
@@ -1870,7 +1866,7 @@
                     <input type="text" placeholder="Search for name or address" id="contactsSearch">
                 </div>
                 <div class="col-2 p-0 text-right">
-                    <i class="fa-light fa-magnifying-glass"></i>
+                    <i class="fa-regular fa-magnifying-glass"></i>
                 </div>
             </div>
             <div class="loading text-center mt-2 mb-2" style="display: none">
@@ -1891,7 +1887,7 @@
 
                     </div>
                     <div class="col-1 align-self-center p-1">
-                        <i class="fal fa-star" style="font-size: 20px" data-address=""></i>
+                        <i class="fa-regular fa-star" style="font-size: 20px" data-address=""></i>
                     </div>
                     <div class="col-2 align-self-center showElements">
                         <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
@@ -2074,7 +2070,7 @@
     <div id="tokenSelect" style="display: none;">
         <div class="row" style="padding-top: 15px">
             <div class="col-2 justify-content-center align-self-center">
-                <i class="fa-light fa-chevron-left backBtn" id="tokenBack"></i>
+                <i class="fa-regular fa-chevron-left backBtn" id="tokenBack"></i>
             </div>
             <div class="col-8 text-center">
                 <h3 class="m-0">Select a currency</h3>
@@ -2086,7 +2082,7 @@
                 <input type="text" placeholder="Search for a currency" id="searchBar">
             </div>
             <div class="col-2 p-0 text-right">
-                <i class="fa-light fa-magnifying-glass"></i>
+                <i class="fa-regular fa-magnifying-glass"></i>
             </div>
         </div>
         <div id="categoriesWrapper">
@@ -2104,10 +2100,10 @@
             </div>
         </div>
         <div id="tokensLoading" class="text-center" style="display: none">
-            <i class="fa-light fa-loader fa-spin"></i>
+            <i class="fa-regular fa-loader fa-spin"></i>
         </div>
         <div id="tokensNotFound" class="text-center" style="display: none">
-            <p>Nothing found <i class="fal fa-ghost"></i></p>
+            <p>Nothing found <i class="fa-regular fa-ghost"></i></p>
         </div>
         <div class="col-12 asset" id="baseToken" style="display: none">
             <div class="row">
@@ -2120,7 +2116,7 @@
                     <p class="desc">VGO • Binance Smart Chain</p>
                 </div>
                 <div class="col-2 justify-content-center align-self-center text-right">
-                    <i class="fa-light fa-chevron-right"></i>
+                    <i class="fa-regular fa-chevron-right"></i>
                 </div>
             </div>
         </div>

@@ -58,7 +58,7 @@ class AirdropsPane extends StatefulElement {
                     <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
                 </div>
                 <div id="list">
-                    <p class="title">Active airdrops</p>
+                    ${rows.length > 0 ? '<p class="title">Active airdrops</p>' : ''}
                     ${rows}
                     <p class="title">Ended airdrops</p>
                     ${endedRows} 
@@ -75,7 +75,7 @@ class AirdropsPane extends StatefulElement {
             
             .title {
                 margin-top: 0.5em;
-                font-size: 1.25em;
+                font-size: 1em;
                 margin-bottom: 0.5em;
             }
             

@@ -135,6 +135,6 @@ $(".bottomPopup .close").click(function(){
     $(this).closest(".bottomPopup").hide()
 })
 
-Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.css");
+Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.min.css");
 Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
 Stateful.addGlobalStylesheet("../css/main.css");
