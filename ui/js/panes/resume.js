@@ -104,10 +104,8 @@ class MainPane {
         })
 
         MainPane.backupPopup.button.click(function(){
-            SettingsPane.accountSelectionHeader.click()
-            SettingsPane.openSettingsBtn.click()
-            $("#settings .mainSettings [data-target=security]").click()
-            $("#settings .settingsCat[data-settingid=security] .tab[data-target=setupPassword]").click()
+            const elem = document.createElement("settings-new-password")
+            document.body.appendChild(elem)
             MainPane.backupPopup.close.click()
         })
 

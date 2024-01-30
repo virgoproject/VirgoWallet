@@ -41,18 +41,25 @@ $("#footer .footerElem").click(function(){
 
     $("#body .bodyElem").hide()
 
-    airdropPane.checkAirdropPane($(this))
-
     $("#body .bodyElem."+$(this).attr("data-target")).show()
     showStatsBar()
 
-    if ($(this).attr("data-target") === "send" || $(this).attr("data-target") === "swap"){
+    if ($(this).attr("data-target") !== "resume"){
         $(".stats ").hide()
         hideStatsBar()
         $(".header").css("height","unset")
     } else {
         $(".stats ").show()
         $(".header").css("height","")
+    }
+
+    //temporary
+    if($(this).attr("data-target") === "airdrop"){
+        try {
+            document.querySelector("airdrops-pane").remove()
+        }catch (e){}
+        const elem = document.createElement("airdrops-pane")
+        document.querySelector("#airdropPane").appendChild(elem)
     }
 
     return false
@@ -127,3 +134,7 @@ $(".bottomPopup .background").click(function(){
 $(".bottomPopup .close").click(function(){
     $(this).closest(".bottomPopup").hide()
 })
+
+Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.min.css");
+Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
+Stateful.addGlobalStylesheet("../css/main.css");

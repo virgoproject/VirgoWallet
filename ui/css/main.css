@@ -82,11 +82,11 @@ body {
 }
 
 .input {
-    background: #F3F3F3;
+    background: var(--whiteBackground);
     border: none;
-    color: #545454;
-    padding: 0.375em 2em 0.375em 0.75em;
-    border-radius: 1em;
+    color: rgb(84, 84, 84);
+    padding: 0.5em 2em 0.5em 0.75em;
+    border-radius: 0.5em;
 }
 
 #sendConfirm .input {
@@ -502,4 +502,17 @@ iframe {
 
 #deleteNftPopup #closeNftDelete:hover{
     cursor: pointer;
+}
+
+.fullpageSection {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    position: absolute;
+    background: white;
+    z-index: 100000;
+}
+
+#airdropPane {
+    height: 100%;
 }
