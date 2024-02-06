@@ -98,6 +98,8 @@ class StatefulElement extends HTMLElement {
     }
 
     _renderContent(){
+        this.beforeRender()
+
         const active = this.shadow.activeElement
 
         this.content.innerHTML = this.sanitizeHTML(this.render());
@@ -112,6 +114,8 @@ class StatefulElement extends HTMLElement {
                 if(active && active.id){
                     this.shadowRoot.querySelector("#"+active.id).focus()
                 }
+
+                _this.afterRender()
             }catch (e){
                 setTimeout(() => {
                     after()
@@ -125,6 +129,10 @@ class StatefulElement extends HTMLElement {
     eventHandlers(){
 
     }
+
+    beforeRender(){}
+
+    afterRender(){}
 
     render(){
         return "";

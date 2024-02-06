@@ -54,7 +54,10 @@ const commonScripts = [
     "../js/panes/settings/security/newPassword.js",
     "../js/panes/settings/security/import.js",
     "../js/components/sectionHeader.js",
-    "../js/components/bottomPopup.js"
+    "../js/components/bottomPopup.js",
+    "../js/panes/transactions/transactions.js",
+    "../js/panes/transactions/transaction.js",
+    "../js/components/scrollView.js"
 ]
 
 const browserScripts = [

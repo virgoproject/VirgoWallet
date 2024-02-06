@@ -47,6 +47,9 @@ class TransactionsPane {
         this.reachedEnd = false
 
         TransactionsPane.btn.click(function(){
+            const elem = document.createElement("transactions-pane")
+            document.body.appendChild(elem)
+            return
             TransactionsPane.self.show()
             transactionsPane.txsCount = 0
             transactionsPane.reachedEnd = false
