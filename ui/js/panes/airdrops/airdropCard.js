@@ -117,6 +117,10 @@ class AirdropCard extends StatefulElement {
             p {
                 margin-bottom: 0!important;
             }
+            
+            #amount {
+                white-space: nowrap;
+            }
 
             #logo {
                 height: 36px;

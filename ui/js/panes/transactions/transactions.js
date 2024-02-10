@@ -5,16 +5,22 @@ class TransactionsHistory extends StatefulElement {
             return
         }
 
-        this.scrollPos = this.querySelector("#scroll").getScroll()
+        try {
+            this.scrollPos = this.querySelector("#scroll").getScroll()
+        }catch (e) {}
+
     }
 
     afterRender() {
         if(this.firstRendered === undefined){
+            if(!this.querySelector("#scroll")) return
             this.firstRendered = true
             return
         }
 
-        this.querySelector("#scroll").setScroll(this.scrollPos)
+        try {
+            this.querySelector("#scroll").setScroll(this.scrollPos)
+        }catch (e) {}
 
     }
 
@@ -22,21 +28,36 @@ class TransactionsHistory extends StatefulElement {
 
         const _this = this
 
-        const [boxNumber, setBoxNumber] = this.useState("boxNumber", 6)
+        const {data, loading} = this.useInterval(async () => {
+            const infos = await getBaseInfos()
+            let selectedWallet = infos.wallets[infos.selectedWallet].wallet
+            let transactions = selectedWallet.transactions
+            return transactions
+        }, 5000)
+
+        if(loading){
+            return `
+                <div id="loading">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                </div>
+            `
+        }
+
+        const [boxNumber, setBoxNumber] = this.useState("boxNumber", 15)
 
         const back = this.registerFunction(() => {
             _this.remove()
         })
 
         const onNearEnd = this.registerFunction(() => {
-            if(boxNumber > 20) return
-            setBoxNumber(boxNumber+3)
+            if(boxNumber > data.length) return
+            setBoxNumber(Math.min(boxNumber+5, data.length))
         })
 
         const rows = []
 
         for(let i = 0; i < boxNumber; i++){
-            rows.push(`<transaction-card></transaction-card>`)
+            rows.push(`<transaction-card data='${JSON.stringify(data[i])}'></transaction-card>`)
         }
 
         return `

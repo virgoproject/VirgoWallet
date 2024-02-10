@@ -332,7 +332,7 @@ class EthWallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") continue
+                    if((transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") && !(transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)) continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(async function(receipt){
                         if(receipt == null){
@@ -351,7 +351,7 @@ class EthWallet {
                             return
                         }
 
-                        if(transaction.status === undefined){
+                        if(transaction.status === undefined || (transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)){
                             if(receipt.status){
 
                                 if(transaction.contractAddr == "SWAP"){

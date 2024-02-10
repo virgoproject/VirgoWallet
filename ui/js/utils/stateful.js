@@ -97,12 +97,12 @@ class StatefulElement extends HTMLElement {
         this._renderContent();
     }
 
-    _renderContent(){
+    async _renderContent(){
         this.beforeRender()
 
         const active = this.shadow.activeElement
 
-        this.content.innerHTML = this.sanitizeHTML(this.render());
+        this.content.innerHTML = this.sanitizeHTML(await this.render());
 
         const _this = this
 
@@ -134,7 +134,7 @@ class StatefulElement extends HTMLElement {
 
     afterRender(){}
 
-    render(){
+    async render(){
         return "";
     }
 
