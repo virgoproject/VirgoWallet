@@ -56,7 +56,23 @@ class TransactionsHistory extends StatefulElement {
 
         const rows = []
 
+        const dates = []
+
         for(let i = 0; i < boxNumber; i++){
+            const date = (new Date(data[i].date)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+            const today = (new Date(Date.now())).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+            const yesterday = (new Date(Date.now()-86400000)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+
+            let displayedDate = date
+
+            if(date == today)
+                displayedDate = "today"
+
+            if(!dates.includes(displayedDate)){
+                dates.push(displayedDate)
+                rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
+            }
+
             rows.push(`<transaction-card data='${JSON.stringify(data[i])}'></transaction-card>`)
         }
 
@@ -89,9 +105,13 @@ class TransactionsHistory extends StatefulElement {
             }
             
             #inner {
-                padding: 0 2em;
+                padding: 0 2em 2em;
             }
             
+            .date {
+                margin-bottom: -0.25em;
+                margin-top: 1em;
+            }
         `;
     }
 

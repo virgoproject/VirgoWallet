@@ -1,20 +1,33 @@
 class TransactionCard extends StatefulElement {
 
+    eventHandlers() {
+        this.querySelectorAll(".copy").forEach(e => {
+
+            const clickFunc = event => {
+                notyf.success("Copied to clipboard!")
+                copyToClipboard(e.querySelector(".detailContent").textContent)
+            }
+
+            e.querySelector(".detailContent").onclick = clickFunc
+            e.querySelector(".detailCopy").onclick = clickFunc
+        })
+    }
+
     async render() {
         const _this = this
 
         const json = JSON.parse(this.getAttribute("data"))
 
-        console.log(json)
-
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
-            if(wrapper.classList.contains("opened")){
-                wrapper.classList.remove("opened")
-                return
-            }
+            if(wrapper.classList.contains("opened")) return
 
             wrapper.classList.add("opened")
+        })
+
+        const closeClick = this.registerFunction(e => {
+            _this.querySelector("#wrapper").classList.remove("opened")
+            e.stopPropagation()
         })
 
         return `
@@ -40,14 +53,19 @@ class TransactionCard extends StatefulElement {
                     </div>
                     <div class="detail d-flex mt-2">
                         <p class="detailTitle">Date</p>
-                        <p class="detailContent">${(new Date(parseInt(json.date))).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")}</p>
+                        <p class="detailContent">${(new Date(parseInt(json.date))).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/(\d+) (\w+) (\d+), (\d+):(\d+)/, "$1 $2. $3 $4:$5")}</p>
                     </div>
-                    <div class="detail d-flex mt-2">
+                    ${this.getTo(json)}
+                    <div class="detail d-flex mt-2 copy">
                         <p class="detailTitle">Hash</p>
                         <p class="detailContent">${json.hash}</p>
                         <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
                     </div>
+                    ${this.getFees(json)}
                     <button class="button w-100 mt-3">Open in explorer</button>
+                    <div class="text-center mt-2" id="close" onclick="${closeClick}">
+                        <i class="fa-regular fa-chevron-up"></i>
+                    </div>
                 </div>
             </div>
         `;
@@ -63,7 +81,7 @@ class TransactionCard extends StatefulElement {
             }
             
             #wrapper:hover {
-                background: var(--whiteBackground);
+                background: var(--gray-50);
             }
             
             #wrapper p {
@@ -131,7 +149,8 @@ class TransactionCard extends StatefulElement {
             }
             
             .opened {
-                background: var(--gray-50);
+                background: var(--gray-50)!important;
+                cursor: default!important;
             }
             
             #details {
@@ -147,7 +166,7 @@ class TransactionCard extends StatefulElement {
                 flex: 0 2 fit-content;
                 overflow: hidden;
                 min-width: fit-content;
-                margin-right: 1em !important;
+                margin-right: 3em !important;
             }
             
             .detailContent {
@@ -164,6 +183,16 @@ class TransactionCard extends StatefulElement {
             
             #amountAmount, #amountTicker, #wrapper.confirmed #status {
                 color: var(--green-500);
+            }
+            
+            #close {
+                cursor: pointer;
+                transition: all 0.2s ease-in;
+            }
+            
+            #close:hover {
+                background: var(--gray-100);
+                border-radius: 0.5em;
             }
             
         `;
@@ -225,6 +254,36 @@ class TransactionCard extends StatefulElement {
         if(json.status === undefined) return "pending";
         if(json.status) return "confirmed";
         return "failed";
+    }
+
+    getTo(json){
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return ""
+
+        return `
+            <div class="detail d-flex mt-2 copy">
+                <p class="detailTitle">To</p>
+                <p class="detailContent">${json.recipient}</p>
+                <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
+            </div>
+        `
+    }
+
+    getFees(json){
+        if(json.status === undefined){
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Max fees</p>
+                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, MAIN_ASSET.decimals) + " " + MAIN_ASSET.ticker}</p>
+                </div>
+            `
+        }
+
+        return `
+            <div class="detail d-flex mt-2">
+                <p class="detailTitle">Fees</p>
+                <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, MAIN_ASSET.decimals) + " " + MAIN_ASSET.ticker}</p>
+            </div>
+        `
     }
 
 }
