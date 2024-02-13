@@ -42,7 +42,7 @@ class TransactionCard extends StatefulElement {
                         <p id="title" class="text-base">${this.getTitle(json)}</p>
                         <p id="subtitle" class="text-sm">${await this.getSubtitle(json)}</p>
                     </div>
-                    <div id="header-right" class="pl-1">
+                    <div id="header-right" class="pl-1" style="max-width: calc(100% - ${Math.max(this.getTitle(json).length, 6)}ch);">
                         <p id="amount" class="text-base">${await this.getAmount(json)}</p>
                     </div>
                 </div>
@@ -99,13 +99,11 @@ class TransactionCard extends StatefulElement {
             #header-left {
                 flex: 1 2 12ch;
                 overflow: hidden;
-                min-width: 6ch;
             }
             
             #header-right {
                 flex: 1 0 0%;
                 text-align: right;
-                max-width: 70%;
             }
             
             #title {
@@ -176,9 +174,14 @@ class TransactionCard extends StatefulElement {
                 text-overflow: ellipsis;
             }
             
+            .copy .detailContent {
+                cursor: pointer;
+            }
+            
             .detailCopy {
                 margin-left: 0.5em !important;
                 color: var(--gray-400);
+                cursor: pointer;
             }
             
             #amountAmount, #amountTicker, #wrapper.confirmed #status {
@@ -199,12 +202,23 @@ class TransactionCard extends StatefulElement {
     }
 
     getTitle(json){
+        if(json.contractAddr == "ATOMICSWAP") return "Atomic Swap"
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return "Swap"
 
         return "Transfer"
     }
 
     async getSubtitle(json){
+        if(json.contractAddr == "ATOMICSWAP") {
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerA, json.swapInfos.chainIdA)
+            return `
+                <div class="d-flex text-sm">
+                    <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
+                    <span id="subtitleTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenIn, MAIN_ASSET.chainID)
             return `
@@ -219,6 +233,19 @@ class TransactionCard extends StatefulElement {
     }
 
     async getAmount(json){
+        if(json.contractAddr == "ATOMICSWAP") {
+            if(json.swapInfos.amountOut == undefined) return ""
+
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerB, json.swapInfos.chainIdB)
+
+            return `
+                <div class="d-flex">
+                    <span id="amountAmount">+${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</span>
+                    <span id="amountTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
             if(json.swapInfos.amountOut == undefined) return ""
 
@@ -238,12 +265,20 @@ class TransactionCard extends StatefulElement {
     }
 
     getIcon(json){
+        if(json.contractAddr == "ATOMICSWAP") return `<i class="fa-regular fa-right-left-large"></i>`
+
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return `<i class="fa-regular fa-arrow-right-arrow-left"></i>`
 
         return `<i class="fa-solid fa-arrow-up"></i>`
     }
 
     getStatus(json){
+        if(json.contractAddr == "ATOMICSWAP"){
+            if(json.swapInfos.status == 3) return "Completed"
+            if(json.swapInfos.status == -1) return "Failed"
+            return "Pending"
+        }
+
         if(json.status === undefined) return "Pending";
         if(json.status) return "Confirmed";
         if(!json.status && json.canceling) return "Canceled";
@@ -251,12 +286,19 @@ class TransactionCard extends StatefulElement {
     }
 
     getStatusClass(json){
+        if(json.contractAddr == "ATOMICSWAP"){
+            if(json.swapInfos.status == 3) return "confirmed"
+            if(json.swapInfos.status == -1) return "failed"
+            return "pending"
+        }
+
         if(json.status === undefined) return "pending";
         if(json.status) return "confirmed";
         return "failed";
     }
 
     getTo(json){
+        if(json.contractAddr == "ATOMICSWAP") return ""
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return ""
 
         return `
@@ -269,11 +311,11 @@ class TransactionCard extends StatefulElement {
     }
 
     getFees(json){
-        if(json.status === undefined){
+        if(json.gasUsed === undefined){
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">Max fees</p>
-                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, MAIN_ASSET.decimals) + " " + MAIN_ASSET.ticker}</p>
+                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, MAIN_ASSET.decimals)}</p><p class="pl-1">${MAIN_ASSET.ticker}</p>
                 </div>
             `
         }
@@ -281,7 +323,7 @@ class TransactionCard extends StatefulElement {
         return `
             <div class="detail d-flex mt-2">
                 <p class="detailTitle">Fees</p>
-                <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, MAIN_ASSET.decimals) + " " + MAIN_ASSET.ticker}</p>
+                <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, MAIN_ASSET.decimals)}</p><p class="pl-1">${MAIN_ASSET.ticker}</p>
             </div>
         `
     }

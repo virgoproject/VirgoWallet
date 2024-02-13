@@ -43,37 +43,46 @@ class TransactionsHistory extends StatefulElement {
             `
         }
 
-        const [boxNumber, setBoxNumber] = this.useState("boxNumber", 15)
+        let [boxNumber, setBoxNumber] = this.useState("boxNumber", 15)
 
         const back = this.registerFunction(() => {
             _this.remove()
         })
 
         const onNearEnd = this.registerFunction(() => {
-            if(boxNumber > data.length) return
+            if(boxNumber >= data.length) return
             setBoxNumber(Math.min(boxNumber+5, data.length))
         })
+
+        if(boxNumber > data.length) boxNumber = data.length
 
         const rows = []
 
         const dates = []
 
+        console.log(data)
+
         for(let i = 0; i < boxNumber; i++){
-            const date = (new Date(data[i].date)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
-            const today = (new Date(Date.now())).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
-            const yesterday = (new Date(Date.now()-86400000)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+            try {
+                const date = (new Date(data[i].date)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+                const today = (new Date(Date.now())).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
+                const yesterday = (new Date(Date.now()-86400000)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
 
-            let displayedDate = date
+                let displayedDate = date
 
-            if(date == today)
-                displayedDate = "today"
+                if(date == today)
+                    displayedDate = "today"
 
-            if(!dates.includes(displayedDate)){
-                dates.push(displayedDate)
-                rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
-            }
+                if(date == yesterday)
+                    displayedDate = "yesterday"
 
-            rows.push(`<transaction-card data='${JSON.stringify(data[i])}'></transaction-card>`)
+                if(!dates.includes(displayedDate)){
+                    dates.push(displayedDate)
+                    rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
+                }
+
+                rows.push(`<transaction-card data='${JSON.stringify(data[i])}'></transaction-card>`)
+            }catch (e) {}
         }
 
         return `
