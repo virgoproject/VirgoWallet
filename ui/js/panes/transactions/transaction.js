@@ -16,12 +16,20 @@ class TransactionCard extends StatefulElement {
     async render() {
         const _this = this
 
-        const [loadshadow, setLoadshadow] = this.useState("loadshadow", false)
+        const [shimmer, setShimmer] = this.useState("shimmer", false)
 
-        if(!loadshadow){
-            //setLoadshadow(true)
+        if(!shimmer){
+            setShimmer(true)
             return `
-                <div id="loadShadow" class="shimmerBG"></div>
+                <div id="shimmer" class="row mt-2">
+                    <div class="col-2 align-self-center">
+                        <div class="shimmerBG" id="shimmerIcon"></div>
+                    </div>
+                    <div class="col-10 align-self-center">
+                        <div class="shimmerBG" id="shimmerTitle"></div>
+                        <div class="shimmerBG" id="shimmerSubtitle"></div>               
+                    </div>
+                </div>
             `
         }
 
@@ -64,6 +72,8 @@ class TransactionCard extends StatefulElement {
                         <p class="detailTitle">Date</p>
                         <p class="detailContent">${(new Date(parseInt(json.date))).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/(\d+) (\w+) (\d+), (\d+):(\d+)/, "$1 $2. $3 $4:$5")}</p>
                     </div>
+                    ${await this.getAmountIn(json)}
+                    ${await this.getAmountOut(json)}
                     ${this.getTo(json)}
                     <div class="detail d-flex mt-2 copy">
                         <p class="detailTitle">Hash</p>
@@ -98,9 +108,31 @@ class TransactionCard extends StatefulElement {
                 margin: 0;
             }
             
-            #loadShadow {
-                height: 60px;
+            #shimmer {
+                height: 57px;
                 width: 100%;
+            }
+            
+            #shimmerIcon {
+                height: 36px;
+                width: 36px;
+                border-radius: 100%;
+                animation-duration: 35s;
+            }
+            
+            #shimmerTitle {
+                border-radius: 0.5em;
+                height: 1em;
+                width: 12ch;
+                margin-bottom: 0.5em;
+                animation-duration: 15s;
+            }
+            
+            #shimmerSubtitle {
+                border-radius: 0.5em;
+                height: 0.875em;
+                width: 8ch;
+                animation-duration: 20s;
             }
             
             #header-wrapper {
@@ -342,9 +374,78 @@ class TransactionCard extends StatefulElement {
         return "failed";
     }
 
+    async getAmountIn(json){
+        let amount = ""
+        let ticker = ""
+
+        if(json.contractAddr == "WEB3_CALL") {
+            if(json.amount == 0) return ""
+
+            amount = Utils.formatAmount(json.amount, MAIN_ASSET.ticker)
+            ticker = MAIN_ASSET.ticker
+        }
+
+        if(json.contractAddr == "ATOMICSWAP") {
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerA, json.swapInfos.chainIdA)
+            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            ticker = tokenInfos.ticker
+        }
+
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenIn, MAIN_ASSET.chainID)
+            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            ticker = tokenInfos.ticker
+        }
+
+        if(amount == ""){
+            const tokenInfos = await getTokenDetailsCross(json.contractAddr, MAIN_ASSET.chainID)
+            amount = Utils.formatAmount(json.amount, tokenInfos.decimals)
+            ticker = tokenInfos.ticker
+        }
+
+        return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Sent</p>
+                    <p class="detailContent">${amount}</p>
+                    <p class="pl-1">${ticker}</p>
+                </div>
+            `
+    }
+
+    async getAmountOut(json){
+        if(json.contractAddr == "ATOMICSWAP") {
+            if(json.swapInfos.amountOut == undefined) return ""
+
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerB, json.swapInfos.chainIdB)
+
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Received</p>
+                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="pl-1">${tokenInfos.ticker}</p>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
+            if(json.swapInfos.amountOut == undefined) return ""
+
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenOut, MAIN_ASSET.chainID)
+
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Received</p>
+                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="pl-1">${tokenInfos.ticker}</p>
+                </div>
+            `
+        }
+
+        return ""
+    }
+
     getTo(json){
-        if(json.contractAddr == "ATOMICSWAP") return ""
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return ""
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "ATOMICSWAP") return ""
 
         return `
             <div class="detail d-flex mt-2 copy">
