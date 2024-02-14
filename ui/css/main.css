@@ -53,6 +53,18 @@ body {
     --green-800: #166534;
     --green-900: #14532d;
     --green-950: #052e16;
+
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-200: #fecaca;
+    --red-300: #fca5a5;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --red-800: #991b1b;
+    --red-900: #7f1d1d;
+    --red-950: #450a0a;
 }
 
 .button {
@@ -563,4 +575,31 @@ iframe {
 .text-xl {
     font-size: 1.25em; /* 20px */
     line-height: 1.75em; /* 28px */
+}
+
+.shimmerBG {
+    animation-duration: 9s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    background: linear-gradient(to right, var(--gray-200) 8%, var(--gray-100) 18%, var(--gray-200) 33%);
+}
+
+@-webkit-keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+    100% {
+        background-position: 1200px 0;
+    }
 }

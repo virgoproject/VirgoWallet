@@ -16,6 +16,15 @@ class TransactionCard extends StatefulElement {
     async render() {
         const _this = this
 
+        const [loadshadow, setLoadshadow] = this.useState("loadshadow", false)
+
+        if(!loadshadow){
+            //setLoadshadow(true)
+            return `
+                <div id="loadShadow" class="shimmerBG"></div>
+            `
+        }
+
         const json = JSON.parse(this.getAttribute("data"))
 
         const expandClick = this.registerFunction(() => {
@@ -31,7 +40,7 @@ class TransactionCard extends StatefulElement {
         })
 
         return `
-            <div class="row mt-2 transferOut ${this.getStatusClass(json)}" id="wrapper" onclick="${expandClick}">
+            <div class="row mt-2 ${this.getStatusClass(json)}" id="wrapper" onclick="${expandClick}">
                 <div class="col-2 align-self-center">
                     <div id="icon">
                         ${this.getIcon(json)}
@@ -42,7 +51,7 @@ class TransactionCard extends StatefulElement {
                         <p id="title" class="text-base">${this.getTitle(json)}</p>
                         <p id="subtitle" class="text-sm">${await this.getSubtitle(json)}</p>
                     </div>
-                    <div id="header-right" class="pl-1" style="max-width: calc(100% - ${Math.max(this.getTitle(json).length, 6)}ch);">
+                    <div id="header-right" class="pl-1" style="max-width: calc(100% - ${Math.max(this.getTitle(json).length, 8)}ch);">
                         <p id="amount" class="text-base">${await this.getAmount(json)}</p>
                     </div>
                 </div>
@@ -61,6 +70,7 @@ class TransactionCard extends StatefulElement {
                         <p class="detailContent">${json.hash}</p>
                         <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
                     </div>
+                    ${this.getOrigin(json)}
                     ${this.getFees(json)}
                     <button class="button w-100 mt-3">Open in explorer</button>
                     <div class="text-center mt-2" id="close" onclick="${closeClick}">
@@ -86,6 +96,11 @@ class TransactionCard extends StatefulElement {
             
             #wrapper p {
                 margin: 0;
+            }
+            
+            #loadShadow {
+                height: 60px;
+                width: 100%;
             }
             
             #header-wrapper {
@@ -137,13 +152,9 @@ class TransactionCard extends StatefulElement {
                 width: 36px;
                 text-align: center;
                 line-height: 36px;
-                background: var(--bs-teal);
+                background: var(--gray-100);
+                color: var(--gray-600);
                 border-radius: 100%;
-            }
-            
-            .transferOut #icon {
-                background: var(--green-100);
-                color: var(--green-600);
             }
             
             .opened {
@@ -184,8 +195,26 @@ class TransactionCard extends StatefulElement {
                 cursor: pointer;
             }
             
+            #status {
+                color: var(--gray-500);
+            }
+            
             #amountAmount, #amountTicker, #wrapper.confirmed #status {
                 color: var(--green-500);
+            }
+            
+            #wrapper.confirmed #icon {
+                background: var(--green-100);
+                color: var(--green-600);
+            }
+            
+            #wrapper.failed #icon {
+                background: var(--red-100);
+                color: var(--red-600);
+            }
+            
+            #wrapper.failed #status {
+                color: var(--red-500);
             }
             
             #close {
@@ -202,6 +231,7 @@ class TransactionCard extends StatefulElement {
     }
 
     getTitle(json){
+        if(json.contractAddr == "WEB3_CALL") return "Web3 Interaction"
         if(json.contractAddr == "ATOMICSWAP") return "Atomic Swap"
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return "Swap"
 
@@ -209,6 +239,8 @@ class TransactionCard extends StatefulElement {
     }
 
     async getSubtitle(json){
+        if(json.contractAddr == "WEB3_CALL") return new URL(json.origin).hostname
+
         if(json.contractAddr == "ATOMICSWAP") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerA, json.swapInfos.chainIdA)
             return `
@@ -233,6 +265,17 @@ class TransactionCard extends StatefulElement {
     }
 
     async getAmount(json){
+        if(json.contractAddr == "WEB3_CALL") {
+            if(json.amount == 0) return ""
+
+            return `
+                <div class="d-flex">
+                    <span id="amountAmount">+${Utils.formatAmount(json.amount, MAIN_ASSET.ticker)}</span>
+                    <span id="amountTicker">${MAIN_ASSET.ticker}</span>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "ATOMICSWAP") {
             if(json.swapInfos.amountOut == undefined) return ""
 
@@ -265,6 +308,8 @@ class TransactionCard extends StatefulElement {
     }
 
     getIcon(json){
+        if(json.contractAddr == "WEB3_CALL") return `<i class="fa-regular fa-globe-pointer"></i>`
+
         if(json.contractAddr == "ATOMICSWAP") return `<i class="fa-regular fa-right-left-large"></i>`
 
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return `<i class="fa-regular fa-arrow-right-arrow-left"></i>`
@@ -311,6 +356,15 @@ class TransactionCard extends StatefulElement {
     }
 
     getFees(json){
+        if(json.contractAddr == "ATOMICSWAP" && json.swapInfos.gasUsed != undefined){
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Fees</p>
+                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.swapInfos.gasUsed, MAIN_ASSET.decimals)}</p><p class="pl-1">${MAIN_ASSET.ticker}</p>
+                </div>
+            `
+        }
+
         if(json.gasUsed === undefined){
             return `
                 <div class="detail d-flex mt-2">
@@ -324,6 +378,23 @@ class TransactionCard extends StatefulElement {
             <div class="detail d-flex mt-2">
                 <p class="detailTitle">Fees</p>
                 <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, MAIN_ASSET.decimals)}</p><p class="pl-1">${MAIN_ASSET.ticker}</p>
+            </div>
+        `
+    }
+
+    getOrigin(json){
+        if(json.origin == undefined || json.contractAddr == "WEB3_CALL") return ""
+
+        let origin = json.origin
+
+        try {
+            origin = new URL(origin).hostname
+        }catch (e) {}
+
+        return `
+            <div class="detail d-flex mt-2">
+                <p class="detailTitle">Origin</p>
+                <p class="detailContent">${origin}</p>
             </div>
         `
     }
