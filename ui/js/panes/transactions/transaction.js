@@ -82,7 +82,7 @@ class TransactionCard extends StatefulElement {
                     </div>
                     ${this.getOrigin(json)}
                     ${this.getFees(json)}
-                    <button class="button w-100 mt-3">Open in explorer</button>
+                    ${this.getExplorerBtn(json)}
                     <div class="text-center mt-2" id="close" onclick="${closeClick}">
                         <i class="fa-regular fa-chevron-up"></i>
                     </div>
@@ -498,6 +498,18 @@ class TransactionCard extends StatefulElement {
                 <p class="detailContent">${origin}</p>
             </div>
         `
+    }
+
+    getExplorerBtn(json){
+        if(json.contractAddr == "ATOMICSWAP") return ""
+
+        const openExplorer = this.registerFunction(() => {
+            browser.windows.create({
+                url: MAIN_ASSET.explorer + json.hash
+            })
+        })
+
+        return `<button class="button w-100 mt-3" onclick="${openExplorer}">Open in explorer</button>`
     }
 
 }
