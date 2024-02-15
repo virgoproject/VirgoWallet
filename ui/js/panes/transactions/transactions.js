@@ -5,6 +5,14 @@ class TransactionsHistory extends StatefulElement {
             return
         }
 
+        this.openedCards = []
+        this.cards = []
+
+        for(const elem of this.querySelectorAll("transaction-card")){
+            this.cards.push(elem.id)
+            if(elem.opened) this.openedCards.push(elem.id)
+        }
+
         try {
             this.scrollPos = this.querySelector("#scroll").getScroll()
         }catch (e) {}
@@ -16,6 +24,12 @@ class TransactionsHistory extends StatefulElement {
             if(!this.querySelector("#scroll")) return
             this.firstRendered = true
             return
+        }
+
+        for(const elemId of this.openedCards){
+            const elem = this.querySelector("#"+elemId)
+            console.log(elem)
+            if(elem) elem.open()
         }
 
         try {
@@ -60,8 +74,6 @@ class TransactionsHistory extends StatefulElement {
 
         const dates = []
 
-        console.log(data)
-
         for(let i = 0; i < boxNumber; i++){
             try {
                 const date = (new Date(data[i].date)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
@@ -71,17 +83,23 @@ class TransactionsHistory extends StatefulElement {
                 let displayedDate = date
 
                 if(date == today)
-                    displayedDate = "today"
+                    displayedDate = "Today"
 
                 if(date == yesterday)
-                    displayedDate = "yesterday"
+                    displayedDate = "Yesterday"
 
                 if(!dates.includes(displayedDate)){
                     dates.push(displayedDate)
                     rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
                 }
 
-                rows.push(`<transaction-card data='${JSON.stringify(data[i])}'></transaction-card>`)
+                let displayed = false
+
+                if(this.cards)
+                    displayed = this.cards.includes("x"+data[i].hash.replace("0x", ""))
+
+
+                rows.push(`<transaction-card id='${"x"+data[i].hash.replace("0x", "")}' data='${JSON.stringify(data[i])}' displayed="${displayed}"></transaction-card>`)
             }catch (e) {}
         }
 

@@ -39,6 +39,7 @@ class ScrollView extends StatefulElement {
     }
 
     setScroll(val){
+        this.defaultScroll = val
         const elem = this.querySelector("#scroll")
         elem.virtualScrollTop = val
         elem.scrollTop = val
@@ -52,6 +53,13 @@ class ScrollView extends StatefulElement {
                 </div>
             </div>
         `
+    }
+
+    afterRender() {
+        if(this.defaultScroll == undefined) return
+        const elem = this.querySelector("#scroll")
+        elem.virtualScrollTop = this.defaultScroll
+        elem.scrollTop = this.defaultScroll
     }
 
     style() {

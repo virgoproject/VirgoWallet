@@ -16,7 +16,9 @@ class TransactionCard extends StatefulElement {
     async render() {
         const _this = this
 
-        const [shimmer, setShimmer] = this.useState("shimmer", false)
+        console.log(this.getAttribute("displayed"))
+
+        const [shimmer, setShimmer] = this.useState("shimmer", this.getAttribute("displayed"))
 
         if(!shimmer){
             setShimmer(true)
@@ -39,11 +41,14 @@ class TransactionCard extends StatefulElement {
             const wrapper = _this.querySelector("#wrapper")
             if(wrapper.classList.contains("opened")) return
 
+            _this.opened = true
+
             wrapper.classList.add("opened")
         })
 
         const closeClick = this.registerFunction(e => {
             _this.querySelector("#wrapper").classList.remove("opened")
+            _this.opened = false
             e.stopPropagation()
         })
 
@@ -260,6 +265,12 @@ class TransactionCard extends StatefulElement {
             }
             
         `;
+    }
+
+    open(){
+        const wrapper = this.querySelector("#wrapper")
+        wrapper.classList.add("opened")
+        this.opened = true
     }
 
     getTitle(json){
