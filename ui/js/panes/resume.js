@@ -34,6 +34,7 @@ class MainPane {
         button: $("#testnetFaucet span"),
         loader: $("#testnetFaucet i")
     }
+    static txsBtn = $("#mainPane .header .pendingTxs")
 
     constructor() {
 
@@ -186,6 +187,12 @@ class MainPane {
             })
 
         })
+
+        MainPane.txsBtn.click(function(){
+            const elem = document.createElement("transactions-pane")
+            document.body.appendChild(elem)
+            return
+        })
     }
 
     updateData(){
@@ -204,7 +211,6 @@ class MainPane {
 
                     console.log("updating")
                     mainPane.displayData(response)
-                    transactionsPane.updateTxs(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)
                     swapPane.updateBalance(SwapPane.inputs.two, true)
                 }

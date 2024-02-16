@@ -42,11 +42,19 @@ class TransactionsHistory extends StatefulElement {
 
         const _this = this
 
-        const {data, loading} = this.useInterval(async () => {
+        const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
             let selectedWallet = infos.wallets[infos.selectedWallet].wallet
             let transactions = selectedWallet.transactions
             return transactions
+        })
+
+        //just to reset the view if a new transaction arrived
+        const {data: d, loading: l} = this.useInterval(async () => {
+            const infos = await getBaseInfos()
+            let selectedWallet = infos.wallets[infos.selectedWallet].wallet
+            let transactions = selectedWallet.transactions
+            return transactions.length
         }, 5000)
 
         if(loading){
@@ -57,24 +65,50 @@ class TransactionsHistory extends StatefulElement {
             `
         }
 
-        let [boxNumber, setBoxNumber] = this.useState("boxNumber", 15)
+        this.boxNumber = 15
 
         const back = this.registerFunction(() => {
             _this.remove()
         })
 
         const onNearEnd = this.registerFunction(() => {
-            if(boxNumber >= data.length) return
-            setBoxNumber(Math.min(boxNumber+5, data.length))
+            if(_this.boxNumber >= data.length) return
+
+            const oldBoxNum = _this.boxNumber
+            _this.boxNumber = Math.min(_this.boxNumber+5, data.length)
+
+            const scroll = _this.querySelector("#inner")
+
+            for(const row of _this.getRows(data, oldBoxNum, _this.boxNumber)){
+                scroll.insertAdjacentHTML("beforeend", row)
+            }
+
         })
 
-        if(boxNumber > data.length) boxNumber = data.length
+        if(this.boxNumber > data.length) this.boxNumber = data.length
 
+        this.dates = []
+
+        const rows = this.getRows(data, 0, this.boxNumber)
+
+        return `
+           <div class="fullpageSection">
+                <div id="wrapper">
+                    <section-header title="History" backfunc="${back}"></section-header>
+                    <scroll-view id="scroll" onnearend="${onNearEnd}">
+                        <div id="inner">
+                            ${rows}
+                        </div>
+                    </scroll-view>
+                </div>
+           </div>
+        `;
+    }
+
+    getRows(data, min, max){
         const rows = []
 
-        const dates = []
-
-        for(let i = 0; i < boxNumber; i++){
+        for(let i = min; i < max; i++){
             try {
                 const date = (new Date(data[i].date)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
                 const today = (new Date(Date.now())).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/(\d+) (\w+) (\d+)/, "$1 $2. $3")
@@ -88,33 +122,16 @@ class TransactionsHistory extends StatefulElement {
                 if(date == yesterday)
                     displayedDate = "Yesterday"
 
-                if(!dates.includes(displayedDate)){
-                    dates.push(displayedDate)
+                if(!this.dates.includes(displayedDate)){
+                    this.dates.push(displayedDate)
                     rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
                 }
 
-                let displayed = false
-
-                if(this.cards)
-                    displayed = this.cards.includes("x"+data[i].hash.replace("0x", ""))
-
-
-                rows.push(`<transaction-card id='${"x"+data[i].hash.replace("0x", "")}' data='${JSON.stringify(data[i])}' displayed="${displayed}"></transaction-card>`)
+                rows.push(`<transaction-card id='${"x"+data[i].hash.replace("0x", "")}'></transaction-card>`)
             }catch (e) {}
         }
 
-        return `
-           <div class="fullpageSection">
-                <div id="wrapper">
-                    <section-header title="History" backfunc="${back}"></section-header>
-                    <scroll-view id="scroll" onnearend="${onNearEnd}">
-                        <div id="inner">
-                            ${rows}
-                        </div>
-                    </scroll-view>  
-                </div>
-           </div>
-        `;
+        return rows
     }
 
     style() {

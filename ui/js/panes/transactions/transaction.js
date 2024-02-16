@@ -16,12 +16,11 @@ class TransactionCard extends StatefulElement {
     async render() {
         const _this = this
 
-        console.log(this.getAttribute("displayed"))
+        const {data: json, loading} = this.useInterval(async () => {
+            return await getTransaction("0"+_this.getAttribute("id"))
+        }, 5000)
 
-        const [shimmer, setShimmer] = this.useState("shimmer", this.getAttribute("displayed"))
-
-        if(!shimmer){
-            setShimmer(true)
+        if(loading){
             return `
                 <div id="shimmer" class="row mt-2">
                     <div class="col-2 align-self-center">
@@ -34,8 +33,6 @@ class TransactionCard extends StatefulElement {
                 </div>
             `
         }
-
-        const json = JSON.parse(this.getAttribute("data"))
 
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
@@ -57,6 +54,7 @@ class TransactionCard extends StatefulElement {
                 <div class="col-2 align-self-center">
                     <div id="icon">
                         ${this.getIcon(json)}
+                        ${this.getProgressRing(json)}
                     </div>
                 </div>
                 <div class="col-10 d-flex" id="header-wrapper">
@@ -96,6 +94,11 @@ class TransactionCard extends StatefulElement {
         `;
     }
 
+    afterRender() {
+        const wrapper = this.querySelector("#wrapper")
+        if(this.opened) wrapper.classList.add("opened")
+    }
+
     style() {
         return `        
             #wrapper {
@@ -116,6 +119,12 @@ class TransactionCard extends StatefulElement {
             #shimmer {
                 height: 57px;
                 width: 100%;
+            }
+            
+            progress-ring {
+                position: relative;
+                top: -36px;
+                left: 0;
             }
             
             #shimmerIcon {
@@ -274,6 +283,8 @@ class TransactionCard extends StatefulElement {
     }
 
     getTitle(json){
+        if(json.contractAddr == "UNWRAP") return "Unwrap token"
+        if(json.contractAddr == "WRAP") return "Wrap token"
         if(json.contractAddr == "WEB3_CALL") return "Web3 Interaction"
         if(json.contractAddr == "ATOMICSWAP") return "Atomic Swap"
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return "Swap"
@@ -282,6 +293,26 @@ class TransactionCard extends StatefulElement {
     }
 
     async getSubtitle(json){
+        if(json.contractAddr == "UNWRAP"){
+            const tokenInfos = await getTokenDetailsCross(json.recipient, MAIN_ASSET.chainID)
+
+            return `
+                <div class="d-flex text-sm">
+                    <span id="subtitleAmount">-${Utils.formatAmount(json.amount, tokenInfos.decimals)}</span>
+                    <span id="subtitleTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "WRAP") {
+            return `
+                <div class="d-flex text-sm">
+                    <span id="subtitleAmount">-${Utils.formatAmount(json.amount, MAIN_ASSET.decimals)}</span>
+                    <span id="subtitleTicker">${MAIN_ASSET.ticker}</span>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "WEB3_CALL") return new URL(json.origin).hostname
 
         if(json.contractAddr == "ATOMICSWAP") {
@@ -308,6 +339,26 @@ class TransactionCard extends StatefulElement {
     }
 
     async getAmount(json){
+        if(json.contractAddr == "UNWRAP") {
+            return `
+                <div class="d-flex">
+                    <span id="amountAmount">+${Utils.formatAmount(json.amount, MAIN_ASSET.decimals)}</span>
+                    <span id="amountTicker">${MAIN_ASSET.ticker}</span>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "WRAP"){
+            const tokenInfos = await getTokenDetailsCross(json.recipient, MAIN_ASSET.chainID)
+
+            return `
+                <div class="d-flex">
+                    <span id="amountAmount">+${Utils.formatAmount(json.amount, tokenInfos.decimals)}</span>
+                    <span id="amountTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "WEB3_CALL") {
             if(json.amount == 0) return ""
 
@@ -351,6 +402,10 @@ class TransactionCard extends StatefulElement {
     }
 
     getIcon(json){
+        if(json.contractAddr == "UNWRAP") return `<i class="fa-regular fa-box-open"></i>`
+
+        if(json.contractAddr == "WRAP") return `<i class="fa-regular fa-box-taped"></i>`
+
         if(json.contractAddr == "WEB3_CALL") return `<i class="fa-regular fa-globe-pointer"></i>`
 
         if(json.contractAddr == "ATOMICSWAP") return `<i class="fa-regular fa-right-left-large"></i>`
@@ -358,6 +413,21 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return `<i class="fa-regular fa-arrow-right-arrow-left"></i>`
 
         return `<i class="fa-solid fa-arrow-up"></i>`
+    }
+
+    getProgressRing(json){
+        if(!(json.status === undefined || json.status)) return ""
+
+        let confirmations = 0
+        if(json.confirmations) confirmations = json.confirmations
+
+        let progress = Math.min(100, (confirmations+1)/13*100)
+
+        if(json.contractAddr == "ATOMICSWAP") progress = Math.min(100, (json.swapInfos.status+1)/4*100)
+
+        if(progress == 100) return ""
+
+        return `<progress-ring stroke="4" radius="24" progress="${progress}" data-progress=""></progress-ring>`
     }
 
     getStatus(json){
@@ -380,7 +450,7 @@ class TransactionCard extends StatefulElement {
             return "pending"
         }
 
-        if(json.status === undefined) return "pending";
+        if(json.status === undefined || (json.status && json.confirmations < 12)) return "pending";
         if(json.status) return "confirmed";
         return "failed";
     }
@@ -389,7 +459,14 @@ class TransactionCard extends StatefulElement {
         let amount = ""
         let ticker = ""
 
-        if(json.contractAddr == "WEB3_CALL") {
+        if(json.contractAddr == "UNWRAP"){
+            const tokenInfos = await getTokenDetailsCross(json.recipient, MAIN_ASSET.chainID)
+
+            amount = Utils.formatAmount(json.amount, tokenInfos.decimals)
+            ticker = tokenInfos.ticker
+        }
+
+        if(json.contractAddr == "WEB3_CALL" || json.contractAddr == "WRAP") {
             if(json.amount == 0) return ""
 
             amount = Utils.formatAmount(json.amount, MAIN_ASSET.ticker)
@@ -456,7 +533,7 @@ class TransactionCard extends StatefulElement {
     }
 
     getTo(json){
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "ATOMICSWAP") return ""
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "ATOMICSWAP" || json.contractAddr == "WRAP" || json.contractAddr == "UNWRAP") return ""
 
         return `
             <div class="detail d-flex mt-2 copy">

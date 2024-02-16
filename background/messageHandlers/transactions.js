@@ -1,10 +1,16 @@
 class TransactionsHandlers {
 
     static register(){
+        addBgMessageHandler("getTransaction", this.getTransaction)
         addBgMessageHandler("getSpeedupGasPrice", this.getSpeedupGasPrice)
         addBgMessageHandler("speedUpTransaction", this.speedUpTransaction)
         addBgMessageHandler("getCancelGasPrice", this.getCancelGasPrice)
         addBgMessageHandler("cancelTransaction", this.cancelTransaction)
+    }
+
+    static getTransaction(request, sender, sendResponse){
+        console.log(request.hash)
+        sendResponse(baseWallet.getCurrentWallet().getTransaction(request.hash))
     }
 
     static getSpeedupGasPrice(request, sender, sendResponse){

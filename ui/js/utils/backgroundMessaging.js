@@ -28,6 +28,10 @@ async function getAsset(contract){
     return false
 }
 
+async function getTransaction(hash){
+    return await browser.runtime.sendMessage({command: 'getTransaction', hash})
+}
+
 async function validateAddress(address){
     return await browser.runtime.sendMessage({command: 'validateAddress', address})
 }
