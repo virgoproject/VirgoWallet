@@ -38,14 +38,6 @@ class MainPane {
 
     constructor() {
 
-        events.addListener('notifsCountChanged', data => {
-                if(data.notificationsCount === 0){
-                    document.querySelector('.notifs').classList.add('d-none')
-                }else {
-                    document.querySelector('.notifsCount').innerText = data.notificationsCount
-                }
-        })
-
         MainPane.addressDiv.click(function(e){
             e.stopPropagation()
             let address = document.getElementById('walletAddress').textContent

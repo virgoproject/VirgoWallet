@@ -85,7 +85,7 @@ class TransactionCard extends StatefulElement {
                     </div>
                     ${this.getOrigin(json)}
                     ${this.getFees(json)}
-                    ${this.getExplorerBtn(json)}
+                    ${this.getBtns(json)}
                     <div class="text-center mt-2" id="close" onclick="${closeClick}">
                         <i class="fa-regular fa-chevron-up"></i>
                     </div>
@@ -588,7 +588,25 @@ class TransactionCard extends StatefulElement {
         `
     }
 
-    getExplorerBtn(json){
+    getBtns(json){
+        if(json.status === undefined){
+            const speedupClick = this.registerFunction(() => {
+                const elem = document.createElement("speedup-transaction")
+                document.body.appendChild(elem)
+            })
+
+            return `
+                <div class="row mt-3">
+                    <div class="col-6 pr-2">
+                        <button class="button w-100 button-red">Cancel</button>
+                    </div>
+                    <div class="col-6 pl-2">
+                        <button class="button w-100 button-green" onclick="${speedupClick}">Speed up</button>
+                    </div>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "ATOMICSWAP") return ""
 
         const openExplorer = this.registerFunction(() => {

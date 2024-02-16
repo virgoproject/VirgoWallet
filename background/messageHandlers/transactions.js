@@ -9,7 +9,6 @@ class TransactionsHandlers {
     }
 
     static getTransaction(request, sender, sendResponse){
-        console.log(request.hash)
         sendResponse(baseWallet.getCurrentWallet().getTransaction(request.hash))
     }
 

@@ -56,6 +56,7 @@ const commonScripts = [
     "../js/components/bottomPopup.js",
     "../js/panes/transactions/transactions.js",
     "../js/panes/transactions/transaction.js",
+    "../js/panes/transactions/speedup.js",
     "../js/components/scrollView.js"
 ]
 

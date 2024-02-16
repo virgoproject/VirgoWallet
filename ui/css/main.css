@@ -74,10 +74,31 @@ body {
     border-radius: .5em;
     padding: .375em .75em;
     transition: all ease-in 0.1s;
+    font-weight: 500;
 }
 
 .button:hover {
     background: var(--mainColorDark10);
+}
+
+.button-red {
+    background-color: var(--red-100);
+    color: var(--red-600);
+    font-weight: 600;
+}
+
+.button-red:hover {
+    background-color: var(--red-200);
+}
+
+.button-green {
+    background-color: var(--green-100);
+    color: var(--green-600);
+    font-weight: 600;
+}
+
+.button-green:hover {
+    background-color: var(--green-200);
 }
 
 .buttonEmpty {
