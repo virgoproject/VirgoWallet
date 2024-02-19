@@ -149,6 +149,22 @@ class EthWallet {
         if(json.chainID == 137)
             json.RPC = "https://rpc.ankr.com/polygon"
 
+        for(let transaction of json.transactions){
+            if(transaction.contractAddr == "SWAP" && (transaction.origin === undefined || transaction.swapInfos.tokenIn === undefined || transaction.swapInfos.tokenOut === undefined)){
+                transaction.origin = "Virgo Swap"
+                transaction.swapInfos.tokenIn = transaction.swapInfos.route[0]
+                transaction.swapInfos.tokenOut = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
+            }
+
+            if(transaction.contractAddr == "WEB3_SWAP" && transaction.swapInfos === undefined){
+                transaction.swapInfos = transaction.swap
+            }
+
+            if(transaction.contractAddr == "ATOMICSWAP" && transaction.origin === undefined){
+                transaction.origin = "Virgo Swap"
+            }
+        }
+
         return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.atomicSwapParams, json.nft, json.tracked)
     }
 
@@ -316,7 +332,7 @@ class EthWallet {
         if(this.transactions.length > 0){
             web3.eth.getBlockNumber().then(function(blockNumber){
                 for(const transaction of wallet.transactions){
-                    if(transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") continue
+                    if((transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") && !(transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)) continue
 
                     web3.eth.getTransactionReceipt(transaction.hash).then(async function(receipt){
                         if(receipt == null){
@@ -335,7 +351,7 @@ class EthWallet {
                             return
                         }
 
-                        if(transaction.status === undefined){
+                        if(transaction.status === undefined || (transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)){
                             if(receipt.status){
 
                                 if(transaction.contractAddr == "SWAP"){
@@ -346,9 +362,9 @@ class EthWallet {
                                 } else if(transaction.contractAddr == "WEB3_SWAP"){
 
                                     try {
-                                        console.log(transaction.swap.type)
+                                        console.log(transaction.swapInfos.type)
 
-                                        switch (transaction.swap.type){
+                                        switch (transaction.swapInfos.type){
                                             case 'swapExactETHForTokens':
                                             case 'exactInput':
                                             case 'exactInputSingle':
@@ -362,7 +378,7 @@ class EthWallet {
                                                 let decodedLog = null
 
                                                 for(let nLog of receipt.logs){
-                                                    if(nLog.address.toLowerCase() == transaction.swap.tokenOut.toLowerCase()){
+                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenOut.toLowerCase()){
                                                         log = nLog
                                                         try {
                                                             console.log(log)
@@ -392,7 +408,7 @@ class EthWallet {
                                                 console.log(decodedLog)
                                                 console.log("amountOut: " + decodedLog.value)
 
-                                                transaction.swap.amountOut = decodedLog.value
+                                                transaction.swapInfos.amountOut = decodedLog.value
                                                 break
 
                                             case 'swapTokensForExactETH':
@@ -405,8 +421,8 @@ class EthWallet {
                                                 let decodedLog2 = null
 
                                                 for(let nLog of receipt.logs){
-                                                    if(nLog.address.toLowerCase() == transaction.swap.tokenIn.toLowerCase()){
-                                                        console.log(nLog.address + " " + transaction.swap.tokenIn)
+                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenIn.toLowerCase()){
+                                                        console.log(nLog.address + " " + transaction.swapInfos.tokenIn)
                                                         log2 = nLog
                                                         try {
                                                             console.log(log2)
@@ -436,7 +452,7 @@ class EthWallet {
                                                 console.log(decodedLog2)
                                                 console.log("amountIn: " + decodedLog2.value)
 
-                                                transaction.swap.amountIn = decodedLog2.value
+                                                transaction.swapInfos.amountIn = decodedLog2.value
                                                 break
                                         }
                                     }catch (e) {

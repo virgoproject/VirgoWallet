@@ -13,7 +13,7 @@ class TxIdentifier {
                     case 'swapExactETHForTokens':
                     case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": amount,
                                 "amountOut": decodedMethod.params[0].value,
@@ -33,7 +33,7 @@ class TxIdentifier {
                     case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value,
                                 "amountOut": decodedMethod.params[1].value,
@@ -52,7 +52,7 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[1].value,
                                 "amountOut": decodedMethod.params[0].value,
@@ -71,7 +71,7 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactETH':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[1].value,
                                 "amountOut": decodedMethod.params[0].value,
@@ -91,7 +91,7 @@ class TxIdentifier {
                     case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForETH':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value,
                                 "amountOut": decodedMethod.params[1].value,
@@ -122,7 +122,7 @@ class TxIdentifier {
                         console.log(tokenOut)
 
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value.amountIn,
                                 "amountOut": decodedMethod.params[0].value.amountOutMinimum,
@@ -152,7 +152,7 @@ class TxIdentifier {
                         console.log(tokenOut2)
 
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value.amountInMaximum,
                                 "amountOut": decodedMethod.params[0].value.amountOut,
@@ -171,7 +171,7 @@ class TxIdentifier {
                         }
                     case 'exactInputSingle':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value.amountIn,
                                 "amountOut": decodedMethod.params[0].value.amountOutMinimum,
@@ -190,7 +190,7 @@ class TxIdentifier {
                         }
                     case 'exactOutputSingle':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedMethod.name,
                                 "amountIn": decodedMethod.params[0].value.amountInMaximum,
                                 "amountOut": decodedMethod.params[0].value.amountOut,
@@ -230,7 +230,7 @@ class TxIdentifier {
                     case 'swapExactETHForTokens':
                     case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": amount,
                                 "amountOut": decodedDecodedMethod.params[0].value,
@@ -250,7 +250,7 @@ class TxIdentifier {
                     case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value,
                                 "amountOut": decodedDecodedMethod.params[1].value,
@@ -269,7 +269,7 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactTokens':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[1].value,
                                 "amountOut": decodedDecodedMethod.params[0].value,
@@ -288,7 +288,7 @@ class TxIdentifier {
                         }
                     case 'swapTokensForExactETH':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[1].value,
                                 "amountOut": decodedDecodedMethod.params[0].value,
@@ -308,7 +308,7 @@ class TxIdentifier {
                     case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
                     case 'swapExactTokensForETH':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value,
                                 "amountOut": decodedDecodedMethod.params[1].value,
@@ -339,7 +339,7 @@ class TxIdentifier {
                         console.log(tokenOut)
 
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value.amountIn,
                                 "amountOut": decodedDecodedMethod.params[0].value.amountOutMinimum,
@@ -369,7 +369,7 @@ class TxIdentifier {
                         console.log(tokenOut2)
 
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value.amountInMaximum,
                                 "amountOut": decodedDecodedMethod.params[0].value.amountOut,
@@ -388,7 +388,7 @@ class TxIdentifier {
                         }
                     case 'exactInputSingle':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value.amountIn,
                                 "amountOut": decodedDecodedMethod.params[0].value.amountOutMinimum,
@@ -407,7 +407,7 @@ class TxIdentifier {
                         }
                     case 'exactOutputSingle':
                         return {
-                            "swap": {
+                            "swapInfos": {
                                 "type": decodedDecodedMethod.name,
                                 "amountIn": decodedDecodedMethod.params[0].value.amountInMaximum,
                                 "amountOut": decodedDecodedMethod.params[0].value.amountOut,

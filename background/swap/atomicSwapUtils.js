@@ -195,6 +195,7 @@ class AtomicSwapUtils {
                     "gasPrice": gasPrice,
                     "gasLimit": gasAmount,
                     "nonce": nonce,
+                    "origin": "Virgo Swap",
                     "swapInfos": order
                 }
 

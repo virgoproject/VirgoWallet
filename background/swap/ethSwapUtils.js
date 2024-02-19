@@ -148,8 +148,6 @@ class EthSwapUtils {
     async getStatusForTokenOut(transaction, receipt){
         const logs = abiDecoder.decodeLogs(receipt.logs)
 
-        console.log(transaction)
-
         let route = transaction.swapInfos.route
 
         if(transaction.swapInfos.route.route !== undefined)

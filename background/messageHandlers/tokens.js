@@ -232,7 +232,7 @@ class TokensHandlers {
             return
         }
 
-        const web3_cross = baseWallet.getChainByID(request.chainID)
+        const web3_cross = baseWallet.getWeb3ByID(request.chainID)
 
         const tokenContract = new web3_cross.eth.Contract(ERC20_ABI, request.contract, { from: baseWallet.getCurrentAddress()});
 

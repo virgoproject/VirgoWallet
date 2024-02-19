@@ -60,19 +60,6 @@ class SettingsPane {
             **/
         })
 
-        $("#settings .settingsPane .tab").click(function(){
-            const target = $("[data-settingId="+$(this).attr("data-target")+"]")
-
-            lastSettingsTitle = SettingsPane.settingsTitle.html()
-
-            if(target.attr("data-title"))
-                SettingsPane.settingsTitle.html(target.attr("data-title"))
-
-            target.show()
-
-            mainSettingsBackLevel = target.attr("data-settingsLevel")
-        })
-
     }
 
     setSettings(data){

@@ -34,16 +34,9 @@ class MainPane {
         button: $("#testnetFaucet span"),
         loader: $("#testnetFaucet i")
     }
+    static txsBtn = $("#mainPane .header .pendingTxs")
 
     constructor() {
-
-        events.addListener('notifsCountChanged', data => {
-                if(data.notificationsCount === 0){
-                    document.querySelector('.notifs').classList.add('d-none')
-                }else {
-                    document.querySelector('.notifsCount').innerText = data.notificationsCount
-                }
-        })
 
         MainPane.addressDiv.click(function(e){
             e.stopPropagation()
@@ -186,6 +179,12 @@ class MainPane {
             })
 
         })
+
+        MainPane.txsBtn.click(function(){
+            const elem = document.createElement("transactions-pane")
+            document.body.appendChild(elem)
+            return
+        })
     }
 
     updateData(){
@@ -204,7 +203,6 @@ class MainPane {
 
                     console.log("updating")
                     mainPane.displayData(response)
-                    transactionsPane.updateTxs(response)
                     swapPane.updateBalance(SwapPane.inputs.one, true)
                     swapPane.updateBalance(SwapPane.inputs.two, true)
                 }

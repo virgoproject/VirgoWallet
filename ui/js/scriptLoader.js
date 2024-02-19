@@ -23,7 +23,6 @@ const commonScripts = [
     "../js/panes/settings.js",
     "../js/panes/assetsPane.js",
     "../js/panes/swapPane.js",
-    "../js/panes/transactionsPane.js",
     "../js/panes/tokenDetailPane.js",
     "../js/panes/contactsPane.js",
     "../js/panes/atomicSwapPane.js",
@@ -54,7 +53,12 @@ const commonScripts = [
     "../js/panes/settings/security/newPassword.js",
     "../js/panes/settings/security/import.js",
     "../js/components/sectionHeader.js",
-    "../js/components/bottomPopup.js"
+    "../js/components/bottomPopup.js",
+    "../js/panes/transactions/transactions.js",
+    "../js/panes/transactions/transaction.js",
+    "../js/panes/transactions/speedup.js",
+    "../js/panes/transactions/cancel.js",
+    "../js/components/scrollView.js"
 ]
 
 const browserScripts = [

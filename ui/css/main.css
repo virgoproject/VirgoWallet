@@ -25,9 +25,46 @@ body {
     --redArrow: #FF6161;
     --lightGrey: #F3F3F3;
     font-family: 'Montserrat', sans-serif;
-    font-weight: normal;
+    font-weight: 500;
     overflow: hidden;
     font-size: 14px;
+
+    /* New color palettes */
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5;
+    --gray-300: #d4d4d4;
+    --gray-400: #a3a3a3;
+    --gray-500: #737373;
+    --gray-600: #525252;
+    --gray-700: #404040;
+    --gray-800: #262626;
+    --gray-900: #171717;
+    --gray-950: #0a0a0a;
+
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-300: #86efac;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-800: #166534;
+    --green-900: #14532d;
+    --green-950: #052e16;
+
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-200: #fecaca;
+    --red-300: #fca5a5;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --red-800: #991b1b;
+    --red-900: #7f1d1d;
+    --red-950: #450a0a;
 }
 
 .button {
@@ -37,10 +74,31 @@ body {
     border-radius: .5em;
     padding: .375em .75em;
     transition: all ease-in 0.1s;
+    font-weight: 500;
 }
 
 .button:hover {
     background: var(--mainColorDark10);
+}
+
+.button-red {
+    background-color: var(--red-100);
+    color: var(--red-600);
+    font-weight: 600;
+}
+
+.button-red:hover {
+    background-color: var(--red-200);
+}
+
+.button-green {
+    background-color: var(--green-100);
+    color: var(--green-600);
+    font-weight: 600;
+}
+
+.button-green:hover {
+    background-color: var(--green-200);
 }
 
 .buttonEmpty {
@@ -515,4 +573,54 @@ iframe {
 
 #airdropPane {
     height: 100%;
+}
+
+
+/* font size */
+
+.text-sm {
+    font-size: 0.875em; /* 14px */
+    line-height: 1.25em; /* 20px */
+}
+
+.text-base {
+    font-size: 1em; /* 16px */
+    line-height: 1.5em; /* 24px */
+}
+
+.text-lg {
+    font-size: 1.125em; /* 18px */
+    line-height: 1.75em; /* 28px */
+}
+
+.text-xl {
+    font-size: 1.25em; /* 20px */
+    line-height: 1.75em; /* 28px */
+}
+
+.shimmerBG {
+    animation-duration: 9s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    background: linear-gradient(to right, var(--gray-200) 8%, var(--gray-100) 18%, var(--gray-200) 33%);
+}
+
+@-webkit-keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+    100% {
+        background-position: 1200px 0;
+    }
 }

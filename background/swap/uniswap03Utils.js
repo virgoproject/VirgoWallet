@@ -12,7 +12,6 @@ class Uniswap03Utils {
     }
 
     static async estimateSwapFees_single(dexParams, amount, quote){
-        console.log("uni03single")
 
         const initialRoute = quote.routes[0]
 
@@ -71,7 +70,6 @@ class Uniswap03Utils {
     }
 
     static async estimateSwapFees_multi(dexParams, amount, quote){
-        console.log("uni03multi")
 
         const initialRoute = quote.routes[0]
 
@@ -177,8 +175,11 @@ class Uniswap03Utils {
                             "gasPrice": gasPrice,
                             "gasLimit": gas,
                             "nonce": nonce,
+                            "origin": "Virgo Swap",
                             "swapInfos": {
                                 "route": route.route,
+                                "tokenIn": route[0],
+                                "tokenOut": route[route.length-1],
                                 "amountIn": amount.toString(),
                                 "approveHash": ""
                             }
@@ -203,8 +204,11 @@ class Uniswap03Utils {
                         "gasPrice": gasPrice,
                         "gasLimit": gas,
                         "nonce": nonce,
+                        "origin": "Virgo Swap",
                         "swapInfos": {
                             "route": route.route,
+                            "tokenIn": route[0],
+                            "tokenOut": route[route.length-1],
                             "amountIn": amount.toString(),
                             "approveHash": approveHash
                         }
@@ -225,8 +229,11 @@ class Uniswap03Utils {
                         "gasPrice": gasPrice,
                         "gasLimit": gas,
                         "nonce": nonce,
+                        "origin": "Virgo Swap",
                         "swapInfos": {
                             "route": route.route,
+                            "tokenIn": route[0],
+                            "tokenOut": route[route.length-1],
                             "amountIn": amount.toString(),
                             "approveHash": approveHash
                         }
@@ -314,8 +321,11 @@ class Uniswap03Utils {
                             "gasPrice": gasPrice,
                             "gasLimit": gas,
                             "nonce": nonce,
+                            "origin": "Virgo Swap",
                             "swapInfos": {
                                 "route": route.route,
+                                "tokenIn": route[0],
+                                "tokenOut": route[route.length-1],
                                 "amountIn": amount.toString(),
                                 "approveHash": ""
                             }
@@ -340,8 +350,11 @@ class Uniswap03Utils {
                         "gasPrice": gasPrice,
                         "gasLimit": gas,
                         "nonce": nonce,
+                        "origin": "Virgo Swap",
                         "swapInfos": {
                             "route": route.route,
+                            "tokenIn": route[0],
+                            "tokenOut": route[route.length-1],
                             "amountIn": amount.toString(),
                             "approveHash": approveHash
                         }
@@ -362,8 +375,11 @@ class Uniswap03Utils {
                         "gasPrice": gasPrice,
                         "gasLimit": gas,
                         "nonce": nonce,
+                        "origin": "Virgo Swap",
                         "swapInfos": {
                             "route": route.route,
+                            "tokenIn": route[0],
+                            "tokenOut": route[route.length-1],
                             "amountIn": amount.toString(),
                             "approveHash": approveHash
                         }
