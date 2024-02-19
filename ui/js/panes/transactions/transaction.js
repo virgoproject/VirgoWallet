@@ -18,7 +18,7 @@ class TransactionCard extends StatefulElement {
 
         const {data: json, loading} = this.useInterval(async () => {
             return await getTransaction("0"+_this.getAttribute("id"))
-        }, 5000)
+        }, 10000)
 
         if(loading){
             return `
@@ -589,16 +589,31 @@ class TransactionCard extends StatefulElement {
     }
 
     getBtns(json){
+        const _this = this
+
         if(json.status === undefined){
             const speedupClick = this.registerFunction(() => {
                 const elem = document.createElement("speedup-transaction")
+                elem.hash = json.hash
+                elem.updateHash = newHash => {
+                    _this.setAttribute("id", newHash.substring(1))
+                }
+                document.body.appendChild(elem)
+            })
+
+            const cancelClick = this.registerFunction(() => {
+                const elem = document.createElement("cancel-transaction")
+                elem.hash = json.hash
+                elem.updateHash = newHash => {
+                    _this.setAttribute("id", newHash.substring(1))
+                }
                 document.body.appendChild(elem)
             })
 
             return `
                 <div class="row mt-3">
                     <div class="col-6 pr-2">
-                        <button class="button w-100 button-red">Cancel</button>
+                        <button class="button w-100 button-red" onclick="${cancelClick}">Cancel</button>
                     </div>
                     <div class="col-6 pl-2">
                         <button class="button w-100 button-green" onclick="${speedupClick}">Speed up</button>

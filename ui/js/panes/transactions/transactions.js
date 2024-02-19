@@ -28,7 +28,6 @@ class TransactionsHistory extends StatefulElement {
 
         for(const elemId of this.openedCards){
             const elem = this.querySelector("#"+elemId)
-            console.log(elem)
             if(elem) elem.open()
         }
 

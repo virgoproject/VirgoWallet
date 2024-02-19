@@ -64,6 +64,7 @@ class StatefulElement extends HTMLElement {
         this.uid = crypto.randomUUID();
 
         this.states = {};
+        this.intervals = {};
 
         //create shadow root
         this.shadow = this.attachShadow({ mode: 'open' });
@@ -223,10 +224,10 @@ class StatefulElement extends HTMLElement {
         if(interval > 0){
             // Use setInterval to fetch data at regular intervals
             const intervalId = setInterval(fetchData, interval);
+            this.intervals[intervalId] = fetchData
 
             // Cleanup interval when the element is disconnected from the DOM
             this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
-
         }
 
         // Initial data fetch
@@ -313,6 +314,12 @@ class StatefulElement extends HTMLElement {
                 }
             }
         }
+    }
+
+    runIntervals(){
+        Object.values(this.intervals).forEach(func => {
+            func()
+        });
     }
 
 }

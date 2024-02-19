@@ -1,10 +1,10 @@
-class SpeedupTransaction extends StatefulElement {
+class CancelTransaction extends StatefulElement {
 
     render() {
         const _this = this
 
         const {data, loading} = this.useInterval(async () => {
-            const gp = await getSpeedupGasPrice(_this.hash)
+            const gp = await getCancelGasPrice(_this.hash)
             const balance = await getBalance(MAIN_ASSET.ticker)
             return {
                 "hash": _this.hash,
@@ -19,8 +19,8 @@ class SpeedupTransaction extends StatefulElement {
             return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Speed up transaction</p>
-                    <p id="label" class="mb-0 text-sm">New transaction fee</p>
+                    <p id="title">Cancel transaction</p>
+                    <p id="label" class="mb-0 text-sm">Cancel cost</p>
                     <div class="shimmerBG" id="shimmerAmount"></div>    
                     <button class="button w-100" disabled>Confirm</button>
                 </div>
@@ -38,8 +38,8 @@ class SpeedupTransaction extends StatefulElement {
             button = `<button class="button w-100" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
         }else if(new BN(data.balance).gte(new BN(data.value).add(newFee))){
             const confirmClick = this.registerFunction(() => {
-                speedUpTransaction(data.hash, data.gasPrice).then(hash => {
-                    notyf.success("Transaction sped up!")
+                cancelTransaction(data.hash, data.gasPrice).then(hash => {
+                    notyf.success("Cancel request sent!")
                     _this.updateHash(hash)
                     _this.runIntervals()
                     _this.remove()
@@ -55,8 +55,8 @@ class SpeedupTransaction extends StatefulElement {
         return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Speed up transaction</p>
-                    <p id="label" class="mb-0 text-sm">New transaction fee</p>
+                    <p id="title">Cancel transaction</p>
+                    <p id="label" class="mb-0 text-sm">Cancel cost</p>
                     <p id="amount">${Utils.formatAmount(newFee, MAIN_ASSET.decimals)} <span id="ticker">${MAIN_ASSET.ticker}</span></p>
                     ${button}
                 </div>
@@ -92,4 +92,4 @@ class SpeedupTransaction extends StatefulElement {
 
 }
 
-Stateful.define("speedup-transaction", SpeedupTransaction)
+Stateful.define("cancel-transaction", CancelTransaction)

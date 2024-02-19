@@ -14,11 +14,20 @@ class TransactionsHandlers {
 
     static getSpeedupGasPrice(request, sender, sendResponse){
         web3.eth.getTransaction(request.hash).then(transaction => {
+            console.log(transaction)
             web3.eth.getGasPrice().then(res => {
                 if(parseInt(transaction.gasPrice) > parseInt(res))
-                    sendResponse(parseInt(transaction.gasPrice)*1.1)
+                    sendResponse({
+                        gasPrice: parseInt(transaction.gasPrice)*1.1,
+                        gasLimit: transaction.gas,
+                        value: transaction.value
+                    })
                 else
-                    sendResponse(parseInt(res)*1.1)
+                    sendResponse({
+                        gasPrice: parseInt(res),
+                        gasLimit: transaction.gas,
+                        value: transaction.value
+                    })
             })
         })
     }
@@ -45,45 +54,39 @@ class TransactionsHandlers {
 
     static getCancelGasPrice(request, sender, sendResponse){
         web3.eth.getTransaction(request.hash).then(transaction => {
-            if(transaction == null)
-                sendResponse(0)
-            else {
-                web3.eth.getGasPrice().then(res => {
-                    if(parseInt(transaction.gasPrice) > parseInt(res)){
-                        sendResponse(parseInt(transaction.gasPrice)*1.1)
-                    }else{
-                        sendResponse(parseInt(res)*1.1)
-                    }
-                })
-            }
+            web3.eth.getGasPrice().then(res => {
+                if(parseInt(transaction.gasPrice) > parseInt(res)){
+                    sendResponse({
+                        gasPrice: parseInt(transaction.gasPrice)*1.1,
+                        gasLimit: transaction.gas
+                    })
+                }else{
+                    sendResponse({
+                        gasPrice: parseInt(res),
+                        gasLimit: transaction.gas
+                    })
+                }
+            })
         })
     }
 
     static cancelTransaction(request, sender, sendResponse){
         web3.eth.getTransaction(request.hash).then(transaction => {
-            if (transaction == null) {
+            web3.eth.sendTransaction({
+                from: transaction.from,
+                to: transaction.from,
+                value: 0,
+                gas: 21000,
+                gasPrice: request.gasPrice,
+                nonce: transaction.nonce
+            }).on("transactionHash", function(hash){
                 const changedTx = baseWallet.getCurrentWallet().getTransaction(request.hash)
-                changedTx.status = false
-                changedTx.gasUsed = 0
-                changedTx.gasPrice = 0
+                changedTx.canceling = true
+                changedTx.cancelingPrice = request.gasPrice
+                changedTx.cancelHash = hash
                 baseWallet.save()
                 sendResponse(true)
-            }else{
-                web3.eth.sendTransaction({
-                    from: transaction.from,
-                    to: transaction.from,
-                    value: 0,
-                    gas: 21000,
-                    gasPrice: request.gasPrice,
-                    nonce: transaction.nonce
-                }).on("transactionHash", function(hash){
-                    const changedTx = baseWallet.getCurrentWallet().getTransaction(request.hash)
-                    changedTx.canceling = true
-                    changedTx.cancelingPrice = request.gasPrice
-                    baseWallet.save()
-                    sendResponse(true)
-                })
-            }
+            })
         })
     }
 

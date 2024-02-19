@@ -150,7 +150,7 @@ class EthWallet {
             json.RPC = "https://rpc.ankr.com/polygon"
 
         for(let transaction of json.transactions){
-            if(transaction.contractAddr == "SWAP" && transaction.origin === undefined){
+            if(transaction.contractAddr == "SWAP" && (transaction.origin === undefined || transaction.swapInfos.tokenIn === undefined || transaction.swapInfos.tokenOut === undefined)){
                 transaction.origin = "Virgo Swap"
                 transaction.swapInfos.tokenIn = transaction.swapInfos.route[0]
                 transaction.swapInfos.tokenOut = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
