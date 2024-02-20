@@ -40,6 +40,9 @@ class AssetsPane {
         this.reachedEnd = false
 
         AssetsPane.accessBtn.click(function(){
+            const elem = document.createElement("tokens-list")
+            document.body.appendChild(elem)
+            return
             AssetsPane.self.show()
             hideStatsBar()
             assetsPane.tokensCount = 0

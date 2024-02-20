@@ -5,31 +5,6 @@ class ScrollView extends StatefulElement {
 
         const elem = this.querySelector("#scroll")
 
-        /**elem.addEventListener('wheel', (event) => {
-            // Adjust the scroll position based on the wheel event delta
-
-            elem.virtualScrollTop += event.deltaY
-
-            if(elem.virtualScrollTop < 0)
-                elem.virtualScrollTop = 0
-
-            if(elem.virtualScrollTop > elem.scrollHeight - elem.clientHeight)
-                elem.virtualScrollTop = elem.scrollHeight - elem.clientHeight
-
-            elem.scroll({
-                top: elem.virtualScrollTop,
-                left: 0,
-                behavior: "smooth",
-            })
-
-            const scrollPercentage = (elem.virtualScrollTop / (elem.scrollHeight - elem.clientHeight));
-
-            if(scrollPercentage > 0.7 && _this.onnearend) _this.onnearend()
-
-            // Prevent the default wheel behavior to avoid double scrolling
-            event.preventDefault();
-        });**/
-
         elem.addEventListener('wheel', (event) => {
             const scrollPercentage = (elem.scrollTop / (elem.scrollHeight - elem.clientHeight));
             console.log(scrollPercentage)

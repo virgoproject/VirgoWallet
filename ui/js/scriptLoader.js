@@ -58,7 +58,10 @@ const commonScripts = [
     "../js/panes/transactions/transaction.js",
     "../js/panes/transactions/speedup.js",
     "../js/panes/transactions/cancel.js",
-    "../js/components/scrollView.js"
+    "../js/panes/tokens/tokens.js",
+    "../js/panes/tokens/token.js",
+    "../js/components/scrollView.js",
+    "../js/components/searchBar.js"
 ]
 
 const browserScripts = [

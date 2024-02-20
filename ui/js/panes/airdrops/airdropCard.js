@@ -67,7 +67,7 @@ class AirdropCard extends StatefulElement {
 
         return `
         <div class="row mt-1" id="wrapper" onclick="${expandClick}">
-            <div class="col-2 logosWrapper">
+            <div class="col-2 logosWrapper align-self-center">
                 <img style="display: none" id="logo">
                 <svg width="36" height="36" id="logoPlaceholder"></svg>
                 <img style="display: none" id="chainLogo">

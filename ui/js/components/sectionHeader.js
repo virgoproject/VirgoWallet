@@ -17,7 +17,7 @@ class SectionHeader extends StatefulElement {
         const title = this.getAttribute("title")
 
         return `
-            <div class="row px-3 py-1 d-flex align-items-baseline">
+            <div class="row px-3 py-1 d-flex align-items-baseline mt-1">
                 <div class="col-1">
                     ${this.hasAttribute("backfunc") ? '<i class=" fas fa-chevron-left" id="back"></i>' : ''}
                 </div>
