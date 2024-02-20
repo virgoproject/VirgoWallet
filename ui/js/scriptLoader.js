@@ -60,6 +60,7 @@ const commonScripts = [
     "../js/panes/transactions/cancel.js",
     "../js/panes/tokens/tokens.js",
     "../js/panes/tokens/token.js",
+    "../js/panes/tokens/add.js",
     "../js/components/scrollView.js",
     "../js/components/searchBar.js"
 ]

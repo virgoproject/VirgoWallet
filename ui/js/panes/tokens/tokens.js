@@ -53,8 +53,24 @@ class TokensList extends StatefulElement {
                 record.ticker.toLowerCase().includes(val.toLowerCase())
             )
 
+            if(result.length == 0){
+                _this.querySelector("#inner").innerHTML = `
+                    <div class="text-center mt-5 mb-5">
+                        <img src="../images/notFound.png" class="img-fluid" />
+                        <h4>Not found!</h4>
+                        <p>Really want this asset? <br><span id="notFoundAdd">Add it now!</span></p>
+                    </div>
+                `
+                return
+            }
+
             const rows = _this.getRows(result, 0, result.length)
             _this.querySelector("#inner").innerHTML = rows
+        })
+
+        const addTokenClick = this.registerFunction(() => {
+            const elem = document.createElement("add-token")
+            document.body.appendChild(elem)
         })
 
         return `
@@ -67,6 +83,9 @@ class TokensList extends StatefulElement {
                             ${rows}
                         </div>
                     </scroll-view>
+                    <div class="p-3">
+                        <button class="button w-100" onclick="${addTokenClick}">Add a new token</button>              
+                    </div>
                 </div>
             </div>
         `;
@@ -97,6 +116,11 @@ class TokensList extends StatefulElement {
             
             token-card:first-child {
                 margin-top: 0;
+            }
+            
+            #notFoundAdd {
+                color: var(--mainColor);
+                cursor: pointer;
             }
         `;
     }
