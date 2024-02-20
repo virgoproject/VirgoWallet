@@ -1,10 +1,19 @@
 class SearchBar extends StatefulElement {
 
     async render() {
+
+        const _this = this
+
+        const inputHandler = this.registerFunction(e => {
+            if(_this.inputhandler){
+                _this.inputhandler(e.target.value)
+            }
+        })
+
         return `
             <div id="wrapper" class="d-flex">
                 <div id="inputWrapper">
-                    <input type="text" placeholder="Search for a currency" id="input">
+                    <input type="text" placeholder="Search for a currency" id="input" oninput="${inputHandler}">
                 </div>
                 <div id="iconWrapper">
                     <i class="fa-regular fa-magnifying-glass"></i>

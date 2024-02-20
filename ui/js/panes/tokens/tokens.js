@@ -3,6 +3,8 @@ class TokensList extends StatefulElement {
     render() {
         const _this = this
 
+        const [reset, setReset] = this.useState("reset", false)
+
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
             return infos.wallets[infos.selectedWallet].wallet.tokens
@@ -40,11 +42,26 @@ class TokensList extends StatefulElement {
 
         const rows = this.getRows(data, 0, this.boxNumber)
 
+        const onSearch = this.registerFunction(val => {
+            if(val == ""){
+                setReset(!reset)
+                return
+            }
+
+            const result = data.filter(record =>
+                record.name.toLowerCase().includes(val.toLowerCase()) ||
+                record.ticker.toLowerCase().includes(val.toLowerCase())
+            )
+
+            const rows = _this.getRows(result, 0, result.length)
+            _this.querySelector("#inner").innerHTML = rows
+        })
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Manage tokens" backfunc="${back}"></section-header>
-                    <search-bar></search-bar>
+                    <search-bar inputhandler="${onSearch}"></search-bar>
                     <scroll-view id="scroll" onnearend="${onNearEnd}">
                         <div id="inner">
                             ${rows}
@@ -89,7 +106,6 @@ class TokensList extends StatefulElement {
 
         for (let i = min; i < max; i++) {
             try {
-                console.log(data[i])
                 rows.push(`<token-card address="${data[i].contract}"></token-card>`)
             }catch (e) {}
         }
