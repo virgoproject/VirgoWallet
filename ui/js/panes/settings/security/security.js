@@ -18,7 +18,7 @@ class SecuritySettings extends StatefulElement {
 
                 _this.remove()
             })
-            return
+            return ""
         }
 
         const back = this.registerFunction(() => {

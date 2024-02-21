@@ -36,6 +36,8 @@ class MainPane {
     }
     static txsBtn = $("#mainPane .header .pendingTxs")
 
+    static assetsBtn = $("#manageAssetsBtn")
+
     constructor() {
 
         MainPane.addressDiv.click(function(e){
@@ -185,6 +187,13 @@ class MainPane {
             document.body.appendChild(elem)
             return
         })
+
+        MainPane.assetsBtn.click(function(){
+            const elem = document.createElement("tokens-list")
+            document.body.appendChild(elem)
+            return
+        })
+
     }
 
     updateData(){

@@ -85,7 +85,7 @@ class AskPassword extends StatefulElement {
             }
             
             #error {
-                color: #dc3545;
+                color: var(--red-400);
             }
         `;
     }

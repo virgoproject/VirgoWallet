@@ -290,7 +290,7 @@ class TokensHandlers {
     }
 
     static addToken(request, sender, sendResponse){
-        baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
+        baseWallet.getCurrentWallet().addToken(request.name, request.symbol, request.decimals, request.contract)
         sendResponse(true)
     }
 

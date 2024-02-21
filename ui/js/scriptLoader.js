@@ -21,7 +21,6 @@ const commonScripts = [
     "../js/panes/resume.js",
     "../js/panes/sendPane.js",
     "../js/panes/settings.js",
-    "../js/panes/assetsPane.js",
     "../js/panes/swapPane.js",
     "../js/panes/tokenDetailPane.js",
     "../js/panes/contactsPane.js",

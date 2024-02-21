@@ -5,10 +5,10 @@ class TokensList extends StatefulElement {
 
         const [reset, setReset] = this.useState("reset", false)
 
-        const {data, loading} = this.useFunction(async () => {
+        const {data, loading} = this.useInterval(async () => {
             const infos = await getBaseInfos()
             return infos.wallets[infos.selectedWallet].wallet.tokens
-        })
+        }, 60000)
 
         if(loading){
             return `
@@ -70,6 +70,9 @@ class TokensList extends StatefulElement {
 
         const addTokenClick = this.registerFunction(() => {
             const elem = document.createElement("add-token")
+            elem.resetParent = () => {
+                _this.runIntervals()
+            }
             document.body.appendChild(elem)
         })
 

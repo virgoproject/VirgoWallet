@@ -21,7 +21,7 @@ class SectionHeader extends StatefulElement {
                 <div class="col-1">
                     ${this.hasAttribute("backfunc") ? '<i class=" fas fa-chevron-left" id="back"></i>' : ''}
                 </div>
-                <div class="col-10 p-0 text-center" id="title">${title}</div>
+                <div class="col-10 p-0 text-center text-xl" id="title">${title}</div>
                 <div class="col-1"></div>
             </div>
         `;
@@ -29,18 +29,20 @@ class SectionHeader extends StatefulElement {
 
     style() {
         return `
+        
             #title {
-                font-size: 1.25rem;
+                color: var(--gray-700);
             }
             
             #back {
                 cursor: pointer;
-                transition: all ease-in 0.1s;
+                transition: all ease-in 0.2s;
                 font-size: 1.25em;
+                color: var(--gray-400);
             }
             
             #back:hover {
-                color: #111;
+                color: var(--gray-700);
             }
         `;
     }
