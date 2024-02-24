@@ -294,7 +294,11 @@ class MainPane {
                     elem.attr("data-sort", balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals)
 
                 elem.click(function(){
-                    tokenDetailPane.displayToken(balance)
+                    //tokenDetailPane.displayToken(balance)
+                    const elem = document.createElement("token-details")
+                    elem.address = contractAddr
+                    document.body.appendChild(elem)
+                    return
                 })
 
                 elem.show()
@@ -333,7 +337,11 @@ class MainPane {
                 else
                     elem.find(".fluctuation").addClass("negative")
                 elem.unbind("click").click(function(){
-                    tokenDetailPane.displayToken(balance)
+                    //tokenDetailPane.displayToken(balance)
+                    const elem = document.createElement("token-details")
+                    elem.address = contractAddr
+                    document.body.appendChild(elem)
+                    return
                 })
             }
 
@@ -401,7 +409,6 @@ class MainPane {
                     if (existingElem.length === 0) {
                         fetch(uri).then(resp => {
                             resp.json().then(json => {
-                                console.log(json)
                                 // create row for this nft
                                 let newRow = MainPane.baseNftRow.clone();
 
@@ -414,9 +421,6 @@ class MainPane {
                                 newRow.find(".title").html(title);
                                 newRow.find(".ticker").html();
 
-                                console.log(data.wallets[data.selectedWallet].wallet.nft)
-                                console.log(data.wallets[data.selectedWallet].wallet.nft[x].collection)
-
                                 data.wallets[data.selectedWallet].wallet.nft.forEach(obj => {
                                     const collection = obj.collection;
 
@@ -427,14 +431,10 @@ class MainPane {
                                     }
                                 });
 
-                                console.log("Nombre d'objets par collection :");
-                                console.log(collectionCount);
-
                                 newRow.find(".nftInCollection").html(collectionCount[collection])
                                 let url = json.image;
                                 const regex = /\.[^.\\/]*$/;
                                 const extension = url.match(regex);
-                                console.log(extension)
 
                                 newRow.find(".logoNft").attr("src", url);
                                 newRow.find("svg").attr("data-jdenticon-value");

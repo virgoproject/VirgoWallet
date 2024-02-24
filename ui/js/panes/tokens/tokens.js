@@ -76,12 +76,20 @@ class TokensList extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const onScrollUp = this.registerFunction(() => {
+            _this.querySelector("#search").show()
+        })
+
+        const onScrollDown = this.registerFunction(() => {
+            _this.querySelector("#search").hide()
+        })
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Manage tokens" backfunc="${back}"></section-header>
-                    <search-bar inputhandler="${onSearch}"></search-bar>
-                    <scroll-view id="scroll" onnearend="${onNearEnd}">
+                    <search-bar inputhandler="${onSearch}" id="search"></search-bar>
+                    <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner">
                             ${rows}
                         </div>

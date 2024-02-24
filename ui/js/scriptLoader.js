@@ -61,7 +61,10 @@ const commonScripts = [
     "../js/panes/tokens/token.js",
     "../js/panes/tokens/add.js",
     "../js/components/scrollView.js",
-    "../js/components/searchBar.js"
+    "../js/components/searchBar.js",
+    "../js/panes/tokenDetails/tokenDetails.js",
+    "../js/panes/tokenDetails/simple.js",
+    "../js/panes/tokenDetails/full.js",
 ]
 
 const browserScripts = [

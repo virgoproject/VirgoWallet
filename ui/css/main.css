@@ -143,8 +143,9 @@ body {
     background: var(--whiteBackground);
     border: none;
     color: rgb(84, 84, 84);
-    padding: 0.5em 2em 0.5em 0.75em;
+    padding: 0.5em 0.75em 0.5em 0.75em;
     border-radius: 0.5em;
+    text-overflow: ellipsis;
 }
 
 #sendConfirm .input {
