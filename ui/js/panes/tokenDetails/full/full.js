@@ -38,14 +38,14 @@ class TokenDetailsFull extends StatefulElement {
         return `
             <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.contract + "/logo.png"}"></section-header>
             <div class="d-flex px-3 mt-3">
-                <div class="menuElem selected" id="overviewBtn" onclick="${menuClick}">
+                <div class="menuElem selected mr-2" id="overviewBtn" onclick="${menuClick}">
                     Overview
                 </div>
-                <div class="menuElem" id="newsBtn" onclick="${menuClick}">
+                <div class="menuElem ml-2" id="newsBtn" onclick="${menuClick}">
                     News
                 </div>
             </div>
-            <token-chart cgid="${this.getAttribute('cgid')}"></token-chart>
+            <token-chart cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" class="d-block mt-3"></token-chart>
         `;
     }
 
@@ -62,7 +62,6 @@ class TokenDetailsFull extends StatefulElement {
             .menuElem {
                 color: var(--gray-400);
                 cursor: pointer;
-                margin: 0 0.25em;
                 padding: 0 0.5em;
             }
             

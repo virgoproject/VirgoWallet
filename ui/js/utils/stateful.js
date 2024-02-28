@@ -219,6 +219,8 @@ class StatefulElement extends HTMLElement {
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                if(interval <= 0)
+                    setTimeout(fetchData, 10000)
             }
         };
 

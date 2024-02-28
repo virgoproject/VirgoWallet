@@ -23,6 +23,9 @@ class Utils {
     }
 
     static beautifyAmount(amount){
+        if(typeof amount != "number")
+            amount = parseFloat(amount)
+
         if(amount > 1000000000)
             return Utils.reduceDecimals(amount/1000000000).toLocaleString('en-US') + " Bn"
 

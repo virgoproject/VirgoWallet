@@ -314,6 +314,30 @@ input[type=number] {
     padding-right: .5rem !important;
 }
 
+.ml-0 {
+    margin-left: 0 !important;
+}
+
+.mr-0 {
+    margin-right: 0 !important;
+}
+
+.ml-1 {
+    margin-left: .25em !important;
+}
+
+.ml-2 {
+    margin-left: .5rem !important;
+}
+
+.mr-1 {
+    margin-right: .25em !important;
+}
+
+.mr-2 {
+    margin-right: .5rem !important;
+}
+
 .text-left {
     text-align: left !important;
 }
