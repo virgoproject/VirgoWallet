@@ -220,7 +220,7 @@ class TokensHandlers {
         if(wallet.ticker == request.contract){
             sendResponse({
                 contract: request.contract,
-                name: wallet.name,
+                name: wallet.asset,
                 decimals: wallet.decimals,
                 ticker: wallet.ticker
             })
@@ -228,7 +228,7 @@ class TokensHandlers {
         }
 
         if(wallet.hasToken(request.contract)){
-            sendResponse(wallet.tokenSet.get(request.contract))
+            sendResponse(wallet.getToken(request.contract))
             return
         }
 

@@ -5,7 +5,7 @@ class TokenDetailsSimple extends StatefulElement {
         const _this = this
 
         const {data, loading} = this.useFunction(async () => {
-            return await getTokenDetails(_this.getAttribute("address"))
+            return await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
         })
 
         const backClick = this.registerFunction(() => {
@@ -15,6 +15,9 @@ class TokenDetailsSimple extends StatefulElement {
         if(loading){
             return `
                 <section-header title="" backfunc="${backClick}"></section-header>
+                <div id="loading">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                </div>
             `;
         }
 
@@ -57,6 +60,14 @@ class TokenDetailsSimple extends StatefulElement {
             
             .label {
                 color: var(--gray-400);
+            }
+            
+            #loading {
+                height: 100%;
+                align-items: center;
+                display: flex;
+                align-self: center;
+                font-size: 1.25em;
             }
         `;
     }

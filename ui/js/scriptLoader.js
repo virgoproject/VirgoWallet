@@ -64,7 +64,8 @@ const commonScripts = [
     "../js/components/searchBar.js",
     "../js/panes/tokenDetails/tokenDetails.js",
     "../js/panes/tokenDetails/simple.js",
-    "../js/panes/tokenDetails/full.js",
+    "../js/panes/tokenDetails/full/full.js",
+    "../js/panes/tokenDetails/full/chart.js",
 ]
 
 const browserScripts = [

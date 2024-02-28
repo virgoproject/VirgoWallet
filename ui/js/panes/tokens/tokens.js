@@ -65,7 +65,7 @@ class TokensList extends StatefulElement {
             }
 
             const rows = _this.getRows(result, 0, result.length)
-            _this.querySelector("#inner").innerHTML = rows
+            _this.querySelector("#inner").innerHTML = this.sanitizeHTML(rows)
         })
 
         const addTokenClick = this.registerFunction(() => {
