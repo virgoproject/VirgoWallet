@@ -1,15 +1,13 @@
 class TokenChart extends StatefulElement {
 
-    async render() {
+    render() {
 
         const _this = this
-
-        const [period, setPeriod] = this.useState("period", "1")
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
             const tokenInfos = await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
-            const res = await fetch("https://api.coingecko.com/api/v3/coins/"+_this.getAttribute("cgid")+"/ohlc?vs_currency="+infos.selectedCurrency+"&days="+period)
+            const res = await fetch("https://api.coingecko.com/api/v3/coins/"+_this.getAttribute("cgid")+"/ohlc?vs_currency="+infos.selectedCurrency+"&days="+_this.getAttribute("period"))
             const json = await res.json()
 
             const line = []
@@ -29,7 +27,16 @@ class TokenChart extends StatefulElement {
         })
 
         if(loading){
-            return `loading`
+            return `
+                <div class="px-3">
+                    <div id="tickerShimmer" class="shimmerBG text-sm"></div>
+                    <div id="amountWrapper">
+                        <div id="priceShimmer" class="shimmerBG"></div>
+                        <div id="variationShimmer" class="shimmerBG text-sm"></div>
+                    </div>
+                </div>
+                <div id="chartShimmer" class="mt-3 shimmerBG"></div>
+            `
         }
 
         this.chartData = data.chart
@@ -45,14 +52,6 @@ class TokenChart extends StatefulElement {
                 </div>
             </div>
             <canvas id="chart" class="mt-3"></canvas>
-            <div id="menu">
-                <div>24h</div>
-                <div>7d</div>
-                <div>30d</div>
-                <div>90d</div>
-                <div>1y</div>
-                <div>All</div>
-            </div>
         `
     }
 
@@ -157,7 +156,7 @@ class TokenChart extends StatefulElement {
             }
             
             #variation.negative {
-                background: var(--red--600);
+                background: var(--red-600);
             }
             
             #price {
@@ -169,12 +168,35 @@ class TokenChart extends StatefulElement {
             }
             
             #chart {
-                height: 120px;
+                height: 120px!important;
             }
             
-            #menu {
-                display: flex;
+            #tickerShimmer {
+                height: 0.875em;
+                margin: 0.1875em 0;
+                width: 8ch;
             }
+            
+            #priceShimmer {
+                height: 2em;
+                width: 12ch;
+            }
+            
+            #variationShimmer {
+                height: 28px;
+                width: 8ch;
+            }
+            
+            #chartShimmer {
+                height: 123px;
+                width: 100%;
+                border-radius: 0!important;
+            }
+            
+            .shimmerBG {
+                border-radius: 0.5em;
+            }
+            
         `;
     }
 

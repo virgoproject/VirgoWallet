@@ -33,11 +33,11 @@ class TokenDetails extends StatefulElement {
             `
         }else if(data.type == "full"){
             content = `
-                <token-details-full address="${_this.address}" cgid="${data.tokenInfos.CG_ID}" onclose="${closeClick}"></token-details-full>
+                <token-details-full address="${_this.address}" cgid="${data.tokenInfos.CG_ID}" onclose="${closeClick}" id="content"></token-details-full>
             `
         }else{
             content = `
-                <token-details-simple address="${_this.address}" onclose="${closeClick}"></token-details-simple>
+                <token-details-simple address="${_this.address}" onclose="${closeClick}" id="content"></token-details-simple>
             `
         }
 
@@ -65,6 +65,11 @@ class TokenDetails extends StatefulElement {
                 display: flex;
                 align-self: center;
                 font-size: 1.25em;
+            }
+            
+            #content {
+                display: block;
+                height: 100%;
             }
         `;
     }

@@ -20,32 +20,59 @@ class TokenDetailsFull extends StatefulElement {
             `;
         }
 
+        const [period, setPeriod] = this.useState("period", "1")
+
+        const [menu, setMenu] = this.useState("menu", "overview")
+
         const menuClick = this.registerFunction(e => {
             if(e.target.classList.contains("selected")) return
 
-            console.log(e.target)
-
-            let other;
             if(e.target.id == "overviewBtn")
-                other = _this.querySelector("#newsBtn")
+                setMenu("overview")
             else
-                other = _this.querySelector("#overviewBtn")
+                setMenu("news")
 
-            other.classList.remove("selected")
-            e.target.classList.add("selected")
         })
 
+        const chartClick = this.registerFunction(e => {
+            if(e.target.classList.contains("selected")) return
+
+            setPeriod(e.target.getAttribute("period"))
+        })
+
+        let content;
+        if(menu == "overview"){
+            content = `
+                <scroll-view id="scroll">
+                    <token-chart cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" period="${period}" class="d-block mt-3"></token-chart>
+                    <div id="chartMenu" class="mx-3 px-2 py-1 mt-3">
+                        <div class="px-1 ${period == '1' ? 'selected' : ''}" onclick="${chartClick}" period="1">24h</div>
+                        <div class="px-1 ${period == '7' ? 'selected' : ''}" onclick="${chartClick}" period="7">7d</div>
+                        <div class="px-1 ${period == '30' ? 'selected' : ''}" onclick="${chartClick}" period="30">30d</div>
+                        <div class="px-1 ${period == '90' ? 'selected' : ''}" onclick="${chartClick}" period="90">90d</div>
+                        <div class="px-1 ${period == '365' ? 'selected' : ''}" onclick="${chartClick}" period="365">1y</div>
+                        <div class="px-1 ${period == 'max' ? 'selected' : ''}" onclick="${chartClick}" period="max">All</div>
+                    </div>
+                    <token-statistics cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" class="d-block mt-3"></token-statistics>
+                </scroll-view>
+            `
+        }else{
+            content = `<token-news></token-news>`
+        }
+
         return `
-            <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.contract + "/logo.png"}"></section-header>
-            <div class="d-flex px-3 mt-3">
-                <div class="menuElem selected mr-2" id="overviewBtn" onclick="${menuClick}">
-                    Overview
+            <div id="wrapper">
+                <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.contract + "/logo.png"}"></section-header>
+                <div class="d-flex px-3 mt-3">
+                    <div class="menuElem ${menu == 'overview' ? 'selected' : ''} mr-2" id="overviewBtn" onclick="${menuClick}">
+                        Overview
+                    </div>
+                    <div class="menuElem ${menu == 'news' ? 'selected' : ''} ml-2" id="newsBtn" onclick="${menuClick}">
+                        News
+                    </div>
                 </div>
-                <div class="menuElem ml-2" id="newsBtn" onclick="${menuClick}">
-                    News
-                </div>
+                ${content}
             </div>
-            <token-chart cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" class="d-block mt-3"></token-chart>
         `;
     }
 
@@ -73,6 +100,36 @@ class TokenDetailsFull extends StatefulElement {
                 color: var(--gray-700);
                 border-bottom: 3px solid var(--mainColor);
                 cursor: default;
+            }
+            
+            #chartMenu {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-evenly;
+                background: var(--gray-100);
+                flex-direction: row;
+                border-radius: 0.5em;
+            }
+            
+            #chartMenu div {
+                cursor: pointer;
+                color: var(--gray-400);
+            }
+            
+            #chartMenu div.selected {
+                color: var(--mainColor);
+                cursor: default;
+            }
+            
+            #scroll {
+                flex-grow: 1;
+                min-height: 0;
+            }
+            
+            #wrapper {
+                display: flex;
+                height: 100%;
+                flex-direction: column;
             }
         `
     }

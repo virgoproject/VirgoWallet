@@ -81,4 +81,29 @@ class Utils {
         }
     }
 
+    static timeAgo(timestamp) {
+        const now = Date.now();
+        const secondsAgo = Math.floor((now - timestamp) / 1000);
+
+        if (secondsAgo < 60) {
+            return `${secondsAgo}s ago`;
+        } else if (secondsAgo < 3600) {
+            const minutes = Math.floor(secondsAgo / 60);
+            return `${minutes}m ago`;
+        } else if (secondsAgo < 86400) {
+            const hours = Math.floor(secondsAgo / 3600);
+            return `${hours}h ago`;
+        } else if (secondsAgo < 172800) {
+            // 172800 seconds = 2 days
+            return 'yesterday';
+        } else {
+            const date = new Date(timestamp);
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-indexed
+            const year = date.getFullYear() % 100; // Get last two digits of the year
+
+            return `${day}/${month}/${year < 10 ? '0' : ''}${year}`;
+        }
+    }
+
 }

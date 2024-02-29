@@ -66,6 +66,8 @@ const commonScripts = [
     "../js/panes/tokenDetails/simple.js",
     "../js/panes/tokenDetails/full/full.js",
     "../js/panes/tokenDetails/full/chart.js",
+    "../js/panes/tokenDetails/full/statistics.js",
+    "../js/panes/tokenDetails/full/news.js",
 ]
 
 const browserScripts = [
