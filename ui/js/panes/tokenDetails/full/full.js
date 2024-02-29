@@ -43,7 +43,7 @@ class TokenDetailsFull extends StatefulElement {
         let content;
         if(menu == "overview"){
             content = `
-                    <token-chart cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" period="${period}" class="d-block mt-3"></token-chart>
+                    <token-chart cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" period="${period}"></token-chart>
                     <div id="chartMenu" class="mx-3 px-2 py-1 mt-3">
                         <div class="px-1 ${period == '1' ? 'selected' : ''}" onclick="${chartClick}" period="1">24h</div>
                         <div class="px-1 ${period == '7' ? 'selected' : ''}" onclick="${chartClick}" period="7">7d</div>
@@ -52,7 +52,7 @@ class TokenDetailsFull extends StatefulElement {
                         <div class="px-1 ${period == '365' ? 'selected' : ''}" onclick="${chartClick}" period="365">1y</div>
                         <div class="px-1 ${period == 'max' ? 'selected' : ''}" onclick="${chartClick}" period="max">All</div>
                     </div>
-                    <token-statistics cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" class="d-block mt-3"></token-statistics>
+                    <token-statistics cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}"></token-statistics>
             `
         }else{
             content = `<token-news></token-news>`
@@ -69,7 +69,7 @@ class TokenDetailsFull extends StatefulElement {
                         News
                     </div>
                 </div>
-                <scroll-view id="scroll">
+                <scroll-view id="scroll" class="d-block mt-3">
                     ${content}
                 </scroll-view>
             </div>

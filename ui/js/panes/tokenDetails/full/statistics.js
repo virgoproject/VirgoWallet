@@ -62,7 +62,7 @@ class TokenStatistics extends StatefulElement {
             return stats
         })
 
-        if(loading || true){
+        if(loading){
             return `
                 <div class="mx-3">
                     <p id="title">Statistics</p>

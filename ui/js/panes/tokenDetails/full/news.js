@@ -26,7 +26,58 @@ class TokenNews extends StatefulElement {
 
         if(loading){
             return `
-                loading
+                <div class="px-3">
+                    <div class="news mb-4">
+                        <div class="titleWrapper">
+                            <div>
+                                <div class="titleShimmer shimmerBG"></div>
+                                <div class="titleShimmer2 shimmerBG"></div>       
+                            </div>
+                            <div class="subtitleShimmer shimmerBG"></div>
+                        </div>
+                        <div class="newsImg shimmerBG"></div>
+                    </div>
+                    <div class="news mb-4">
+                        <div class="titleWrapper">
+                            <div>
+                                <div class="titleShimmer shimmerBG"></div>
+                                <div class="titleShimmer2 shimmerBG"></div>       
+                            </div>
+                            <div class="subtitleShimmer shimmerBG"></div>
+                        </div>
+                        <div class="newsImg shimmerBG"></div>
+                    </div>
+                    <div class="news mb-4">
+                        <div class="titleWrapper">
+                            <div>
+                                <div class="titleShimmer shimmerBG"></div>
+                                <div class="titleShimmer2 shimmerBG"></div>       
+                            </div>
+                            <div class="subtitleShimmer shimmerBG"></div>
+                        </div>
+                        <div class="newsImg shimmerBG"></div>
+                    </div>
+                    <div class="news mb-4">
+                        <div class="titleWrapper">
+                            <div>
+                                <div class="titleShimmer shimmerBG"></div>
+                                <div class="titleShimmer2 shimmerBG"></div>       
+                            </div>
+                            <div class="subtitleShimmer shimmerBG"></div>
+                        </div>
+                        <div class="newsImg shimmerBG"></div>
+                    </div>
+                    <div class="news mb-4">
+                        <div class="titleWrapper">
+                            <div>
+                                <div class="titleShimmer shimmerBG"></div>
+                                <div class="titleShimmer2 shimmerBG"></div>       
+                            </div>
+                            <div class="subtitleShimmer shimmerBG"></div>
+                        </div>
+                        <div class="newsImg shimmerBG"></div>
+                    </div>
+                </div>
             `
         }
 
@@ -73,16 +124,16 @@ class TokenNews extends StatefulElement {
                 align-items: center;
                 justify-content: space-between;
                 height: 64px;
+                cursor: pointer;
             }
             
             .newsImg {
                 height: 64px;
                 width: 64px;
-                object-fit: cover;
                 border-radius: 0.5em;
                 background-color: var(--gray-100);
                 background-size: contain;
-                min-width: 64px;
+                min-width: 64px;   
             }
             
             .title {
@@ -93,6 +144,25 @@ class TokenNews extends StatefulElement {
             .subtitle {
                 color: var(--gray-400);
                 margin: 0;
+            }
+            
+            .titleShimmer {
+                border-radius: 0.5em;
+                height: 0.875em;
+                width: 20ch;
+                margin: 0.1875em 0;
+            }
+            
+            .titleShimmer2 {
+                border-radius: 0.5em;
+                height: 0.875em;
+                width: 8ch;
+            }
+            
+            .subtitleShimmer {
+                border-radius: 0.5em;
+                height: 0.875em;
+                width: 12ch;
             }
             
         `;
