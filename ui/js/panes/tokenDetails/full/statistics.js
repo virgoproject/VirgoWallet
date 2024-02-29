@@ -62,8 +62,32 @@ class TokenStatistics extends StatefulElement {
             return stats
         })
 
-        if(loading){
-            return `loading`
+        if(loading || true){
+            return `
+                <div class="mx-3">
+                    <p id="title">Statistics</p>
+                    <div class="stat">
+                        <div class="shimmerTitle shimmerBG"></div>
+                        <div class="shimmerValue shimmerBG"></div>
+                    </div>
+                    <div class="stat">
+                        <div class="shimmerTitle shimmerBG"></div>
+                        <div class="shimmerValue shimmerBG"></div>
+                    </div>
+                    <div class="stat">
+                        <div class="shimmerTitle shimmerBG"></div>
+                        <div class="shimmerValue shimmerBG"></div>
+                    </div>
+                    <div class="stat">
+                        <div class="shimmerTitle shimmerBG"></div>
+                        <div class="shimmerValue shimmerBG"></div>
+                    </div>
+                    <div class="stat">
+                        <div class="shimmerTitle shimmerBG"></div>
+                        <div class="shimmerValue shimmerBG"></div>
+                    </div>
+                </div>
+            `
         }
 
         const rows = []
@@ -110,6 +134,18 @@ class TokenStatistics extends StatefulElement {
             
             .statValue {
                 color: var(--gray-700);
+            }
+            
+            .shimmerTitle {
+                height: 1em;
+                width: 10ch;
+                border-radius: 0.5em;
+            }
+            
+            .shimmerValue {
+                height: 1em;
+                width: 6ch;
+                border-radius: 0.5em;
             }
         `;
     }

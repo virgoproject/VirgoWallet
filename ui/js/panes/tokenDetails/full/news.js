@@ -40,12 +40,12 @@ class TokenNews extends StatefulElement {
             })
 
             rows.push(`
-                <div class="news" onclick="${onclick}">
+                <div class="news mb-4" onclick="${onclick}">
                     <div class="titleWrapper">
                         <p class="title text-sm">${article.title}</p>
                         <p class="subtitle text-sm">${article.site + " - " + Utils.timeAgo(article.date)}</p>
                     </div>
-                    <div class="newsImg" style="background-image: url('${article.image}')">
+                    <div class="newsImg" style="background-image: url('${article.image}')"></div>
                 </div>
             `)
         }
@@ -60,15 +60,19 @@ class TokenNews extends StatefulElement {
     style() {
         return `
             .titleWrapper {
-                margin-right: 0.5em;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+                margin-right: 1em;
             }
         
             .news {
                 display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
+                flex-flow: row;
                 align-items: center;
                 justify-content: space-between;
+                height: 64px;
             }
             
             .newsImg {
@@ -77,10 +81,13 @@ class TokenNews extends StatefulElement {
                 object-fit: cover;
                 border-radius: 0.5em;
                 background-color: var(--gray-100);
+                background-size: contain;
+                min-width: 64px;
             }
             
             .title {
                 color: var(--gray-700);
+                margin: 0;
             }
             
             .subtitle {

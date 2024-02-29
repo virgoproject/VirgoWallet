@@ -175,16 +175,19 @@ class TokenChart extends StatefulElement {
                 height: 0.875em;
                 margin: 0.1875em 0;
                 width: 8ch;
+                border-radius: 0.5em;
             }
             
             #priceShimmer {
                 height: 2em;
                 width: 12ch;
+                border-radius: 0.5em;
             }
             
             #variationShimmer {
                 height: 28px;
                 width: 8ch;
+                border-radius: 0.5em;
             }
             
             #chartShimmer {
