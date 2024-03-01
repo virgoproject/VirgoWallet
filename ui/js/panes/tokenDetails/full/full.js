@@ -52,7 +52,7 @@ class TokenDetailsFull extends StatefulElement {
                         <div class="px-1 ${period == '365' ? 'selected' : ''}" onclick="${chartClick}" period="365">1y</div>
                         <div class="px-1 ${period == 'max' ? 'selected' : ''}" onclick="${chartClick}" period="max">All</div>
                     </div>
-                    <token-statistics cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}"></token-statistics>
+                    <token-statistics cgid="${this.getAttribute('cgid')}" address="${this.getAttribute('address')}" class="d-block mt-3"></token-statistics>
             `
         }else{
             content = `<token-news></token-news>`

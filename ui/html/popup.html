@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="../css/collectionNft.css">
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/nftPane.css">
-    <link rel="stylesheet" href="../css/tokenDetailPane.css">
     <link rel="stylesheet" href="../css/nftDetailPane.css">
     <link rel="stylesheet" href="../css/notyf.min.css">
     <link rel="stylesheet" href="../css/feesManagement.css">
@@ -653,178 +652,6 @@
             </div>
         </div>
     </div>
-    <div id="tokenDetailPane" style="display: none">
-        <div class="row">
-            <div class="back">
-                <i class="fas fa-chevron-left"></i>
-            </div>
-        </div>
-        <div id="tokenDetailsPaneLoading">
-            <i class="fas fa-spinner fa-pulse"></i>
-        </div>
-        <div id="tokenDetailsSimple" style="display: none">
-            <div class="row infos">
-                <div class="col-2 justify-content-center align-self-center">
-                    <svg data-jdenticon-value="" width="32" height="32" class="logo"></svg>
-                </div>
-                <div class="col-6 pl-1 justify-content-center align-self-center pr-0">
-                    <p class="name" style="padding: 8px 0;"></p>
-                </div>
-            </div>
-            <div class="row resume">
-                <div class="pt-2">
-                    <p class="label text-left">Asset name</p>
-                    <input type="text" class="input col-12 name" placeholder="" disabled="">
-                </div>
-                <div class="pt-2">
-                    <p class="label text-left">Symbol</p>
-                    <input type="text" class="input col-12 symbol" placeholder="" disabled="">
-                </div>
-                <div class="pt-2">
-                    <p class="label text-left">Decimals</p>
-                    <input type="text" class="input col-12 decimals" placeholder="" disabled="">
-                </div>
-                <div class="pt-2">
-                    <p class="label text-left">Contract address</p>
-                    <input type="text" class="input col-12 address" placeholder="" disabled="">
-                </div>
-                <div class="pt-3">
-                    <button class="button w-100" id="tokenDetailSimpleDel">Remove <span>TICKER</span></button>
-                </div>
-
-            </div>
-        </div>
-        <div id="tokenDetailsDetailed" style="display: none">
-            <div class="row infos">
-                <div class="col-2 justify-content-center align-self-center">
-                    <div class="logo"></div>
-                </div>
-                <div class="col-6 pl-1 justify-content-center align-self-center pr-0">
-                    <p class="name"></p>
-                </div>
-                <div class="col-4 text-right pl-0">
-                    <p class="price"></p>
-                    <p class="change"><i class="fas fa-chevron-up"></i> <val></val>%</p>
-                </div>
-            </div>
-            <div class="chart">
-            </div>
-            <div class="chartLoading">
-                <i class="fas fa-spinner fa-pulse"></i>
-            </div>
-            <div class="row periodBtns pb-1">
-                <div class="col-2">
-                    <button class="periodBtn active" data-period="1">1D</button>
-                </div>
-                <div class="col-2">
-                    <button class="periodBtn" data-period="7">1W</button>
-                </div>
-                <div class="col-2">
-                    <button class="periodBtn" data-period="30">1M</button>
-                </div>
-                <div class="col-2">
-                    <button class="periodBtn" data-period="90">3M</button>
-                </div>
-                <div class="col-2">
-                    <button class="periodBtn" data-period="365">1Y</button>
-                </div>
-                <div class="col-2">
-                    <button class="periodBtn" data-period="max">MAX</button>
-                </div>
-            </div>
-            <div class="content">
-                <div class="row menu">
-                    <div class="col-6 selected" id="tokenNewsBtn">
-                        <p>News</p>
-                    </div>
-                    <div class="col-6" id="tokenInfosBtn">
-                        <p>Infos</p>
-                    </div>
-                </div>
-                <div id="tokenNews">
-                    <div class="newsContainer">
-
-                    </div>
-                    <div id="tokenNewsLoading">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                    </div>
-                    <div class="row news" id="sampleTokenNews" style="display: none">
-                        <div class="wrapper">
-                            <div class="content">
-                                <p class="title">Bitcoin bulls aim for $25K price on Friday's $510M options expiry</p>
-                                <p class="subtitle">Cointelegraph.com News - 2 hours ago</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="tokenInfos" style="display: none">
-                    <div id="tokenInfosLoading">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                    </div>
-                    <div id="tokenInfosWrapper" style="display: none">
-                        <div class="text-center rank mt-2 mb-1">
-                            <b>RANK</b>
-                            <p class="cgRank">#-</p>
-                        </div>
-                        <div class="row stats">
-                            <div class="col-6">
-                                <p class="title">Market Cap</p>
-                            </div>
-                            <div class="col-6 text-right">
-                                <p class="value marketcap">-</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="title">Volume (24h)</p>
-                            </div>
-                            <div class="col-6 text-right">
-                                <p class="value volume">-</p>
-                            </div>
-                            <div style="display: none" class="additional">
-                                <div class="col-6">
-                                    <p class="title">Circulating supply</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <p class="value circulating">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">Total supply</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <p class="value totalSupply">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">Max Supply</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <p class="value maxSupply">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">All Time High</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <p class="value ath">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">All Time Low</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <p class="value atl">-</p>
-                                </div>
-                            </div>
-                            <div class="additionalBtn col-12">
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                        </div>
-                        <div class="description">
-                            <p class="title">About</p>
-                            <p class="desc"></p>
-                            <a href="" class="readmore">Read more</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="nftDetailPane" style="display: none">
         <div class="row">
             <div class="back mt-3">
@@ -962,7 +789,6 @@
             </button>
         </div>
     </div>
-
     <div id="settings" class="pt-2">
         <div class="row mt-1">
             <div class="col-2"></div>

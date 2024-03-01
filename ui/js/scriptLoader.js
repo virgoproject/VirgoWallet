@@ -22,7 +22,6 @@ const commonScripts = [
     "../js/panes/sendPane.js",
     "../js/panes/settings.js",
     "../js/panes/swapPane.js",
-    "../js/panes/tokenDetailPane.js",
     "../js/panes/contactsPane.js",
     "../js/panes/atomicSwapPane.js",
     "../js/panes/airdrops/airdrops.js",
