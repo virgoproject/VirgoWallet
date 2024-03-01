@@ -74,131 +74,12 @@
     </div>
 </div>
 <div id="mainPane" style="display: none">
-    <div class="header">
-        <div class="topbar d-flex align-items-center">
-            <div class="align-items-center address wallet-address" id="accountSelectionHeader">
-                <svg data-jdenticon-value="user127" width="36" height="36"></svg>
-            </div>
-            <div id="chainSelectionHeader">
-                <p class="mb-0"><val id="mainPaneCurrentChain" data-networkname>Smart Chain</val><span class="chainSelectionChevron"><i class="fa-regular fa-chevron-down"></i></span></p>
-            </div>
-            <div class="qrCode" id="qrCodeToggleBtn" style="display: none">
-                <p><i class="fa-regular fa-qrcode"></i></p>
-            </div>
-            <div class="pendingTxs">
-                <p><i class="fa-solid fa-clock-rotate-left"></i></p>
-            </div>
-        </div>
-        <div class="stats row">
-            <div class="d-flex balanceTitle align-items-center">
-                <h1 class="title m-0">Available Balance</h1>
-                <div class="addressContainer">
-                    <div class="d-flex align-items-center copy">
-                        <p id="walletAddress" class="value adress m-0" data-address=""></p>
-                        <i class="ms-2 fa-regular fa-copy"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="d-inline-flex balance-header">
-                <h1 class="values" data-fiatTotal id="resumeFiatTotal">0</h1>
-                <h1 class="decimalValues" data-fiatTotal id="resumeFiatTotalDec">0</h1>
-                <span class="dollars"></span>
-<!--                <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                    <val>0</val>
-                    %
-                </p>-->
-            </div>
-            <div class="d-flex justify-content-center align-items-center p-0" id="resumeTokenBar">
-            </div>
-            <hr style="display: none" id="resumeTokenBarSample">
-        </div>
-    </div>
     <div class="carousel-item d-none" id="carousel-image">
             <img src="" class="d-block w-100 image" alt="...">
     </div>
     <div id="body">
-        <div class="bodyElem resume row">
-            <div id="carouselExampleControls" class="carousel slide carousel-wallet" data-bs-ride="carousel">
-                <div class="carousel-inner carousel-wallet-inner" id="carousel-wallet-inner">
-                    <div class="loading text-center mt-2 mb-2">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                    </div>
-                </div>
-                <button class="carousel-control-prev selecteur" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next selecteur" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            <div id="testnetFaucet" style="display: none">
-                <p class="mb-0">Need test HPN? <span>Claim some!</span><i class="fas fa-spinner fa-pulse" style="display: none"></i></p>
-            </div>
-            <div class="assets row">
-                <div class="title col-12 m-0 p-0">
-                    <div class="row">
-                        <div class="col-3 mb-3" id="allAssetdiv">
-                            <p class=" mb-0 resumePane divResumePane divResumePaneSelected" id="allAssets">Assets</p>
-                        </div>
-                        <div class="col-3 mb-3" id="nftDiv">
-                            <p class=" mb-0 resumePane divResumePane" id="nft">NFTs</p>
-                        </div>
-                        <div class="col-6 mb-3 text-right"><p class="mb-0" id="manageAssetsBtn">Manage Tokens</p><p class="mb-0" style="display: none" id="manageNFTsBtn">Import NFTs</p></div>
-                    </div>
-                </div>
-                <div>
-                    <div id="walletAssets" class="row">
-                        <div class="col-12 asset mt-2" id="baseAssetRow" style="display: none" data-sort=0>
-                            <div class="row">
-                                <div class="col-2 justify-content-center align-self-center">
-                                    <img class="logo" crossorigin="anonymous" style="display: none"/>
-                                    <svg data-jdenticon-value="" width="32" height="32" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet"></svg>
-                                </div>
-                                <div class="col-6">
-                                    <p class="title">Bitcoin</p>
-                                    <p class="amount">
-                                        <val class="balance">0</val>
-                                        <b class="ticker"></b></p>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <p ><span class="dollars"></span><span class="fiatEq">0</span></p>
-                                    <p class="fluctuation"><i class="fas fa-chevron-up"></i>
-                                        <val></val>%
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="text-center " style="display: none" id="nftNotfound">
-                        <img src="../images/noNFT.png" width="70%" class="img-fluid">
-                        <p class="noNftTitle">You do not have NFTs</p>
-                    </div>
-                    <div class="loadingCollection NftLoadingBody text-center" style="display: none">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                    </div>
-                    <div id="walletNft" class="row">
-
-                        <div class="col-12  assetNft mt-2" id="baseNftRow" style="display: none" data-sort=0>
-                            <div class="row">
-                                <div class="col-2 justify-content-center align-self-center">
-                                    <img class="logoNft" crossorigin="anonymous" style=""/>
-                                </div>
-                                <div class="col-7 d-flex justify-content-center align-items-center">
-                                    <p class="title text-center">Bitcoin</p>
-                                </div>
-                                <div class="col-3 align-self-center text-right">
-                                    <p class="title nftInCollection"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="bodyElem resume px-3 mt-3">
+            <wallet-home></wallet-home>
         </div>
         <div class="bodyElem send" style="display: none">
             <div class="row sendForm">
@@ -549,7 +430,6 @@
             </button>
         </div>
     </div>
-
     <div id="chainSelector" class="p-4 pt-0">
         <div class="row gx-2 mt-2" id="chainsContainer">
 

@@ -65,6 +65,7 @@ class StatefulElement extends HTMLElement {
 
         this.states = {};
         this.intervals = {};
+        this.funcs = [];
 
         //create shadow root
         this.shadow = this.attachShadow({ mode: 'open' });
@@ -231,6 +232,8 @@ class StatefulElement extends HTMLElement {
 
             // Cleanup interval when the element is disconnected from the DOM
             this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
+        }else{
+            this.funcs.push(fetchData)
         }
 
         // Initial data fetch
@@ -323,6 +326,12 @@ class StatefulElement extends HTMLElement {
         Object.values(this.intervals).forEach(func => {
             func()
         });
+    }
+
+    runFunctions(){
+        for(const func of this.funcs){
+            func()
+        }
     }
 
 }

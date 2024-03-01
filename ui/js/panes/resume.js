@@ -109,6 +109,7 @@ class MainPane {
             redirect: 'follow'
         };
 
+        /**
         fetch("https://raw.githubusercontent.com/virgoproject/walletBanners/main/data.json", requestOptions)
             .then(response => response.json())
             .then(result => {
@@ -137,50 +138,12 @@ class MainPane {
             })
             .catch(error => console.log('error', error));
 
-        events.addListener("chainChanged", data => {
-            const selectedChain = data.wallets[data.selectedWallet].wallet
-
-            if(selectedChain.chainID == 400)
-                MainPane.testnetFaucet.self.show()
-            else
-                MainPane.testnetFaucet.self.hide()
-
-        })
-
         events.addListener("currencyChanged", data => {
             console.log("currency changed")
             $(".dollars").html(currencyToSymbol(data.selectedCurrency))
         })
 
-        MainPane.testnetFaucet.button.click(() => {
-            MainPane.testnetFaucet.button.hide()
-            MainPane.testnetFaucet.loader.show()
-            getBaseInfos().then(infos => {
-                const selectedAddress = infos.addresses[infos.selectedAddress].address
-                fetch("https://faucet.virgo.net/api/claim/"+selectedAddress).then(resp => {
-                    resp.json().then(json => {
-                        if(json.status){
-                            notyf.success("Claimed 1 HPN!")
-                        }else{
-                            switch (json.errorCode){
-                                case 1:
-                                    notyf.error("Please wait " + Math.round(json.waitFor/60000) + " minutes before claiming again")
-                                    break
-                                case 2:
-                                    notyf.error("Faucet empty, please try again later")
-                                    break
-                                case 3:
-                                    notyf.error("Bad request")
-                                    break
-                            }
-                        }
-                        MainPane.testnetFaucet.button.show()
-                        MainPane.testnetFaucet.loader.hide()
-                    })
-                })
-            })
-
-        })
+         **/
 
         MainPane.txsBtn.click(function(){
             const elem = document.createElement("transactions-pane")
@@ -204,11 +167,11 @@ class MainPane {
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
                 if(events.oldData !== JSON.stringify(response)) {
-                if(response.locked){
-                    unlockPane.displayUnlock(response.biometricsEnabled)
-                    clearInterval(_this.interval)
-                    return
-                }
+                    if(response.locked){
+                        unlockPane.displayUnlock(response.biometricsEnabled)
+                        clearInterval(_this.interval)
+                        return
+                    }
 
                     console.log("updating")
                     mainPane.displayData(response)
@@ -238,6 +201,8 @@ class MainPane {
         $("[data-networkticker]").html(selectedWallet.ticker)
 
         MAIN_ASSET = selectedWallet
+
+        return
 
         let totalBalance = 0;
 
@@ -388,7 +353,7 @@ class MainPane {
     }
 
     async displayNFTs() {
-
+        return
         const data = await getBaseInfos()
         const selectedWallet = data.wallets[data.selectedWallet].wallet
         let previousCollection = null
@@ -461,6 +426,7 @@ class MainPane {
     }
 
     updateTokenBar(selectedAddress){
+        return
         let totalBalance = 0;
 
         for(const contractAddr of Object.keys(selectedAddress.balances)){
