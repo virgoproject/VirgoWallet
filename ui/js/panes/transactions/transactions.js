@@ -148,7 +148,7 @@ class TransactionsHistory extends StatefulElement {
             }
             
             #inner {
-                padding: 0 2em 2em;
+                padding: 0px 2rem 2em;
             }
             
             .date {

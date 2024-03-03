@@ -70,6 +70,7 @@ const commonScripts = [
     "../js/panes/home/home.js",
     "../js/panes/home/header.js",
     "../js/panes/home/chainSelector.js",
+    "../js/panes/home/accounts.js",
 ]
 
 const browserScripts = [

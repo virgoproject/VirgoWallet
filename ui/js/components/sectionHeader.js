@@ -6,10 +6,12 @@ class SectionHeader extends StatefulElement {
 
     eventHandlers() {
         const _this = this
-        if(!this.hasAttribute("backfunc")) return
-        this.querySelector("#back").onclick = () => {
-            _this.backfunc()
+        if(this.hasAttribute("backfunc")){
+            this.querySelector("#back").onclick = () => {
+                _this.backfunc()
+            }
         }
+
 
         if(this.hasAttribute("logo")){
             const logo = this.querySelector("#logo")
@@ -26,12 +28,14 @@ class SectionHeader extends StatefulElement {
     render() {
 
         return `
-            <div class="row px-3 py-1 d-flex align-items-baseline mt-1">
-                <div class="col-1">
+            <div class="align-items-baseline p-3" id="wrapper">
+                <div class="borderDiv">
                     ${this.hasAttribute("backfunc") ? '<i class=" fas fa-chevron-left" id="back"></i>' : ''}
                 </div>
                 ${this.getTitle()}
-                <div class="col-1"></div>
+                <div class="borderDiv text-right">
+                    ${this.getRightIcon()}
+                </div>
             </div>
         `;
     }
@@ -39,7 +43,7 @@ class SectionHeader extends StatefulElement {
     getTitle() {
         if(this.hasAttribute("logo")){
             return `
-                <div class="col-10 text-xl p-0 text-center">
+                <div class="text-xl p-0 text-center">
                     <div class="shimmerBG" id="shimmerIcon"></div>
                     <img style="display: none" id="logo">
                     <p class="d-inline pl-2" id="title">${this.getAttribute("title")}</p>
@@ -47,15 +51,34 @@ class SectionHeader extends StatefulElement {
             `
         }else{
             return `
-                <div class="col-10 text-xl p-0 text-center">
+                <div class="text-xl p-0 text-center">
                     <p id="title">${this.getAttribute("title")}</p>
                 </div>
             `
         }
     }
 
+    getRightIcon(){
+        if(!this.hasAttribute("righticon") || !this.hasAttribute("rightclick")) return ""
+
+        return `
+            <i class="${this.getAttribute("righticon")}" id="rightIcon" onclick="${this.getAttribute("rightclick")}"></i>
+        `
+    }
+
     style() {
         return `
+        
+            #wrapper {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+            
+            .borderDiv {
+                min-width: 50px;
+            }
         
             #title {
                 color: var(--gray-700);
@@ -63,15 +86,15 @@ class SectionHeader extends StatefulElement {
                 margin: 0;
             }
             
-            #back {
+            #back, #rightIcon {
                 cursor: pointer;
                 transition: all ease-in 0.2s;
                 font-size: 1.25em;
                 color: var(--gray-400);
-                vertical-align: text-bottom;
+                vertical-align: text-top;
             }
             
-            #back:hover {
+            #back:hover, #rightIcon:hover {
                 color: var(--gray-700);
             }
             
@@ -89,6 +112,7 @@ class SectionHeader extends StatefulElement {
                 width: 32px;
                 border-radius: 100%;
             }
+            
         `;
     }
 

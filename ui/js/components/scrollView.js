@@ -26,6 +26,10 @@ class ScrollView extends StatefulElement {
         elem.scrollTop = val
     }
 
+    toBottom(){
+        this.querySelector("#scroll").scrollTop = this.querySelector("#scroll").scrollHeight
+    }
+
     render() {
         return `
             <div id="scroll">

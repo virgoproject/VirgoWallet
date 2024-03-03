@@ -41,9 +41,25 @@ class HomeHeader extends StatefulElement {
             }
         })
 
+        let accountSelector = false
+        const accountClick = this.registerFunction(() => {
+            if(!accountSelector){
+                accountSelector = document.createElement("account-selector")
+                accountSelector.resetHome = () => {
+                    _this.runFunctions()
+                }
+                document.body.appendChild(accountSelector)
+                this.querySelector("#accountBtn").classList.add("opened")
+            }else{
+                accountSelector.removeWithAnimation()
+                accountSelector = false
+                this.querySelector("#accountBtn").classList.remove("opened")
+            }
+        })
+
         return `
             <div id="header">
-                <div id="accountBtn">
+                <div id="accountBtn" onclick="${accountClick}">
                     <svg width="32" height="32" id="icon"></svg>
                     <div id="paramsIcon">
                         <i class="fa-solid fa-gear"></i>
@@ -103,6 +119,15 @@ class HomeHeader extends StatefulElement {
             #accountBtn {
                 height: 32px;
                 cursor: pointer;
+                z-index: 10;
+            }
+            
+            #icon {
+                transition: all 0.25s ease-in 0s;
+            }
+            
+            #accountBtn.opened #icon {
+                transform: rotate(90deg);
             }
             
             #chainBtn {
