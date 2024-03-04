@@ -2,6 +2,22 @@ class ChainSelector extends StatefulElement {
 
     eventHandlers() {
         this.querySelector("#wrapper").classList.add("opened");
+
+        for(const elem of this.querySelectorAll(".chain")){
+            const logo = elem.querySelector(".chainLogo")
+            const chainid = elem.getAttribute("chainid")
+
+            logo.onload = e => {
+                e.target.style.display = "initial"
+                elem.querySelector(".shimmerBG").style.display = "none"
+            }
+            logo.onerror = e => {
+                elem.querySelector(".defaultLogo").style.display = "flex"
+                elem.querySelector(".shimmerBG").style.display = "none"
+            }
+
+            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainid + "/logo.png"
+        }
     }
 
     render() {
@@ -28,9 +44,11 @@ class ChainSelector extends StatefulElement {
             })
 
             rows.push(`
-                <div class="chain mb-2 ${data.selectedWallet == i ? "selected" : "" } px-3" onclick="${chainClick}" walletid="${i}">
+                <div class="chain mb-2 ${data.selectedWallet == i ? "selected" : "" } px-3" onclick="${chainClick}" walletid="${i}" chainid="${chain.chainID}">
                     <div class="chainLeftWrapper">
-                        <div class="chainLogo" style="background-image: url('${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + chain.chainID + "/logo.png"}')"></div>
+                        <div class="shimmerBG"></div>
+                        <div class="defaultLogo" style="display: none"><p class="m-auto">${chain.name.charAt(0).toUpperCase()}</p></div>
+                        <img class="chainLogo" style="display: none">
                         <p class="chainName">${chain.name}</p>
                     </div>
                     <i class="fa-regular ${data.selectedWallet == i ? "fa-check" : "fa-chevron-right" } text-xl chainRightIcon"></i>
@@ -101,11 +119,23 @@ class ChainSelector extends StatefulElement {
                 margin-left: 1em;
             }
             
-            .chainLogo {
+            .chainLogo, .shimmerBG {
                 height: 36px;
                 width: 36px;
                 background-size: cover;
                 border-radius: 50%;
+                animation-duration: 35s;
+            }
+            
+            .defaultLogo {
+                height: 36px;
+                width: 36px;
+                text-align: center;
+                line-height: 36px;
+                border-radius: 100%;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+                font-weight: bold;
             }
             
             .chainRightIcon {
@@ -117,6 +147,7 @@ class ChainSelector extends StatefulElement {
                 flex-grow: 1;
                 min-height: 0;
             }
+            
         `;
     }
 

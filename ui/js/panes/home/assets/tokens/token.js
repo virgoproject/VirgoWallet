@@ -11,9 +11,6 @@ class HomeToken extends StatefulElement {
             _this.querySelector("#shimmerIcon").style.display = "none"
         }
         logo.onerror = e => {
-            /**const placeholder = _this.querySelector("#logoPlaceholder")
-             placeholder.innerHTML = jdenticon.toSvg(address+MAIN_ASSET.chainID, 36)
-             placeholder.style.display = "flex"**/
             _this.querySelector("#defaultLogo").style.display = "flex"
             _this.querySelector("#shimmerIcon").style.display = "none"
         }

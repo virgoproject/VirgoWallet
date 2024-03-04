@@ -477,7 +477,7 @@ class MainPane {
 
         setInterval(function(){
             mainPane.updateData()
-        }, 250)
+        }, 1000)
 
     }
 
