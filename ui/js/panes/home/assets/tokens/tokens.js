@@ -29,11 +29,7 @@ class HomeTokens extends StatefulElement {
         }
 
         return `
-            <div>
-                <scroll-view id="scroll" class="d-block mt-3">
-                    ${rows}
-                </scroll-view>      
-            </div>
+            ${rows}
         `;
     }
 

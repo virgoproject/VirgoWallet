@@ -29,7 +29,7 @@ class HomeAssets extends StatefulElement {
         }
 
         return `
-            <div class="d-flex mt-3 justify-content-between">
+            <div class="d-flex justify-content-between" id="menu">
                 <div class="d-flex">
                     <div class="menuElem ${menu == 'tokens' ? 'selected' : ''} mr-2" id="tokensBtn" onclick="${menuClick}">
                         Tokens
@@ -66,6 +66,14 @@ class HomeAssets extends StatefulElement {
             #manageBtn {
                 cursor: pointer;
                 color: var(--mainColor);
+            }
+            
+            #menu {
+                position: sticky;
+                top: 0px;
+                background: white;
+                padding-bottom: 1em;
+                padding-top: 1em;
             }
         `;
     }
