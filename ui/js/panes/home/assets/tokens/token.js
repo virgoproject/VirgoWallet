@@ -35,10 +35,14 @@ class HomeToken extends StatefulElement {
 
         if(loading) return ""
 
-        console.log(data)
+        const tokenClick = this.registerFunction(() => {
+            const elem = document.createElement("token-details")
+            elem.address = _this.getAttribute("address")
+            document.body.appendChild(elem)
+        })
 
         return `
-            <div id="wrapper" class="mb-2 px-3">
+            <div id="wrapper" class="mb-2 px-3" onclick="${tokenClick}">
                 <div class="shimmerBG" id="shimmerIcon"></div>
                 <div id="defaultLogo" style="display: none"><p class="m-auto">${data.balance.name.charAt(0).toUpperCase()}</p></div>
                 <img id="logo" style="display: none">

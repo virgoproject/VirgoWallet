@@ -56,10 +56,6 @@
     min-height: 0;
 }
 
-#mainPane .bodyElem.resume {
-    padding-bottom: 6em;
-}
-
 #mainPane .header .stats .fluctuation {
     color: var(--bs-teal);
     margin-bottom: 6px;
@@ -209,7 +205,7 @@
     background: var(--whiteBackground);
 }
 
-#mainPane .bodyElem.resume, #mainPane .bodyElem.send {
+#mainPane .bodyElem.send {
     padding: 0em 2em;
 }
 
