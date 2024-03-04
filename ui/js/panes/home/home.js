@@ -24,6 +24,7 @@ class WalletHome extends StatefulElement {
             
             #scroll {
                 overflow: auto;
+                padding-bottom: 15em;
             }
         `;
     }

@@ -33,15 +33,6 @@ class HomeTokens extends StatefulElement {
         `;
     }
 
-    style(){
-        return `
-            #scroll {
-                flex-grow: 1;
-                min-height: 0;
-            }
-        `
-    }
-
 }
 
 Stateful.define("home-tokens", HomeTokens)
