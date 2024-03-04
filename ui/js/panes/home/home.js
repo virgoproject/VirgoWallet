@@ -1,13 +1,11 @@
 class WalletHome extends StatefulElement {
     render() {
+
         return `
             <home-header></home-header>
-            <p>some text</p>
-            <p>some text</p>
-            <p>some text</p>
-            <p>some text</p>
-            <p>some text</p>
-            <p>some text</p>
+            <home-main-balance></home-main-balance>
+            <home-banners></home-banners>
+            <home-assets></home-assets>
         `;
     }
 

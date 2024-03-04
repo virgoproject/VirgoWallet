@@ -106,4 +106,21 @@ class Utils {
         }
     }
 
+    static cutTo4Decimals(number) {
+        let numString = String(number)
+
+        let res = ""
+
+        let reachedDecimal = false
+        let nonZeroNb = 0
+        for(const char of numString){
+            res += char
+            if((reachedDecimal && nonZeroNb > 0) || (reachedDecimal && char != "0")) nonZeroNb++
+            if(nonZeroNb >= 4) break
+            if(char == ".") reachedDecimal = true
+        }
+
+        return res
+    }
+
 }

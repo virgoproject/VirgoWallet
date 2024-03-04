@@ -71,6 +71,11 @@ const commonScripts = [
     "../js/panes/home/header.js",
     "../js/panes/home/chainSelector.js",
     "../js/panes/home/accounts.js",
+    "../js/panes/home/mainBalance.js",
+    "../js/panes/home/banners.js",
+    "../js/panes/home/assets/assets.js",
+    "../js/panes/home/assets/tokens/tokens.js",
+    "../js/panes/home/assets/tokens/token.js"
 ]
 
 const browserScripts = [
