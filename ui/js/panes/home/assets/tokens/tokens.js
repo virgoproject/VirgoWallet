@@ -14,10 +14,27 @@ class HomeTokens extends StatefulElement {
 
                 if (!balance.tracked) continue;
 
-                tokens.push(contractAddr)
+                let sortVal
+                if(contractAddr == MAIN_ASSET.ticker)
+                    sortVal = 9999999999999999999
+                else
+                    sortVal = balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals
+
+                tokens.push({
+                        contractAddr,
+                        sortVal
+                    })
             }
 
-            return tokens
+            tokens.sort((a, b) => b.sortVal - a.sortVal);
+
+            const res = []
+
+            for(const token of tokens){
+                res.push(token.contractAddr)
+            }
+
+            return res
         }, 1000)
 
         if(loading) return ""

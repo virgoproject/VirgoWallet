@@ -22,10 +22,10 @@ class HomeAssets extends StatefulElement {
             })
 
             manageBtn = `<p class="m-0" id="manageBtn" onclick="${manageClick}">Manage Tokens</p>`
-            content = `<home-tokens></home-tokens>`
+            content = `<home-tokens id="content"></home-tokens>`
         }else{
             manageBtn = `<p class="m-0" id="manageBtn">Manage NFTs</p>`
-            content = `<home-nfts></home-nfts>`
+            content = `<home-nfts id="content"></home-nfts>`
         }
 
         return `
@@ -76,6 +76,10 @@ class HomeAssets extends StatefulElement {
                 padding-top: 1em;
             }
         `;
+    }
+
+    forceUpdate(){
+        this.querySelector("#content").runIntervals()
     }
 
 }

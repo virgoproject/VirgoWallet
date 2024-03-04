@@ -30,6 +30,7 @@ class HomeHeader extends StatefulElement {
             if(!chainSelector){
                 chainSelector = document.createElement("chain-selector")
                 chainSelector.resetHome = () => {
+                    _this.resetassets()
                     _this.runFunctions()
                 }
                 document.body.appendChild(chainSelector)
@@ -46,6 +47,7 @@ class HomeHeader extends StatefulElement {
             if(!accountSelector){
                 accountSelector = document.createElement("account-selector")
                 accountSelector.resetHome = () => {
+                    _this.resetassets()
                     _this.runFunctions()
                 }
                 document.body.appendChild(accountSelector)

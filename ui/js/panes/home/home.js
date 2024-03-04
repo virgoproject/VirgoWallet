@@ -1,14 +1,18 @@
 class WalletHome extends StatefulElement {
     render() {
 
+        const resetAssets = this.registerFunction(() => {
+            this.querySelector("#assets").forceUpdate()
+            this.querySelector("#mainBalance").runIntervals()
+        })
+
         return `
-            <div id="wrapper" class="pt-3">
-                <home-header></home-header>
+            <div id="wrapper">
+                <home-header resetassets="${resetAssets}"></home-header>
                 <div id="scroll">
-                    <home-main-balance></home-main-balance>
+                    <home-main-balance id="mainBalance"></home-main-balance>
                     <home-banners></home-banners>
-                    
-                    <home-assets></home-assets>
+                    <home-assets id="assets"></home-assets>
                 </div>
             </div>
         `;

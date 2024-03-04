@@ -21,7 +21,11 @@ class HomeBanners extends StatefulElement {
             return json
         })
 
-        if(loading) return ""
+        if(loading){
+            return `
+                <div id="carouselShimmer" class="shimmerBG"></div>
+            `
+        }
 
         const rows = []
 
@@ -34,8 +38,8 @@ class HomeBanners extends StatefulElement {
             })
 
             rows.push(`
-                <div class="carousel-item ${i == 0 ? "active" : ""}" onclick="${bannerClick}">
-                        <img src="${"https://raw.githubusercontent.com/virgoproject/walletBanners/main/" + banner.img}" class="d-block w-100 image" alt="...">
+                <div class="carousel-item ${i == 0 ? "active" : ""} shimmerBG" onclick="${bannerClick}">
+                        <img src="${"https://raw.githubusercontent.com/virgoproject/walletBanners/main/" + banner.img}" class="d-block w-100 image" alt="">
                 </div>
             `)
             i++
@@ -50,7 +54,7 @@ class HomeBanners extends StatefulElement {
         })
 
         return `
-            <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="carousel" class="carousel slide">
                 <div class="carousel-inner" id="carousel-inner">
                     ${rows}
                 </div>
@@ -67,14 +71,7 @@ class HomeBanners extends StatefulElement {
     }
 
     style(){
-        return `
-            .#carousel {
-                padding: 0.8em 0em;
-                top: -5px;
-                border-radius: 0.5em;
-                padding-top: 0.5em;
-            }
-            
+        return `            
             #carousel-inner {
                 border-radius: 0.5em;
             }
@@ -86,6 +83,15 @@ class HomeBanners extends StatefulElement {
             
             #carousel:hover .control {
                 display: block;
+            }
+            
+            #carouselShimmer {
+                height: 55px;
+                border-radius: 0.5em;
+            }
+            
+            .shimmerBG {
+                height: 55px;
             }
         `
     }

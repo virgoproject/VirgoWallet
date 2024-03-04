@@ -35,7 +35,7 @@ class AccountSelector extends StatefulElement {
                     _this.removeWithAnimation()
                     setTimeout(() => {
                         _this.resetHome()
-                    })
+                    },250)
                 })
             })
 
