@@ -28,7 +28,7 @@ class SectionHeader extends StatefulElement {
     render() {
 
         return `
-            <div class="align-items-baseline p-3" id="wrapper">
+            <div class="align-items-baseline ${this.hasAttribute("no-padding") ? "" : "p-3"}" id="wrapper">
                 <div class="borderDiv">
                     ${this.hasAttribute("backfunc") ? '<i class=" fas fa-chevron-left" id="back"></i>' : ''}
                 </div>

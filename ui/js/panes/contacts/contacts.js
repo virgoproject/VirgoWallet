@@ -185,12 +185,23 @@ class ContactsList extends StatefulElement {
     getRows(data, min, max) {
         const rows = []
 
+        const _this = this
+
+        const contactClick = this.registerFunction(e => {
+            const elem = document.createElement("contact-details")
+            elem.resetParent = () => {
+                _this.runFunctions()
+            }
+            elem.address = e.currentTarget.getAttribute("address")
+            document.body.appendChild(elem)
+        })
+
         for (let i = min; i < max; i++) {
             const contact = data[i]
 
             try {
                 rows.push(`
-                    <div class="contact mb-2 px-3">
+                    <div class="contact mb-2 px-3" onclick="${contactClick}" address="${contact.address}">
                         <div class="contactWrapper">
                             <div class="contactLogo">${jdenticon.toSvg(contact.address, 36)}</div>
                             <div class="contactText">

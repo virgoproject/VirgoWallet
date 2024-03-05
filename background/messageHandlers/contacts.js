@@ -5,6 +5,7 @@ class ContactsHandlers {
         addBgMessageHandler("deleteContact", this.deleteContact)
         addBgMessageHandler("updateContact", this.updateContact)
         addBgMessageHandler("getContacts", this.getContacts)
+        addBgMessageHandler("getContact", this.getContact)
     }
 
     static addContact(request, sender, sendResponse){
@@ -60,13 +61,12 @@ class ContactsHandlers {
                         res.contactList[i].name = request.name
 
                     res.contactList[i].favorite = request.favorite
-
+                    browser.storage.local.set({"contactList": res.contactList})
+                    sendResponse(true)
                     break
                 }
 
             }
-
-            browser.storage.local.set({"contactList": res.contactList})
         })
         return false
     }
@@ -79,6 +79,17 @@ class ContactsHandlers {
                 sendResponse([])
             }
 
+        })
+    }
+
+    static getContact(request, sender, sendResponse){
+        browser.storage.local.get('contactList').then(function(res) {
+            for (let i = 0; i < res.contactList.length; i++) {
+                if (res.contactList[i].address === request.address) {
+                    sendResponse(res.contactList[i])
+                    break
+                }
+            }
         })
     }
 

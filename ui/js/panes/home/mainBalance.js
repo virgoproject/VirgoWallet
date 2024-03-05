@@ -60,12 +60,17 @@ class HomeMainBalance extends StatefulElement {
             #addressBtn {
                 margin-left: 1em;
                 padding: 0.25em 1em;
-                background: var(--gray-100);
+                background: var(--gray-50);
                 border-radius: 50em;
                 color: var(--gray-400);
                 font-size: 0.75em;
                 align-items: center;
                 cursor: pointer;
+                transition: all 0.1s ease-in;
+            }
+            
+            #addressBtn:hover {
+                background: var(--gray-100);
             }
             
             #addressBtn i {

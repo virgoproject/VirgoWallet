@@ -140,12 +140,45 @@ body {
 }
 
 .input {
-    background: var(--whiteBackground);
+    background: var(--gray-50);
     border: none;
-    color: rgb(84, 84, 84);
+    color: var(--gray-700);
     padding: 0.5em 0.75em 0.5em 0.75em;
     border-radius: 0.5em;
     text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.input-copiable {
+    display: flex;
+    align-items: center;
+    border-radius: 0.5em;
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+    background-color: var(--gray-50);
+    transition: 0.25s ease-in all;
+    user-select: none;
+}
+
+.input-copiable:hover {
+    background-color: var(--gray-100);
+}
+
+.input-copiable .input {
+    flex: 1;
+    border-radius: 0;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.input-copiable i {
+    color: var(--gray-400);
+    margin-left: 0.5em;
 }
 
 #sendConfirm .input {

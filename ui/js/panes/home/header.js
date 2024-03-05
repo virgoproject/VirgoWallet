@@ -96,7 +96,7 @@ class HomeHeader extends StatefulElement {
             
             #paramsIcon {
                 line-height: 22px;
-                background: var(--gray-100);
+                background: var(--gray-50);
                 height: 26px;
                 width: 26px;
                 text-align: center;
@@ -106,6 +106,7 @@ class HomeHeader extends StatefulElement {
                 left: 20px;
                 top: -16px;
                 border: 2px solid white;
+                transition: 0.1s all ease-in;
             }
             
             #chainLogo {
@@ -124,8 +125,12 @@ class HomeHeader extends StatefulElement {
                 z-index: 10;
             }
             
+            #accountBtn:hover #paramsIcon {
+                background: var(--gray-100);
+            }
+            
             #icon {
-                transition: all 0.25s ease-in 0s;
+                transition: all 0.1s ease-in 0s;
             }
             
             #accountBtn.opened #icon {
@@ -140,7 +145,7 @@ class HomeHeader extends StatefulElement {
                 vertical-align: text-bottom;
                 margin-left: 0.75em;
                 color: var(--gray-400);
-                transition: all 0.25s ease-in 0s;
+                transition: all 0.1s ease-in 0s;
             }
             
             #chainNameIcon.opened {
@@ -153,7 +158,7 @@ class HomeHeader extends StatefulElement {
             }
             
             #historyBtn {
-                background: var(--gray-100);
+                background: var(--gray-50);
                 height: 32px;
                 width: 32px;
                 text-align: center;
@@ -161,6 +166,11 @@ class HomeHeader extends StatefulElement {
                 border-radius: 50%;
                 color: var(--gray-400);
                 cursor: pointer;
+                transition: all 0.1s ease-in;
+            }
+            
+            #historyBtn:hover {
+                background: var(--gray-100);
             }
             
         `;

@@ -20,7 +20,6 @@ const commonScripts = [
     "../js/panes/resume.js",
     "../js/panes/sendPane.js",
     "../js/panes/swapPane.js",
-    "../js/panes/contactsPane.js",
     "../js/panes/atomicSwapPane.js",
     "../js/panes/airdrops/airdrops.js",
     "../js/panes/airdrops/header.js",
@@ -75,7 +74,8 @@ const commonScripts = [
     "../js/panes/home/assets/tokens/tokens.js",
     "../js/panes/home/assets/tokens/token.js",
     "../js/panes/contacts/contacts.js",
-    "../js/panes/contacts/add.js"
+    "../js/panes/contacts/add.js",
+    "../js/panes/contacts/details.js"
 ]
 
 const browserScripts = [

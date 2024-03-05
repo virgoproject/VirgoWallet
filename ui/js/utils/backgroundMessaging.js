@@ -172,16 +172,20 @@ async function addContact(address, name, favorite) {
    return await browser.runtime.sendMessage({command: 'addContact', address, name, favorite})
 }
 
-function deleteContact(address){
-     browser.runtime.sendMessage({command: 'deleteContact', address})
+async function deleteContact(address){
+    return await browser.runtime.sendMessage({command: 'deleteContact', address})
 }
 
-function updateContact(address, name, favorite) {
-    browser.runtime.sendMessage({command: 'updateContact', address, name, favorite})
+async function updateContact(address, name, favorite) {
+    return await browser.runtime.sendMessage({command: 'updateContact', address, name, favorite})
 }
 
 async function getContacts(){
     return await browser.runtime.sendMessage({command: 'getContacts'})
+}
+
+async function getContact(address){
+    return await browser.runtime.sendMessage({command: 'getContact', address})
 }
 
 async function getSwapRoute(amount, token1, token2){
