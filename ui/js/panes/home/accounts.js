@@ -140,6 +140,7 @@ class AccountSelector extends StatefulElement {
             .accountName {
                 margin: 0;
                 color: var(--gray-700);
+                font-weight: 600;
             }
             
             .accountLogo {

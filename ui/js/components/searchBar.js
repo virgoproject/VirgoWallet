@@ -17,7 +17,7 @@ class SearchBar extends StatefulElement {
                         <i class="fa-regular fa-magnifying-glass"></i>
                     </div>
                     <div id="inputWrapper">
-                        <input type="text" placeholder="Search for a currency" class="text-sm" id="input" oninput="${inputHandler}">
+                        <input type="text" placeholder="${this.getAttribute("placeholder")}" class="text-sm" id="input" oninput="${inputHandler}">
                     </div>
                 </div>
             </div>

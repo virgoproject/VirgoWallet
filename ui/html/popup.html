@@ -74,9 +74,6 @@
     </div>
 </div>
 <div id="mainPane" style="display: none">
-    <div class="carousel-item d-none" id="carousel-image">
-            <img src="" class="d-block w-100 image" alt="...">
-    </div>
     <div id="body">
         <div class="bodyElem resume px-3 mt-3">
             <wallet-home></wallet-home>
@@ -430,33 +427,6 @@
             </button>
         </div>
     </div>
-    <div id="chainSelector" class="p-4 pt-0">
-        <div class="row gx-2 mt-2" id="chainsContainer">
-
-        </div>
-        <div class="text-center" id="atomicSwapAccess1Wrapper"><button class="button" id="atomicSwapAccess1">Atomic Swap</button></div>
-        <div class="col-4" id="baseChainRow" style="display: none">
-            <div class="chain">
-                <div class="row">
-                    <div class="selectedIcon">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="col-12">
-                        <div>
-                            <div>
-                                <span class="badge bg-success testnet">Testnet</span>
-                            </div>
-                            <img class="logo" src="" style="display: none">
-                            <svg data-jdenticon-value="" width="32" height="32"></svg>
-                        </div>
-                    </div>
-                    <div class="col-12 justify-content-center align-self-center">
-                        <p><name>Ethereum</name><ticker>ETH</ticker></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="nftAddPane" style="display: none">
     <div class="row mt-2">
         <div class="back">
@@ -669,44 +639,6 @@
             </button>
         </div>
     </div>
-    <div id="settings" class="pt-2">
-        <div class="row mt-1">
-            <div class="col-2"></div>
-            <div class="col-8 title d-flex justify-content-center settingTitle">
-                <p class="text-center mb-0">My Wallet</p>
-            </div>
-            <div class="col-2 justify-content-center align-self-center">
-                <i class="fa-regular fa-gear" id="openSettingsBtn"></i>
-            </div>
-        </div>
-
-        <div class="mt-2 p-4 pt-0 mainPane">
-            <div class="row p-2 pb-0">
-                <p class="col-6 mb-0"></p>
-                <div class="col-6"><p class="mb-0 addAccount"><i class="fas fa-plus"></i> Add</p></div>
-            </div>
-            <div class="accounts p-2 pb-5 pt-0 row d-flex justify-content-center">
-                <div class="row account mt-2 pl-0 pr-0" style="display: none" id="baseAccountRow">
-                    <div class="col-2 justify-content-center align-self-center">
-                        <div class="identicon">
-                            <svg data-jdenticon-value="sesesqqqfse" width="32" height="32"></svg>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <input type="text" placeholder="Name" class="resizeOnInput inputAddress address" minlength="1" maxlength="24">
-                        <i class="far fa-edit editIcon"></i>
-                        <p class="amount">
-                            <val class="balance">0</val>
-                            <b class="ticker" data-networkticker></b>
-                        </p>
-                    </div>
-                    <div class="col-2 text-right justify-content-center align-self-center">
-                        <i class="fas fa-check isSelected"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="backupPopup" class="popup">
         <div class="box">
             <div class="header row">
@@ -801,91 +733,6 @@
                     <p style="font-size: 0.8em">
                         <b>Transactions identification!</b> Know what effect transactions will have before you sign them, so you don't give your hard-earned frog tokens to a scammer.</p>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div id="contacts" style="display: none">
-        <div class="row mb-2">
-            <div class="col-3 back p-0">
-                <i class=" fas fa-chevron-left"></i>
-            </div>
-            <div class="col-6 title d-flex justify-content-center">
-                <h5>Contacts</h5>
-            </div>
-            <div class="col-3 text-right">
-                <p id="contactsAddBtn"><i class="fa-solid fa-plus"></i> Add</p>
-            </div>
-        </div>
-        <div id="contactDiv">
-            <div class="row" id="contactsSearchWrapper">
-                <div class="col-10 p-0">
-                    <input type="text" placeholder="Search for name or address" id="contactsSearch">
-                </div>
-                <div class="col-2 p-0 text-right">
-                    <i class="fa-regular fa-magnifying-glass"></i>
-                </div>
-            </div>
-            <div class="loading text-center mt-2 mb-2" style="display: none">
-                <i class="fas fa-spinner fa-pulse"></i>
-            </div>
-            <div class="text-center mt-3 mb-5 noContactFound" style="display: none">
-                <img src="../images/noContact.png" class="img-fluid" alt="nocontact" />
-                <h4>No contacts?</h4>
-                <p>Save time on your transactions by saving recurrent addresses.<br><span>Add a contact now!</span></p>
-            </div>
-            <div class="row text-center m-0 p-0 contactUser" id="contactEx" style="display: none">
-                    <div class="col-2 align-self-center pe-0">
-                        <svg data-jdenticon-value="" width="36" height="36"></svg>
-                    </div>
-                    <div class="col-7 text-left adressContact">
-                        <input type="text" placeholder="Name" class="inputNameContact" style="font-size: 15px !important;" maxlength="24" disabled>
-                        <span class="fw-bold textAddress" >0x45bae8701ee46b13dc290ebbc65693c30498159a</span>
-
-                    </div>
-                    <div class="col-1 align-self-center p-1">
-                        <i class="fa-regular fa-star" style="font-size: 20px" data-address=""></i>
-                    </div>
-                    <div class="col-2 align-self-center showElements">
-                        <i class="fas fa-chevron-right seeMoreChev" style="font-size: 20px"></i>
-                    </div>
-
-                    <div class="col-12 mt-2 notesPart">
-                        <textarea  class="w-100 noteContact changeNote"></textarea>
-                        <button class="button mb-2 changeContact col-7" data-index="" style="font-size: 0.8em"><i class="fas fa-check"></i> Apply changes</button>
-                        <button class="button mb-2 bg-danger deleteContact col-2" id="" data-address="" style="font-size: 0.8em"><i class="fas fa-times"></i></button>
-                    </div>
-            </div>
-            <div class="row contactsList m-0 p-0 overflow-scroll">
-
-            </div>
-        </div>
-        <div id="contactForm" style="display: none">
-            <div class="contactFormContent">
-                <div class="col-12 mt-2 mb-2">
-                    <p class="label text-left">Address</p>
-                    <input type="text" class="input col-12 addressInput" placeholder="Enter the contact's address">
-                    <div class="form-text addressText" style="color: var(--bs-red)"></div>
-                </div>
-                <div class="col-12 mt-2 mb-2">
-                    <p class="label text-left">Name</p>
-                    <input type="text" class="input col-12 nameInput" placeholder="Enter the contact's name" maxlength="24">
-                </div>
-                <div class="col-12 mt-2 mb-2">
-                    <p class="label text-left">Notes</p>
-                    <input type="text" class="input col-12 noteInput" placeholder="Write anything you want" maxlength="144">
-                    <div class="form-text">Add notes to help you remember different things about this contact.</div>
-                </div>
-                <div class="text-left p-1 mt-4">
-                    <div class="form-check form-switch align-self-center">
-                        <input class="form-check-input contactFavoriteInput" type="checkbox">
-                        <label class="form-check-label">Favorite</label>
-                        <div class="form-text">It will make the contact appear on top of your contact list.</div>
-                    </div>
-                </div>
-                <button class="button col-12 submit mt-3 addContactButton" disabled="disabled">
-                    <val>Add contact</val>
-                    <i class="fas fa-spinner fa-pulse" style="display: none"></i>
-                </button>
             </div>
         </div>
     </div>

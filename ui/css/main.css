@@ -270,6 +270,12 @@ border-radius: 50%;
 
 .label {
     margin: 0;
+    margin-bottom: 0.25em;
+    color: var(--gray-400);
+}
+
+.label.error {
+    color: var(--red-400);
 }
 
 .labelId {

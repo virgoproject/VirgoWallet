@@ -168,20 +168,16 @@ async function getBiometrics(){
     return await browser.runtime.sendMessage({command: 'getBiometrics'})
 }
 
-async function addingContact(address, name, note, favorite) {
-   return await browser.runtime.sendMessage({command: 'addContact', address, name, note, favorite})
+async function addContact(address, name, favorite) {
+   return await browser.runtime.sendMessage({command: 'addContact', address, name, favorite})
 }
 
 function deleteContact(address){
      browser.runtime.sendMessage({command: 'deleteContact', address})
 }
 
-function updateContact(contactIndex, name, note) {
-    browser.runtime.sendMessage({command: 'updateContact', contactIndex, name, note})
-}
-
-function deleteFavorite(address) {
-    browser.runtime.sendMessage({command: 'deleteFavorite', address})
+function updateContact(address, name, favorite) {
+    browser.runtime.sendMessage({command: 'updateContact', address, name, favorite})
 }
 
 async function getContacts(){

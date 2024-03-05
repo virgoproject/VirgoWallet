@@ -53,10 +53,10 @@ class AddToken extends StatefulElement {
         if(contract && !error) button = `<button class="button w-100 mt-3" id="next" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
         let label = `<p class="label text-left text-sm">Contract address</p>`
-        if(error) label = `<p class="label text-left text-sm" id="error">Invalid contract address</p>`
+        if(error) label = `<p class="label text-left text-sm error">Invalid contract address</p>`
 
         return `
-            <p class="text-center" id="title">Add a new token</p>
+            <p class="text-center text-xl">Add a new token</p>
             <div class="mt-3">
                 ${label}
                 <input type="text" class="input col-12" placeholder="0x4b4c..." id="contract" onfocus="${onFocus}" oninput="${contractInput}" ${contract && !error ? "disabled" : ""}>
@@ -77,36 +77,20 @@ class AddToken extends StatefulElement {
         })
 
         return `
-            <p class="text-center" id="title">Add a new token</p>
+            <p class="text-center text-xl">Add a new token</p>
             <div class="mt-3">
                 <p class="label text-left text-sm">Name</p>
-                <input type="text" class="input col-12" id="contract" disabled value="${infos.name}">
+                <input type="text" class="input col-12" disabled value="${infos.name}">
             </div>
             <div class="mt-3">
                 <p class="label text-left text-sm">Symbol</p>
-                <input type="text" class="input col-12" id="contract" disabled value="${infos.symbol}">
+                <input type="text" class="input col-12" disabled value="${infos.symbol}">
             </div>
             <div class="mt-3">
                 <p class="label text-left text-sm">Decimals</p>
-                <input type="text" class="input col-12" id="contract" disabled value="${infos.decimals}">
+                <input type="text" class="input col-12" disabled value="${infos.decimals}">
             </div>
             <button class="button w-100 mt-3" id="next" onclick="${confirmClick}">Confirm</button>
-        `
-    }
-
-    style(){
-        return `
-            #title {
-                font-size: 1.25em;
-            }
-            
-            .label {
-                color: var(--gray-400);
-            }
-            
-            #error {
-                color: var(--red-400);
-            }
         `
     }
 

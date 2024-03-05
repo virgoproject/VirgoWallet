@@ -41,13 +41,8 @@ class SendPane {
         SendPane.divContactList.html("")
 
         SendPane.btnContacts.click(function() {
-            SendPane.sendForm.hide()
-            SendPane.contactsList.show()
-            hideStatsBar()
-            SendPane.bodyContacts.show()
-            SendPane.buttonContacts.show()
-
-            ContactsPane.loadContacts()
+            const elem = document.createElement("contacts-list")
+            document.body.appendChild(elem)
         })
 
         SendPane.btnSubmit.click(function(){

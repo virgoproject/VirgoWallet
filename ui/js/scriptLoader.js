@@ -17,10 +17,8 @@ const commonScripts = [
     "../../commonJS/qrcode.min.js",
     "../js/events.js",
     "../js/popup.js",
-    "../js/panes/selectChains.js",
     "../js/panes/resume.js",
     "../js/panes/sendPane.js",
-    "../js/panes/settings.js",
     "../js/panes/swapPane.js",
     "../js/panes/contactsPane.js",
     "../js/panes/atomicSwapPane.js",
@@ -75,7 +73,9 @@ const commonScripts = [
     "../js/panes/home/banners.js",
     "../js/panes/home/assets/assets.js",
     "../js/panes/home/assets/tokens/tokens.js",
-    "../js/panes/home/assets/tokens/token.js"
+    "../js/panes/home/assets/tokens/token.js",
+    "../js/panes/contacts/contacts.js",
+    "../js/panes/contacts/add.js"
 ]
 
 const browserScripts = [

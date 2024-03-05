@@ -88,7 +88,7 @@ class TokensList extends StatefulElement {
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Manage tokens" backfunc="${back}"></section-header>
-                    <search-bar inputhandler="${onSearch}" id="search"></search-bar>
+                    <search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a currency"></search-bar>
                     <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner">
                             ${rows}
