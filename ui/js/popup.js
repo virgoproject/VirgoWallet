@@ -62,6 +62,14 @@ $("#footer .footerElem").click(function(){
         document.querySelector("#airdropPane").appendChild(elem)
     }
 
+    if($(this).attr("data-target") === "send"){
+        try {
+            document.querySelector("send-token").remove()
+        }catch (e){}
+        const elem = document.createElement("send-token")
+        document.querySelector("#sendPane").appendChild(elem)
+    }
+
     return false
 })
 

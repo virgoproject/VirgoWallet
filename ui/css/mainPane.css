@@ -205,10 +205,6 @@
     background: var(--whiteBackground);
 }
 
-#mainPane .bodyElem.send {
-    padding: 0em 2em;
-}
-
 #mainPane .bodyElem.swap {
     padding: 0em 1em;
 }

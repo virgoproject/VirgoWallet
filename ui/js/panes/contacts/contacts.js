@@ -132,11 +132,6 @@ class ContactsList extends StatefulElement {
                 background: var(--gray-100);
             }
             
-            .contact.selected {
-                background: var(--gray-100);
-                cursor: default;
-            }
-            
             .contactWrapper {
                 display: flex;
                 flex-flow: row;
@@ -159,6 +154,8 @@ class ContactsList extends StatefulElement {
                 margin: 0;
                 color: var(--gray-700);
                 font-weight: 600;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .contactLogo {
@@ -169,7 +166,6 @@ class ContactsList extends StatefulElement {
             }
             
             .contactRightIcon {
-                padding-top: 4px;
                 color: var(--gray-400);
             }
             

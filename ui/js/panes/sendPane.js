@@ -34,10 +34,6 @@ class SendPane {
         const _this = this
         let confirmInterval;
 
-        $("#footerBtnSend").click(() => {
-            _this.displayRecentRecipients()
-        })
-
         SendPane.divContactList.html("")
 
         SendPane.btnContacts.click(function() {
@@ -314,8 +310,6 @@ class SendPane {
             SendPane.amount.val("")
         })
 
-        console.log("hellow")
-
         events.addListener("transactionsChanged", () => {
             console.log("transactions changed")
             _this.displayRecentRecipients()
@@ -352,6 +346,8 @@ class SendPane {
     }
 
     async displayRecentRecipients(){
+
+        return
         let i = 0
 
         const container = document.getElementById("sendRecentElems")
