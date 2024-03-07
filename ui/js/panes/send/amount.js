@@ -3,6 +3,14 @@ class SendTokenAmount extends StatefulElement {
     eventHandlers() {
         const _this = this
 
+        if(this.value !== undefined){
+            this.querySelector("#amount").value = this.value
+        }
+
+        if(this.nextDisabled !== undefined){
+            this.querySelector("#next").disabled = this.nextDisabled
+        }
+
         const logo = this.querySelector("#logo")
 
         logo.onload = e => {
@@ -38,6 +46,12 @@ class SendTokenAmount extends StatefulElement {
         this.token = token
         this.chainID = wallet.chainID
 
+        const {data: balance, loading: balanceLoading} = this.useInterval(async () => {
+            const bal = await getBalanceCross(wallet.chainID, token.contract)
+            bal.balance = bal.balance + Math.round(Math.random()*100)
+            return bal
+        }, 10000)
+
         const back = this.registerFunction(() => {
             _this.remove()
         })
@@ -48,6 +62,25 @@ class SendTokenAmount extends StatefulElement {
                 setToken(token)
             }
             document.body.appendChild(elem)
+        })
+
+        const onInput = this.registerFunction(e => {
+            if(balanceLoading) return
+            this.value = e.currentTarget.value
+            let val = this.value
+            if(val.trim() == "") val = 0
+
+            const bal = Number(Utils.formatAmount(balance.balance, balance.decimals))
+
+            if(bal == 0 || balance.price == 0){
+                this.querySelector("#fiat").innerHTML = "-"
+            }else{
+                this.querySelector("#fiat").innerHTML = (balance.price*bal).toFixed(2)
+            }
+
+            this.nextDisabled = bal < Number(val) || val == 0 || bal == 0
+
+            this.querySelector("#next").disabled = this.nextDisabled
         })
 
         return `
@@ -62,17 +95,17 @@ class SendTokenAmount extends StatefulElement {
                             <p id="selectTokenName" class="text-lg">${token.ticker}</p>
                             <i id="selectTokenIcon" class="fa-solid fa-caret-down"></i>
                         </div>
-                        <input type="number" placeholder="0.0" id="amount" class="mt-3 text-4xl">
+                        <input type="number" placeholder="0.0" id="amount" class="mt-3 text-4xl" oninput="${onInput}">
                         <p id="max" class="mt-3 text-lg">Use max</p>
-                        <p id="fiatConversion" class="mt-3">$ 55.92</p>
+                        <p id="fiatConversion" class="mt-3">${currencyToSymbol(baseInfos.selectedCurrency)} <span id="fiat">-</span></p>
                         <div id="balanceWrapper" class="mt-3">
                             <p id="balanceText">Balance: </p>
-                            <p id="balance">1.32587</p>
-                            <p id="balanceSymbol"> BNB</p>
+                            <p id="balance">${balanceLoading ? "<div class='shimmerBG' id='balanceShimmer'></div>" : Utils.formatAmount(balance.balance, balance.decimals)}</p>
+                            <p id="balanceSymbol"> ${token.ticker}</p>
                         </div>  
                     </div>
                     <div class="p-3">
-                        <button class="button w-100">Next</button>              
+                        <button class="button w-100" id="next" disabled>Next</button>              
                     </div>
                 </div>
             </div>
