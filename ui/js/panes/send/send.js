@@ -2,6 +2,8 @@ class SendToken extends StatefulElement {
 
     render() {
 
+        const _this = this
+
         const {data, loading} = this.useInterval(async () => {
             const baseInfos = await getBaseInfos()
             const contacts = await getContacts()
@@ -46,6 +48,16 @@ class SendToken extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const onInput = this.registerFunction(async e => {
+            _this.querySelector("#next").disabled = !await validateAddress(e.currentTarget.value)
+        })
+
+        const onNext = this.registerFunction(() => {
+            const elem = document.createElement("send-token-amount")
+            elem.address = _this.querySelector("#recipient").value
+            document.body.appendChild(elem)
+        })
+
         return `
             <div id="wrapper">
                 <section-header title="Send tokens"></section-header>
@@ -66,9 +78,9 @@ class SendToken extends StatefulElement {
                     <div id="contacts" onclick="${contactsClick}">
                         <i class="fa-solid fa-address-book text-xl"></i>
                     </div>
-                    <input type="text" placeholder="Recipient address" id="recipient">
+                    <input type="text" placeholder="Recipient address" id="recipient" oninput="${onInput}">
                     <div id="nextWrapper">
-                        <button id="next" class="button"><i class="fa-regular fa-arrow-right"></i></button>
+                        <button id="next" class="button" onclick="${onNext}" disabled><i class="fa-regular fa-arrow-right"></i></button>
                     </div>
                 </div>
                 <scroll-view id="scroll" class="d-block mt-3">
@@ -86,12 +98,20 @@ class SendToken extends StatefulElement {
     getRows(list, label){
         if(list.length == 0) return ""
 
+        const _this = this
+
         const rows = []
+
+        const onClick = this.registerFunction(e => {
+            const elem = document.createElement("send-token-amount")
+            elem.address = e.currentTarget.getAttribute("address")
+            document.body.appendChild(elem)
+        })
 
         for(const item of list){
             if(item.name !== undefined){
                 rows.push(`
-                    <div class="contact mb-2 px-3" address="${item.address}">
+                    <div class="contact mb-2 px-3" address="${item.address}" onclick="${onClick}">
                         <div class="contactWrapper">
                             <div class="contactLogo">${jdenticon.toSvg(item.address, 36)}</div>
                             <div class="contactText">
@@ -103,7 +123,7 @@ class SendToken extends StatefulElement {
                 `)
             }else{
                 rows.push(`
-                    <div class="contact mb-2 px-3" address="${item.address}">
+                    <div class="contact mb-2 px-3" address="${item.address}" onclick="${onClick}">
                         <div class="contactWrapper">
                             <div class="contactLogo">${jdenticon.toSvg(item.address, 36)}</div>
                             <div class="contactText">

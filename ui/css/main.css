@@ -672,6 +672,11 @@ iframe {
     line-height: 2.25rem; /* 36px */
 }
 
+.text-4xl {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+}
+
 .shimmerBG {
     animation-duration: 9s;
     animation-fill-mode: forwards;

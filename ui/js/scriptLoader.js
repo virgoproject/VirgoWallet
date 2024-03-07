@@ -76,7 +76,9 @@ const commonScripts = [
     "../js/panes/contacts/contacts.js",
     "../js/panes/contacts/add.js",
     "../js/panes/contacts/details.js",
-    "../js/panes/send/send.js"
+    "../js/panes/send/send.js",
+    "../js/panes/send/amount.js",
+    "../js/components/selectToken.js"
 ]
 
 const browserScripts = [

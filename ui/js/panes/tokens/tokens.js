@@ -2,6 +2,7 @@ class TokensList extends StatefulElement {
 
     render() {
         const _this = this
+        this.searchVal = ""
 
         const [reset, setReset] = this.useState("reset", false)
 
@@ -25,7 +26,7 @@ class TokensList extends StatefulElement {
         })
 
         const onNearEnd = this.registerFunction(() => {
-            if(_this.boxNumber >= data.length) return
+            if(_this.boxNumber >= data.length || _this.searchVal != "") return
 
             const oldBoxNum = _this.boxNumber
             _this.boxNumber = Math.min(_this.boxNumber+5, data.length)
@@ -43,6 +44,7 @@ class TokensList extends StatefulElement {
         const rows = this.getRows(data, 0, this.boxNumber)
 
         const onSearch = this.registerFunction(val => {
+            _this.searchVal = val //just to prevent scroll loading in case of search
             if(val == ""){
                 setReset(!reset)
                 return

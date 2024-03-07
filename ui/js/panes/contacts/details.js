@@ -25,6 +25,8 @@ class ContactDetails extends StatefulElement {
     }
 
     details(data, setView){
+        const _this = this
+
         const editClick = this.registerFunction(() => {
             setView("edit")
         })
@@ -32,6 +34,14 @@ class ContactDetails extends StatefulElement {
         const copyAddress = this.registerFunction(() => {
             copyToClipboard(data.address);
             notyf.success("Address copied to clipboard!");
+        })
+
+        const sendClick = this.registerFunction(() => {
+            const elem = document.createElement("send-token-amount")
+            elem.address = data.address
+            document.body.appendChild(elem)
+            _this.closeParent()
+            _this.remove()
         })
 
         return `
@@ -55,7 +65,7 @@ class ContactDetails extends StatefulElement {
             </div>
             <div class="mt-3 row">
                 <div class="col-6"><button class="w-100 buttonEmpty" onclick="${editClick}">Edit</button></div>
-                <div class="col-6"><button class="w-100 button">Send</button></div>
+                <div class="col-6"><button class="w-100 button" onclick="${sendClick}">Send</button></div>
             </div>
         `
     }

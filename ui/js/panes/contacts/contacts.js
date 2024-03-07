@@ -3,6 +3,7 @@ class ContactsList extends StatefulElement {
     async render() {
 
         const _this = this
+        this.searchVal = ""
 
         const [reset, setReset] = this.useState("reset", false)
 
@@ -19,7 +20,7 @@ class ContactsList extends StatefulElement {
         })
 
         const onNearEnd = this.registerFunction(() => {
-            if(_this.boxNumber >= data.length) return
+            if(_this.boxNumber >= data.length || _this.searchVal != "") return
 
             const oldBoxNum = _this.boxNumber
             _this.boxNumber = Math.min(_this.boxNumber+5, data.length)
@@ -37,6 +38,7 @@ class ContactsList extends StatefulElement {
         const rows = this.getRows(data, 0, this.boxNumber)
 
         const onSearch = this.registerFunction(async val => {
+            _this.searchVal = val //just to prevent scroll loading in case of search
             if(val == ""){
                 setReset(!reset)
                 return
@@ -187,6 +189,9 @@ class ContactsList extends StatefulElement {
             const elem = document.createElement("contact-details")
             elem.resetParent = () => {
                 _this.runFunctions()
+            }
+            elem.closeParent = () => {
+                _this.remove()
             }
             elem.address = e.currentTarget.getAttribute("address")
             document.body.appendChild(elem)
