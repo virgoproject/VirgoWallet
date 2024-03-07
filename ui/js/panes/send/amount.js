@@ -11,6 +11,10 @@ class SendTokenAmount extends StatefulElement {
             this.querySelector("#next").disabled = this.nextDisabled
         }
 
+        if(this.fiatVal !== undefined){
+            this.querySelector("#fiat").innerHTML = this.fiatVal
+        }
+
         const logo = this.querySelector("#logo")
 
         logo.onload = e => {
@@ -47,9 +51,7 @@ class SendTokenAmount extends StatefulElement {
         this.chainID = wallet.chainID
 
         const {data: balance, loading: balanceLoading} = this.useInterval(async () => {
-            const bal = await getBalanceCross(wallet.chainID, token.contract)
-            bal.balance = bal.balance + Math.round(Math.random()*100)
-            return bal
+            return getBalanceCross(wallet.chainID, _this.token.contract)
         }, 10000)
 
         const back = this.registerFunction(() => {
@@ -59,28 +61,48 @@ class SendTokenAmount extends StatefulElement {
         const selectClick = this.registerFunction(() => {
             const elem = document.createElement("select-token")
             elem.setToken = token => {
+                this.value = ""
+                this.nextDisabled = true
+                this.fiatVal = "-"
                 setToken(token)
+                _this.runIntervals()
             }
             document.body.appendChild(elem)
         })
 
         const onInput = this.registerFunction(e => {
             if(balanceLoading) return
-            this.value = e.currentTarget.value
+            this.value = _this.querySelector("#amount").value
             let val = this.value
             if(val.trim() == "") val = 0
 
             const bal = Number(Utils.formatAmount(balance.balance, balance.decimals))
 
             if(bal == 0 || balance.price == 0){
+                this.fiatVal = "-"
                 this.querySelector("#fiat").innerHTML = "-"
             }else{
-                this.querySelector("#fiat").innerHTML = (balance.price*bal).toFixed(2)
+                this.fiatVal = (balance.price*val).toFixed(2)
+                this.querySelector("#fiat").innerHTML = this.fiatVal
             }
 
             this.nextDisabled = bal < Number(val) || val == 0 || bal == 0
 
             this.querySelector("#next").disabled = this.nextDisabled
+        })
+
+        const maxClick = this.registerFunction(() => {
+            if(token.contract == wallet.ticker){
+                estimateSendFees(_this.address, balance.balance, token.contract).then(function(fees) {
+                    const totalFees = new BN(fees.gasLimit).mul(new BN(fees.gasPrice))
+                    const maxSendable = new BN(balance.balance).sub(totalFees).toString()
+                    _this.querySelector("#amount").value = Utils.formatAmount(maxSendable, balance.decimals)
+                    _this.querySelector("#amount").oninput()
+                })
+            }else {
+                _this.querySelector("#amount").value = Utils.formatAmount(balance.balance, balance.decimals)
+                _this.querySelector("#amount").oninput()
+            }
         })
 
         return `
@@ -96,7 +118,7 @@ class SendTokenAmount extends StatefulElement {
                             <i id="selectTokenIcon" class="fa-solid fa-caret-down"></i>
                         </div>
                         <input type="number" placeholder="0.0" id="amount" class="mt-3 text-4xl" oninput="${onInput}">
-                        <p id="max" class="mt-3 text-lg">Use max</p>
+                        <p id="max" class="mt-3 text-lg" onclick="${maxClick}">Use max</p>
                         <p id="fiatConversion" class="mt-3">${currencyToSymbol(baseInfos.selectedCurrency)} <span id="fiat">-</span></p>
                         <div id="balanceWrapper" class="mt-3">
                             <p id="balanceText">Balance: </p>
