@@ -99,6 +99,12 @@ class StatefulElement extends HTMLElement {
         this._renderContent();
     }
 
+    disconnectedCallback(){
+        for(const intervalId in this.intervals){
+            clearInterval(intervalId)
+        }
+    }
+
     async _renderContent(){
         this.beforeRender()
 
@@ -231,7 +237,10 @@ class StatefulElement extends HTMLElement {
             this.intervals[intervalId] = fetchData
 
             // Cleanup interval when the element is disconnected from the DOM
-            this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
+            this.addEventListener('disconnectedCallback', () => {
+                console.log("clearing")
+                clearInterval(intervalId)
+            });
         }else{
             this.funcs.push(fetchData)
         }
