@@ -29,7 +29,8 @@ class SelectToken extends StatefulElement {
             tokens.unshift({
                 contract: infos.wallets[infos.selectedWallet].wallet.ticker,
                 name: infos.wallets[infos.selectedWallet].wallet.asset,
-                ticker: infos.wallets[infos.selectedWallet].wallet.ticker
+                ticker: infos.wallets[infos.selectedWallet].wallet.ticker,
+                decimals: infos.wallets[infos.selectedWallet].wallet.decimals
             })
             return {
                 tokens,
@@ -133,7 +134,8 @@ class SelectToken extends StatefulElement {
             _this.setToken({
                 contract: e.currentTarget.getAttribute("contract"),
                 ticker: e.currentTarget.getAttribute("ticker"),
-                name: e.currentTarget.getAttribute("name")
+                name: e.currentTarget.getAttribute("name"),
+                decimals: e.currentTarget.getAttribute("decimals")
             })
             _this.remove()
         })
@@ -141,7 +143,7 @@ class SelectToken extends StatefulElement {
         for (let i = min; i < max; i++) {
             try {
                 rows.push(`
-                    <div class="token mb-2 px-3" contract="${data[i].contract}" ticker="${data[i].ticker}" name="${data[i].name}" onclick="${onClick}">
+                    <div class="token mb-2 px-3" contract="${data[i].contract}" ticker="${data[i].ticker}" name="${data[i].name}" decimals="${data[i].decimals}" onclick="${onClick}">
                         <div class="tokenWrapper">
                             <div class="shimmerBG"></div>
                             <div class="defaultLogo" style="display: none"><p class="m-auto">${data[i].name.charAt(0).toUpperCase()}</p></div>

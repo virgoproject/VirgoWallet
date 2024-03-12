@@ -3,8 +3,8 @@ class SendTokenAmount extends StatefulElement {
     eventHandlers() {
         const _this = this
 
-        if(this.value !== undefined){
-            this.querySelector("#amount").value = this.value
+        if(this.amount !== undefined){
+            this.querySelector("#amount").value = this.amount
         }
 
         if(this.nextDisabled !== undefined){
@@ -44,7 +44,8 @@ class SendTokenAmount extends StatefulElement {
         const [token, setToken] = this.useState("token", {
             contract: wallet.ticker,
             name: wallet.asset,
-            ticker: wallet.ticker
+            ticker: wallet.ticker,
+            decimals: wallet.decimals
         })
 
         this.token = token
@@ -61,7 +62,7 @@ class SendTokenAmount extends StatefulElement {
         const selectClick = this.registerFunction(() => {
             const elem = document.createElement("select-token")
             elem.setToken = token => {
-                this.value = ""
+                _this.amount = ""
                 this.nextDisabled = true
                 this.fiatVal = "-"
                 setToken(token)
@@ -72,8 +73,8 @@ class SendTokenAmount extends StatefulElement {
 
         const onInput = this.registerFunction(e => {
             if(balanceLoading) return
-            this.value = _this.querySelector("#amount").value
-            let val = this.value
+            _this.amount = _this.querySelector("#amount").value
+            let val = _this.amount
             if(val.trim() == "") val = 0
 
             const bal = Number(Utils.formatAmount(balance.balance, balance.decimals))
@@ -105,6 +106,15 @@ class SendTokenAmount extends StatefulElement {
             }
         })
 
+        const nextClick = this.registerFunction(() => {
+            const elem = document.createElement("send-token-confirm")
+            elem.address = _this.address
+            elem.token = _this.token
+            elem.chainID = _this.chainID
+            elem.amount = _this.amount
+            document.body.appendChild(elem)
+        })
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
@@ -127,7 +137,7 @@ class SendTokenAmount extends StatefulElement {
                         </div>  
                     </div>
                     <div class="p-3">
-                        <button class="button w-100" id="next" disabled>Next</button>              
+                        <button class="button w-100" id="next" disabled onclick="${nextClick}">Next</button>              
                     </div>
                 </div>
             </div>
