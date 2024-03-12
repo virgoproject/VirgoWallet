@@ -683,7 +683,7 @@ iframe {
     animation-iteration-count: infinite;
     animation-name: shimmer;
     animation-timing-function: linear;
-    background: linear-gradient(to right, var(--gray-200) 8%, var(--gray-100) 18%, var(--gray-200) 33%);
+    background: linear-gradient(to right, var(--gray-100) 8%, var(--gray-50) 18%, var(--gray-100) 33%);
 }
 
 @-webkit-keyframes shimmer {

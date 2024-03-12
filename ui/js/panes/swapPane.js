@@ -256,21 +256,6 @@ class SwapPane {
                 })
         })
 
-        events.addListener("chainChanged", data => {
-            SwapPane.review.self.hide()
-            _this.resetInputs()
-            _this.setSwap(data)
-        })
-
-        setInterval(function () {
-            _this.updateBalance(SwapPane.inputs.one)
-            _this.updateBalance(SwapPane.inputs.two)
-        }, 500)
-
-        setInterval(function () {
-            _this.checkAmount()
-        }, 5000)
-
         $(".editFees").click(function (){
             $("#editfees").show()
         })
@@ -278,6 +263,7 @@ class SwapPane {
     }
 
     setSwap(data) {
+        return
         const selectedAddress = data.addresses[data.selectedAddress]
         const selectedWallet = data.wallets[data.selectedWallet].wallet
 

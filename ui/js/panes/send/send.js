@@ -17,11 +17,14 @@ class SendToken extends StatefulElement {
             }
 
             const recent = []
+            const recentFilter = []
 
             for(const transaction of baseInfos.wallets[baseInfos.selectedWallet].wallet.transactions){
                 if(recent.length >= 5) break
-                if(recent.includes(transaction.recipient)) continue
+                if(recentFilter.includes(transaction.recipient.toLowerCase())) continue
                 if(transaction.contractAddr != MAIN_ASSET.ticker && !await validateAddress(transaction.contractAddr)) continue
+
+                recentFilter.push(transaction.recipient.toLowerCase())
 
                 const item = {
                     address: transaction.recipient
@@ -52,9 +55,16 @@ class SendToken extends StatefulElement {
             _this.querySelector("#next").disabled = !await validateAddress(e.currentTarget.value)
         })
 
-        const onNext = this.registerFunction(() => {
+        const onNext = this.registerFunction(e => {
             const elem = document.createElement("send-token-amount")
             elem.address = _this.querySelector("#recipient").value
+            _this.querySelector("#recipient").value = ""
+            e.currentTarget.disabled = true
+            document.body.appendChild(elem)
+        })
+
+        const receiveClick = this.registerFunction(() => {
+            const elem = document.createElement("receive-popup")
             document.body.appendChild(elem)
         })
 
@@ -66,7 +76,7 @@ class SendToken extends StatefulElement {
                         <button class="button w-100" id="send"><i class="fa-solid fa-arrow-up"></i> Send</button>
                     </div>
                     <div class="col-4 px-1">
-                        <button class="button w-100" id="receive"><i class="fa-solid fa-arrow-down"></i> Receive</button>
+                        <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> Receive</button>
                     </div>
                     <div class="col-4 p-0 pl-2">
                         <button class="button w-100" id="buy"><i class="fa-solid fa-dollar-sign"></i> Buy</button>
@@ -174,8 +184,12 @@ class SendToken extends StatefulElement {
             
             #receive {
                 color: var(--mainColor);
-                background: #F3F3F3;
+                background: var(--gray-50);;
                 transition: all ease-in 0.1s;
+            }
+            
+            #receive:hover {
+                background: var(--gray-100);
             }
             
             #send {

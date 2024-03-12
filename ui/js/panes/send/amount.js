@@ -75,11 +75,9 @@ class SendTokenAmount extends StatefulElement {
             if(balanceLoading) return
             _this.amount = _this.querySelector("#amount").value
             let val = _this.amount
-            if(val.trim() == "") val = 0
+            if(val.trim() == "") val = "0"
 
-            const bal = Number(Utils.formatAmount(balance.balance, balance.decimals))
-
-            if(bal == 0 || balance.price == 0){
+            if(balance.balance == 0 || balance.price == 0){
                 this.fiatVal = "-"
                 this.querySelector("#fiat").innerHTML = "-"
             }else{
@@ -87,7 +85,10 @@ class SendTokenAmount extends StatefulElement {
                 this.querySelector("#fiat").innerHTML = this.fiatVal
             }
 
-            this.nextDisabled = bal < Number(val) || val == 0 || bal == 0
+            if(!Utils.isValidNumber(val))
+                val = "0"
+
+            this.nextDisabled = new BN(balance.balance).lt(new BN(Utils.toAtomicString(val, balance.decimals))) || Number(val) == 0 || balance.balance == 0
 
             this.querySelector("#next").disabled = this.nextDisabled
         })
@@ -111,7 +112,10 @@ class SendTokenAmount extends StatefulElement {
             elem.address = _this.address
             elem.token = _this.token
             elem.chainID = _this.chainID
-            elem.amount = _this.amount
+            elem.amount = Utils.toAtomicString(_this.amount, balance.decimals)
+            elem.removeParent = () => {
+                _this.remove()
+            }
             document.body.appendChild(elem)
         })
 
@@ -247,6 +251,7 @@ class SendTokenAmount extends StatefulElement {
                 color: var(--gray-400);
                 width: 100%;
                 flex-wrap: nowrap;
+                align-items: center;
             }
             
             #balance {
@@ -258,6 +263,13 @@ class SendTokenAmount extends StatefulElement {
             
             #balanceText, #balanceSymbol {
                 margin: 0;
+            }
+            
+            #balanceShimmer {
+                width: 5ch;
+                border-radius: 0.5em;
+                height: 1rem;
+                animation-duration: 30s;
             }
         `;
     }

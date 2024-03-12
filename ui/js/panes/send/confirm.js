@@ -20,12 +20,9 @@ class SendTokenConfirm extends StatefulElement {
                 }
             }
 
-            const fees = await estimateSendFees(_this.address, Utils.toAtomicString(_this.amount, _this.token.decimals), _this.token.contract)
-
             return {
                 baseInfos,
-                contactsByAddress,
-                fees
+                contactsByAddress
             }
         })
 
@@ -40,29 +37,41 @@ class SendTokenConfirm extends StatefulElement {
             }
         }, 10000)
 
-        if(balanceLoading) return ""
+        const {data: fees, loading: feesLoading} = this.useFunction(async () => {
+            return await estimateSendFees(_this.address, _this.amount, _this.token.contract)
+        })
 
-        const [gasPrice, setGasPrice] = this.useState("gasPrice", data.fees.gasPrice)
-        const [gasLimit, setGasLimit] = this.useState("gasLimit", data.fees.gasLimit)
+        const [sending, setSending] = this.useState("sending", false)
+
+        let feesContent = ""
+
+        if(balanceLoading || feesLoading)
+            feesContent = this.feesShimmer()
+        else
+            feesContent = this.getFees(data, fees, wallet, balance, sending)
 
         const back = this.registerFunction(() => {
+            if(sending) return
             _this.remove()
         })
 
-        if(this.feesEditor === undefined){
-            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, data.baseInfos)
-        }
-
-        const editFeesClick = this.registerFunction(() => {
-            _this.feesEditor.show()
+        const confirmClick = this.registerFunction(() => {
+            sendTo(_this.address,
+                Utils.formatAmount(_this.amount, _this.token.decimals),
+                _this.token.contract,
+                _this.gasLimit,
+                _this.gasPrice)
+                .then(function(res){
+                    notyf.success("Transaction sent!")
+                    _this.feesEditor.remove()
+                    _this.removeParent()
+                    _this.remove()
+                })
+            setSending(true)
         })
 
-        let nativeTotal = Number(Utils.formatAmount(gasLimit*gasPrice, wallet.decimals))
-
-        if(_this.token.contract == wallet.ticker)
-            nativeTotal = nativeTotal + Number(_this.amount)
-
-        const btnDisabled = nativeTotal > Number(Utils.formatAmount(balance.native.balance, balance.native.decimals)) || Number(_this.amount) > Number(Utils.formatAmount(balance.token.balance, balance.token.decimals))
+        let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">Confirm</button>`
+        if(sending) button = `<button class="button w-100" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <div class="fullpageSection">
@@ -71,36 +80,72 @@ class SendTokenConfirm extends StatefulElement {
                     <div id="content" class="px-3">
                         <p class="text-lg mb-0 mt-3" id="amountTitle">Amount</p>
                         <div id="amountWrapper" class="text-3xl">
-                           <p id="amount">${_this.amount}</p>
+                           <p id="amount">${Utils.formatAmount(_this.amount, _this.token.decimals)}</p>
                            <p id="amountSymbol"> ${_this.token.ticker}</p> 
                         </div>
                         <p class="text-left mb-0 label mt-3">From</p>
                         ${this.getContact(data, data.baseInfos.addresses[data.baseInfos.selectedAddress].address)}
                         <p class="text-left mb-0 label mt-3">To</p>
                         ${this.getContact(data, _this.address)}
-                        <div id="feesWrapper" class="mt-4">
-                            <div class="feesRow mb-2">
-                                <p class="feesTitle">Fees<span id="editFees" onclick="${editFeesClick}">Edit</span></p>
-                                <div class="feesAmountWrapper">
-                                    <p class="feesAmount">${Utils.formatAmount(gasLimit*gasPrice, wallet.decimals)}</p>
-                                    <p> ${wallet.ticker}</p>
-                                </div>
-                            </div>
-                            <div class="feesRow">
-                                <p class="feesTitle">Total</p>
-                                <div class="feesAmountWrapper">
-                                    <p class="feesAmount">${nativeTotal}</p>
-                                    <p> ${wallet.ticker}</p>
-                                </div>
-                            </div>
-                        </div>
+                        ${feesContent}
                     </div>
                     <div class="p-3">
-                        <button class="button w-100" id="next" ${btnDisabled ? "disabled" : ""}>Confirm</button>              
+                         ${button}
                     </div>
                 </div>
             </div>
         `;
+    }
+
+    getFees(data, fees, wallet, balance, sending){
+        const _this = this
+
+        const [gasPrice, setGasPrice] = this.useState("gasPrice", fees.gasPrice)
+        const [gasLimit, setGasLimit] = this.useState("gasLimit", fees.gasLimit)
+
+        _this.gasLimit = gasLimit
+        _this.gasPrice = gasPrice
+
+        const editFeesClick = this.registerFunction(() => {
+            if(sending) return
+            _this.feesEditor.show()
+        })
+
+        if(this.feesEditor === undefined){
+            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, data.baseInfos)
+        }
+
+        const feesBN = new BN(gasLimit).mul(new BN(gasPrice))
+        let totalNative = feesBN
+        if(_this.token.contract == wallet.ticker)
+            totalNative = totalNative.add(new BN(_this.amount))
+
+        this.btnDisabled = totalNative.gt(new BN(balance.native.balance)) || new BN(_this.amount).gt(new BN(balance.token.balance))
+
+        return `
+            <div id="feesWrapper" class="mt-4">
+                <div class="feesRow mb-2">
+                    <p class="feesTitle">Fees<span id="editFees" onclick="${editFeesClick}">Edit</span></p>
+                    <div class="feesAmountWrapper">
+                        <p class="feesAmount">${Utils.formatAmount(feesBN.toString(), wallet.decimals)}</p>
+                        <p> ${wallet.ticker}</p>
+                    </div>
+                </div>
+                <div class="feesRow">
+                    <p class="feesTitle">Total</p>
+                    <div class="feesAmountWrapper">
+                        <p class="feesAmount">${Utils.formatAmount(totalNative.toString(), wallet.decimals)}</p>
+                        <p> ${wallet.ticker}</p>
+                    </div>
+                </div>
+            </div>
+        `
+    }
+
+    feesShimmer(){
+        return `
+            <div class="shimmerBG mt-4" id="feesShimmer"></div>
+        `
     }
 
     getContact(data, address){
@@ -266,6 +311,11 @@ class SendTokenConfirm extends StatefulElement {
                 cursor: pointer;
                 margin-left: 1em;
                 font-weight: 600;
+            }
+            
+            #feesShimmer {
+                height: 78px;
+                border-radius: 0.5em;
             }
         `;
     }

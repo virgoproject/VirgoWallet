@@ -5,12 +5,10 @@ const commonScripts = [
     "../js/utils/progressRing.js",
     "../js/utils/notyf.min.js",
     "../js/utils/jdenticon.min.js",
-    "../js/utils/tinysort.min.js",
     "../js/utils/rangeSlider.js",
     "../js/utils/chart.min.js",
     "../js/utils/bootstrap-select.min.js",
     "../js/utils/backgroundMessaging.js",
-    "../js/utils/tokensSelect.js",
     "../js/utils/getDominantColor.js",
     "../js/utils/currencyToSymbol.js",
     "../js/utils/stateful.js",
@@ -18,7 +16,6 @@ const commonScripts = [
     "../js/events.js",
     "../js/popup.js",
     "../js/panes/resume.js",
-    "../js/panes/sendPane.js",
     "../js/panes/swapPane.js",
     "../js/panes/atomicSwapPane.js",
     "../js/panes/airdrops/airdrops.js",
@@ -80,7 +77,9 @@ const commonScripts = [
     "../js/panes/send/amount.js",
     "../js/panes/send/confirm.js",
     "../js/panes/selectToken.js",
-    "../js/panes/editFees.js"
+    "../js/panes/editFees.js",
+    "../js/panes/receive.js",
+    "../js/panes/swap/swap.js"
 ]
 
 const browserScripts = [

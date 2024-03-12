@@ -62,14 +62,22 @@ class Utils {
     }
 
     static toAtomicString(amount, decimals){
+        amount = ""+amount
         let dotIndex = amount.indexOf(".")
         if(dotIndex < 0)
             dotIndex = amount.length-1
         const zerosToAdd = decimals - (amount.length - (dotIndex+1))
-        const res = amount.replace(".", "") + "0".repeat(zerosToAdd)
-        if(res.startsWith("0"))
-            return res.substring(1)
+        let res = amount.replace(".", "") + "0".repeat(zerosToAdd)
+        while(res.startsWith("0"))
+            res = res.substring(1)
         return res
+    }
+
+    static isValidNumber(str) {
+        // Regular expression to match valid numbers
+        const numberRegex = /^(?!.*e)[+-]?\d*\.?\d+$/;
+
+        return numberRegex.test(str);
     }
 
     static isValidUrl(string) {

@@ -125,7 +125,6 @@ class UnlockPane {
         $("#unlockPane").hide()
         UnlockPane.createpane.hide()
         mainPane.setResume(data)
-        sendPane.setSend(data)
         swapPane.setSwap(data)
         atomicSwapPane.setAtomicSwap(data)
         $("#mainPane").show()

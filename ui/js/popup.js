@@ -70,6 +70,14 @@ $("#footer .footerElem").click(function(){
         document.querySelector("#sendPane").appendChild(elem)
     }
 
+    if($(this).attr("data-target") === "swap"){
+        try {
+            document.querySelector("swap-tokens").remove()
+        }catch (e){}
+        const elem = document.createElement("swap-tokens")
+        document.querySelector("#swapPane").appendChild(elem)
+    }
+
     return false
 })
 

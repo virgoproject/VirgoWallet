@@ -46,13 +46,13 @@ class EditFeesNew extends StatefulElement {
             return ""
         }
 
-        let selectedGasPrice = gasPrice
+        let selectedGasPrice = new BN(gasPrice)
         if(selected == 0)
-            selectedGasPrice = Math.round(gasPrice*0.8)
+            selectedGasPrice = gasPrice.mul(new BN("80")).div(new BN("100"))
         else if(selected == 2)
-            selectedGasPrice = Math.round(gasPrice*1.2)
+            selectedGasPrice = gasPrice.mul(new BN("120")).div(new BN("100"))
 
-        this.setGasPrice(selectedGasPrice)
+        this.setGasPrice(selectedGasPrice.toString())
 
         if(!display) return ""
 
@@ -69,21 +69,21 @@ class EditFeesNew extends StatefulElement {
                 <div class="option mb-2 mt-3 ${selected == 0 ? "selected" : ""}" id="0" onclick="${optionClick}">
                     <p class="optionTitle">Slow</p>
                     <div class="amountWrapper">
-                        <p class="amount">${Utils.formatAmount(Math.round(this.gasLimit*gasPrice*0.8), wallet.decimals)}</p>
+                        <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN("80")).div(new BN("100")).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="option mb-2 ${selected == 1 ? "selected" : ""}" id="1" onclick="${optionClick}">
                     <p class="optionTitle">Medium</p>
                     <div class="amountWrapper">
-                        <p class="amount">${Utils.formatAmount(this.gasLimit*gasPrice, wallet.decimals)}</p>
+                        <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="option mb-2 ${selected == 2 ? "selected" : ""}" id="2" onclick="${optionClick}">
                     <p class="optionTitle">Fast</p>
                     <div class="amountWrapper">
-                        <p class="amount">${Utils.formatAmount(Math.round(this.gasLimit*gasPrice*1.2), wallet.decimals)}</p>
+                        <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN("120")).div(new BN("100")).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>

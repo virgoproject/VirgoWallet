@@ -210,7 +210,7 @@ class StatefulElement extends HTMLElement {
         const funcHash = Stateful.hash(func);
 
         if(this.states[funcHash] !== undefined){
-            return {data: this.states[funcHash][0], loading: false};
+            return {data: this.states[funcHash][0], loading: this.states[funcHash].length == 2};
         }
 
         const [data] = this.useState(funcHash, null);
@@ -222,6 +222,7 @@ class StatefulElement extends HTMLElement {
                 const result = await func();
 
                 if (JSON.stringify(result) !== JSON.stringify(state)) {
+                    this.states[funcHash].push(true);
                     setState(result);
                 }
             } catch (error) {
