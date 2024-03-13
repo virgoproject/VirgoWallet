@@ -1,13 +1,185 @@
 class SwapTokens extends StatefulElement {
 
+    eventHandlers() {
+        const _this = this
+
+        if(this.tokenIn != null){
+            const logo = this.querySelector("#tokenInSelect .selectLogo")
+
+            _this.querySelector("#tokenInSelect .shimmerIcon").style.display = "flex"
+
+            logo.onload = e => {
+                e.target.style.display = "initial"
+                _this.querySelector("#tokenInSelect .shimmerIcon").style.display = "none"
+            }
+            logo.onerror = e => {
+                _this.querySelector("#tokenInSelect .defaultSelectLogo").style.display = "flex"
+                _this.querySelector("#tokenInSelect .shimmerIcon").style.display = "none"
+            }
+
+            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenIn.contract + "/logo.png"
+        }
+
+        if(this.tokenOut != null){
+            const logo = this.querySelector("#tokenOutSelect .selectLogo")
+
+            _this.querySelector("#tokenOutSelect .shimmerIcon").style.display = "flex"
+
+            logo.onload = e => {
+                e.target.style.display = "initial"
+                _this.querySelector("#tokenOutSelect .shimmerIcon").style.display = "none"
+            }
+            logo.onerror = e => {
+                _this.querySelector("#tokenOutSelect .defaultSelectLogo").style.display = "flex"
+                _this.querySelector("#tokenOutSelect .shimmerIcon").style.display = "none"
+            }
+
+            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenOut.contract + "/logo.png"
+        }
+
+        if(this.amount !== undefined){
+            this.querySelector("#input").value = this.amount
+            this.querySelector("#input").dispatchEvent(new Event('input', { bubbles: true }))
+
+        }
+
+    }
+
     render() {
 
         const _this = this
+
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            const infos = await getBaseInfos()
+            return infos
+        })
+
+        if(baseInfosLoading) return ""
+
+        const wallet = baseInfos.wallets[baseInfos.selectedWallet].wallet
+
+        this.chainID = wallet.chainID
+
+        const [tokenIn, setTokenIn] = this.useState("tokenIn", null)
+        const [tokenOut, setTokenOut] = this.useState("tokenOut", null)
+
+        this.tokenIn = tokenIn
+        this.tokenOut = tokenOut
+
+        const {data: inBalance, loading: inBalanceLoading} = this.useInterval(async () => {
+            if(_this.tokenIn == null) return null
+            return await getBalanceCross(wallet.chainID, _this.tokenIn.contract)
+        }, 10000)
+
+        const {data: outBalance, loading: outBalanceLoading} = this.useInterval(async () => {
+            if(_this.tokenOut == null) return null
+            return await getBalanceCross(wallet.chainID, _this.tokenOut.contract)
+        }, 10000)
+
+        const {data: refresh15s, loading: refresh15sLoading} = this.useInterval(async () => {
+            return Math.random()
+        }, 15000)
 
         const onInput = this.registerFunction(e => {
             const span = _this.querySelector("#inputCalcSpan")
             span.innerHTML = e.currentTarget.value
             e.currentTarget.style.maxWidth = span.offsetWidth + "px"
+
+            this.amount = e.currentTarget.value
+
+            if(tokenIn != null && tokenOut != null && Utils.isValidNumber(e.currentTarget.value)){
+
+                const contractIn = tokenIn.contract+""
+                const contractOut = tokenOut.contract+""
+                const value = e.currentTarget.value+""
+
+                _this.querySelector("#unavailable").style.display = "none"
+                _this.querySelector("#notfound").style.display = "none"
+
+                _this.querySelector("#tokenOutWrapper").classList.add("shimmerBG")
+                _this.querySelector("#next").disabled = true
+                _this.querySelector("#next").innerHTML = '<i class="fa-solid fa-spinner-third fa-spin"></i>'
+
+                getSwapRoute(value, contractIn, contractOut).then(function (res) {
+
+                    _this.querySelector("#tokenOutWrapper").classList.remove("shimmerBG")
+                    _this.querySelector("#next").innerHTML = "Next"
+
+                    if(res.error && res.reason == 'Amount must be >= 0') return
+                    if(contractIn != _this.tokenIn.contract || contractOut != _this.tokenOut.contract || value != _this.amount) return
+
+                    if(res == false){
+                        _this.querySelector("#unavailable").style.display = "block"
+                        return
+                    }
+
+                    if(res.error != undefined || res.routes === undefined) {
+                        _this.querySelector("#notfound").style.display = "block"
+                        return
+                    }
+
+                    _this.querySelector("#output").value = Utils.formatAmount(res.routes[0].amount, tokenOut.decimals)
+
+                    _this.querySelector("#next").disabled = new BN(Utils.toAtomicString(value, tokenIn.decimals)).gt(new BN(inBalance.balance))
+
+                    _this.route = res
+                })
+            }else{
+                _this.querySelector("#output").value = ""
+                _this.querySelector("#next").disabled = true
+            }
+        })
+
+        const selectInClick = this.registerFunction(() => {
+            const elem = document.createElement("select-token")
+            elem.setToken = token => {
+                setTokenIn(token)
+                _this.runIntervals()
+            }
+
+            let toExclude = []
+            if(tokenIn != null) toExclude.push(tokenIn.contract)
+            if(tokenOut != null) toExclude.push(tokenOut.contract)
+            if(toExclude.length != 0) elem.exclude = toExclude
+
+            document.body.appendChild(elem)
+        })
+
+        const selectOutClick = this.registerFunction(() => {
+            const elem = document.createElement("select-token")
+            elem.setToken = token => {
+                setTokenOut(token)
+                _this.runIntervals()
+            }
+
+            let toExclude = []
+            if(tokenIn != null) toExclude.push(tokenIn.contract)
+            if(tokenOut != null) toExclude.push(tokenOut.contract)
+            if(toExclude.length != 0) elem.exclude = toExclude
+
+            document.body.appendChild(elem)
+        })
+
+        const switchClick = this.registerFunction(() => {
+            const ti = tokenIn
+            const to = tokenOut
+            setTokenIn(to)
+            setTokenOut(ti)
+            _this.runIntervals()
+        })
+
+        const nextClick = this.registerFunction(() => {
+            const elem = document.createElement("confirm-swap")
+            elem.tokenIn = tokenIn
+            elem.tokenOut = tokenOut
+            elem.amountIn = Utils.toAtomicString(_this.amount, tokenIn.decimals)
+            elem.route = _this.route
+            elem.resetParent = () => {
+                _this.amount = ""
+                setTokenIn(null)
+                setTokenOut(null)
+            }
+            document.body.appendChild(elem)
         })
 
         return `
@@ -18,51 +190,54 @@ class SwapTokens extends StatefulElement {
                          <p class="m-0">You send</p>
                          <div class="balanceWrapper">
                             <p class="m-0">Available: </p>
-                            <p class="m-0 balance">0.0151</p>
-                            <p class="m-0"> BNB</p>
+                            <p class="m-0 balance">${inBalance == null ? "-" : inBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(inBalance.balance, inBalance.decimals)}</p>
+                            <p class="m-0"> ${tokenIn == null ? "" : tokenIn.ticker}</p>
                          </div>
                     </div>
                     <div class="tokenWrapper">
                         <div class="amountWrapper">
-                            <input type="text" placeholder="0.0" class="amount text-2xl" oninput="${onInput}">
+                            <input type="text" placeholder="0.0" class="amount text-2xl" oninput="${onInput}" id="input">
                             <p id="max">Max</p>
                         </div>
-                        <div class="select">
+                        <div class="select" onclick="${selectInClick}" id="tokenInSelect">
                             <div class="selectHeight"></div>
-                            <div class="shimmerBG shimmerIcon"></div>
+                            <div class="shimmerBG shimmerIcon" style="display: none"></div>
                             <img style="display: none" class="selectLogo">
-                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">B</p></div>
-                            <p class="selectName text-lg">BNB</p>
+                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenIn == null ? "" : tokenIn.name.charAt(0).toUpperCase()}</p></div>
+                            <p class="selectName text-lg">${tokenIn == null ? "Select" : tokenIn.ticker}</p>
                             <i class="selectIcon fa-solid fa-caret-down"></i>
                         </div>
                     </div>
-                    <div id="switch" class="text-2xl mt-4 mb-2"><i class="fas fa-sync-alt"></i></div>
+                    <div id="switch" class="text-2xl mt-4 mb-2" onclick="${switchClick}"><i class="fas fa-sync-alt"></i></div>
                     <div class="labelWrapper text-sm mb-1">
                          <p class="m-0">You get</p>
                          <div class="balanceWrapper">
                             <p class="m-0">Available: </p>
-                            <p class="m-0 balance">0.0151</p>
-                            <p class="m-0"> BNB</p>
+                            <p class="m-0 balance">${outBalance == null ? "-" : outBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(outBalance.balance, outBalance.decimals)}</p>
+                            <p class="m-0"> ${tokenOut == null ? "" : tokenOut.ticker}</p>
                          </div>
                     </div>
-                    <div class="tokenWrapper">
+                    <div class="tokenWrapper" id="tokenOutWrapper">
                         <div class="amountWrapper">
-                            <input type="text" placeholder="0.0" class="amount disabled text-2xl" disabled>
+                            <input type="text" placeholder="0.0" class="amount disabled text-2xl" disabled id="output">
                         </div>
-                        <div class="select">
+                        <div class="select" onclick="${selectOutClick}" id="tokenOutSelect">
                             <div class="selectHeight"></div>
-                            <div class="shimmerBG shimmerIcon"></div>
+                            <div class="shimmerBG shimmerIcon" style="display: none"></div>
                             <img style="display: none" class="selectLogo">
-                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">B</p></div>
-                            <p class="selectName text-lg">BNB</p>
+                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenOut == null ? "" : tokenOut.name.charAt(0).toUpperCase()}</p></div>
+                            <p class="selectName text-lg">${tokenOut == null ? "Select" : tokenOut.ticker}</p>
                             <i class="selectIcon fa-solid fa-caret-down"></i>
                         </div>
                     </div>
+                    <p id="unavailable" style="display: none">Service unavailable</p>
+                    <p id="notfound" style="display: none">No route found</p>
                 </div>
-                <button class="button w-100">Next</button>
+                <button class="button w-100" disabled id="next" onclick="${nextClick}">Next</button>
             </div>
             <span id="inputCalcSpan" class="text-2xl"></span>
         `;
+
     }
 
     style() {
@@ -165,7 +340,7 @@ class SwapTokens extends StatefulElement {
                 color: var(--gray-700);
             }
             
-            .selectedHeight {
+            .selectHeight {
                 height: 36px;
             }
             
@@ -212,6 +387,26 @@ class SwapTokens extends StatefulElement {
             
             .button {
                 margin-bottom: 70px;
+            }
+            
+            .balanceShimmer {
+                width: 5ch;
+                border-radius: 0.5em;
+                height: 1rem;
+                animation-duration: 30s;
+            }
+            
+            #tokenOutWrapper.shimmerBG {
+                background: linear-gradient(to right, var(--gray-100) 8%, white 18%, var(--gray-100) 33%);
+            }
+            
+            #unavailable, #notfound {
+                color: var(--red-700);
+                position: absolute;
+                margin-top: 1em;
+                width: 100%;
+                text-align: center;
+                margin-left: -1rem;
             }
         `;
     }

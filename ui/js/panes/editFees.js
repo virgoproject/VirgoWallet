@@ -20,8 +20,8 @@ class EditFeesNew extends StatefulElement {
 
         const [selected, setSelected] = this.useState("selected", 1)
 
-        const {data: gasPrice, loading} = this.useInterval(() => {
-            return getGasPrice()
+        const {data: gasPrice, loading} = this.useInterval(async () => {
+            return await getGasPrice()
         }, 5000)
 
         const [display, setDisplay] = this.useState("display", false)
@@ -48,9 +48,9 @@ class EditFeesNew extends StatefulElement {
 
         let selectedGasPrice = new BN(gasPrice)
         if(selected == 0)
-            selectedGasPrice = gasPrice.mul(new BN("80")).div(new BN("100"))
+            selectedGasPrice = selectedGasPrice.mul(new BN("80")).div(new BN("100"))
         else if(selected == 2)
-            selectedGasPrice = gasPrice.mul(new BN("120")).div(new BN("100"))
+            selectedGasPrice = selectedGasPrice.mul(new BN("120")).div(new BN("100"))
 
         this.setGasPrice(selectedGasPrice.toString())
 

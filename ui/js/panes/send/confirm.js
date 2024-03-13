@@ -143,6 +143,7 @@ class SendTokenConfirm extends StatefulElement {
     }
 
     feesShimmer(){
+        this.btnDisabled = true
         return `
             <div class="shimmerBG mt-4" id="feesShimmer"></div>
         `

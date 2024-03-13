@@ -79,7 +79,8 @@ const commonScripts = [
     "../js/panes/selectToken.js",
     "../js/panes/editFees.js",
     "../js/panes/receive.js",
-    "../js/panes/swap/swap.js"
+    "../js/panes/swap/swap.js",
+    "../js/panes/swap/confirm.js"
 ]
 
 const browserScripts = [

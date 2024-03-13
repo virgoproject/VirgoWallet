@@ -65,11 +65,23 @@ body {
     --red-800: #991b1b;
     --red-900: #7f1d1d;
     --red-950: #450a0a;
+
+    --main-50: #fff4fd;
+    --main-100: #ffe8fc;
+    --main-200: #fed0f7;
+    --main-300: #fdaaed;
+    --main-400: #fa78dd;
+    --main-500: #f045ca;
+    --main-600: #d425a9;
+    --main-700: #b71c8e;
+    --main-800: #90186f;
+    --main-900: #76195a;
+    --main-950: #4f0339;
 }
 
 .button {
     color: white;
-    background: var(--mainColor);
+    background: var(--main-700);
     border: none;
     border-radius: .5em;
     padding: .375em .75em;
@@ -78,7 +90,7 @@ body {
 }
 
 .button:hover {
-    background: var(--mainColorDark10);
+    background: var(--main-800);
 }
 
 .button-red {
@@ -102,7 +114,7 @@ body {
 }
 
 .buttonEmpty {
-    color: var(--mainColor);
+    color: var(--main-700);
     font-weight: bold;
     background-color: unset;
     border: none;
@@ -111,7 +123,7 @@ body {
 }
 
 .button:disabled {
-    background: #545454 !important;
+    background: #D78AC5 !important;
 }
 
 .button.success {

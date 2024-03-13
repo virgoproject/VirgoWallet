@@ -25,13 +25,18 @@ class SelectToken extends StatefulElement {
 
         const {data, loading} = this.useInterval(async () => {
             const infos = await getBaseInfos()
-            const tokens = infos.wallets[infos.selectedWallet].wallet.tokens
+            let tokens = infos.wallets[infos.selectedWallet].wallet.tokens
             tokens.unshift({
                 contract: infos.wallets[infos.selectedWallet].wallet.ticker,
                 name: infos.wallets[infos.selectedWallet].wallet.asset,
                 ticker: infos.wallets[infos.selectedWallet].wallet.ticker,
                 decimals: infos.wallets[infos.selectedWallet].wallet.decimals
             })
+
+            if(_this.exclude !== undefined){
+                tokens = tokens.filter(item => !_this.exclude.includes(item.contract) && !_this.exclude.includes(item.contract.toLowerCase()))
+            }
+
             return {
                 tokens,
                 chainID: infos.wallets[infos.selectedWallet].wallet.chainID
