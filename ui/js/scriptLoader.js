@@ -5,26 +5,19 @@ const commonScripts = [
     "../js/utils/progressRing.js",
     "../js/utils/notyf.min.js",
     "../js/utils/jdenticon.min.js",
-    "../js/utils/rangeSlider.js",
     "../js/utils/chart.min.js",
-    "../js/utils/bootstrap-select.min.js",
     "../js/utils/backgroundMessaging.js",
-    "../js/utils/getDominantColor.js",
     "../js/utils/currencyToSymbol.js",
     "../js/utils/stateful.js",
     "../../commonJS/qrcode.min.js",
-    "../js/events.js",
     "../js/popup.js",
     "../js/panes/resume.js",
-    "../js/panes/swapPane.js",
-    "../js/panes/atomicSwapPane.js",
     "../js/panes/airdrops/airdrops.js",
     "../js/panes/airdrops/header.js",
     "../js/panes/airdrops/airdropCard.js",
     "../js/panes/airdrops/join.js",
     "../js/panes/createPane.js",
     "../js/web3/editFees.js",
-    "../js/panes/tutorialPane.js",
     "../js/panes/unlockPane.js",
     "../js/panes/collectionNftPane.js",
     "../js/panes/nftDetailPane.js",
@@ -70,6 +63,7 @@ const commonScripts = [
     "../js/panes/home/assets/assets.js",
     "../js/panes/home/assets/tokens/tokens.js",
     "../js/panes/home/assets/tokens/token.js",
+    "../js/panes/home/assets/nfts/nfts.js",
     "../js/panes/contacts/contacts.js",
     "../js/panes/contacts/add.js",
     "../js/panes/contacts/details.js",
@@ -125,11 +119,11 @@ const mobileScripts = [
     "../../background/messageHandlers/transactions.js",
     "../../background/messageHandlers/wallet.js",
     "../../background/messageHandlers/web3.js",
-    "../js/panes/settings/security/biometrics.js",
 ]
 
 const mobileScriptsAfter = [
     "../js/mobileTweaks.js",
+    "../js/panes/settings/security/biometrics.js",
 ]
 
 const loadScript = async src => {

@@ -23,16 +23,6 @@ function copyToClipboard(data) {
     temp.remove()
 }
 
-function hideStatsBar(){
-    let statBar = document.querySelector('.header')
-    statBar.classList.add("d-none")
-}
-
-function showStatsBar(){
-    let statBar = document.querySelector('.header')
-    statBar.classList.remove("d-none")
-}
-
 $("#footer .footerElem").click(function(){
     if($(this).hasClass("selected")) return false
 
@@ -42,16 +32,6 @@ $("#footer .footerElem").click(function(){
     $("#body .bodyElem").hide()
 
     $("#body .bodyElem."+$(this).attr("data-target")).show()
-    showStatsBar()
-
-    if ($(this).attr("data-target") !== "resume"){
-        $(".stats ").hide()
-        hideStatsBar()
-        $(".header").css("height","unset")
-    } else {
-        $(".stats ").show()
-        $(".header").css("height","")
-    }
 
     //temporary
     if($(this).attr("data-target") === "airdrop"){

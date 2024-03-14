@@ -137,7 +137,6 @@ class SendTokenAmount extends StatefulElement {
                         <div id="balanceWrapper" class="mt-3">
                             <p id="balanceText">Balance: </p>
                             <p id="balance">${balanceLoading ? "<div class='shimmerBG' id='balanceShimmer'></div>" : Utils.formatAmount(balance.balance, balance.decimals)}</p>
-                            <p id="balanceSymbol"> ${token.ticker}</p>
                         </div>  
                     </div>
                     <div class="p-3">

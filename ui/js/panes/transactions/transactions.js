@@ -90,6 +90,16 @@ class TransactionsHistory extends StatefulElement {
 
         const rows = this.getRows(data, 0, this.boxNumber)
 
+        if(rows.length == 0){
+            rows.push(`
+                <div class="text-center mt-4">
+                    <img src="../images/noContact.png" id="emptyImg">
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No transactions yet!</p>
+                    <p id="emptySubtitle">Your transaction history will appear here.</p>
+                </div>
+            `)
+        }
+
         return `
            <div class="fullpageSection">
                 <div id="wrapper">
@@ -154,6 +164,19 @@ class TransactionsHistory extends StatefulElement {
             .date {
                 margin-bottom: -0.25em;
                 margin-top: 1em;
+            }
+            
+            #emptyImg {
+                width: 100%;
+            }
+            
+            #emptyTitle {
+                color: var(--gray-700);
+                font-weight: 600;
+            }
+            
+            #emptySubtitle {
+                color: var(--gray-400);
             }
         `;
     }

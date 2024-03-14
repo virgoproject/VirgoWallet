@@ -58,6 +58,10 @@ class SwapTokens extends StatefulElement {
 
         const wallet = baseInfos.wallets[baseInfos.selectedWallet].wallet
 
+        if(!wallet.swapV2Params){
+            return this.notYet()
+        }
+
         this.chainID = wallet.chainID
 
         const [tokenIn, setTokenIn] = this.useState("tokenIn", null)
@@ -178,6 +182,10 @@ class SwapTokens extends StatefulElement {
                 _this.amount = ""
                 setTokenIn(null)
                 setTokenOut(null)
+                _this.runIntervals()
+            }
+            elem.getRoute = () => {
+                return _this.route
             }
             document.body.appendChild(elem)
         })
@@ -191,7 +199,6 @@ class SwapTokens extends StatefulElement {
                          <div class="balanceWrapper">
                             <p class="m-0">Available: </p>
                             <p class="m-0 balance">${inBalance == null ? "-" : inBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(inBalance.balance, inBalance.decimals)}</p>
-                            <p class="m-0"> ${tokenIn == null ? "" : tokenIn.ticker}</p>
                          </div>
                     </div>
                     <div class="tokenWrapper">
@@ -214,7 +221,6 @@ class SwapTokens extends StatefulElement {
                          <div class="balanceWrapper">
                             <p class="m-0">Available: </p>
                             <p class="m-0 balance">${outBalance == null ? "-" : outBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(outBalance.balance, outBalance.decimals)}</p>
-                            <p class="m-0"> ${tokenOut == null ? "" : tokenOut.ticker}</p>
                          </div>
                     </div>
                     <div class="tokenWrapper" id="tokenOutWrapper">
@@ -238,6 +244,17 @@ class SwapTokens extends StatefulElement {
             <span id="inputCalcSpan" class="text-2xl"></span>
         `;
 
+    }
+
+    notYet(){
+        return `
+        <div id="notYetWrapper">
+            <div class="text-4xl" id="notYetLogo">
+                <i class="fas fa-retweet"></i>
+            </div>
+            <p class="mt-4 text-lg text-center" id="notYetText">Swaps will be available<br>soon for this chain!</p>
+        </div>
+        `;
     }
 
     style() {
@@ -407,6 +424,26 @@ class SwapTokens extends StatefulElement {
                 width: 100%;
                 text-align: center;
                 margin-left: -1rem;
+            }
+            
+            #notYetWrapper {
+                height: 100vh;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+            
+            #notYetLogo {
+                background: var(--gray-50);
+                padding: 1em;
+                border-radius: 50%;
+                color: var(--gray-400);
+            }
+            
+            #notYetText {
+                color: var(--gray-700);
             }
         `;
     }

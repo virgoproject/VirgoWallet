@@ -86,11 +86,25 @@ class ContactsList extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        let searchBar = `<search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a contact"></search-bar>`
+
+        if(rows.length == 0){
+            searchBar = ""
+
+            rows.push(`
+                <div class="text-center mt-4">
+                    <img src="../images/noContact.png" id="emptyImg">
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No contacts yet!</p>
+                    <p id="emptySubtitle">Add an address to yours contacts to rapidly send crypto to it.</p>
+                </div>
+            `)
+        }
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Contacts" backfunc="${back}"></section-header>
-                    <search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a contact"></search-bar>
+                    ${searchBar}
                     <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner" class="px-3">
                             ${rows}
@@ -176,6 +190,19 @@ class ContactsList extends StatefulElement {
                 color: var(--gray-400);
                 text-overflow: ellipsis;
                 overflow: hidden;
+            }
+            
+            #emptyImg {
+                width: 100%;
+            }
+            
+            #emptyTitle {
+                color: var(--gray-700);
+                font-weight: 600;
+            }
+            
+            #emptySubtitle {
+                color: var(--gray-400);
             }
         `;
     }

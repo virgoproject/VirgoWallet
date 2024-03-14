@@ -2,65 +2,10 @@ MAIN_ASSET = undefined
 
 class MainPane {
 
-    static importNft = $(".importNft")
-    static backupPopup = {
-        self: $("#backupPopup"),
-        close: $("#backupPopup .close"),
-        button: $("#backupPopup .button")
-    }
-    static updatePopup = {
-        self: $("#updatePopup"),
-        close: $("#updatePopup .close")
-    }
-    static baseNftRow = $("#baseNftRow")
-    static walletNft = $("#walletNft")
-    static nft = $("#nft")
-
-    constructor() {
-
-        MainPane.backupPopup.self.click(function(){
-            closedBackupPopup()
-        })
-
-        MainPane.backupPopup.close.click(function(){
-            closedBackupPopup()
-        })
-
-        MainPane.updatePopup.self.click(function(){
-            closedUpdatePopup()
-        })
-
-        MainPane.updatePopup.close.click(function(){
-            closedUpdatePopup()
-        })
-
-
-        MainPane.backupPopup.button.click(function(){
-            const elem = document.createElement("settings-new-password")
-            document.body.appendChild(elem)
-            MainPane.backupPopup.close.click()
-        })
-
-    }
-
     updateData(){
-        if(document.hidden) return
-
-        const _this = this
-
         browser.runtime.sendMessage({command: 'getBaseInfos'})
             .then(function (response) {
-                if(events.oldData !== JSON.stringify(response)) {
-                    if(response.locked){
-                        unlockPane.displayUnlock(response.biometricsEnabled)
-                        clearInterval(_this.interval)
-                        return
-                    }
-
-                    console.log("updating")
-                    mainPane.displayData(response)
-                }
-                events.updateData(response)
+                mainPane.displayData(response)
             })
     }
 
@@ -145,12 +90,6 @@ class MainPane {
 
     setResume(data){
         this.displayData(data)
-
-        if(data.backupPopup)
-            MainPane.backupPopup.self.show()
-
-        if(data.updatePopup)
-            MainPane.updatePopup.self.show()
 
         setInterval(function(){
             mainPane.updateData()

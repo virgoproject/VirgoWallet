@@ -6,9 +6,25 @@ class ScrollView extends StatefulElement {
         const elem = this.querySelector("#scroll")
 
         elem.addEventListener('wheel', (event) => {
-            console.log(event)
             if(event.deltaY < 0 && _this.onscrollup) _this.onscrollup()
             if(event.deltaY > 0 && _this.onscrolldown) _this.onscrolldown()
+        })
+
+        //wheel event mobile eq.
+        let touchstartY = 0
+
+        elem.addEventListener('touchstart', e => {
+            touchstartY = e.changedTouches[0].screenY
+        })
+
+        elem.addEventListener('touchend', e => {
+            const deltaY = touchstartY - e.changedTouches[0].screenY
+            if(deltaY < 0 && _this.onscrollup) _this.onscrollup()
+            if(deltaY > 0 && _this.onscrolldown) _this.onscrolldown()
+        })
+
+
+        elem.addEventListener("scroll", e => {
             const scrollPercentage = (elem.scrollTop / (elem.scrollHeight - elem.clientHeight));
             if(scrollPercentage > 0.7 && _this.onnearend) _this.onnearend()
         })

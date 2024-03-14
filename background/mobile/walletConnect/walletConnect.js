@@ -68,20 +68,6 @@ class WalletConnect {
             }
         })
 
-        const interval = setInterval(() => {
-            if(events == undefined) return
-
-            events.addListener("chainChanged", () => {
-                _this.updateSessions("chainChanged")
-            })
-
-            events.addListener("addressChanged", () => {
-                _this.updateSessions("accountsChanged")
-            })
-
-            clearInterval(interval)
-        }, 100)
-
     }
 
     connect(uri){

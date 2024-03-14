@@ -35,7 +35,7 @@ class UnlockPane {
                         UnlockPane.createpane.show()
                     else {
                         UnlockPane.createpane.hide()
-                        tutorialPane.checkDisplay()
+                        //tutorialPane.checkDisplay()
                     }
                 }
             })
@@ -125,8 +125,6 @@ class UnlockPane {
         $("#unlockPane").hide()
         UnlockPane.createpane.hide()
         mainPane.setResume(data)
-        swapPane.setSwap(data)
-        atomicSwapPane.setAtomicSwap(data)
         $("#mainPane").show()
     }
 

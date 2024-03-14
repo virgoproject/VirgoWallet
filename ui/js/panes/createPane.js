@@ -11,10 +11,7 @@ class CreatePane {
 
         CreatePane.buttons.createWallet.click(async function () {
             CreatePane.self.hide()
-            MainPane.self.show()
-            SettingsPane.settings.removeClass('opened')
             setSetupDone()
-            tutorialPane.checkDisplay()
         })
 
         CreatePane.buttons.importWallet.click(function () {

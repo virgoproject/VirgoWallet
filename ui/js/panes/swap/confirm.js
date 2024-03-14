@@ -68,6 +68,11 @@ class ConfirmSwap extends StatefulElement {
             }
         })
 
+        const {data: refresh30s, loading: refresh30sLoading} = this.useInterval(async () => {
+            _this.route = _this.getRoute()
+            return Math.random()
+        }, 30000)
+
         const [sending, setSending] = this.useState("sending", false)
 
         let feesContent = ""
@@ -92,40 +97,40 @@ class ConfirmSwap extends StatefulElement {
         if(sending) button = `<button class="button w-100" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
-            <div class="fullpageSection">
-                <div id="wrapper">
-                    <section-header title="Confirm Swap" backfunc="${back}"></section-header>
-                    <div id="content" class="px-3">
-                        <div class="tokenWrapper mt-3" id="tokenIn">
-                            <div class="shimmerBG shimmerIcon"></div>
-                            <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenIn.name.charAt(0).toUpperCase()}</p></div>
-                            <img class="logo" style="display: none">
-                            <div class="textLeft">
-                                <p class="amountLabel text-sm">You swap</p>
-                                <div class="amountWrapper">
-                                    <p class="amount">${Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals)}</p>
-                                    <p> ${_this.tokenIn.ticker}</p>
+            <bottom-popup onclose="${back}">
+                    <section-header title="Confirm Swap" no-padding></section-header>
+                    <div id="content">
+                        <div>
+                            <div class="tokenWrapper mt-3" id="tokenIn">
+                                <div class="shimmerBG shimmerIcon"></div>
+                                <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenIn.name.charAt(0).toUpperCase()}</p></div>
+                                <img class="logo" style="display: none">
+                                <div class="textLeft">
+                                    <p class="amountLabel text-sm">You swap</p>
+                                    <div class="amountWrapper">
+                                        <p class="amount">${Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals)}</p>
+                                        <p> ${_this.tokenIn.ticker}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tokenWrapper mt-3" id="tokenOut">
-                            <div class="shimmerBG shimmerIcon"></div>
-                            <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenOut.name.charAt(0).toUpperCase()}</p></div>
-                            <img class="logo" style="display: none">
-                            <div class="textLeft">
-                                <p class="amountLabel text-sm">You will get</p>
-                                <div class="amountWrapper">
-                                    <p class="amount">${Utils.formatAmount(_this.route.routes[0].amount, _this.tokenOut.decimals)}</p>
-                                    <p> ${_this.tokenOut.ticker}</p>
+                            <div class="tokenWrapper mt-3" id="tokenOut">
+                                <div class="shimmerBG shimmerIcon"></div>
+                                <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenOut.name.charAt(0).toUpperCase()}</p></div>
+                                <img class="logo" style="display: none">
+                                <div class="textLeft">
+                                    <p class="amountLabel text-sm">You will get</p>
+                                    <div class="amountWrapper">
+                                        <p class="amount">${Utils.formatAmount(_this.route.routes[0].amount, _this.tokenOut.decimals)}</p>
+                                        <p> ${_this.tokenOut.ticker}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         ${feesContent}
                     </div>
-                    <div class="p-3">
+                    <div class="mt-3">
                         ${button}
                     </div>
-                </div>
             </div>
         `;
     }
