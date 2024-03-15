@@ -58,9 +58,6 @@ class QrScannerPane {
             if(viewfinderWidth == 0)
                 viewfinderWidth = window.innerWidth
 
-            console.log(viewfinderWidth)
-            console.log(viewfinderHeight)
-
             let minEdgePercentage = 0.7 // 70%
             let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight)
             let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage)

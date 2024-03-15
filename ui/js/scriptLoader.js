@@ -124,6 +124,8 @@ const mobileScripts = [
 const mobileScriptsAfter = [
     "../js/mobileTweaks.js",
     "../js/panes/settings/security/biometrics.js",
+    "../js/panes/QRScanner/QRScanner.js",
+    "../js/panes/QRScanner/request.js"
 ]
 
 const loadScript = async src => {

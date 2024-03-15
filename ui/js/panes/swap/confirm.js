@@ -202,13 +202,6 @@ class ConfirmSwap extends StatefulElement {
 
     style() {
         return `
-            #wrapper {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                height: 100%;
-            }
-            
             #content {
                 flex-grow: 1;
                 min-height: 0;
