@@ -4,8 +4,14 @@ class TokenDetailsSimple extends StatefulElement {
 
         const _this = this
 
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            return await getBaseInfos()
+        })
+
+        if(baseInfosLoading) return ""
+
         const {data, loading} = this.useFunction(async () => {
-            return await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
+            return await getTokenDetailsCross(_this.getAttribute("address"), baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID)
         })
 
         const backClick = this.registerFunction(() => {

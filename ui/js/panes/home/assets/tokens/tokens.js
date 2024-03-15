@@ -15,7 +15,7 @@ class HomeTokens extends StatefulElement {
                 if (!balance.tracked) continue;
 
                 let sortVal
-                if(contractAddr == MAIN_ASSET.ticker)
+                if(contractAddr == baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker)
                     sortVal = 9999999999999999999
                 else
                     sortVal = balance.price == 0 ? balance.balance/10**balance.decimals*2 : balance.price*balance.balance/10**balance.decimals

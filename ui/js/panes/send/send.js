@@ -22,7 +22,7 @@ class SendToken extends StatefulElement {
             for(const transaction of baseInfos.wallets[baseInfos.selectedWallet].wallet.transactions){
                 if(recent.length >= 5) break
                 if(recentFilter.includes(transaction.recipient.toLowerCase())) continue
-                if(transaction.contractAddr != MAIN_ASSET.ticker && !await validateAddress(transaction.contractAddr)) continue
+                if(transaction.contractAddr != baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker && !await validateAddress(transaction.contractAddr)) continue
 
                 recentFilter.push(transaction.recipient.toLowerCase())
 

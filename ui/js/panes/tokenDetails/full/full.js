@@ -3,8 +3,14 @@ class TokenDetailsFull extends StatefulElement {
     render() {
         const _this = this
 
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            return await getBaseInfos()
+        })
+
+        if(baseInfosLoading) return ""
+
         const {data, loading} = this.useFunction(async () => {
-            return await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
+            return await getTokenDetailsCross(_this.getAttribute("address"), baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID)
         })
 
         const backClick = this.registerFunction(() => {
@@ -60,7 +66,7 @@ class TokenDetailsFull extends StatefulElement {
 
         return `
             <div id="wrapper">
-                <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + data.contract + "/logo.png"}"></section-header>
+                <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID + "/" + data.contract + "/logo.png"}"></section-header>
                 <div class="d-flex px-3 mt-3">
                     <div class="menuElem ${menu == 'overview' ? 'selected' : ''} mr-2" id="overviewBtn" onclick="${menuClick}">
                         Overview

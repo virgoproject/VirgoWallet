@@ -11,14 +11,12 @@ class AccountSelector extends StatefulElement {
         const _this = this
 
         const {data, loading} = this.useFunction(async () => {
-            const baseInfos = await getBaseInfos()
-            return {
-                addresses: baseInfos.addresses,
-                selectedAddress: baseInfos.selectedAddress
-            }
+            return await getBaseInfos()
         })
 
         if(loading) return ""
+
+        const selectedWallet = data.wallets[data.selectedWallet].wallet
 
         const settingsClick = this.registerFunction(() => {
             const elem = document.createElement("settings-menu")
@@ -45,7 +43,7 @@ class AccountSelector extends StatefulElement {
                         <div class="accountLogo">${jdenticon.toSvg(account.address, 36)}</div>
                         <div class="accountText">
                             <p class="accountName">${account.name}</p>
-                            <p class="accountValue text-sm"><span class="val">${Utils.formatAmount(account.balances[MAIN_ASSET.ticker].balance, MAIN_ASSET.decimals)}</span><span> ${MAIN_ASSET.ticker}</span></p>
+                            <p class="accountValue text-sm"><span class="val">${Utils.formatAmount(account.balances[selectedWallet.ticker].balance, selectedWallet.decimals)}</span><span> ${selectedWallet.ticker}</span></p>
                         </div>
                         <i class="fa-regular ${data.selectedAddress == i ? "fa-check" : "fa-chevron-right" } text-xl accountRightIcon"></i>
                     </div>

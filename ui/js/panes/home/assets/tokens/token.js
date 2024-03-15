@@ -3,6 +3,8 @@ class HomeToken extends StatefulElement {
     eventHandlers() {
         const _this = this
 
+        if(this.baseInfos === undefined) return
+
         const logo = this.querySelector("#logo")
         const address = this.getAttribute("address")
 
@@ -15,7 +17,7 @@ class HomeToken extends StatefulElement {
             _this.querySelector("#shimmerIcon").style.display = "none"
         }
 
-        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + address + "/logo.png"
+        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.baseInfos.wallets[this.baseInfos.selectedWallet].wallet.chainID + "/" + address + "/logo.png"
     }
 
     async render() {
@@ -26,11 +28,13 @@ class HomeToken extends StatefulElement {
             const balance = await getBalance(_this.getAttribute("address"))
             return {
                 balance,
-                selectedCurrency: baseInfos.selectedCurrency
+                baseInfos
             }
         }, 1000)
 
         if(loading) return ""
+
+        this.baseInfos = data.baseInfos
 
         const tokenClick = this.registerFunction(() => {
             const elem = document.createElement("token-details")
@@ -49,7 +53,7 @@ class HomeToken extends StatefulElement {
                 </div>
                 <div id="rightText">
                     <p id="balance"><span id="val">${Utils.cutTo4Decimals(Utils.formatAmount(data.balance.balance, data.balance.decimals))}</span></p>
-                    <p id="fiatValue" class="text-sm"><span id="fiatval">${(data.balance.price*data.balance.balance/10**data.balance.decimals).toFixed(2)}</span><span id="fiatSymbol">${currencyToSymbol(data.selectedCurrency)}</span></p>
+                    <p id="fiatValue" class="text-sm"><span id="fiatval">${(data.balance.price*data.balance.balance/10**data.balance.decimals).toFixed(2)}</span><span id="fiatSymbol">${currencyToSymbol(data.baseInfos.selectedCurrency)}</span></p>
                 </div>
             </div>
         `;

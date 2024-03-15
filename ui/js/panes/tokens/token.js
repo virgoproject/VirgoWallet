@@ -3,6 +3,8 @@ class TokenCard extends StatefulElement {
     eventHandlers() {
         const _this = this
 
+        if(this.baseInfos === undefined) return
+
         const logo = this.querySelector("#logo")
         const address = this.getAttribute("address")
 
@@ -15,18 +17,22 @@ class TokenCard extends StatefulElement {
             _this.querySelector("#shimmerIcon").style.display = "none"
         }
 
-        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + MAIN_ASSET.chainID + "/" + address + "/logo.png"
+        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.baseInfos.wallets[this.baseInfos.selectedWallet].wallet.chainID + "/" + address + "/logo.png"
 
     }
 
     render() {
         const _this = this
 
+        const {baseInfos, baseInfosLoading} = this.useFunction(async() => {
+            return await getBaseInfos()
+        })
+
         const {data, loading} = this.useFunction(async () => {
             return await getTokenDetails(_this.getAttribute("address"))
         })
 
-        if(loading){
+        if(loading || baseInfosLoading){
             return `
                 <div id="shimmer" class="row">
                     <div class="col-2 align-self-center">
@@ -39,6 +45,8 @@ class TokenCard extends StatefulElement {
                 </div>
             `
         }
+
+        this.baseInfos = baseInfos
 
         const trackingClick = this.registerFunction(e => {
             changeAssetTracking(data.contract)

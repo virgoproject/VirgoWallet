@@ -3,9 +3,15 @@ class TokenDetails extends StatefulElement {
     async render() {
         const _this = this
 
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            return await getBaseInfos()
+        })
+
+        if(baseInfosLoading) return ""
+
         const {data, loading} = this.useFunction(async () => {
             try {
-                const res = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+MAIN_ASSET.chainID+"/"+_this.address+"/infos.json")
+                const res = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/"+baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID+"/"+_this.address+"/infos.json")
                 const tokenInfos = await res.json()
                 return {
                     "type": "full",

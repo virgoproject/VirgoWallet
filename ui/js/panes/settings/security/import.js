@@ -77,37 +77,16 @@ class SettingsImportMnemonic extends StatefulElement {
             restoreFromMnemonic(mnemonic).then(function(res) {
                 setTimeout(function () {
                     getBaseInfos().then(data => {
-                        if(data.backupPopup)
-                            MainPane.backupPopup.self.show()
-                        //chain selection
-                        selectChains.setChains(data)
-                        //settings
-                        let elem = SettingsPane.baseAccountRow.clone()
-                        SettingsPane.accounts.html("")
-                        SettingsPane.accounts.append(elem)
-                        settingsPane.setSettings(data)
-                        //assets
-                        elem = MainPane.baseAssetRow.clone()
-                        MainPane.walletAssets.html("")
-                        MainPane.walletAssets.append(elem)
-                        mainPane.displayData(data)
-                        //send form
-                        SendPane.recipient.val("")
-                        SendPane.amount.val("")
-                        SendPane.backBtn.attr("disabled", false)
-                        enableLoadBtn(SendPane.btnSubmit)
-                        SendPane.backBtn.click()
-                        SendPane.assetSelect.html("")
-                        sendPane.setSend(data)
 
-                        CreatePane.self.hide()
+                        const home = document.createElement("wallet-home")
+                        document.getElementById("resumePane").innerHTML = ""
+                        document.getElementById("resumePane").appendChild(home)
+                        document.getElementById("mainPane").style.display = "block"
 
                         notyf.success("Wallet recovered!")
-                        if(SettingsPane.settings.hasClass("opened")){
-                            SettingsPane.accountSelectionHeader.click()
-                        }
 
                         try {
+                            document.querySelector("unlock-wallet").remove()
                             document.querySelector("settings-menu").remove()
                             document.querySelector("security-settings").remove()
                         }catch(e){}

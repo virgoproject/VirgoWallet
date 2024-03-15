@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="../css/panes/qrScanner.css">
 </head>
 <body>
-<div id="loadingPane">
-    <i class="fas fa-spinner fa-pulse"></i>
-</div>
+<wallet-loading></wallet-loading>
 <div id="unlockPane" style="display: none">
     <img src="../images/logoPurple.png">
     <h1 class="mt-2">Nice to see you!</h1>
@@ -63,8 +61,8 @@
 </div>
 <div id="mainPane" style="display: none">
     <div id="body">
-        <div class="bodyElem resume px-3 mt-3">
-            <wallet-home></wallet-home>
+        <div class="bodyElem resume px-3 mt-3" id="resumePane">
+
         </div>
         <div class="bodyElem send px-3" id="sendPane" style="display: none">
 

@@ -82,9 +82,6 @@ async function isEncrypted(){
 }
 
 async function restoreFromMnemonic(mnemonic){
-    setTimeout(() => {
-        tutorialPane.checkDisplay()
-    }, 5000)
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic})
 }
 

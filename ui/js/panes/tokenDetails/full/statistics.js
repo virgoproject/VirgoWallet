@@ -4,9 +4,10 @@ class TokenStatistics extends StatefulElement {
         const _this = this
 
         const {data, loading} = this.useFunction(async () => {
+            const baseInfos = await getBaseInfos()
             const res = await fetch("https://api.coingecko.com/api/v3/coins/"+_this.getAttribute("cgid")+"?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false")
             const json = await res.json()
-            const tokenInfos = await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
+            const tokenInfos = await getTokenDetailsCross(_this.getAttribute("address"), baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID)
 
             const stats = []
 

@@ -6,7 +6,7 @@ class TokenChart extends StatefulElement {
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const tokenInfos = await getTokenDetailsCross(_this.getAttribute("address"), MAIN_ASSET.chainID)
+            const tokenInfos = await getTokenDetailsCross(_this.getAttribute("address"), infos.wallets[infos.selectedWallet].wallet.chainID)
             const res = await fetch("https://api.coingecko.com/api/v3/coins/"+_this.getAttribute("cgid")+"/ohlc?vs_currency="+infos.selectedCurrency+"&days="+_this.getAttribute("period"))
             const json = await res.json()
 
