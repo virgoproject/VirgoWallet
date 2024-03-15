@@ -8,14 +8,23 @@ class WalletSetup extends StatefulElement {
                     <p id="title" class="mt-3 text-xl">Welcome</p>  
                     <p id="subtitle">The crypto wallet that rewards its users</p>  
                 </div>
-                <div>
+                <div class="px-3">
                     <div class="setupBtn">
                         <div class="btnIcon">
                             <i class="fa-regular fa-plus"></i>
                         </div>
                         <div class="btnText ml-2">
                             <p class="btnTitle">I don't have a wallet</p>
-                            <p class="btnSubtitle text-sm">Setup a new seed phrase and password</p>
+                            <p class="btnSubtitle text-sm">Create a new account, seed phrase, and password</p>
+                        </div>
+                    </div>
+                    <div class="setupBtn mt-3">
+                        <div class="btnIcon">
+                            <i class="fa-sharp fa-regular fa-arrow-down"></i>
+                        </div>
+                        <div class="btnText ml-2">
+                            <p class="btnTitle">I already have a wallet</p>
+                            <p class="btnSubtitle text-sm">Import your seed phrase from Metamask, Trust..</p>
                         </div>
                     </div>
                 </div>
@@ -50,6 +59,13 @@ class WalletSetup extends StatefulElement {
                 background: var(--gray-50);
                 padding: 1em;
                 border-radius: 0.5em;
+                cursor: pointer;
+                transition: all 0.1s ease-in;
+                align-items: center;
+            }
+            
+            .setupBtn:hover {
+                background: var(--gray-100);
             }
             
             .setupBtn p {
