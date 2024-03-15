@@ -20,7 +20,7 @@ class WalletSetup extends StatefulElement {
                     </div>
                     <div class="setupBtn mt-3">
                         <div class="btnIcon">
-                            <i class="fa-sharp fa-regular fa-arrow-down"></i>
+                            <i class="fa-regular fa-arrow-down"></i>
                         </div>
                         <div class="btnText ml-2">
                             <p class="btnTitle">I already have a wallet</p>
