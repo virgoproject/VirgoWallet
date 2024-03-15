@@ -13,6 +13,7 @@ const commonScripts = [
     "../js/popup.js",
     "../js/panes/loading.js",
     "../js/panes/unlock.js",
+    "../js/panes/setup.js",
     "../js/panes/airdrops/airdrops.js",
     "../js/panes/airdrops/header.js",
     "../js/panes/airdrops/airdropCard.js",

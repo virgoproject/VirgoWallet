@@ -23,7 +23,9 @@ class WalletLoading extends StatefulElement {
         }
 
         if(!baseInfos.setupDone){
-            //display create pane
+            const setup = document.createElement("wallet-setup")
+            document.body.appendChild(setup)
+            this.remove()
             return
         }
 

@@ -37,7 +37,7 @@ class BaseWallet {
         if(this.selectedAddress === undefined)
             this.selectedAddress = 0
 
-        if(this.privateKeys === undefined){
+        if(this.privateKeys === undefined || this.privateKeys.length == 0){
             provider = new HDWalletProvider({
                 mnemonic: this.mnemonic,
                 providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
@@ -129,6 +129,8 @@ class BaseWallet {
                 cipher = new sjcl.cipher.aes(dataKey)
                 data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))))
             }
+
+            console.log(data)
 
             return new BaseWallet(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt)
         }catch(e){
