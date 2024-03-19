@@ -30,6 +30,12 @@ class SecuritySettings extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const importClick = this.registerFunction(() => {
+            const e = document.createElement("settings-new-password")
+            e.import = true
+            document.body.appendChild(e)
+        })
+
         return `
             <div class="fullpageSection">
                 <section-header title="Security & Privacy" backfunc="${back}"></section-header>
@@ -47,7 +53,7 @@ class SecuritySettings extends StatefulElement {
                     <div class="row group">
                         <h5 class="title">Restore account</h5>
                         <p class="desc">Import an already existing seed phrase into the wallet.</p>
-                        <button class="buttonEmpty tab" data-open="settings-import-mnemonic" onclick="${onClick}">Import seed phrase</button>
+                        <button class="buttonEmpty tab" onclick="${importClick}">Import seed phrase</button>
                     </div>
                     <div class="row group">
                         <h5 class="title">Auto-Lock</h5>

@@ -96,7 +96,7 @@ browserShim.tabs.onMessage.addListener = (func) => {
 }
 
 browserShim.tabs.sendMessage = (id, params) => {
-    browserShim.tabs.onMessage.listener(params)
+    browserShim.tabs.onMessage.listener(structuredClone(params))
 }
 
 browserShim.windows.create = (params) => {
@@ -114,7 +114,10 @@ browserShim.runtime.onMessage.addListener = (func) => {
 
 browserShim.runtime.sendMessage = (message) => {
     return new Promise((resolve, reject) => {
-        browserShim.runtime.onMessage.listener(message, "", resolve)
+        const resolveFilter = res => {
+            resolve(structuredClone(res))
+        }
+        browserShim.runtime.onMessage.listener(structuredClone(message), "", resolveFilter)
     })
 }
 

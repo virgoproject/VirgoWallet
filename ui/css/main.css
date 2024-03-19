@@ -79,6 +79,14 @@ body {
     --main-950: #4f0339;
 }
 
+.text-gray-400 {
+    color: var(--gray-400) !important;
+}
+
+.text-gray-700 {
+    color: var(--gray-700) !important;
+}
+
 .button {
     color: white;
     background: var(--main-700);
@@ -155,7 +163,7 @@ body {
     background: var(--gray-50);
     border: none;
     color: var(--gray-700);
-    padding: 0.5em 0.75em 0.5em 0.75em;
+    padding: 0.75em;
     border-radius: 0.5em;
     text-overflow: ellipsis;
     font-weight: 500;
@@ -314,8 +322,7 @@ border-radius: 50%;
 }
 
 .label {
-    margin: 0;
-    margin-bottom: 0.25em;
+    margin: 0 0 0.5rem;
     color: var(--gray-400);
 }
 

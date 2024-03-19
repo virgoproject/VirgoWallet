@@ -21,6 +21,7 @@ class SettingsBackupSeed extends StatefulElement {
         if(step == 2 && this.forwardToNewPassword){
             const elem = document.createElement("settings-new-password")
             elem.bypassShow = true
+            if(_this.setup) elem.setup = true
             document.body.appendChild(elem)
             this.remove()
             return
@@ -70,7 +71,7 @@ class SettingsBackupSeed extends StatefulElement {
         })
 
         return `
-            <p>This phrase permits you to recover your wallet in case of loss. <b>Write it down
+            <p class="text-gray-700">This phrase permits you to recover your wallet in case of loss. <b>Write it down
                 on paper and keep it safe</b>, away from regard.</p>
             <div class="row">
                 ${words}
@@ -177,7 +178,7 @@ class SettingsBackupSeed extends StatefulElement {
             }
 
             rows.push(`
-                <p class="text-left mb-1">Word #${pick+1}</p>
+                <p class="text-left mb-1 text-sm label">Word #${pick+1}</p>
                 <div class="row mb-4" data-toggle="buttons">
                     ${cols}
                 </div>
@@ -185,7 +186,7 @@ class SettingsBackupSeed extends StatefulElement {
         }
 
         return `
-            <p>Please select the right answers between the words below</p>
+            <p class="text-gray-400">Please select the right answers between the words below</p>
             ${rows}
             <div id="nextWrapper">
                 <button class="button w-100" id="confirmWords" disabled onclick="${btnClick}">Confirm</button>
@@ -202,8 +203,8 @@ class SettingsBackupSeed extends StatefulElement {
 
         return `
             <img src="../images/validated.png">
-            <p><b>Seed phrase successfully saved!</b></p>
-            <p>Don't forget, never share this phrase to anyone, it can be used to steal your funds!</p>
+            <p class="text-gray-700"><b>Seed phrase successfully saved!</b></p>
+            <p class="text-gray-400">Don't forget, never share this phrase to anyone, it can be used to steal your funds!</p>
             <div id="nextWrapper">
                 <button class="button w-100" onclick="${btnClick}">Finish</button>
             </div>
@@ -217,14 +218,12 @@ class SettingsBackupSeed extends StatefulElement {
             }
         
             .word {
-                background-color: var(--whiteBackground);
-                padding: 0.25em;
+                background-color: var(--gray-50);
+                padding: 0.5em;
                 border-radius: 0.5em;
                 margin: 0px;
-            }
-            
-            .wordWrapper.middle {
-                padding: 0.25em !important;
+                color: var(--gray-700);
+                font-weight: 600;
             }
             
             .wordWrapper.left {
@@ -248,20 +247,22 @@ class SettingsBackupSeed extends StatefulElement {
             }
             
             .btn-primary {
-                background-color: var(--whiteBackground)!important;
-                color: var(--bs-body-color)!important;
+                background-color: var(--gray-50)!important;
+                color: var(--gray-700)!important;
                 text-decoration: none!important;
                 border-color: transparent!important;
             }
             
             .btn-check:checked + .btn-primary {
-                background-color: var(--mainColor)!important;
+                background-color: var(--main-700)!important;
                 color: white!important;
-                border-color: var(--mainColor)!important;
+                border-color: var(--main-700)!important;
             }
             
             .wordIndex {
                 user-select: none !important;
+                color: var(--gray-400);
+                font-weight: 500;
             }
             
             img {

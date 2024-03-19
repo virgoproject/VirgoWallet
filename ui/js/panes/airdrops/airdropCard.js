@@ -5,23 +5,28 @@ class AirdropCard extends StatefulElement {
 
         const json = JSON.parse(this.getAttribute("data"))
 
-        this.querySelector("#logoPlaceholder").innerHTML = jdenticon.toSvg(json.address+json.chainID, 36)
+        const chainLogo = this.querySelector("#chainLogo")
 
-        this.querySelector("#logo").onload = e => {
+        chainLogo.onload = e => {
             e.target.style.display = "initial"
-            _this.querySelector("#logoPlaceholder").style.display = "none"
+            _this.querySelector("#shimmerChainLogo").style.display = "none"
         }
 
-        this.querySelector("#logo").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/" + json.address + "/logo.png"
+        chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/logo.png"
 
-        this.querySelector("#chainLogoPlaceholder").innerHTML = jdenticon.toSvg(json.chainID, 16)
 
-        this.querySelector("#chainLogo").onload = e => {
+        const logo = this.querySelector("#logo")
+
+        logo.onload = e => {
             e.target.style.display = "initial"
-            _this.querySelector("#chainLogoPlaceholder").style.display = "none"
+            _this.querySelector("#shimmerLogo").style.display = "none"
+        }
+        logo.onerror = e => {
+            _this.querySelector("#defaultLogo").style.display = "flex"
+            _this.querySelector("#shimmerLogo").style.display = "none"
         }
 
-        this.querySelector("#chainLogo").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/logo.png"
+        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + json.chainID + "/" + json.address + "/logo.png"
 
     }
 
@@ -38,7 +43,7 @@ class AirdropCard extends StatefulElement {
             return await checkAirdropJoined(json.id)
         })
 
-        if(loading || loading2) return
+        if(loading || loading2) return ""
 
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
@@ -66,32 +71,35 @@ class AirdropCard extends StatefulElement {
             button = ""
 
         return `
-        <div class="row mt-1" id="wrapper" onclick="${expandClick}">
-            <div class="col-2 logosWrapper align-self-center">
-                <img style="display: none" id="logo">
-                <svg width="36" height="36" id="logoPlaceholder"></svg>
-                <img style="display: none" id="chainLogo">
-                <svg width="16" height="16" id="chainLogoPlaceholder"></svg>
-            </div>
-            <div class="col-4 justify-content-center align-self-center">
+        <div class="mt-1 p-3 text-gray-700" id="wrapper" onclick="${expandClick}">
+            <div id="topWrapper">
+                <div id="logosWrapper">
+                    <div class="shimmerBG" id="shimmerLogo"></div>
+                    <div id="defaultLogo" style="display: none"><p class="m-auto">${data.name.charAt(0).toUpperCase()}</p></div>
+                    <img id="logo" style="display: none">
+                    <div class="shimmerBG" id="shimmerChainLogo"></div>
+                    <img id="chainLogo" style="display: none">
+                </div>
                 <p id="name">${data.name}</p>
+                <div id="amountWrapper">
+                    <p id="amount">${json.reward/json.winnersCount}</p>
+                    <p id="ticker"> ${data.ticker}</p>
+                    <i class="fa-regular fa-chevron-right" id="expand"></i>
+                </div>
             </div>
-            <div class="col-6 justify-content-center align-self-center text-right pl-0">
-                <p id="amount">${json.reward/json.winnersCount} ${data.ticker} <i class="fa-regular fa-chevron-right" id="expand"></i></p>
-            </div>
-            <div class="col-12 mt-3" id="details">
+            <div class="mt-3" id="details">
                 <div class="row">
                     <div class="col-4 text-center">
-                        <p class="detailValue">${json.userJoined}</p>
-                        <p class="detailTitle text-red-900">Participants</p>
+                        <p>${json.userJoined}</p>
+                        <p class="text-gray-400 text-sm">Participants</p>
                     </div>
                     <div class="col-4 text-center">
-                        <p class="detailValue">${json.winnersCount}</p>
-                        <p class="detailTitle">Winners</p>
+                        <p>${json.winnersCount}</p>
+                        <p class="text-gray-400 text-sm">Winners</p>
                     </div>
                     <div class="col-4 text-center">
-                        <p class="detailValue">${timeLeft.value}</p>
-                        <p class="detailTitle">${timeLeft.label} left</p>
+                        <p>${timeLeft.value}</p>
+                        <p class="text-gray-400 text-sm">${timeLeft.label} left</p>
                     </div>
                     ${button}
                 </div>
@@ -104,47 +112,74 @@ class AirdropCard extends StatefulElement {
         return `
 
             #wrapper {
-                padding: 0.75em 0;
                 border-radius: 0.5em;
-                transition: all 0.2s ease-in;
+                transition: all 0.2s ease-in 0s;
                 cursor: pointer;
             }
             
             #wrapper:hover {
-                background: var(--whiteBackground);
+                background: var(--gray-50);
             }
 
             p {
                 margin-bottom: 0!important;
             }
             
+            #topWrapper {
+                display: flex;
+                align-items: center;
+            }
+            
+            #name {
+                margin-left: 1em;
+            }
+            
+            #amountWrapper {
+                display: flex;
+                white-space: pre;
+                flex: 1 1 0%;
+                justify-content: flex-end;
+                margin-left: 1em;
+                min-width: 0px;
+                align-items: center;
+            }
+            
             #amount {
-                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            #logo {
+            #logo, #shimmerLogo, #defaultLogo {
                 height: 36px;
                 width: 36px;
                 border-radius: 50%;
                 background-size: cover;
                 margin: auto;
+                animation-duration: 30s;
             }
             
-            #chainLogo, #chainLogoPlaceholder {
+            #chainLogo, #shimmerChainLogo {
                 position: relative;
                 height: 16px;
+                width: 16px;
                 border-radius: 100%;
                 left: 24px;
                 top: -44px;
                 border: 1px solid white;
-            }
-
-            #logoPlaceholder {
-                border-radius: 50%;
+                animation-duration: 80s;
             }
             
-            .logosWrapper {
+            #defaultLogo {
+                text-align: center;
+                line-height: 36px;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+                font-weight: bold;
+            }
+            
+            #logosWrapper {
                 height: 36px;
+                width: 36px;
             }
 
             #expand {
@@ -154,16 +189,11 @@ class AirdropCard extends StatefulElement {
             }
 
             .opened {
-                background: var(--whiteBackground);
+                background: var(--gray-50);
             }
 
             .opened #expand {
                 transform: rotate(90deg);
-            }
-
-            .detailTitle {
-                font-size: 0.875em;
-                color: rgba(0, 0, 0, 0.6);
             }
 
             #details {

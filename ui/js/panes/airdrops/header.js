@@ -32,12 +32,12 @@ class AirdropsHeader extends StatefulElement {
         return `
             <div class="row" id="stats">
                 <div class="col-6 text-center">
-                    <p class="value">${participations}</p>
-                    <p class="title">participations</p>
+                    <p class="text-gray-700 text-xl">${participations}</p>
+                    <p class="text-gray-400">participations</p>
                 </div>
                 <div class="col-6 text-center">
-                    <p class="value">${wins}</p>
-                    <p class="title">wins</p>
+                    <p class="text-gray-700 text-xl">${wins}</p>
+                    <p class="text-gray-400">wins</p>
                 </div>
             </div>
             ${claimBtn}
@@ -51,17 +51,9 @@ class AirdropsHeader extends StatefulElement {
             }
             
             #stats {
-                background: var(--whiteBackground);
+                background: var(--gray-50);
                 padding: 0.5em;
                 border-radius: 0.5em;
-            }
-            
-            .value {
-                font-size: 1.25em;
-            }
-            
-            .title {
-                color: rgba(0, 0, 0, 0.6)
             }
             
         `;

@@ -14,7 +14,7 @@ class UnlockWallet extends StatefulElement {
                     reactMessaging.getPassword().then(res => {
                         if(res.password === undefined) return
 
-                        _this.querySelector("#input").value = res.password
+                        _this.inputVal = res.password
                         _this.querySelector("#btn").onclick()
                     })
                 }
@@ -73,7 +73,9 @@ class UnlockWallet extends StatefulElement {
 
         const recoverClick = this.registerFunction(() => {
             if(loading) return
-            const e = document.createElement("settings-import-mnemonic")
+            const e = document.createElement("settings-new-password")
+            e.import = true
+            e.bypassWarning = true
             document.body.appendChild(e)
         })
 

@@ -7,19 +7,20 @@ class SettingsImportMnemonic extends StatefulElement {
     render() {
         const [mnemonic, setMnemonic] = this.useState("mnemonic", false)
 
-        if(mnemonic){
+        if(mnemonic && !this.bypassWarning){
             return this.confirm(mnemonic, setMnemonic)
         }
 
-        return this.form(setMnemonic)
+        return this.form(mnemonic, setMnemonic)
     }
 
-    form(setMnemonic){
+    form(mnemonic, setMnemonic){
         const _this = this
 
         const [error, setError] = this.useState("error", false)
 
         const back = this.registerFunction(() => {
+            if(mnemonic) return
             _this.remove()
         })
 
@@ -35,6 +36,10 @@ class SettingsImportMnemonic extends StatefulElement {
                     return
                 }
 
+                if(_this.bypassWarning){
+                    _this.restoreMnemonic(_this.querySelector("#input").value)
+                }
+
                 setMnemonic(_this.querySelector("#input").value)
             })
         })
@@ -43,9 +48,12 @@ class SettingsImportMnemonic extends StatefulElement {
             if(error) setError(false)
         })
 
-        let label = `<p class="label text-left">Enter your seed phrase</p>`
+        let label = `<p class="label text-left text-sm">Seed phrase</p>`
 
-        if(error) label = `<p class="label text-left" id="error">Invalid seed phrase</p>`
+        if(error) label = `<p class="label text-left text-sm" id="error">Invalid seed phrase</p>`
+
+        let button = `<button class="button w-100" id="confirm" disabled onclick="${onClick}">Recover wallet</button>`
+        if(mnemonic) button = `<button class="button w-100" id="confirm" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <div class="fullpageSection">
@@ -53,10 +61,10 @@ class SettingsImportMnemonic extends StatefulElement {
                 <div id="content" class="text-center">
                     ${label}
                     <textarea rows="4" class="input w-100 ${error ? 'is-invalid' : ''}" onfocus="${onFocus}"
-                              placeholder="antenna frequent mule pill..." id="input" oninput="${onInput}"></textarea>
-                    <p class="mt-2">Generally a 12 words (sometimes 18, 24) sentence without special characters.</p>
+                              id="input" oninput="${onInput}"></textarea>
+                    <p class="mt-2 text-gray-400 text-sm">Generally a 12 words (sometimes 18, 24) sentence without special characters.</p>
                     <div id="nextWrapper">
-                        <button class="button w-100" id="confirm" disabled onclick="${onClick}">Recover wallet</button>
+                        ${button}
                     </div>
                 </div>
             </div>
@@ -74,34 +82,13 @@ class SettingsImportMnemonic extends StatefulElement {
         })
 
         const onClick = this.registerFunction(() => {
-            restoreFromMnemonic(mnemonic).then(function(res) {
-                setTimeout(function () {
-                    getBaseInfos().then(data => {
-
-                        const home = document.createElement("wallet-home")
-                        document.getElementById("resumePane").innerHTML = ""
-                        document.getElementById("resumePane").appendChild(home)
-                        document.getElementById("mainPane").style.display = "block"
-
-                        notyf.success("Wallet recovered!")
-
-                        try {
-                            document.querySelector("unlock-wallet").remove()
-                            document.querySelector("settings-menu").remove()
-                            document.querySelector("security-settings").remove()
-                        }catch(e){}
-
-                        _this.remove()
-                    })
-                }, 2000)
-            })
-
+            _this.restoreMnemonic(mnemonic)
             setLoading(true)
         })
 
         let button = `<button class="button w-100" id="confirm" onclick="${onClick}">I understand, proceed</button>`
 
-        if(loading) button = `<button class="button w-100" id="confirm" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
+        if(loading) button = `<button class="button w-100" id="confirm" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <div class="fullpageSection">
@@ -118,6 +105,49 @@ class SettingsImportMnemonic extends StatefulElement {
             </div>
         `
 
+    }
+
+    restoreMnemonic(mnemonic){
+        const _this = this
+
+        restoreFromMnemonic(mnemonic).then(function(res) {
+            setTimeout(function () {
+                setPassword(_this.password).then(() => {
+                    try {
+                        document.querySelector("wallet-home").remove()
+                    }catch (e) {}
+
+                    const home = document.createElement("wallet-home")
+                    document.getElementById("resumePane").innerHTML = ""
+                    document.getElementById("resumePane").appendChild(home)
+                    document.getElementById("mainPane").style.display = "block"
+
+                    notyf.success("Wallet recovered!")
+
+                    try {
+                        document.querySelector("unlock-wallet").remove()
+                    }catch (e) {}
+
+                    try {
+                        document.querySelector("settings-menu").remove()
+                    }catch (e) {}
+
+                    try {
+                        document.querySelector("security-settings").remove()
+                    }catch (e) {}
+
+                    try {
+                        document.querySelector("wallet-setup").remove()
+                    }catch (e) {}
+
+                    try {
+                        document.querySelector("account-selector").remove()
+                    }catch (e) {}
+
+                    _this.remove()
+                })
+            }, 2000)
+        })
     }
 
     style() {

@@ -1,6 +1,19 @@
 class WalletSetup extends StatefulElement {
 
     render() {
+
+        const createClick = this.registerFunction(() => {
+            const e = document.createElement("settings-new-password")
+            document.body.appendChild(e)
+        })
+
+        const recoverClick = this.registerFunction(() => {
+            const e = document.createElement("settings-new-password")
+            e.import = true
+            e.bypassWarning = true
+            document.body.appendChild(e)
+        })
+
         return `
             <div class="fullpageSection" id="wrapper">
                 <div class="text-center">
@@ -13,7 +26,7 @@ class WalletSetup extends StatefulElement {
                         <div class="btnIcon">
                             <i class="fa-regular fa-plus"></i>
                         </div>
-                        <div class="btnText ml-2">
+                        <div class="btnText ml-2" onclick="${createClick}">
                             <p class="btnTitle">I don't have a wallet</p>
                             <p class="btnSubtitle text-sm">Create a new account, seed phrase, and password</p>
                         </div>
@@ -22,7 +35,7 @@ class WalletSetup extends StatefulElement {
                         <div class="btnIcon">
                             <i class="fa-regular fa-arrow-down"></i>
                         </div>
-                        <div class="btnText ml-2">
+                        <div class="btnText ml-2" onclick="${recoverClick}">
                             <p class="btnTitle">I already have a wallet</p>
                             <p class="btnSubtitle text-sm">Import your seed phrase from Metamask, Trust..</p>
                         </div>
@@ -36,6 +49,7 @@ class WalletSetup extends StatefulElement {
         return `
             #title {
                 font-weight: 600;
+                color: var(--gray-700);
             }
         
             #wrapper {
@@ -87,6 +101,10 @@ class WalletSetup extends StatefulElement {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 flex: 1;
+            }
+            
+            .btnTitle {
+                color: var(--gray-700);
             }
             
             .btnSubtitle {

@@ -2,6 +2,7 @@ class ReceivePopup extends StatefulElement {
 
     eventHandlers() {
         if(this.address === undefined) return
+        this.querySelector("#qrcode").innerHTML = ""
         new QRCode(this.querySelector("#qrcode"), this.address)
     }
 

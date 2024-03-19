@@ -24,7 +24,7 @@ class TokenCard extends StatefulElement {
     render() {
         const _this = this
 
-        const {baseInfos, baseInfosLoading} = this.useFunction(async() => {
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async() => {
             return await getBaseInfos()
         })
 
