@@ -76,6 +76,18 @@ class SettingsNewPassword extends StatefulElement {
             if(error) setError(false)
         })
 
+        const eyeClick = this.registerFunction(e => {
+            if(e.currentTarget.checked){
+                e.currentTarget.checked = false
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "password"
+            }else{
+                e.currentTarget.checked = true
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "text"
+            }
+        })
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
@@ -85,11 +97,21 @@ class SettingsNewPassword extends StatefulElement {
                         <div>
                             <div class="mt-3">
                                 <p class="label text-left text-sm mb-2">New password</p>
-                                <input type="password" class="input col-12 ${error ? 'is-invalid' : ''}" id="input1" oninput="${onInput}" onfocus="${onFocus}">
+                                <div class="btnInputWrapper">
+                                    <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input1" oninput="${onInput}" onfocus="${onFocus}">
+                                    <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input1">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-3">
                                 <p class="label text-left text-sm mb-2">Confirm password</p>
-                                <input type="password" class="input col-12 ${error ? 'is-invalid' : ''}" id="input2" oninput="${onInput}" onfocus="${onFocus}">
+                                <div class="btnInputWrapper">
+                                    <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input2" oninput="${onInput}" onfocus="${onFocus}">
+                                    <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input2">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </div>
+                                </div>
                                 <p class="label text-left mt-2 text-sm">Must be at least 8 characters long</p>
                             </div>
                             ${error ? "<div class='mt-3 text-center'><p class='text-danger'>Passwords don't match</p></div>" : ""}

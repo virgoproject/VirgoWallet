@@ -34,13 +34,22 @@ class HomeMainBalance extends StatefulElement {
             notyf.success("Address copied to clipboard!");
         })
 
+        const qrClick = this.registerFunction(() => {
+            QRScannerPane.init()
+        })
+
         return `
-            <div class="d-flex mt-3">
+            <div class="d-flex mt-3 mb-1 align-items-center">
                 <p id="accountName" class="m-0">${data.name}</p>
                 <div id="addressBtn" class="d-flex text-sm" onclick="${copyAddress}">
                     <span id="address">${data.address.replace(data.address.substring(4,38),"...")} </span>
                     <i class="fa-solid fa-copy"></i>
                 </div>
+                ${document.isMobile ? `
+                    <div id="qrBtn" onclick="${qrClick}">
+                        <i class="fa-light fa-qrcode"></i>
+                    </div>
+                ` : ""}
             </div>
             <p id="totalBalance" class="text-3xl">${Utils.beautifyAmount(data.totalBalance)} ${currencyToSymbol(data.selectedCurrency)}</p>
         `;
@@ -57,7 +66,7 @@ class HomeMainBalance extends StatefulElement {
                 white-space: pre-wrap;
             }
         
-            #addressBtn {
+            #addressBtn, #qrBtn {
                 margin-left: 1em;
                 padding: 0.25em 1em;
                 background: var(--gray-50);
@@ -69,8 +78,15 @@ class HomeMainBalance extends StatefulElement {
                 transition: all 0.1s ease-in;
             }
             
-            #addressBtn:hover {
+            #addressBtn:hover, #qrBtn:hover {
                 background: var(--gray-100);
+            }
+            
+            #qrBtn {
+                font-size: 1em;
+                border-radius: 0.5em;
+                line-height: 0;
+                padding: 0.5em;
             }
             
             #addressBtn i {
@@ -78,7 +94,7 @@ class HomeMainBalance extends StatefulElement {
             }
             
             #totalBalance {
-                font-weight: 700;
+                font-weight: 600;
                 color: var(--gray-700);
             }
         `;

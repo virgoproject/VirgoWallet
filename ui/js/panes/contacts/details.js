@@ -138,7 +138,7 @@ class ContactDetails extends StatefulElement {
         return `
             <section-header title="Delete contact" backfunc="${onBack}" no-padding></section-header>
             <div class="mt-3 mb-3">
-                <img src="../images/warning.png" class="img-fluid" />
+                <div class="text-center"><i class="fa-solid fa-circle-exclamation text-red-400 text-7xl"></i></div>
                 <p class="deleteWarn mt-3">Are you sure you want to delete this contact?</p>
                 <p class="deleteWarn">This action is irreversible.</p>
             </div>

@@ -29,7 +29,15 @@ class UnlockWallet extends StatefulElement {
             return await getBaseInfos()
         })
 
-        if(baseInfosLoading) return ""
+        const {data: biometricsAvailable, loading: biometricsLoading} = this.useFunction(async () => {
+            let available = false
+            try {
+                available = await reactMessaging.isBiometricsAvailable()
+            }catch (e) {}
+            return available
+        })
+
+        if(baseInfosLoading || biometricsLoading) return ""
 
         this.baseInfos = baseInfos
 
@@ -82,6 +90,27 @@ class UnlockWallet extends StatefulElement {
         let button = `<button class="button w-100" disabled onclick="${unlockClick}" id="btn">Unlock</button>`
         if(loading) button = `<button class="button w-100" disabled id="btn"><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
+        const eyeClick = this.registerFunction(e => {
+            if(e.currentTarget.checked){
+                e.currentTarget.checked = false
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye"></i>`
+                _this.querySelector("#input").type = "password"
+            }else{
+                e.currentTarget.checked = true
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
+                _this.querySelector("#input").type = "text"
+            }
+        })
+
+        const biometricsClick = this.registerFunction(() => {
+            reactMessaging.getPassword().then(res => {
+                if(res.password === undefined) return
+
+                _this.inputVal = res.password
+                _this.querySelector("#btn").onclick()
+            })
+        })
+
         return `
             <div class="fullpageSection" id="wrapper">
                 <div class="text-center">
@@ -91,7 +120,17 @@ class UnlockWallet extends StatefulElement {
                 <div class="px-3 w-100">
                     <div>
                         ${error ? `<p class="label text-left text-sm" id="error">Wrong password</p>` : `<p class="label text-left text-sm">Password</p>`}
-                        <input type="password" class="input col-12" placeholder="Enter your password" oninput="${onInput}" onfocus="${onFocus}" onkeydown="${onKeyDown}" id="input" ${loading? "disabled" : ""}>
+                        <div class="btnInputWrapper">
+                            ${biometricsAvailable ? `
+                                <div class="inputBtn text-xl" onclick="${biometricsClick}">
+                                    <i class="fa-regular fa-fingerprint"></i>
+                                </div>
+                            ` : ""}
+                            <input type="password" class="input" placeholder="Enter your password" oninput="${onInput}" onfocus="${onFocus}" onkeydown="${onKeyDown}" id="input" ${loading? "disabled" : ""}>
+                            <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye">
+                                <i class="fa-regular fa-eye"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-3">
                         ${button}
@@ -135,6 +174,7 @@ class UnlockWallet extends StatefulElement {
             #error {
                 color: var(--red-400);
             }
+            
         `
     }
 

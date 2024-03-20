@@ -55,17 +55,34 @@ class SettingsImportMnemonic extends StatefulElement {
         let button = `<button class="button w-100" id="confirm" disabled onclick="${onClick}">Recover wallet</button>`
         if(mnemonic) button = `<button class="button w-100" id="confirm" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
+        const pasteClick = this.registerFunction(async () => {
+            const input = _this.querySelector("#input")
+
+            try {
+                const text = await navigator.clipboard.readText()
+                input.value = text
+                input.onfocus()
+                input.oninput()
+                console.log("pasted")
+            } catch (error) {
+                console.log(error)
+                input.focus()
+                document.execCommand('paste')
+                console.log("pasted")
+            }
+        })
+
         return `
             <div class="fullpageSection">
                 <section-header title="Recover a wallet" backfunc="${back}"></section-header>
                 <div id="content" class="text-center">
                     ${label}
-                    <textarea rows="4" class="input w-100 ${error ? 'is-invalid' : ''}" onfocus="${onFocus}"
-                              id="input" oninput="${onInput}"></textarea>
+                    <textarea rows="4" class="input w-100 ${error ? 'is-invalid' : ''}" onfocus="${onFocus}" id="input" oninput="${onInput}"></textarea>
+                    <p id="pasteBtn" onclick="${pasteClick}">Paste</p>
                     <p class="mt-2 text-gray-400 text-sm">Generally a 12 words (sometimes 18, 24) sentence without special characters.</p>
-                    <div id="nextWrapper">
-                        ${button}
-                    </div>
+                </div>
+                <div id="nextWrapper">
+                    ${button}
                 </div>
             </div>
         `;
@@ -94,13 +111,13 @@ class SettingsImportMnemonic extends StatefulElement {
             <div class="fullpageSection">
                 <section-header title="Recover a wallet" backfunc="${back}"></section-header>
                 <div id="content" class="text-center">
-                    <img src="../images/warning.png">
-                    <h3>Warning</h3>
+                    <div class="text-center"><i class="fa-solid fa-circle-exclamation text-red-400 text-7xl"></i></div>
+                    <h3 class="m-3">Warning</h3>
                     <p>Restoring this wallet will erase your current wallet, be sure to have
                         saved your seed phrase!</p>
-                    <div id="nextWrapper">
-                        ${button}
-                    </div>
+                </div>
+                <div id="nextWrapper">
+                    ${button}
                 </div>
             </div>
         `
@@ -152,15 +169,17 @@ class SettingsImportMnemonic extends StatefulElement {
 
     style() {
         return `
+            .fullpageSection {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        
             #content {
                 padding: 1em;
             }
         
             #nextWrapper {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
                 padding: 1em;
             }
             
@@ -180,6 +199,20 @@ class SettingsImportMnemonic extends StatefulElement {
                 width: 100%;
                 margin-bottom: 1em;
                 margin-top: 2em;
+            }
+            
+            #pasteBtn {
+                text-align: right;
+                position: relative;
+                top: -2.5em;
+                color: var(--main-700);
+                font-weight: 600;
+                margin-bottom: 0;
+                width: fit-content;
+                float: right;
+                right: 1em;
+                cursor: pointer;
+                user-select: none;
             }
         `;
     }

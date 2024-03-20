@@ -68,6 +68,23 @@ class SendToken extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        let recent = `
+            ${this.getRows(data.favoriteContacts, "Favorite")}
+            <div class="pt-3">
+                ${this.getRows(data.recent, "Recent")}    
+            </div>
+        `
+
+        if(data.favoriteContacts.length == 0 && data.recent.length == 0){
+            recent = `
+                <div class="text-center mt-5">
+                    <img src="../images/noRecent.png" id="nothingImg">
+                    <p id="nothingTitle" class="mt-3 text-lg mb-1">Nothing to show!</p>
+                    <p id="nothingSubtitle">Your recent and favorite contacts will appear here</p>      
+                </div>
+            `
+        }
+
         return `
             <div id="wrapper">
                 <section-header title="Send tokens"></section-header>
@@ -95,10 +112,7 @@ class SendToken extends StatefulElement {
                 </div>
                 <scroll-view id="scroll" class="d-block mt-3">
                     <div class="mb-5 pb-5">
-                        ${this.getRows(data.favoriteContacts, "Favorite")}
-                        <div class="pt-3">
-                            ${this.getRows(data.recent, "Recent")}    
-                        </div>
+                        ${recent}
                     </div>
                 </scroll-view>
             </div>
@@ -294,6 +308,19 @@ class SendToken extends StatefulElement {
                 color: var(--gray-400);
                 text-overflow: ellipsis;
                 overflow: hidden;
+            }
+            
+            #nothingImg {
+                height: 64px;
+            }
+        
+            #nothingTitle {
+                color: var(--gray-700);
+                font-weight: 600;
+            }
+            
+            #nothingSubtitle {
+                color: var(--gray-400);
             }
         `;
     }

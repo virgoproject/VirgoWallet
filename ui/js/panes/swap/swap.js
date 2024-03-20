@@ -84,18 +84,19 @@ class SwapTokens extends StatefulElement {
             return Math.random()
         }, 15000)
 
-        const onInput = this.registerFunction(e => {
+        const onInput = this.registerFunction(() => {
             const span = _this.querySelector("#inputCalcSpan")
-            span.innerHTML = e.currentTarget.value
-            e.currentTarget.style.maxWidth = span.offsetWidth + "px"
+            const input = _this.querySelector("#input")
+            span.innerHTML = input.value
+            input.style.maxWidth = span.offsetWidth + "px"
 
-            this.amount = e.currentTarget.value
+            this.amount = input.value
 
-            if(tokenIn != null && tokenOut != null && Utils.isValidNumber(e.currentTarget.value)){
+            if(tokenIn != null && tokenOut != null && Utils.isValidNumber(input.value)){
 
                 const contractIn = tokenIn.contract+""
                 const contractOut = tokenOut.contract+""
-                const value = e.currentTarget.value+""
+                const value = input.value+""
 
                 _this.querySelector("#unavailable").style.display = "none"
                 _this.querySelector("#notfound").style.display = "none"
@@ -190,6 +191,15 @@ class SwapTokens extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const maxClick = this.registerFunction(() => {
+
+            if(inBalance == null || inBalanceLoading) return
+
+            const input = _this.querySelector("#input")
+            input.value = Utils.formatAmount(inBalance.balance, inBalance.decimals)
+            input.oninput()
+        })
+
         return `
             <div id="wrapper">
                 <section-header title="Swap"></section-header>
@@ -204,7 +214,7 @@ class SwapTokens extends StatefulElement {
                     <div class="tokenWrapper">
                         <div class="amountWrapper">
                             <input type="text" placeholder="0.0" class="amount text-2xl" oninput="${onInput}" id="input">
-                            <p id="max">Max</p>
+                            <p id="max" onclick="${maxClick}">Max</p>
                         </div>
                         <div class="select" onclick="${selectInClick}" id="tokenInSelect">
                             <div class="selectHeight"></div>

@@ -48,45 +48,37 @@ class AskPassword extends StatefulElement {
             button = `<button class="button w-100" id="submit" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
         }
 
-        let label = `<p class="label text-left mb-1">Enter your password</p>`
+        let label = `<p class="label text-left mb-1 text-sm">Enter your password</p>`
 
-        if(error) label = `<p class="label text-left mb-1" id="error">Wrong password</p>`
+        if(error) label = `<p class="label text-left mb-1 text-sm text-red-400">Wrong password</p>`
+
+        const eyeClick = this.registerFunction(e => {
+            if(e.currentTarget.checked){
+                e.currentTarget.checked = false
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "password"
+            }else{
+                e.currentTarget.checked = true
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "text"
+            }
+        })
 
         return `
             <bottom-popup onclose="${onClose}">
-                <p class="text-center" id="title">Authentication required</p>
-                <div class="mb-4">
+                <section-header title="Authentication required" no-padding></section-header>
+                <div class="mb-4 mt-3">
                     ${label}
-                    <input type="password" id="password" class="input w-100"
+                    <div class="btnInputWrapper">
+                    <input type="password" id="password" class="input"
                            placeholder="Password" data-inputTarget="#submit" oninput="${onInput}" onfocus="${onFocus}" ${loading? "disabled" : ""} onkeydown="${onKeyDown}">
+                        <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="password">
+                            <i class="fa-regular fa-eye"></i>
+                        </div>
+                    </div>
                 </div>
                 ${button}
             </bottom-popup>
-        `;
-    }
-
-    style() {
-        return `
-            
-            #title {
-                font-size: 1.25em;
-            }
-            
-            #password {
-                padding: 0.5em 2em 0.5em 0.75em;
-                background: #F9F9F9;
-                border: none;
-                color: #545454;
-                border-radius: 0.5em;
-            }
-            
-            .label {
-                font-size: 0.85em;
-            }
-            
-            #error {
-                color: var(--red-400);
-            }
         `;
     }
 

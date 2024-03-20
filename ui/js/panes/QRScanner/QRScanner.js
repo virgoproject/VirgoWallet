@@ -79,7 +79,7 @@ class QRScannerPane extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <i class="fa-solid fa-chevron-left" id="back" onclick="back"></i>
+                <i class="fa-solid fa-chevron-left" id="back" onclick="${back}"></i>
                 <slot></slot>
                 <i class="fas fa-spinner fa-pulse"></i>
             </div>

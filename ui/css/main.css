@@ -87,6 +87,14 @@ body {
     color: var(--gray-700) !important;
 }
 
+.text-red-400 {
+    color: var(--red-400) !important;
+}
+
+.text-green-400 {
+    color: var(--green-400) !important;
+}
+
 .button {
     color: white;
     background: var(--main-700);
@@ -658,6 +666,31 @@ iframe {
     height: 100%;
 }
 
+.btnInputWrapper {
+    display: flex;
+    background-color: var(--gray-50);
+    border-radius: 0.5em;
+}
+
+.btnInputWrapper input {
+    padding: 0;
+    flex: 1;
+    margin: 0 1em;
+}
+
+.inputBtn {
+    color: var(--gray-700);
+    padding: 0.75em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    line-height: 1em!important;
+    transition: all 0.1s ease-in;
+}
+
+.inputBtn:hover {
+    background-color: var(--gray-100);
+}
+
 
 /* font size */
 
@@ -694,6 +727,31 @@ iframe {
 .text-4xl {
     font-size: 2.25rem; /* 36px */
     line-height: 2.5rem; /* 40px */
+}
+
+.text-5xl {
+    font-size: 3rem; /* 48px */
+    line-height: 1;
+}
+
+.text-6xl {
+    font-size: 3.75rem; /* 60px */
+    line-height: 1;
+}
+
+.text-7xl {
+    font-size: 4.5rem; /* 72px */
+    line-height: 1;
+}
+
+.text-8xl {
+    font-size: 6rem; /* 96px */
+    line-height: 1;
+}
+
+.text-9xl {
+    font-size: 8rem; /* 128px */
+    line-height: 1;
 }
 
 .shimmerBG {

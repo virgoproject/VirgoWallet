@@ -70,12 +70,18 @@ class SettingsBackupSeed extends StatefulElement {
             setStep(1)
         })
 
+        const copyClick = this.registerFunction(() => {
+            copyToClipboard(data);
+            notyf.success("Copied to clipboard!");
+        })
+
         return `
             <p class="text-gray-700">This phrase permits you to recover your wallet in case of loss. <b>Write it down
                 on paper and keep it safe</b>, away from regard.</p>
             <div class="row">
                 ${words}
             </div>
+            <p id="copy" class="mt-3" onclick="${copyClick}"><i class="fa-solid fa-copy"></i> Copy to clipboard</p>
             <div id="nextWrapper">
                 <button class="button w-100" onclick="${nextClick}">Continue</button>
             </div>
@@ -202,8 +208,8 @@ class SettingsBackupSeed extends StatefulElement {
         })
 
         return `
-            <img src="../images/validated.png">
-            <p class="text-gray-700"><b>Seed phrase successfully saved!</b></p>
+            <div class="text-center"><i class="fa-solid fa-circle-check text-green-400 text-7xl"></i></div>
+            <p class="text-gray-700 mt-3"><b>Seed phrase successfully saved!</b></p>
             <p class="text-gray-400">Don't forget, never share this phrase to anyone, it can be used to steal your funds!</p>
             <div id="nextWrapper">
                 <button class="button w-100" onclick="${btnClick}">Finish</button>
@@ -269,6 +275,12 @@ class SettingsBackupSeed extends StatefulElement {
                 width: 100%;
                 margin-bottom: 1em;
                 margin-top: 2em;
+            }
+            
+            #copy {
+                color: var(--main-700);
+                cursor: pointer;
+                user-select: none;
             }
         `;
     }
