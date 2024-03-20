@@ -23,15 +23,15 @@ class ConnectedWebsites extends StatefulElement {
             content = `
                 <NoConnectedWebsites class="text-center">
                     <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
-                    <p class="m-0">No connected websites</p>
-                    <p class="p-0 m-0">Web3 connections will appear here</p>
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No connected websites</p>
+                    <p id="emptySubtitle">Web3 connections will appear here</p>
                 </NoConnectedWebsites>
             `
         }else{
             const rows = []
 
             for(const connectedWebsite of connectedWebsites){
-                rows.push(`<connected-website data="${connectedWebsite}"></connected-website>`)
+                rows.push(`<connected-website data="${btoa(JSON.stringify(connectedWebsite))}"></connected-website>`)
             }
 
             content = `<list>${rows}</list>`
@@ -56,6 +56,15 @@ class ConnectedWebsites extends StatefulElement {
         return `
             #content {
                 padding: 0 2em;
+            }
+            
+            #emptyTitle {
+                color: var(--gray-700);
+                font-weight: 600;
+            }
+            
+            #emptySubtitle {
+                color: var(--gray-400);
             }
         `
     }

@@ -26,7 +26,7 @@ class ConnectedWebsite extends StatefulElement {
         this.data = this.getAttribute("data")
 
         try {
-            this.data = JSON.parse(data)
+            this.data = JSON.parse(atob(this.data))
         }catch(e){}
 
         let name = ""

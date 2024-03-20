@@ -103,6 +103,8 @@ class StatefulElement extends HTMLElement {
         for(const intervalId in this.intervals){
             clearInterval(intervalId)
         }
+
+        this.funcs = []
     }
 
     async _renderContent(){
@@ -199,6 +201,8 @@ class StatefulElement extends HTMLElement {
     }
 
     useInterval(func, interval) {
+        const _this = this
+
         if (typeof func !== 'function') {
             throw new Error('Invalid parameter: fetchFunction must be a function.');
         }
@@ -216,6 +220,8 @@ class StatefulElement extends HTMLElement {
         const [data] = this.useState(funcHash, null);
 
         const fetchData = async () => {
+            if(!_this.funcs.includes(fetchData) && interval <= 0) return
+
             try {
                 const [state, setState] = this.useState(funcHash, null);
 
