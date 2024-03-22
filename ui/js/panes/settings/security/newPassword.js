@@ -56,16 +56,20 @@ class SettingsNewPassword extends StatefulElement {
             }
 
             setPassword(input1.value).then(() => {
-                notyf.success("Password set!")
                 if(_this.setup){
                     try {
                         document.querySelector("wallet-home").remove()
                     }catch (e) {}
 
                     const home = document.createElement("wallet-home")
-                    document.getElementById("resumePane").innerHTML = ""
                     document.getElementById("resumePane").appendChild(home)
                     document.getElementById("mainPane").style.display = "block"
+
+                    try {
+                        document.querySelector("wallet-setup").remove()
+                    }catch (e) {}
+                }else{
+                    notyf.success("Password set!")
                 }
                 _this.remove()
             })
@@ -86,6 +90,12 @@ class SettingsNewPassword extends StatefulElement {
                 e.currentTarget.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
                 _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "text"
             }
+        })
+
+        const tosClick = this.registerFunction(() => {
+            browser.windows.create({
+                url: "https://www.virgo.net/terms-and-conditions"
+            })
         })
 
         return `
@@ -126,7 +136,7 @@ class SettingsNewPassword extends StatefulElement {
                             <div class="form-check mt-3">
                                   <input class="form-check-input" type="checkbox" value="" id="warn2" onchange="${onInput}">
                                   <label class="form-check-label text-gray-700" for="flexCheckDefault">
-                                    I have read and accept the <span id="tos">product terms of service.</span>
+                                    I have read and accept the <span id="tos" onclick="${tosClick}">product terms of service.</span>
                                   </label>
                             </div>
                             <div class="py-3 mt-3">

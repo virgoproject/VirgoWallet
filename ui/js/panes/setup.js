@@ -4,6 +4,7 @@ class WalletSetup extends StatefulElement {
 
         const createClick = this.registerFunction(() => {
             const e = document.createElement("settings-new-password")
+            e.setup = true
             document.body.appendChild(e)
         })
 

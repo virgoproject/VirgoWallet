@@ -49,6 +49,8 @@ class BaseWallet {
 
             this.privateKeys = []
 
+            console.log("nb of pKey: " + provider.wallets.length)
+
             for(const wallet in provider.wallets){
                 this.privateKeys.push("0x"+Converter.bytesToHex(provider.wallets[wallet].privateKey))
             }

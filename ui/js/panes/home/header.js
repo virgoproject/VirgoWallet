@@ -52,6 +52,7 @@ class HomeHeader extends StatefulElement {
                 }
                 document.body.appendChild(accountSelector)
                 this.querySelector("#accountBtn").classList.add("opened")
+                document.querySelector("chain-selector").remove()
             }else{
                 accountSelector.removeWithAnimation()
                 accountSelector = false

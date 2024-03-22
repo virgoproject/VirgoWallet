@@ -34,6 +34,9 @@ class ChainSelector extends StatefulElement {
         let i = 0
         for(let chain of data.wallets){
             chain = chain.wallet
+
+            if(!chain.tracked) continue
+
             const chainClick = this.registerFunction(e => {
                 browser.runtime.sendMessage({command: 'changeWallet', walletId: e.currentTarget.getAttribute("walletid")}).then(() => {
                     _this.removeWithAnimation()
