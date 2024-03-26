@@ -529,7 +529,14 @@ class EthWallet {
     }
 
     hasToken(contract){
-        return this.tokenSet.has(contract)
+        contract = web3.utils.toChecksumAddress(contract)
+        return this.tokenSet.has(contract) || this.tokenSet.has(contract.toLowerCase())
+    }
+
+    getToken(contract){
+        contract = web3.utils.toChecksumAddress(contract)
+        if(this.tokenSet.has(contract)) return this.tokenSet.get(contract)
+        if(this.tokenSet.has(contract.toLowerCase())) return this.tokenSet.get(contract.toLowerCase())
     }
 
     addToken(name, ticker, decimals, contract, track = true){

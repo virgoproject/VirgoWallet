@@ -116,7 +116,6 @@ class EditFees extends HTMLElement {
     start(gasLimit){
         this.querySelectorAll(".feesTicker").forEach(elem => {
             getBaseInfos().then(function (info){
-                console.log(info.wallets[info.selectedWallet].wallet.ticker)
                 elem.innerHTML = info.wallets[info.selectedWallet].wallet.ticker
             })
         })

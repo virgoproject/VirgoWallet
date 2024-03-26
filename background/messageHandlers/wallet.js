@@ -68,8 +68,15 @@ class WalletHandlers {
         sendMessageToTabs("chainChanged", baseWallet.getCurrentWallet().chainID)
     }
 
-    static addAccount(request, sender, sendResponse){
+    static async addAccount(request, sender, sendResponse){
+        const oldAccountCount = baseWallet.addresses.length+0
+
         baseWallet.addAccount()
+
+        while(oldAccountCount == baseWallet.addresses.length){
+            await new Promise(r => setTimeout(r, 10));
+        }
+
         sendResponse(WalletHandlers._getBaseInfos())
     }
 

@@ -82,9 +82,6 @@ async function isEncrypted(){
 }
 
 async function restoreFromMnemonic(mnemonic){
-    setTimeout(() => {
-        tutorialPane.checkDisplay()
-    }, 5000)
     return await browser.runtime.sendMessage({command: 'restoreFromMnemonic', mnemonic})
 }
 
@@ -168,24 +165,24 @@ async function getBiometrics(){
     return await browser.runtime.sendMessage({command: 'getBiometrics'})
 }
 
-async function addingContact(address, name, note, favorite) {
-   return await browser.runtime.sendMessage({command: 'addContact', address, name, note, favorite})
+async function addContact(address, name, favorite) {
+   return await browser.runtime.sendMessage({command: 'addContact', address, name, favorite})
 }
 
-function deleteContact(address){
-     browser.runtime.sendMessage({command: 'deleteContact', address})
+async function deleteContact(address){
+    return await browser.runtime.sendMessage({command: 'deleteContact', address})
 }
 
-function updateContact(contactIndex, name, note) {
-    browser.runtime.sendMessage({command: 'updateContact', contactIndex, name, note})
-}
-
-function deleteFavorite(address) {
-    browser.runtime.sendMessage({command: 'deleteFavorite', address})
+async function updateContact(address, name, favorite) {
+    return await browser.runtime.sendMessage({command: 'updateContact', address, name, favorite})
 }
 
 async function getContacts(){
     return await browser.runtime.sendMessage({command: 'getContacts'})
+}
+
+async function getContact(address){
+    return await browser.runtime.sendMessage({command: 'getContact', address})
 }
 
 async function getSwapRoute(amount, token1, token2){

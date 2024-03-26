@@ -24,6 +24,9 @@ class SecurityHandlers {
             reactMessaging.storePassword(request.password)
         }catch(e){}
 
+        browser.storage.local.set({"setupDone": true})
+        setupDone = true
+
         sendResponse(true)
     }
 

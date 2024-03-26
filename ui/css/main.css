@@ -4,6 +4,10 @@
     font-weight: 100 900;
 }
 
+* {
+    scrollbar-width: none;
+}
+
 body {
     height: 600px;
     width: 56.25vh;
@@ -65,11 +69,39 @@ body {
     --red-800: #991b1b;
     --red-900: #7f1d1d;
     --red-950: #450a0a;
+
+    --main-50: #fff4fd;
+    --main-100: #ffe8fc;
+    --main-200: #fed0f7;
+    --main-300: #fdaaed;
+    --main-400: #fa78dd;
+    --main-500: #f045ca;
+    --main-600: #d425a9;
+    --main-700: #b71c8e;
+    --main-800: #90186f;
+    --main-900: #76195a;
+    --main-950: #4f0339;
+}
+
+.text-gray-400 {
+    color: var(--gray-400) !important;
+}
+
+.text-gray-700 {
+    color: var(--gray-700) !important;
+}
+
+.text-red-400 {
+    color: var(--red-400) !important;
+}
+
+.text-green-400 {
+    color: var(--green-400) !important;
 }
 
 .button {
     color: white;
-    background: var(--mainColor);
+    background: var(--main-700);
     border: none;
     border-radius: .5em;
     padding: .375em .75em;
@@ -78,7 +110,7 @@ body {
 }
 
 .button:hover {
-    background: var(--mainColorDark10);
+    background: var(--main-800);
 }
 
 .button-red {
@@ -102,7 +134,7 @@ body {
 }
 
 .buttonEmpty {
-    color: var(--mainColor);
+    color: var(--main-700);
     font-weight: bold;
     background-color: unset;
     border: none;
@@ -111,7 +143,7 @@ body {
 }
 
 .button:disabled {
-    background: #545454 !important;
+    background: #D78AC5 !important;
 }
 
 .button.success {
@@ -140,11 +172,45 @@ body {
 }
 
 .input {
-    background: var(--whiteBackground);
+    background: var(--gray-50);
     border: none;
-    color: rgb(84, 84, 84);
-    padding: 0.5em 2em 0.5em 0.75em;
+    color: var(--gray-700);
+    padding: 0.75em;
     border-radius: 0.5em;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.input-copiable {
+    display: flex;
+    align-items: center;
+    border-radius: 0.5em;
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+    background-color: var(--gray-50);
+    transition: 0.25s ease-in all;
+    user-select: none;
+}
+
+.input-copiable:hover {
+    background-color: var(--gray-100);
+}
+
+.input-copiable .input {
+    flex: 1;
+    border-radius: 0;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.input-copiable i {
+    color: var(--gray-400);
+    margin-left: 0.5em;
 }
 
 #sendConfirm .input {
@@ -268,7 +334,12 @@ border-radius: 50%;
 }
 
 .label {
-    margin: 0;
+    margin: 0 0 0.5rem;
+    color: var(--gray-400);
+}
+
+.label.error {
+    color: var(--red-400);
 }
 
 .labelId {
@@ -311,6 +382,30 @@ input[type=number] {
 
 .pr-2 {
     padding-right: .5rem !important;
+}
+
+.ml-0 {
+    margin-left: 0 !important;
+}
+
+.mr-0 {
+    margin-right: 0 !important;
+}
+
+.ml-1 {
+    margin-left: .25em !important;
+}
+
+.ml-2 {
+    margin-left: .5rem !important;
+}
+
+.mr-1 {
+    margin-right: .25em !important;
+}
+
+.mr-2 {
+    margin-right: .5rem !important;
 }
 
 .text-left {
@@ -575,6 +670,31 @@ iframe {
     height: 100%;
 }
 
+.btnInputWrapper {
+    display: flex;
+    background-color: var(--gray-50);
+    border-radius: 0.5em;
+}
+
+.btnInputWrapper input {
+    padding: 0;
+    flex: 1;
+    margin: 0 1em;
+}
+
+.inputBtn {
+    color: var(--gray-700);
+    padding: 0.75em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    line-height: 1em!important;
+    transition: all 0.1s ease-in;
+}
+
+.inputBtn:hover {
+    background-color: var(--gray-100);
+}
+
 
 /* font size */
 
@@ -598,13 +718,53 @@ iframe {
     line-height: 1.75em; /* 28px */
 }
 
+.text-2xl {
+    font-size: 1.5rem; /* 24px */
+    line-height: 2rem; /* 32px */
+}
+
+.text-3xl {
+    font-size: 1.875rem; /* 30px */
+    line-height: 2.25rem; /* 36px */
+}
+
+.text-4xl {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+}
+
+.text-5xl {
+    font-size: 3rem; /* 48px */
+    line-height: 1;
+}
+
+.text-6xl {
+    font-size: 3.75rem; /* 60px */
+    line-height: 1;
+}
+
+.text-7xl {
+    font-size: 4.5rem; /* 72px */
+    line-height: 1;
+}
+
+.text-8xl {
+    font-size: 6rem; /* 96px */
+    line-height: 1;
+}
+
+.text-9xl {
+    font-size: 8rem; /* 128px */
+    line-height: 1;
+}
+
 .shimmerBG {
     animation-duration: 9s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-name: shimmer;
     animation-timing-function: linear;
-    background: linear-gradient(to right, var(--gray-200) 8%, var(--gray-100) 18%, var(--gray-200) 33%);
+    background: linear-gradient(to right, var(--gray-100) 8%, var(--gray-50) 18%, var(--gray-100) 33%);
 }
 
 @-webkit-keyframes shimmer {

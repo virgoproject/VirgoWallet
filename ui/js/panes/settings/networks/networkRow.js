@@ -2,56 +2,46 @@ class SettingsNetworkRow extends StatefulElement {
 
     eventHandlers() {
         const _this = this
-        const name = this.getAttribute("name")
+
         const chainID = this.getAttribute("chainID")
-        const index = this.getAttribute("index")
 
-        this.querySelector("svg").innerHTML = jdenticon.toSvg(name+chainID, 32)
+        const logo = this.querySelector("#logo")
 
-        this.querySelector("img").onload = e => {
+        logo.onload = e => {
             e.target.style.display = "initial"
-            _this.querySelector("svg").style.display = "none"
+            _this.querySelector("#shimmerIcon").style.display = "none"
         }
 
-        this.querySelector("img").src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/logo.png"
-
-        if(this.getAttribute("current") == "true") return
-
-        const row = _this.querySelector(".row")
-
-        row.onclick = () => {
-            if(row.classList.contains("selected")){
-                row.classList.remove("selected")
-            }else{
-                row.classList.add("selected")
-            }
-            changeNetworkVisibility(index).then(() => {
-                selectChains.updateChains()
-            })
+        logo.onerror = e => {
+            _this.querySelector("#defaultLogo").style.display = "flex"
+            _this.querySelector("#shimmerIcon").style.display = "none"
         }
+
+        logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/logo.png"
 
     }
 
     render() {
 
         const name = this.getAttribute("name")
-        const ticker = this.getAttribute("ticker")
-        const chainID = this.getAttribute("chainID")
         const tracked = this.getAttribute("tracked") == "true"
+        const index = this.getAttribute("index")
         const current = this.getAttribute("current") == "true"
 
+        const trackingClick = this.registerFunction(() => {
+            changeNetworkVisibility(index)
+        })
+
         return `
-            <div class="row ${tracked ? "selected" : ""} ${current ? "disabled" : ""}">
-                <div class="col-2 justify-content-center align-self-center">
-                    <img class="logo" src="" style="display: none">
-                    <svg data-jdenticon-value="${name+chainID}" width="32" height="32"></svg>
+            <div id="wrapper">
+                <div id="leftWrapper">
+                    <div class="shimmerBG" id="shimmerIcon"></div>
+                    <img style="display: none" id="logo">
+                    <div id="defaultLogo" style="display: none"><p class="m-auto">${name.charAt(0).toUpperCase()}</p></div>
+                    <p id="name">${name} ${current ? "(current)" : ""}</p>
                 </div>
-                <div class="col-8">
-                    <p class="name">${name} ${current ? "(current)" : ""}</p>
-                    <p class="ticker">${ticker}</p>
-                </div>
-                <div class="col-2 text-right justify-content-center align-self-center">
-                    <i class="fas fa-check" id="state"></i>
+                <div class="form-check form-switch" id="checkWrapper">
+                    <input class="form-check-input" type="checkbox" id="checkbox" ${tracked ? "checked" : ""} onclick="${trackingClick}" ${current ? "disabled" : ""}>
                 </div>
             </div>
         `
@@ -59,59 +49,59 @@ class SettingsNetworkRow extends StatefulElement {
 
     style() {
         return `
-            .row {
-                background: var(--whiteBackground);
-                border-radius: 0.5em;
-                padding-top: 0.375em;
-                padding-bottom: 0.375em;
-                cursor: pointer;
+            #wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.5rem 0;
             }
             
-            .row:hover {
-                background: var(--whiteBackgroundHover);
+            #leftWrapper {
+                display: flex;
+                align-items: center;
+                min-width: 0;
+            }
+        
+            #logo, #shimmerIcon, #defaultLogo {
+                height: 36px;
+                width: 36px;
+                border-radius: 50%;
+                margin-right: 1em;
+                animation-duration: 40s;
             }
             
-            .row.selected {
-                background: var(--whiteBackgroundSelected);
+            #defaultLogo {
+                text-align: center;
+                line-height: 36px;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+                font-weight: bold;
             }
             
-            .row.disabled {
-                cursor: default;
-                opacity: 0.5;
+            #name {
+                color: var(--gray-700);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
-            
-            #state {
-                display: none;
-            }
-            
-            .row.selected #state {
-                display: inline-block;
-            }
-            
+        
             p {
                 margin-bottom: 0!important;
             }
             
-            .name {
-                font-weight: 600;
+            #checkWrapper {
+                padding: 0;
+                margin: 0;
+                min-height: 0;
             }
             
-            .ticker {
-                font-size: 0.85em;
+            #checkbox {
+                width: 3em;
+                height: 1.5em;
+                margin-left: 0;
+                cursor: pointer;
+                margin-top: 0;
             }
-            
-            .logo {
-                height: 32px;
-                width: 32px;
-                border-radius: 50%;
-                background-size: cover;
-                margin: auto;
-            }
-            
-            svg {
-                border-radius: 50%;
-            }
-            
         `
     }
 

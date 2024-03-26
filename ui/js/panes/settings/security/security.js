@@ -18,7 +18,7 @@ class SecuritySettings extends StatefulElement {
 
                 _this.remove()
             })
-            return
+            return ""
         }
 
         const back = this.registerFunction(() => {
@@ -28,6 +28,12 @@ class SecuritySettings extends StatefulElement {
         const onClick = this.registerFunction(e => {
             const elem = document.createElement(e.target.getAttribute("data-open"))
             document.body.appendChild(elem)
+        })
+
+        const importClick = this.registerFunction(() => {
+            const e = document.createElement("settings-new-password")
+            e.import = true
+            document.body.appendChild(e)
         })
 
         return `
@@ -47,7 +53,7 @@ class SecuritySettings extends StatefulElement {
                     <div class="row group">
                         <h5 class="title">Restore account</h5>
                         <p class="desc">Import an already existing seed phrase into the wallet.</p>
-                        <button class="buttonEmpty tab" data-open="settings-import-mnemonic" onclick="${onClick}">Import seed phrase</button>
+                        <button class="buttonEmpty tab" onclick="${importClick}">Import seed phrase</button>
                     </div>
                     <div class="row group">
                         <h5 class="title">Auto-Lock</h5>

@@ -33,9 +33,42 @@ class AirdropsPane extends StatefulElement {
 
         if(loading){
             return `
-                <div id="loading">
-                    <i class="fas fa-spinner fa-pulse"></i>
+            <section-header title="Airdrops"></section-header>
+            <div id="content">
+                <div id="headerWrapper">
+                    <div id="headerShimmer" class="shimmerBG row"></div>
                 </div>
+                <div class="px-3">
+                    <div class="airdropShimmer mt-3">
+                        <div class="d-flex align-items-center">
+                            <div class="airdropShimmerLogo shimmerBG"></div>
+                            <div class="airdropNameShimmer shimmerBG"></div>
+                        </div>
+                        <div class="airdropAmountShimmer shimmerBG"></div>
+                    </div>
+                    <div class="airdropShimmer mt-3">
+                        <div class="d-flex align-items-center">
+                            <div class="airdropShimmerLogo shimmerBG"></div>
+                            <div class="airdropNameShimmer shimmerBG"></div>
+                        </div>
+                        <div class="airdropAmountShimmer shimmerBG"></div>
+                    </div>
+                    <div class="airdropShimmer mt-3">
+                        <div class="d-flex align-items-center">
+                            <div class="airdropShimmerLogo shimmerBG"></div>
+                            <div class="airdropNameShimmer shimmerBG"></div>
+                        </div>
+                        <div class="airdropAmountShimmer shimmerBG"></div>
+                    </div>
+                    <div class="airdropShimmer mt-3">
+                        <div class="d-flex align-items-center">
+                            <div class="airdropShimmerLogo shimmerBG"></div>
+                            <div class="airdropNameShimmer shimmerBG"></div>
+                        </div>
+                        <div class="airdropAmountShimmer shimmerBG"></div>
+                    </div>
+                </div>
+            </div>
             `
         }
 
@@ -57,10 +90,10 @@ class AirdropsPane extends StatefulElement {
                 <div id="headerWrapper">
                     <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
                 </div>
-                <div id="list">
-                    ${rows.length > 0 ? '<p class="title">Active airdrops</p>' : ''}
+                <div id="list" class="px-3">
+                    ${rows.length > 0 ? '<p class="label mt-3">Active airdrops</p>' : ''}
                     ${rows}
-                    <p class="title">Ended airdrops</p>
+                    <p class="label mt-3">Ended airdrops</p>
                     ${endedRows} 
                 </div>
             </div>
@@ -71,12 +104,6 @@ class AirdropsPane extends StatefulElement {
         return `
             #content {
                 height: 100%;
-            }
-            
-            .title {
-                margin-top: 0.5em;
-                font-size: 1em;
-                margin-bottom: 0.5em;
             }
             
             #loading {
@@ -94,11 +121,43 @@ class AirdropsPane extends StatefulElement {
             #list {
                 height: 100%;
                 overflow: auto;
-                padding: 0em 2em 15em;
+                padding-bottom: 15em;
             }
             
             #headerWrapper {
                 padding: 1em 2em;
+                padding-top: 0;
+            }
+            
+            #headerShimmer {
+                height: 65px;
+                border-radius: 0.5em;
+            }
+            
+            .airdropShimmer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .airdropShimmerLogo {
+                height: 36px;
+                width: 36px;
+                border-radius: 50%;
+            }
+            
+            .airdropNameShimmer {
+                width: 10ch;
+                height: 1em;
+                margin-left: 1em;
+                border-radius: 0.5em;
+            }
+            
+            .airdropAmountShimmer {
+                width: 6ch;
+                height: 1em;
+                margin-left: 1em;
+                border-radius: 0.5em;
             }
         `;
     }

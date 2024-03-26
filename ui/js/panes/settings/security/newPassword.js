@@ -10,7 +10,7 @@ class SettingsNewPassword extends StatefulElement {
 
         const [show, setShow] = this.useState("show", false)
 
-        if(!this.bypassShow && !show){
+        if(!this.bypassShow && !show && !this.import){
             isEncrypted().then(res => {
                 if(res){
                     setShow(true)
@@ -19,6 +19,7 @@ class SettingsNewPassword extends StatefulElement {
 
                 const elem = document.createElement("settings-backup-seed")
                 elem.forwardToNewPassword = true
+                if(_this.setup) elem.setup = true
                 document.body.appendChild(elem)
 
                 _this.remove()
@@ -33,7 +34,7 @@ class SettingsNewPassword extends StatefulElement {
         })
 
         const onInput = this.registerFunction(() => {
-            _this.querySelector("#confirm").disabled = _this.querySelector("#input1").value.length < 8 || _this.querySelector("#input2").value.length < 8
+            _this.querySelector("#confirm").disabled = _this.querySelector("#input1").value.length < 8 || _this.querySelector("#input2").value.length < 8 || !_this.querySelector("#warn1").checked || !_this.querySelector("#warn2").checked
         })
 
         const onClick = this.registerFunction(() => {
@@ -45,8 +46,31 @@ class SettingsNewPassword extends StatefulElement {
                 return
             }
 
+            if(_this.import){
+                const elem = document.createElement("settings-import-mnemonic")
+                elem.password = input1.value
+                if(_this.bypassWarning) elem.bypassWarning = true
+                document.body.appendChild(elem)
+                _this.remove()
+                return
+            }
+
             setPassword(input1.value).then(() => {
-                notyf.success("Password changed!")
+                if(_this.setup){
+                    try {
+                        document.querySelector("wallet-home").remove()
+                    }catch (e) {}
+
+                    const home = document.createElement("wallet-home")
+                    document.getElementById("resumePane").appendChild(home)
+                    document.getElementById("mainPane").style.display = "block"
+
+                    try {
+                        document.querySelector("wallet-setup").remove()
+                    }catch (e) {}
+                }else{
+                    notyf.success("Password set!")
+                }
                 _this.remove()
             })
 
@@ -56,21 +80,69 @@ class SettingsNewPassword extends StatefulElement {
             if(error) setError(false)
         })
 
+        const eyeClick = this.registerFunction(e => {
+            if(e.currentTarget.checked){
+                e.currentTarget.checked = false
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "password"
+            }else{
+                e.currentTarget.checked = true
+                e.currentTarget.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
+                _this.querySelector("#"+e.currentTarget.getAttribute("data-target")).type = "text"
+            }
+        })
+
+        const tosClick = this.registerFunction(() => {
+            browser.windows.create({
+                url: "https://www.virgo.net/terms-and-conditions"
+            })
+        })
+
         return `
             <div class="fullpageSection">
-                <section-header title="Setup your password" backfunc="${back}"></section-header>
-                <div id="content" class="text-center">
-                    <div>
-                        <p class="label text-left">New password</p>
-                        <input type="password" class="input col-12 ${error ? 'is-invalid' : ''}" placeholder="Enter your new password" id="input1" oninput="${onInput}" onfocus="${onFocus}">
-                    </div>
-                    <div class="mt-3">
-                        <p class="label text-left">Repeat password</p>
-                        <input type="password" class="input col-12 ${error ? 'is-invalid' : ''}" placeholder="Repeat your new password" id="input2" oninput="${onInput}" onfocus="${onFocus}">
-                    </div>
-                    ${error ? "<div class='mt-3 text-center'><p class='text-danger'>Passwords don't match</p></div>" : ""}
-                    <div id="nextWrapper">
-                        <button class="button w-100" id="confirm" disabled onclick="${onClick}">Confirm</button>
+                <div id="wrapper">
+                    <section-header title="Setup your password" backfunc="${back}"></section-header>
+                    <div id="content" class="px-3">
+                        <p class="text-gray-400 text-center mt-3">This password will unlock your wallet only on this service</p>
+                        <div>
+                            <div class="mt-3">
+                                <p class="label text-left text-sm mb-2">New password</p>
+                                <div class="btnInputWrapper">
+                                    <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input1" oninput="${onInput}" onfocus="${onFocus}">
+                                    <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input1">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <p class="label text-left text-sm mb-2">Confirm password</p>
+                                <div class="btnInputWrapper">
+                                    <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input2" oninput="${onInput}" onfocus="${onFocus}">
+                                    <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input2">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </div>
+                                </div>
+                                <p class="label text-left mt-2 text-sm">Must be at least 8 characters long</p>
+                            </div>
+                            ${error ? "<div class='mt-3 text-center'><p class='text-danger'>Passwords don't match</p></div>" : ""}
+                        </div>
+                        <div>
+                            <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="warn1" onchange="${onInput}">
+                                  <label class="form-check-label text-gray-700" for="flexCheckDefault">
+                                    I understand that Virgo cannot recover this password for me.
+                                  </label>
+                            </div>
+                            <div class="form-check mt-3">
+                                  <input class="form-check-input" type="checkbox" value="" id="warn2" onchange="${onInput}">
+                                  <label class="form-check-label text-gray-700" for="flexCheckDefault">
+                                    I have read and accept the <span id="tos" onclick="${tosClick}">product terms of service.</span>
+                                  </label>
+                            </div>
+                            <div class="py-3 mt-3">
+                                <button class="button w-100" id="confirm" disabled onclick="${onClick}">Confirm</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,20 +151,26 @@ class SettingsNewPassword extends StatefulElement {
 
     style() {
         return `
-            #content {
-                padding: 1em;
+            #wrapper {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
             }
         
-            #nextWrapper {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 1em;
+            #content {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
             }
             
-            .label {
-                font-size: 0.85em;
+            #tos {
+                color: var(--main-700);
+                cursor: pointer;
+            }
+            
+            label {
+                font-weight: 600;
             }
         `;
     }

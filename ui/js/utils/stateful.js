@@ -65,6 +65,7 @@ class StatefulElement extends HTMLElement {
 
         this.states = {};
         this.intervals = {};
+        this.funcs = [];
 
         //create shadow root
         this.shadow = this.attachShadow({ mode: 'open' });
@@ -98,10 +99,19 @@ class StatefulElement extends HTMLElement {
         this._renderContent();
     }
 
+    disconnectedCallback(){
+        for(const intervalId in this.intervals){
+            clearInterval(intervalId)
+        }
+
+        this.funcs = []
+    }
+
     async _renderContent(){
         this.beforeRender()
 
-        const active = this.shadow.activeElement
+        let active = this.shadow.activeElement
+        if(active && active.id) active = active.id
 
         this.content.innerHTML = this.sanitizeHTML(await this.render());
 
@@ -112,19 +122,19 @@ class StatefulElement extends HTMLElement {
                 _this.renderFuncs();
                 _this.eventHandlers();
 
-                if(active && active.id){
-                    this.shadowRoot.querySelector("#"+active.id).focus()
-                }
+                if(active) _this.shadow.querySelector("#"+active).focus()
 
                 _this.afterRender()
             }catch (e){
                 setTimeout(() => {
                     after()
-                }, 10)
+                }, 0)
             }
         }
 
-        after()
+        setTimeout(() => {
+            after()
+        }, 0)
     }
 
     eventHandlers(){
@@ -191,6 +201,8 @@ class StatefulElement extends HTMLElement {
     }
 
     useInterval(func, interval) {
+        const _this = this
+
         if (typeof func !== 'function') {
             throw new Error('Invalid parameter: fetchFunction must be a function.');
         }
@@ -202,22 +214,27 @@ class StatefulElement extends HTMLElement {
         const funcHash = Stateful.hash(func);
 
         if(this.states[funcHash] !== undefined){
-            return {data: this.states[funcHash][0], loading: false};
+            return {data: this.states[funcHash][0], loading: this.states[funcHash].length == 2};
         }
 
         const [data] = this.useState(funcHash, null);
 
         const fetchData = async () => {
+            if(!_this.funcs.includes(fetchData) && interval <= 0) return
+
             try {
                 const [state, setState] = this.useState(funcHash, null);
 
                 const result = await func();
 
                 if (JSON.stringify(result) !== JSON.stringify(state)) {
+                    this.states[funcHash].push(true);
                     setState(result);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                if(interval <= 0)
+                    setTimeout(fetchData, 10000)
             }
         };
 
@@ -227,7 +244,12 @@ class StatefulElement extends HTMLElement {
             this.intervals[intervalId] = fetchData
 
             // Cleanup interval when the element is disconnected from the DOM
-            this.addEventListener('disconnectedCallback', () => clearInterval(intervalId));
+            this.addEventListener('disconnectedCallback', () => {
+                console.log("clearing")
+                clearInterval(intervalId)
+            });
+        }else{
+            this.funcs.push(fetchData)
         }
 
         // Initial data fetch
@@ -320,6 +342,12 @@ class StatefulElement extends HTMLElement {
         Object.values(this.intervals).forEach(func => {
             func()
         });
+    }
+
+    runFunctions(){
+        for(const func of this.funcs){
+            func()
+        }
     }
 
 }

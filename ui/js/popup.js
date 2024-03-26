@@ -23,16 +23,6 @@ function copyToClipboard(data) {
     temp.remove()
 }
 
-function hideStatsBar(){
-    let statBar = document.querySelector('.header')
-    statBar.classList.add("d-none")
-}
-
-function showStatsBar(){
-    let statBar = document.querySelector('.header')
-    statBar.classList.remove("d-none")
-}
-
 $("#footer .footerElem").click(function(){
     if($(this).hasClass("selected")) return false
 
@@ -42,16 +32,6 @@ $("#footer .footerElem").click(function(){
     $("#body .bodyElem").hide()
 
     $("#body .bodyElem."+$(this).attr("data-target")).show()
-    showStatsBar()
-
-    if ($(this).attr("data-target") !== "resume"){
-        $(".stats ").hide()
-        hideStatsBar()
-        $(".header").css("height","unset")
-    } else {
-        $(".stats ").show()
-        $(".header").css("height","")
-    }
 
     //temporary
     if($(this).attr("data-target") === "airdrop"){
@@ -60,6 +40,22 @@ $("#footer .footerElem").click(function(){
         }catch (e){}
         const elem = document.createElement("airdrops-pane")
         document.querySelector("#airdropPane").appendChild(elem)
+    }
+
+    if($(this).attr("data-target") === "send"){
+        try {
+            document.querySelector("send-token").remove()
+        }catch (e){}
+        const elem = document.createElement("send-token")
+        document.querySelector("#sendPane").appendChild(elem)
+    }
+
+    if($(this).attr("data-target") === "swap"){
+        try {
+            document.querySelector("swap-tokens").remove()
+        }catch (e){}
+        const elem = document.createElement("swap-tokens")
+        document.querySelector("#swapPane").appendChild(elem)
     }
 
     return false

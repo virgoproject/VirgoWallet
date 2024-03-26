@@ -3,9 +3,9 @@ class ContactsHandlers {
     static register(){
         addBgMessageHandler("addContact", this.addContact)
         addBgMessageHandler("deleteContact", this.deleteContact)
-        addBgMessageHandler("deleteFavorite", this.deleteFavorite)
         addBgMessageHandler("updateContact", this.updateContact)
         addBgMessageHandler("getContacts", this.getContacts)
+        addBgMessageHandler("getContact", this.getContact)
     }
 
     static addContact(request, sender, sendResponse){
@@ -14,7 +14,6 @@ class ContactsHandlers {
             const newContact = {
                 name : request.name,
                 address : request.address,
-                note : request.note,
                 favorite : request.favorite
             }
 
@@ -22,7 +21,6 @@ class ContactsHandlers {
                 browser.storage.local.set({"contactList": [newContact]})
                 sendResponse(true)
             } else {
-
                 const result = res.contactList.filter(record =>
                     record.address === request.address)
 
@@ -31,9 +29,8 @@ class ContactsHandlers {
                     browser.storage.local.set({"contactList": res.contactList})
                     sendResponse(true)
                 } else {
-                    sendResponse("already")
+                    sendResponse(false)
                 }
-
             }
         })
     }
@@ -41,7 +38,7 @@ class ContactsHandlers {
     static deleteContact(request, sender, sendResponse){
         browser.storage.local.get('contactList').then(function(res) {
 
-            for (var i=0 ; i < res.contactList.length ; i++)
+            for (let i = 0; i < res.contactList.length; i++)
             {
                 if (res.contactList[i].address === request.address) {
                     res.contactList.splice(i, 1)
@@ -54,54 +51,22 @@ class ContactsHandlers {
         })
     }
 
-    static deleteFavorite(request, sender, sendResponse){
-        browser.storage.local.get('contactList').then(function(res) {
-            for (var i=0 ; i < res.contactList.length ; i++) {
-                if (res.contactList[i].address === request.address) {
-
-                    if (res.contactList[i].favorite !== false) {
-                        res.contactList[i].favorite = false
-                    } else {
-                        res.contactList[i].favorite = true
-                    }
-                }
-
-            }
-            browser.storage.local.set({"contactList": res.contactList})
-        })
-        return false
-    }
-
     static updateContact(request, sender, sendResponse){
         browser.storage.local.get('contactList').then(function(res) {
 
-            let nameSetter = ''
-            let noteSetter = ''
+            for (let i = 0; i < res.contactList.length; i++) {
+                if (res.contactList[i].address === request.address) {
 
-            if (request.name === '')
-                nameSetter = res.contactList[request.contactIndex].name
-            else
-                nameSetter = request.name
+                    if(request.name != "")
+                        res.contactList[i].name = request.name
 
-
-            if (request.note === ''){
-                noteSetter = res.contactList[request.contactIndex].note
-            } else {
-                noteSetter = request.note
+                    res.contactList[i].favorite = request.favorite
+                    browser.storage.local.set({"contactList": res.contactList})
+                    sendResponse(true)
+                    break
+                }
 
             }
-
-            const updateContact = {
-                name : nameSetter,
-                address : res.contactList[request.contactIndex].address,
-                note : noteSetter,
-                favorite : res.contactList[request.contactIndex].favorite
-            }
-
-            res.contactList.splice(request.contactIndex, 1)
-            res.contactList.splice(request.contactIndex, 0,updateContact)
-            browser.storage.local.set({"contactList": res.contactList})
-
         })
         return false
     }
@@ -114,6 +79,17 @@ class ContactsHandlers {
                 sendResponse([])
             }
 
+        })
+    }
+
+    static getContact(request, sender, sendResponse){
+        browser.storage.local.get('contactList').then(function(res) {
+            for (let i = 0; i < res.contactList.length; i++) {
+                if (res.contactList[i].address === request.address) {
+                    sendResponse(res.contactList[i])
+                    break
+                }
+            }
         })
     }
 

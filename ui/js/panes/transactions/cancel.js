@@ -3,9 +3,15 @@ class CancelTransaction extends StatefulElement {
     render() {
         const _this = this
 
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            return await getBaseInfos()
+        })
+
+        if(baseInfosLoading) return ""
+
         const {data, loading} = this.useInterval(async () => {
             const gp = await getCancelGasPrice(_this.hash)
-            const balance = await getBalance(MAIN_ASSET.ticker)
+            const balance = await getBalance(baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker)
             return {
                 "hash": _this.hash,
                 "gasPrice": gp.gasPrice,
@@ -49,7 +55,7 @@ class CancelTransaction extends StatefulElement {
 
             button = `<button class="button w-100" onclick="${confirmClick}">Confirm</button>`
         }else{
-            button = `<button class="button w-100" disabled>Insufficient ${MAIN_ASSET.ticker} balance</button>`
+            button = `<button class="button w-100" disabled>Insufficient ${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker} balance</button>`
         }
 
         return `
@@ -57,7 +63,7 @@ class CancelTransaction extends StatefulElement {
                 <div class="text-center">
                     <p id="title">Cancel transaction</p>
                     <p id="label" class="mb-0 text-sm">Cancel cost</p>
-                    <p id="amount">${Utils.formatAmount(newFee, MAIN_ASSET.decimals)} <span id="ticker">${MAIN_ASSET.ticker}</span></p>
+                    <p id="amount">${Utils.formatAmount(newFee, baseInfos.wallets[baseInfos.selectedWallet].wallet.decimals)} <span id="ticker">${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker}</span></p>
                     ${button}
                 </div>
             </bottom-popup>

@@ -11,7 +11,7 @@ class AirdropsHandlers {
             let addressUser = baseWallet.addresses[0]
             let airdropID = request.id
 
-            if(res === undefined){
+            if(res === undefined || res.airdropinfos === undefined){
                 sendResponse(false)
                 return
             }
@@ -39,7 +39,7 @@ class AirdropsHandlers {
                 sendResponse(true)
             } else {
                 const result = res.airdropinfos.filter(record => record.address === addressUser.address && record.id === airdropID.airdropid)
-                console.log(result)
+
                 if (result.length <= 0){
                     res.airdropinfos.push(newAirdrop)
                     browser.storage.local.set({"airdropinfos": res.airdropinfos})

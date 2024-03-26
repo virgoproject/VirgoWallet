@@ -220,7 +220,7 @@ class TokensHandlers {
         if(wallet.ticker == request.contract){
             sendResponse({
                 contract: request.contract,
-                name: wallet.name,
+                name: wallet.asset,
                 decimals: wallet.decimals,
                 ticker: wallet.ticker
             })
@@ -228,7 +228,7 @@ class TokensHandlers {
         }
 
         if(wallet.hasToken(request.contract)){
-            sendResponse(wallet.tokenSet.get(request.contract))
+            sendResponse(wallet.getToken(request.contract))
             return
         }
 
@@ -290,7 +290,7 @@ class TokensHandlers {
     }
 
     static addToken(request, sender, sendResponse){
-        baseWallet.getCurrentWallet().addToken(request.name, request.ticker, request.decimals, request.contract)
+        baseWallet.getCurrentWallet().addToken(request.name, request.symbol, request.decimals, request.contract)
         sendResponse(true)
     }
 

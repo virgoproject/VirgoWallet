@@ -29,6 +29,7 @@ class BaseWallet {
 
         this.selectedWallet = data.selectedWallet
         this.selectedAddress = data.selectedAddress
+        this.privateKeys = data.privateKeys
 
         if(this.selectedWallet === undefined)
             this.selectedWallet = 0
@@ -36,14 +37,33 @@ class BaseWallet {
         if(this.selectedAddress === undefined)
             this.selectedAddress = 0
 
-        provider = new HDWalletProvider({
-            mnemonic: this.mnemonic,
-            providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
-            chainId: this.wallets[this.selectedWallet].chainID,
-            numberOfAddresses: this.nonce,
-            shareNonce: false,
-            pollingInterval: 10000
-        })
+        if(this.privateKeys === undefined || this.privateKeys.length == 0){
+            provider = new HDWalletProvider({
+                mnemonic: this.mnemonic,
+                providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
+                chainId: this.wallets[this.selectedWallet].chainID,
+                numberOfAddresses: this.nonce,
+                shareNonce: false,
+                pollingInterval: 10000
+            })
+
+            this.privateKeys = []
+
+            for(const wallet in provider.wallets){
+                this.privateKeys.push("0x"+Converter.bytesToHex(provider.wallets[wallet].privateKey))
+            }
+
+            this.save()
+        }else{
+            provider = new HDWalletProvider({
+                privateKeys: this.privateKeys,
+                providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
+                chainId: this.wallets[this.selectedWallet].chainID,
+                numberOfAddresses: this.nonce,
+                shareNonce: false,
+                pollingInterval: 10000
+            })
+        }
 
         this.setProvider(provider)
 
@@ -109,6 +129,8 @@ class BaseWallet {
                 cipher = new sjcl.cipher.aes(dataKey)
                 data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))))
             }
+
+            console.log(data)
 
             return new BaseWallet(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt)
         }catch(e){
@@ -234,6 +256,7 @@ class BaseWallet {
 
         data.selectedWallet = this.selectedWallet
         data.selectedAddress = this.selectedAddress
+        data.privateKeys = this.privateKeys
 
         //if no dataKey return in plain
         if(this.dataKey === undefined){
@@ -293,6 +316,13 @@ class BaseWallet {
             shareNonce: false,
             pollingInterval: 10000
         })
+
+        this.privateKeys = []
+
+        for(const wallet in newProvider.wallets){
+            this.privateKeys.push("0x"+Converter.bytesToHex(newProvider.wallets[wallet].privateKey))
+        }
+
         this.setProvider(newProvider)
         provider = newProvider
         this.save()
@@ -301,7 +331,7 @@ class BaseWallet {
     selectWallet(newWalletID){
         this.selectedWallet = newWalletID
         const newProvider = new HDWalletProvider({
-            mnemonic: this.mnemonic,
+            privateKeys: this.privateKeys,
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
             numberOfAddresses: this.nonce,
@@ -314,11 +344,19 @@ class BaseWallet {
         this.save()
         this.getCurrentWallet().update()
         this.getCurrentWallet().updatePrices()
+
+        if(typeof walletConnect !== 'undefined'){
+            walletConnect.updateSessions("chainChanged")
+        }
     }
 
     selectAddress(addressID){
         this.selectedAddress = addressID
         this.save()
+
+        if(typeof walletConnect !== 'undefined'){
+            walletConnect.updateSessions("accountsChanged")
+        }
     }
 
     getCurrentWallet(){
@@ -353,7 +391,7 @@ class BaseWallet {
         const chain = this.getChainByID(id)
 
         const newProvider = new HDWalletProvider({
-            mnemonic: this.mnemonic,
+            privateKeys: this.privateKeys,
             providerOrUrl: chain.rpcURL,
             chainId: chain.chainID,
             numberOfAddresses: this.nonce,

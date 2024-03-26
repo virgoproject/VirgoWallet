@@ -4,8 +4,10 @@ class BottomPopup extends StatefulElement {
         const _this = this
 
         const back = this.registerFunction(() => {
-            _this.remove()
             if(_this.onclose) _this.onclose()
+            if(!_this.hasAttribute("prevent-remove")){
+                _this.remove()
+            }
         })
 
         const preventPropagation = this.registerFunction(e => {

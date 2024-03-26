@@ -1,6 +1,6 @@
 {
   "name": "virgoWallet",
-  "version": "0.8.3",
+  "version": "0.8.6",
   "description": "",
   "scripts": {
     "build": "webpack",
@@ -17,7 +17,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.1.15",
+    "@truffle/hdwallet-provider": "^1.7.0",
     "@walletconnect/core": "^2.9.0",
     "@walletconnect/web3wallet": "^1.8.6",
     "abi-decoder": "^2.4.0",
