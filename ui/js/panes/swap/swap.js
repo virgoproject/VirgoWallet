@@ -17,7 +17,23 @@ class SwapTokens extends StatefulElement {
                 _this.querySelector("#tokenInSelect .shimmerIcon").style.display = "none"
             }
 
-            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenIn.contract + "/logo.png"
+            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/" + this.tokenIn.contract + "/logo.png"
+
+
+            const chainLogo = this.querySelector("#tokenInSelect .chainLogo")
+
+            _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "flex"
+
+            chainLogo.onload = e => {
+                e.target.style.display = "initial"
+                _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
+            }
+            chainLogo.onerror = e => {
+                _this.querySelector("#tokenInSelect .defaultChainLogo").style.display = "flex"
+                _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
+            }
+
+            chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/logo.png"
         }
 
         if(this.tokenOut != null){
@@ -34,13 +50,28 @@ class SwapTokens extends StatefulElement {
                 _this.querySelector("#tokenOutSelect .shimmerIcon").style.display = "none"
             }
 
-            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenOut.contract + "/logo.png"
+            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/" + this.tokenOut.contract + "/logo.png"
+
+
+            const chainLogo = this.querySelector("#tokenOutSelect .chainLogo")
+
+            _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "flex"
+
+            chainLogo.onload = e => {
+                e.target.style.display = "initial"
+                _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
+            }
+            chainLogo.onerror = e => {
+                _this.querySelector("#tokenOutSelect .defaultChainLogo").style.display = "flex"
+                _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
+            }
+
+            chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/logo.png"
         }
 
         if(this.amount !== undefined){
             this.querySelector("#input").value = this.amount
             this.querySelector("#input").dispatchEvent(new Event('input', { bubbles: true }))
-
         }
 
     }
@@ -62,8 +93,6 @@ class SwapTokens extends StatefulElement {
             return this.notYet()
         }
 
-        this.chainID = wallet.chainID
-
         const [tokenIn, setTokenIn] = this.useState("tokenIn", null)
         const [tokenOut, setTokenOut] = this.useState("tokenOut", null)
 
@@ -72,12 +101,12 @@ class SwapTokens extends StatefulElement {
 
         const {data: inBalance, loading: inBalanceLoading} = this.useInterval(async () => {
             if(_this.tokenIn == null) return null
-            return await getBalanceCross(wallet.chainID, _this.tokenIn.contract)
+            return await getBalanceCross(_this.tokenIn.chainID, _this.tokenIn.contract)
         }, 10000)
 
         const {data: outBalance, loading: outBalanceLoading} = this.useInterval(async () => {
             if(_this.tokenOut == null) return null
-            return await getBalanceCross(wallet.chainID, _this.tokenOut.contract)
+            return await getBalanceCross(_this.tokenOut.chainID, _this.tokenOut.contract)
         }, 10000)
 
         const {data: refresh15s, loading: refresh15sLoading} = this.useInterval(async () => {
@@ -95,7 +124,9 @@ class SwapTokens extends StatefulElement {
             if(tokenIn != null && tokenOut != null && Utils.isValidNumber(input.value)){
 
                 const contractIn = tokenIn.contract+""
+                const chainIn = tokenIn.chainID+""
                 const contractOut = tokenOut.contract+""
+                const chainOut = tokenOut.chainID+""
                 const value = input.value+""
 
                 _this.querySelector("#unavailable").style.display = "none"
@@ -105,7 +136,9 @@ class SwapTokens extends StatefulElement {
                 _this.querySelector("#next").disabled = true
                 _this.querySelector("#next").innerHTML = '<i class="fa-solid fa-spinner-third fa-spin"></i>'
 
-                getSwapRoute(value, contractIn, contractOut).then(function (res) {
+                getSwapRoute(Utils.toAtomicString(value, tokenIn.decimals), contractIn, chainIn, contractOut, chainOut).then(function (res) {
+
+                    console.log(res)
 
                     _this.querySelector("#tokenOutWrapper").classList.remove("shimmerBG")
                     _this.querySelector("#next").innerHTML = "Next"
@@ -136,7 +169,7 @@ class SwapTokens extends StatefulElement {
         })
 
         const selectInClick = this.registerFunction(() => {
-            const elem = document.createElement("select-token")
+            const elem = document.createElement("swap-select-token")
             elem.setToken = token => {
                 setTokenIn(token)
                 _this.runIntervals()
@@ -151,7 +184,7 @@ class SwapTokens extends StatefulElement {
         })
 
         const selectOutClick = this.registerFunction(() => {
-            const elem = document.createElement("select-token")
+            const elem = document.createElement("swap-select-token")
             elem.setToken = token => {
                 setTokenOut(token)
                 _this.runIntervals()
@@ -218,9 +251,14 @@ class SwapTokens extends StatefulElement {
                         </div>
                         <div class="select" onclick="${selectInClick}" id="tokenInSelect">
                             <div class="selectHeight"></div>
-                            <div class="shimmerBG shimmerIcon" style="display: none"></div>
-                            <img style="display: none" class="selectLogo">
-                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenIn == null ? "" : tokenIn.name.charAt(0).toUpperCase()}</p></div>
+                            <div class="logosWrapper ${tokenIn == null ? "empty" : ""}">
+                                <div class="shimmerBG shimmerIcon" style="display: none"></div>
+                                <img style="display: none" class="selectLogo">
+                                <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenIn == null ? "" : tokenIn.name.charAt(0).toUpperCase()}</p></div>
+                                <div class="shimmerBG shimmerChainLogo" style="display: none"></div>
+                                <img style="display: none" class="chainLogo">
+                                <div class="defaultChainLogo" style="display: none"><p class="m-auto">${tokenIn == null ? "" : tokenIn.chainName.charAt(0).toUpperCase()}</p></div>
+                            </div>
                             <p class="selectName text-lg">${tokenIn == null ? "Select" : tokenIn.ticker}</p>
                             <i class="selectIcon fa-solid fa-caret-down"></i>
                         </div>
@@ -239,9 +277,14 @@ class SwapTokens extends StatefulElement {
                         </div>
                         <div class="select" onclick="${selectOutClick}" id="tokenOutSelect">
                             <div class="selectHeight"></div>
-                            <div class="shimmerBG shimmerIcon" style="display: none"></div>
-                            <img style="display: none" class="selectLogo">
-                            <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenOut == null ? "" : tokenOut.name.charAt(0).toUpperCase()}</p></div>
+                            <div class="logosWrapper ${tokenOut == null ? "empty" : ""}">
+                                <div class="shimmerBG shimmerIcon" style="display: none"></div>
+                                <img style="display: none" class="selectLogo">
+                                <div class="defaultSelectLogo" style="display: none"><p class="m-auto">${tokenOut == null ? "" : tokenOut.name.charAt(0).toUpperCase()}</p></div>
+                                <div class="shimmerBG shimmerChainLogo" style="display: none"></div>
+                                <img style="display: none" class="chainLogo">
+                                <div class="defaultChainLogo" style="display: none"><p class="m-auto">${tokenOut == null ? "" : tokenOut.chainName.charAt(0).toUpperCase()}</p></div>
+                            </div>
                             <p class="selectName text-lg">${tokenOut == null ? "Select" : tokenOut.ticker}</p>
                             <i class="selectIcon fa-solid fa-caret-down"></i>
                         </div>
@@ -320,6 +363,34 @@ class SwapTokens extends StatefulElement {
                 margin: 0 0.5em;
                 cursor: pointer;
                 color: var(--mainColor);
+            }
+            
+            .logosWrapper {
+                height: 36px;
+                width: 36px;
+            }
+            
+            .logosWrapper.empty {
+                height: 36px;
+                width: 0px;
+            }
+            
+            .chainLogo, .shimmerChainLogo, .defaultChainLogo {
+                position: relative;
+                height: 16px;
+                width: 16px;
+                border-radius: 100%;
+                left: 24px;
+                top: -44px;
+                border: 1px solid white;
+                animation-duration: 80s;
+            }
+            
+            .defaultChainLogo {
+                line-height: 16px;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+                font-weight: bold;
             }
             
             .shimmerIcon {

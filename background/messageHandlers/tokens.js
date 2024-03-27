@@ -11,6 +11,7 @@ class TokensHandlers {
         addBgMessageHandler("hasAsset", this.hasAsset)
         addBgMessageHandler("removeToken", this.removeToken)
         addBgMessageHandler("changeTokenTracking", this.changeTokenTracking)
+        addBgMessageHandler("getAllTokens", this.getAllTokens)
     }
 
     static estimateSendFees(request, sender, sendResponse){
@@ -41,6 +42,8 @@ class TokensHandlers {
     }
 
     static async _getBalance(asset){
+        if(asset == "") request.asset = baseWallet.getCurrentWallet().ticker
+
         const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
 
         if(!bal.tracked){
@@ -59,6 +62,8 @@ class TokensHandlers {
         }else{
             const chain = baseWallet.getChainByID(request.chainID)
             const tempWeb3 = new Web3(chain.rpcURL)
+
+            if(request.asset == "") request.asset = chain.ticker
 
             let assetBal = chain.getBalances(baseWallet.getCurrentAddress())[request.asset]
             if(request.asset == chain.ticker){
@@ -305,6 +310,30 @@ class TokensHandlers {
     static changeTokenTracking(request, sender, sendResponse){
         baseWallet.getCurrentWallet().changeTracking(request.contract)
         sendResponse(true)
+    }
+
+    static getAllTokens(request, sender, sendResponse){
+        const tokens = []
+
+        for (let i = baseWallet.wallets.length - 1; i >= 0; i--) {
+            const wallet = baseWallet.wallets[i]
+            for(const token of wallet.tokens){
+                const t = structuredClone(token)
+                t.chainID = wallet.chainID
+                t.chainName = wallet.name
+                tokens.unshift(t)
+            }
+            tokens.unshift({
+                contract: wallet.ticker,
+                name: wallet.asset,
+                ticker: wallet.ticker,
+                decimals: wallet.decimals,
+                chainID: wallet.chainID,
+                chainName: wallet.name
+            })
+        }
+
+        sendResponse(tokens)
     }
 
 }

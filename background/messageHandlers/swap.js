@@ -7,37 +7,20 @@ class SwapHandlers {
     }
 
     static getSwapRoute(request, sender, sendResponse){
-        let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
-
-        if(decimals === undefined)
-            decimals = baseWallet.getCurrentWallet().decimals
-        else
-            decimals = decimals.decimals
-
-        /**if(request.token1 == baseWallet.getCurrentWallet().ticker)
-         request.token1 = baseWallet.getCurrentWallet().contract
-         else if(request.token2 == baseWallet.getCurrentWallet().ticker)
-         request.token2 = baseWallet.getCurrentWallet().contract**/
-
-        baseWallet.getCurrentWallet().getSwapRoute(
-            web3.utils.toBN(Utils.toAtomicString(request.amount, decimals)),
-            request.token1,
-            request.token2
+        CrossSwapUtils.getSwapRoute(
+            request.chainIn,
+            request.tokenIn,
+            request.chainOut,
+            request.tokenOut,
+            web3.utils.toBN(request.amount)
         ).then(function(resp){
             sendResponse(resp)
         })
     }
 
     static estimateSwapFees(request, sender, sendResponse){
-        let decimals2 = baseWallet.getCurrentWallet().tokenSet.get(request.quote.routes[0].route[0])
-
-        if(decimals2 === undefined)
-            decimals2 = baseWallet.getCurrentWallet().decimals
-        else
-            decimals2 = decimals2.decimals
-
-        baseWallet.getCurrentWallet().estimateSwapFees(
-            web3.utils.toBN(Utils.toAtomicString(request.amount, decimals2)),
+        CrossSwapUtils.estimateSwapFees(
+            web3.utils.toBN(request.amount),
             request.quote
         ).then(function(resp){
             sendResponse(resp)

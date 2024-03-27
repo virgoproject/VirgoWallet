@@ -2,6 +2,7 @@ class WalletHandlers {
 
     static register(){
         addBgMessageHandler("getBaseInfos", this.getBaseInfos)
+        addBgMessageHandler("getChainInfos", this.getChainInfos)
         addBgMessageHandler("unlockWallet", this.unlockWallet)
         addBgMessageHandler("changeWallet", this.changeWallet)
         addBgMessageHandler("addAccount", this.addAccount)
@@ -44,6 +45,11 @@ class WalletHandlers {
             "setupDone" : setupDone,
             "biometricsEnabled": biometricsEnabled
         }
+    }
+
+    static getChainInfos(chainID){
+        const chain = baseWallet.getChainByID(chainID)
+        return chain.toJSON()
     }
 
     static unlockWallet(request, sender, sendResponse){

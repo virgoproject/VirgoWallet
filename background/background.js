@@ -7,7 +7,7 @@ function addBgMessageHandler(command, handler){
 if(typeof browser === 'undefined'){
     window = self
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
-        "utils/converter.js", "swap/uniswap02Utils.js", "swap/uniswap03Utils.js", "swap/ethSwapUtils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
+        "utils/converter.js", "swap/uniswap02Utils.js", "swap/uniswap03Utils.js", "swap/ethSwapUtils.js", "swap/crossSwapUtils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
         "wallet/ethWallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js",
         "messageHandlers/airdrops.js", "messageHandlers/contacts.js", "messageHandlers/tokens.js", "messageHandlers/transactions.js",
         "messageHandlers/atomicSwap.js", "messageHandlers/misc.js", "messageHandlers/NFTs.js", "messageHandlers/swap.js", "messageHandlers/wallet.js",

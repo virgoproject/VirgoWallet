@@ -2,6 +2,10 @@ async function getBaseInfos(){
     return await browser.runtime.sendMessage({command: 'getBaseInfos'})
 }
 
+async function getChainInfos(chainID){
+    return await browser.runtime.sendMessage({command: "getChainInfos", chainID})
+}
+
 async function getAsset(contract){
     const res = await getBaseInfos()
 
@@ -185,8 +189,8 @@ async function getContact(address){
     return await browser.runtime.sendMessage({command: 'getContact', address})
 }
 
-async function getSwapRoute(amount, token1, token2){
-    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, token1, token2})
+async function getSwapRoute(amount, tokenIn, chainIn, tokenOut, chainOut){
+    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, tokenIn, chainIn, tokenOut, chainOut})
 }
 
 async function estimateSwapFees(amount, quote){
@@ -205,7 +209,7 @@ function removeNft(address, tokenId){
     browser.runtime.sendMessage({command: 'removeNft' , address:address, tokenId })
 }
 
-async function getBalanceCross(chainID, asset){
+async function getBalanceCross(chainID, asset = ""){
     return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID, asset})
 }
 
@@ -275,4 +279,8 @@ async function changeNetworkVisibility(index){
 
 async function addNetwork(name, rpc, chainID, symbol, explorer){
     return await browser.runtime.sendMessage({command: "addNetwork", name, rpc, chainID, symbol, explorer})
+}
+
+async function getAllTokens(){
+    return await browser.runtime.sendMessage({command: "getAllTokens"})
 }

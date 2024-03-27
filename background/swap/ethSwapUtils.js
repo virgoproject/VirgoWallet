@@ -7,8 +7,6 @@ class EthSwapUtils {
 
     async getSwapRoute(amount, token1, token2){
 
-        console.log(amount)
-
         //Wrap ETH
         if(token1 == baseWallet.getCurrentWallet().ticker && token2.toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase()){
             return {
@@ -40,7 +38,7 @@ class EthSwapUtils {
         }
 
         try {
-            const req = await fetch("https://swap.virgo.net/api/v1/quote/"+this.chainID+"/"+token1+"/"+token2+"/"+amount)
+            const req = await fetch("http://localhost/api/v2/quote/"+this.chainID+"/"+token1+"/"+this.chainID+"/"+token2+"/"+amount)
             const json = await req.json()
 
             if(json.error != undefined || json.routes === undefined)
