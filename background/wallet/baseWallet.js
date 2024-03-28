@@ -27,6 +27,10 @@ class BaseWallet {
 
         this.checkMissingWallets()
 
+        this.crossSwaps = data.crossSwaps
+        if(this.crossSwaps === undefined)
+            this.crossSwaps = []
+
         this.selectedWallet = data.selectedWallet
         this.selectedAddress = data.selectedAddress
         this.privateKeys = data.privateKeys
@@ -257,6 +261,8 @@ class BaseWallet {
         data.selectedWallet = this.selectedWallet
         data.selectedAddress = this.selectedAddress
         data.privateKeys = this.privateKeys
+
+        data.crossSwaps = this.crossSwaps
 
         //if no dataKey return in plain
         if(this.dataKey === undefined){

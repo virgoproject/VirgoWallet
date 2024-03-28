@@ -21,9 +21,13 @@ class MiscHandlers {
     }
 
     static getGasPrice(request, sender, sendResponse){
-        web3.eth.getGasPrice().then(function(gasPrice){
-            sendResponse(gasPrice)
-        })
+        if(request.chainID == ""){
+            web3.eth.getGasPrice().then(gasPrice => sendResponse(gasPrice))
+            return
+        }
+
+        const w3 = baseWallet.getWeb3ByID(request.chainID)
+        w3.eth.getGasPrice().then(gasPrice => sendResponse(gasPrice))
     }
 
     static closedBackupPopup(request, sender, sendResponse){

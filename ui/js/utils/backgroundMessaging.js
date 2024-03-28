@@ -52,8 +52,8 @@ async function estimateSendFeesNft(recipient ,tokenId, address){
     return await browser.runtime.sendMessage({command: 'estimateSendFeesNft', recipient, tokenId, address})
 }
 
-async function getGasPrice(){
-    return await browser.runtime.sendMessage({command: 'getGasPrice'})
+async function getGasPrice(chainID = ""){
+    return await browser.runtime.sendMessage({command: 'getGasPrice', chainID})
 }
 
 async function getBalance(asset){
@@ -193,12 +193,12 @@ async function getSwapRoute(amount, tokenIn, chainIn, tokenOut, chainOut){
     return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, tokenIn, chainIn, tokenOut, chainOut})
 }
 
-async function estimateSwapFees(amount, quote){
-    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount, quote})
+async function estimateSwapFees(chainIn, tokenIn, chainOut, tokenOut, amount, quote){
+    return await browser.runtime.sendMessage({command: 'estimateSwapFees', chainIn, tokenIn, chainOut, tokenOut, amount, quote})
 }
 
-async function initSwap(amount, quote, gasPrice){
-    return await browser.runtime.sendMessage({command: 'initSwap', amount, quote, gasPrice})
+async function initSwap(chainIn, tokenIn, chainOut, tokenOut, amount, quote, gasLimit, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initSwap', chainIn, tokenIn, chainOut, tokenOut, amount, quote, gasLimit, gasPrice})
 }
 
 function removeToken(address){

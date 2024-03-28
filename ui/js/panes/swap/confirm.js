@@ -63,7 +63,7 @@ class ConfirmSwap extends StatefulElement {
         const _this = this
 
         const {data: chainInfos, loading: chainInfosLoading} = this.useFunction(async () => {
-            return await getChainInfos(_this.tokenIn.chainID)
+            return (await getChainInfos(_this.tokenIn.chainID)).wallet
         })
 
         if(chainInfosLoading) return ""
@@ -80,8 +80,8 @@ class ConfirmSwap extends StatefulElement {
         }, 10000)
 
         const {data: fees, loading: feesLoading} = this.useFunction(async () => {
-            const swapFees = await estimateSwapFees(Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals), _this.route)
-            const gasPrice = await getGasPrice()
+            const swapFees = await estimateSwapFees(_this.tokenIn.chainID, _this.tokenIn.contract, _this.tokenOut.chainID, _this.tokenOut.contract, _this.amountIn, _this.route)
+            const gasPrice = await getGasPrice(_this.tokenIn.chainID)
             return {
                 gasLimit: swapFees.gas,
                 gasPrice,
@@ -101,10 +101,10 @@ class ConfirmSwap extends StatefulElement {
         if(balanceLoading || feesLoading)
             feesContent = this.feesShimmer()
         else
-            feesContent = this.getFees(baseInfos, fees, wallet, balance, sending)
+            feesContent = this.getFees(fees, chainInfos, balance, sending)
 
         const confirmClick = this.registerFunction(() => {
-            initSwap(Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals), _this.route, _this.gasPrice)
+            initSwap(_this.tokenIn.chainID, _this.tokenIn.contract, _this.tokenOut.chainID, _this.tokenOut.contract, _this.amountIn, _this.route, fees.gasLimit, _this.gasPrice)
                 .then(function () {
                     notyf.success("Swap initiated!")
                     _this.feesEditor.remove()
@@ -166,7 +166,7 @@ class ConfirmSwap extends StatefulElement {
         `;
     }
 
-    getFees(baseInfos, fees, wallet, balance, sending){
+    getFees(fees, wallet, balance, sending){
         const _this = this
 
         const [gasPrice, setGasPrice] = this.useState("gasPrice", fees.gasPrice)
@@ -181,7 +181,7 @@ class ConfirmSwap extends StatefulElement {
         })
 
         if(this.feesEditor === undefined){
-            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, baseInfos)
+            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, wallet)
         }
 
         const feesBN = new BN(gasLimit).mul(new BN(gasPrice))

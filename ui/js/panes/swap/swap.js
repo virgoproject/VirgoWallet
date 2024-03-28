@@ -80,19 +80,6 @@ class SwapTokens extends StatefulElement {
 
         const _this = this
 
-        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
-            const infos = await getBaseInfos()
-            return infos
-        })
-
-        if(baseInfosLoading) return ""
-
-        const wallet = baseInfos.wallets[baseInfos.selectedWallet].wallet
-
-        if(!wallet.swapV2Params){
-            return this.notYet()
-        }
-
         const [tokenIn, setTokenIn] = this.useState("tokenIn", null)
         const [tokenOut, setTokenOut] = this.useState("tokenOut", null)
 
@@ -131,6 +118,7 @@ class SwapTokens extends StatefulElement {
 
                 _this.querySelector("#unavailable").style.display = "none"
                 _this.querySelector("#notfound").style.display = "none"
+                _this.querySelector("#minWrapper").style.display = "none"
 
                 _this.querySelector("#tokenOutWrapper").classList.add("shimmerBG")
                 _this.querySelector("#next").disabled = true
@@ -156,9 +144,18 @@ class SwapTokens extends StatefulElement {
                         return
                     }
 
+                    let minDisable = false
+                    if(res.routes[0].min !== undefined){
+                        if(new BN(Utils.toAtomicString(value, tokenIn.decimals)).lt(new BN(res.routes[0].min))){
+                            minDisable = true
+                            _this.querySelector("#min").innerHTML = Utils.formatAmount(res.routes[0].min, tokenIn.decimals)
+                            _this.querySelector("#minWrapper").style.display = "block"
+                        }
+                    }
+
                     _this.querySelector("#output").value = Utils.formatAmount(res.routes[0].amount, tokenOut.decimals)
 
-                    _this.querySelector("#next").disabled = new BN(Utils.toAtomicString(value, tokenIn.decimals)).gt(new BN(inBalance.balance))
+                    _this.querySelector("#next").disabled = new BN(Utils.toAtomicString(value, tokenIn.decimals)).gt(new BN(inBalance.balance)) || minDisable
 
                     _this.route = res
                 })
@@ -291,23 +288,13 @@ class SwapTokens extends StatefulElement {
                     </div>
                     <p id="unavailable" style="display: none">Service unavailable</p>
                     <p id="notfound" style="display: none">No route found</p>
+                    <p id="minWrapper" style="display: none">Minimum: <span id="min"></span> ${tokenIn == null ? "" : tokenIn.ticker}</p>
                 </div>
                 <button class="button w-100" disabled id="next" onclick="${nextClick}">Next</button>
             </div>
             <span id="inputCalcSpan" class="text-2xl"></span>
         `;
 
-    }
-
-    notYet(){
-        return `
-        <div id="notYetWrapper">
-            <div class="text-4xl" id="notYetLogo">
-                <i class="fas fa-retweet"></i>
-            </div>
-            <p class="mt-4 text-lg text-center" id="notYetText">Swaps will be available<br>soon for this chain!</p>
-        </div>
-        `;
     }
 
     style() {
@@ -498,7 +485,7 @@ class SwapTokens extends StatefulElement {
                 background: linear-gradient(to right, var(--gray-100) 8%, white 18%, var(--gray-100) 33%);
             }
             
-            #unavailable, #notfound {
+            #unavailable, #notfound, #minWrapper {
                 color: var(--red-700);
                 position: absolute;
                 margin-top: 1em;
@@ -507,25 +494,6 @@ class SwapTokens extends StatefulElement {
                 margin-left: -1rem;
             }
             
-            #notYetWrapper {
-                height: 100vh;
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-            }
-            
-            #notYetLogo {
-                background: var(--gray-50);
-                padding: 1em;
-                border-radius: 50%;
-                color: var(--gray-400);
-            }
-            
-            #notYetText {
-                color: var(--gray-700);
-            }
         `;
     }
 

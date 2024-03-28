@@ -42,7 +42,7 @@ class TokensHandlers {
     }
 
     static async _getBalance(asset){
-        if(asset == "") request.asset = baseWallet.getCurrentWallet().ticker
+        if(asset == "") asset = baseWallet.getCurrentWallet().ticker
 
         const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
 

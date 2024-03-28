@@ -233,7 +233,10 @@ function grantPendingAuthorization(auth, params){
             break
 
         case "signMessage":
-            console.log(auth)
+            //lowercase signing address otherwise hdwallet don't find account
+            if(auth.data[0] !== undefined && typeof auth.data[0] === "string"){
+                auth.data[0] = auth.data[0].toLowerCase()
+            }
 
             if(auth.data[1] !== undefined && typeof auth.data[1] === "string"){
                 try {

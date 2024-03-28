@@ -47,9 +47,9 @@ class WalletHandlers {
         }
     }
 
-    static getChainInfos(chainID){
-        const chain = baseWallet.getChainByID(chainID)
-        return chain.toJSON()
+    static getChainInfos(request, sender, sendResponse){
+        const chain = baseWallet.getChainByID(request.chainID)
+        sendResponse(chain.toJSON())
     }
 
     static unlockWallet(request, sender, sendResponse){
