@@ -1,5 +1,9 @@
 class CrossSwapUtils {
 
+    constructor() {
+        setInterval(this.update, 10000)
+    }
+
     static async getSwapRoute(chainA, tokenA, chainB, tokenB, amount){
 
         if(chainA == chainB){
@@ -7,8 +11,10 @@ class CrossSwapUtils {
         }
 
         try {
-            const req = await fetch("http://localhost/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
+            const req = await fetch("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const json = await req.json()
+
+            console.log(json)
 
             if(json.error != undefined || json.routes === undefined)
                 return json
@@ -57,7 +63,7 @@ class CrossSwapUtils {
 
         const web3A = baseWallet.getWeb3ByID(chainA)
 
-        const req = await fetch("http://localhost/api/v2/order/simpleswap/create/"+baseWallet.getCurrentAddress()+"/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
+        const req = await fetch("https://swap.virgo.net/api/v2/order/simpleswap/create/"+baseWallet.getCurrentAddress()+"/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
         const json = await req.json()
 
         if(json.address_from === undefined){
@@ -88,6 +94,7 @@ class CrossSwapUtils {
                         nonce,
                         origin: "Virgo Swap",
                         from: baseWallet.getCurrentAddress(),
+                        cross: true,
                         swapInfos: {
                             chainA,
                             tokenA,
@@ -95,6 +102,9 @@ class CrossSwapUtils {
                             tokenB,
                             "ssOrderID": json.id,
                             quote,
+                            ssStatus: "waiting",
+                            status: 0,
+                            amountIn: amount.toString()
                         },
                     })
                     baseWallet.save()
@@ -119,6 +129,7 @@ class CrossSwapUtils {
                         nonce,
                         origin: "Virgo Swap",
                         from: baseWallet.getCurrentAddress(),
+                        cross: true,
                         swapInfos: {
                             chainA,
                             tokenA,
@@ -126,6 +137,9 @@ class CrossSwapUtils {
                             tokenB,
                             "ssOrderID": json.id,
                             quote,
+                            ssStatus: "waiting",
+                            status: 0,
+                            amountIn: amount.toString()
                         },
                     })
                     baseWallet.save()
@@ -134,4 +148,107 @@ class CrossSwapUtils {
         })
     }
 
+    static async updateSimpleSwapOrder(order){
+        if(order.swapInfos.status == "-1" || order.swapInfos.status == "3") return
+
+        const res = await fetch("https://swap.virgo.net/api/v2/order/simpleswap/get/"+order.swapInfos.ssOrderID)
+        const json = await res.json()
+
+        if(json.status === undefined) return
+
+        if(order.swapInfos.ssStatus == json.status) return
+
+        order.swapInfos.ssStatus = json.status
+
+        switch(json.status){
+            case "waiting":
+                order.swapInfos.status = 0
+                break
+            case "confirming":
+            case "verifying":
+            case "exchanging":
+                order.swapInfos.status = 1
+                break
+            case "sending":
+                order.swapInfos.status = 2
+                break
+            case "finished":
+                order.swapInfos.status = 3
+                break
+            case "expired":
+            case "failed":
+            case "refunded":
+                order.swapInfos.status = -1
+                break
+        }
+
+        if(json.amount_to != undefined){
+            const tokenB = await new Promise(resolve => {TokensHandlers.getTokenDetailsCross({contract: order.swapInfos.tokenB, chainID: order.swapInfos.chainB}, null, resolve)})
+            let decimals = 18
+            if(tokenB) decimals = tokenB.decimals
+            order.swapInfos.amountOut = Utils.toAtomicString(json.amount_to, decimals)
+        }
+
+        baseWallet.save()
+    }
+
+    static async updateTransakOrder(order){
+        if(order.swapInfos.status == "-1" || order.swapInfos.status == "3") return
+
+        const res = await fetch("https://swap.virgo.net/api/v2/order/transak/get/"+order.swapInfos.orderID)
+        let json = await res.json()
+        json = json.data
+
+        console.log(json)
+        order.swapInfos.trStatus = json.status
+
+        switch(json.status){
+            case "AWAITING_PAYMENT_FROM_USER":
+                order.swapInfos.status = 0
+                break
+            case "PAYMENT_DONE_MARKED_BY_USER":
+            case "PROCESSING":
+                order.swapInfos.status = 1
+                break
+            case "PENDING_DELIVERY_FROM_TRANSAK":
+            case "ON_HOLD_PENDING_DELIVERY_FROM_TRANSAK":
+                order.swapInfos.status = 2
+                break
+            case "COMPLETED":
+                order.swapInfos.status = 3
+                break
+            case "CANCELLED":
+            case "FAILED":
+            case "REFUNDED":
+            case "EXPIRED":
+                order.swapInfos.status = -1
+                break
+        }
+
+        if(json.cryptoAmount !== undefined){
+            const tokenB = await new Promise(resolve => {TokensHandlers.getTokenDetailsCross({contract: order.swapInfos.tokenB, chainID: order.swapInfos.chainB}, null, resolve)})
+            let decimals = 18
+            if(tokenB) decimals = tokenB.decimals
+            order.swapInfos.amountOut = Utils.toAtomicString(json.cryptoAmount, decimals)
+        }
+
+        console.log(order)
+
+        baseWallet.save()
+    }
+
+    update(){
+        for(const swap of baseWallet.crossSwaps){
+            if(swap.contractAddr == "SIMPLESWAP"){
+                CrossSwapUtils.updateSimpleSwapOrder(swap)
+            }
+
+            if(swap.contractAddr == "TRANSAK"){
+                CrossSwapUtils.updateTransakOrder(swap)
+            }
+        }
+    }
+
 }
+
+crossSwaps = new CrossSwapUtils()

@@ -38,7 +38,7 @@ class EthSwapUtils {
         }
 
         try {
-            const req = await fetch("http://localhost/api/v2/quote/"+this.chainID+"/"+token1+"/"+this.chainID+"/"+token2+"/"+amount)
+            const req = await fetch("https://swap.virgo.net/api/v2/quote/"+this.chainID+"/"+token1+"/"+this.chainID+"/"+token2+"/"+amount)
             const json = await req.json()
 
             if(json.error != undefined || json.routes === undefined)

@@ -43,8 +43,11 @@ class TransactionsHistory extends StatefulElement {
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
+            const crossSwaps = await getCrossSwaps()
             let selectedWallet = infos.wallets[infos.selectedWallet].wallet
             let transactions = selectedWallet.transactions
+            transactions = transactions.concat(crossSwaps)
+            transactions = transactions.sort((a,b) => b.date - a.date)
             return transactions
         })
 
@@ -74,7 +77,7 @@ class TransactionsHistory extends StatefulElement {
             if(_this.boxNumber >= data.length) return
 
             const oldBoxNum = _this.boxNumber
-            _this.boxNumber = Math.min(_this.boxNumber+5, data.length)
+            _this.boxNumber = Math.min(_this.boxNumber+15, data.length)
 
             const scroll = _this.querySelector("#inner")
 
@@ -136,7 +139,7 @@ class TransactionsHistory extends StatefulElement {
                     rows.push(`<p class="date text-sm">${displayedDate.replace(", " + new Date().getFullYear(), "")}</p>`)
                 }
 
-                rows.push(`<transaction-card id='${"x"+data[i].hash.replace("0x", "")}'></transaction-card>`)
+                rows.push(`<transaction-card id='${data[i].hash.replace("0x", "x")}' ${data[i].cross != undefined ? "cross" : ""}></transaction-card>`)
             }catch (e) {}
         }
 

@@ -1,6 +1,8 @@
 class TransactionCard extends StatefulElement {
 
     eventHandlers() {
+        const _this = this
+
         this.querySelectorAll(".copy").forEach(e => {
 
             const clickFunc = event => {
@@ -11,12 +13,16 @@ class TransactionCard extends StatefulElement {
             e.querySelector(".detailContent").onclick = clickFunc
             e.querySelector(".detailCopy").onclick = clickFunc
         })
+
     }
 
     async render() {
         const _this = this
 
         const {data: json, loading} = this.useInterval(async () => {
+            if(_this.hasAttribute("cross"))
+                return await getCrossSwap("0"+_this.getAttribute("id"))
+
             return await getTransaction("0"+_this.getAttribute("id"))
         }, 10000)
 
@@ -37,6 +43,8 @@ class TransactionCard extends StatefulElement {
                 </div>
             `
         }
+
+        this.json = json
 
         this.selectedWallet = baseInfos.wallets[baseInfos.selectedWallet].wallet
 
@@ -65,7 +73,7 @@ class TransactionCard extends StatefulElement {
                 </div>
                 <div class="col-10 d-flex" id="header-wrapper">
                     <div id="header-left">
-                        <p id="title" class="text-base">${this.getTitle(json)}</p>
+                        <p id="title" class="text-base">${await this.getTitle(json)}</p>
                         <p id="subtitle" class="text-sm">${await this.getSubtitle(json)}</p>
                     </div>
                     <div id="header-right" class="pl-1" style="max-width: calc(100% - ${Math.max(this.getTitle(json).length, 8)}ch);">
@@ -81,7 +89,9 @@ class TransactionCard extends StatefulElement {
                         <p class="detailTitle">Date</p>
                         <p class="detailContent">${(new Date(parseInt(json.date))).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/(\d+) (\w+) (\d+), (\d+):(\d+)/, "$1 $2. $3 $4:$5")}</p>
                     </div>
+                    ${await this.getChainIn(json)}
                     ${await this.getAmountIn(json)}
+                    ${await this.getChainOut(json)}
                     ${await this.getAmountOut(json)}
                     ${this.getTo(json)}
                     <div class="detail d-flex mt-2 copy">
@@ -90,7 +100,7 @@ class TransactionCard extends StatefulElement {
                         <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
                     </div>
                     ${this.getOrigin(json)}
-                    ${this.getFees(json)}
+                    ${await this.getFees(json)}
                     ${this.getBtns(json)}
                     <div class="text-center mt-2" id="close" onclick="${closeClick}">
                         <i class="fa-regular fa-chevron-up"></i>
@@ -288,13 +298,16 @@ class TransactionCard extends StatefulElement {
         this.opened = true
     }
 
-    getTitle(json){
+    async getTitle(json){
         if(json.contractAddr == "UNWRAP") return "Unwrap token"
         if(json.contractAddr == "WRAP") return "Wrap token"
         if(json.contractAddr == "WEB3_CALL") return "Web3 Interaction"
         if(json.contractAddr == "ATOMICSWAP") return "Atomic Swap"
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return "Swap"
-
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "SIMPLESWAP") return "Swap"
+        if(json.contractAddr == "TRANSAK") {
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenB, json.swapInfos.chainB)
+            return "Buy " + tokenInfos.ticker
+        }
         return "Transfer"
     }
 
@@ -337,6 +350,25 @@ class TransactionCard extends StatefulElement {
                 <div class="d-flex text-sm">
                     <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
                     <span id="subtitleTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "SIMPLESWAP"){
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenA, json.swapInfos.chainA)
+            return `
+                <div class="d-flex text-sm">
+                    <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
+                    <span id="subtitleTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "TRANSAK"){
+            return `
+                <div class="d-flex text-sm">
+                    <span id="subtitleAmount">-${json.swapInfos.amountIn}</span>
+                    <span id="subtitleTicker">${json.swapInfos.tokenA}</span>
                 </div>
             `
         }
@@ -402,6 +434,19 @@ class TransactionCard extends StatefulElement {
             `
         }
 
+        if(json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK") {
+            if(json.swapInfos.amountOut == undefined) return ""
+
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenB, json.swapInfos.chainB)
+
+            return `
+                <div class="d-flex">
+                    <span id="amountAmount">+${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</span>
+                    <span id="amountTicker">${tokenInfos.ticker}</span>
+                </div>
+            `
+        }
+
         const tokenInfos = await getTokenDetailsCross(json.contractAddr, this.selectedWallet.chainID)
 
         return "-" + Utils.formatAmount(json.amount, tokenInfos.decimals) + " " + tokenInfos.ticker
@@ -416,7 +461,9 @@ class TransactionCard extends StatefulElement {
 
         if(json.contractAddr == "ATOMICSWAP") return `<i class="fa-regular fa-right-left-large"></i>`
 
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") return `<i class="fa-regular fa-arrow-right-arrow-left"></i>`
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "SIMPLESWAP") return `<i class="fa-regular fa-arrow-right-arrow-left"></i>`
+
+        if(json.contractAddr == "TRANSAK") return `<i class="fa-regular fa-cart-shopping"></i>`
 
         return `<i class="fa-solid fa-arrow-up"></i>`
     }
@@ -429,7 +476,7 @@ class TransactionCard extends StatefulElement {
 
         let progress = Math.min(100, (confirmations+1)/13*100)
 
-        if(json.contractAddr == "ATOMICSWAP") progress = Math.min(100, (json.swapInfos.status+1)/4*100)
+        if(json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK") progress = Math.min(100, (json.swapInfos.status+1)/4*100)
 
         if(progress == 100) return ""
 
@@ -443,6 +490,12 @@ class TransactionCard extends StatefulElement {
             return "Pending"
         }
 
+        if(json.contractAddr == "SIMPLESWAP")
+            return json.swapInfos.ssStatus
+
+        if(json.contractAddr == "TRANSAK")
+            return json.swapInfos.trStatus
+
         if(json.status === undefined) return "Pending";
         if(json.status) return "Confirmed";
         if(!json.status && json.canceling) return "Canceled";
@@ -450,7 +503,7 @@ class TransactionCard extends StatefulElement {
     }
 
     getStatusClass(json){
-        if(json.contractAddr == "ATOMICSWAP"){
+        if(json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK"){
             if(json.swapInfos.status == 3) return "confirmed"
             if(json.swapInfos.status == -1) return "failed"
             return "pending"
@@ -491,6 +544,17 @@ class TransactionCard extends StatefulElement {
             ticker = tokenInfos.ticker
         }
 
+        if(json.contractAddr == "SIMPLESWAP") {
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenA, json.swapInfos.chainA)
+            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            ticker = tokenInfos.ticker
+        }
+
+        if(json.contractAddr == "TRANSAK") {
+            amount = json.swapInfos.amountIn
+            ticker = json.swapInfos.tokenA
+        }
+
         if(amount == ""){
             const tokenInfos = await getTokenDetailsCross(json.contractAddr, this.selectedWallet.chainID)
             amount = Utils.formatAmount(json.amount, tokenInfos.decimals)
@@ -521,6 +585,20 @@ class TransactionCard extends StatefulElement {
             `
         }
 
+        if(json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK") {
+            if(json.swapInfos.amountOut == undefined) return ""
+
+            const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenB, json.swapInfos.chainB)
+
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Received</p>
+                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="pl-1">${tokenInfos.ticker}</p>
+                </div>
+            `
+        }
+
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
             if(json.swapInfos.amountOut == undefined) return ""
 
@@ -539,7 +617,7 @@ class TransactionCard extends StatefulElement {
     }
 
     getTo(json){
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "ATOMICSWAP" || json.contractAddr == "WRAP" || json.contractAddr == "UNWRAP") return ""
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "ATOMICSWAP" || json.contractAddr == "WRAP" || json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK") return ""
 
         return `
             <div class="detail d-flex mt-2 copy">
@@ -550,12 +628,24 @@ class TransactionCard extends StatefulElement {
         `
     }
 
-    getFees(json){
+    async getFees(json){
+        if(json.contractAddr == "TRANSAK") return ""
+
         if(json.contractAddr == "ATOMICSWAP" && json.swapInfos.gasUsed != undefined){
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">Fees</p>
                     <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.swapInfos.gasUsed, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
+                </div>
+            `
+        }
+
+        if(json.contractAddr == "SIMPLESWAP"){
+            const chainInfos = await getChainInfos(json.swapInfos.chainA)
+            return `
+                <div class="detail d-flex mt-2">
+                    <p class="detailTitle">Fees</p>
+                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, chainInfos.wallet.decimals)}</p><p class="pl-1">${chainInfos.wallet.ticker}</p>
                 </div>
             `
         }
@@ -597,6 +687,8 @@ class TransactionCard extends StatefulElement {
     getBtns(json){
         const _this = this
 
+        if(json.contractAddr == "TRANSAK") return ""
+
         if(json.status === undefined){
             const speedupClick = this.registerFunction(() => {
                 const elem = document.createElement("speedup-transaction")
@@ -628,7 +720,7 @@ class TransactionCard extends StatefulElement {
             `
         }
 
-        if(json.contractAddr == "ATOMICSWAP") return ""
+        if(json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP") return ""
 
         const openExplorer = this.registerFunction(() => {
             browser.windows.create({
@@ -637,6 +729,32 @@ class TransactionCard extends StatefulElement {
         })
 
         return `<button class="button w-100 mt-3" onclick="${openExplorer}">Open in explorer</button>`
+    }
+
+    async getChainIn(json){
+        if(json.contractAddr != "SIMPLESWAP") return ""
+
+        const chainInfos = await getChainInfos(json.swapInfos.chainA)
+
+        return `
+            <div class="detail d-flex mt-2">
+                <p class="detailTitle">Chain In</p>
+                <p class="detailContent">${chainInfos.wallet.name}</p>
+            </div>
+        `
+    }
+
+    async getChainOut(json){
+        if(json.contractAddr != "SIMPLESWAP" && json.contractAddr != "TRANSAK") return ""
+
+        const chainInfos = await getChainInfos(json.swapInfos.chainB)
+
+        return `
+            <div class="detail d-flex mt-2">
+                <p class="detailTitle">Chain Out</p>
+                <p class="detailContent">${chainInfos.wallet.name}</p>
+            </div>
+        `
     }
 
 }

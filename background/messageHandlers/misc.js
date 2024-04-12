@@ -14,6 +14,8 @@ class MiscHandlers {
         addBgMessageHandler("tutorialDone", this.tutorialDone)
         addBgMessageHandler("setupNot", this.setupNot)
         addBgMessageHandler("setTutorialDone", this.setTutorialDone)
+        addBgMessageHandler("setMailAddress", this.setMailAddress)
+        addBgMessageHandler("getMailAddress", this.getMailAddress)
     }
 
     static validateAddress(request, sender, sendResponse){
@@ -110,6 +112,20 @@ class MiscHandlers {
     static setTutorialDone(request, sender, sendResponse){
         browser.storage.local.set({"tutorialDone": true})
         tutorialDone = true
+    }
+
+    static getMailAddress(request, sender, sendResponse){
+        browser.storage.local.get('mailAddress').then(function(res) {
+            if(res.mailAddress === undefined){
+                sendResponse(false)
+                return
+            }
+            sendResponse(res.mailAddress)
+        })
+    }
+
+    static setMailAddress(request, sender, sendResponse){
+        browser.storage.local.set({"mailAddress": request.mailAddress})
     }
 
 }

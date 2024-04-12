@@ -19,21 +19,23 @@ class SwapTokens extends StatefulElement {
 
             logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/" + this.tokenIn.contract + "/logo.png"
 
+            if(this.tokenIn.chainID != "FIAT"){
+                const chainLogo = this.querySelector("#tokenInSelect .chainLogo")
 
-            const chainLogo = this.querySelector("#tokenInSelect .chainLogo")
+                _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "flex"
 
-            _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "flex"
+                chainLogo.onload = e => {
+                    e.target.style.display = "initial"
+                    _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
+                }
+                chainLogo.onerror = e => {
+                    _this.querySelector("#tokenInSelect .defaultChainLogo").style.display = "flex"
+                    _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
+                }
 
-            chainLogo.onload = e => {
-                e.target.style.display = "initial"
-                _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
+                chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/logo.png"
             }
-            chainLogo.onerror = e => {
-                _this.querySelector("#tokenInSelect .defaultChainLogo").style.display = "flex"
-                _this.querySelector("#tokenInSelect .shimmerChainLogo").style.display = "none"
-            }
 
-            chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/logo.png"
         }
 
         if(this.tokenOut != null){
@@ -52,21 +54,23 @@ class SwapTokens extends StatefulElement {
 
             logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/" + this.tokenOut.contract + "/logo.png"
 
+            if(this.tokenOut.chainID != "FIAT"){
+                const chainLogo = this.querySelector("#tokenOutSelect .chainLogo")
 
-            const chainLogo = this.querySelector("#tokenOutSelect .chainLogo")
+                _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "flex"
 
-            _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "flex"
+                chainLogo.onload = e => {
+                    e.target.style.display = "initial"
+                    _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
+                }
+                chainLogo.onerror = e => {
+                    _this.querySelector("#tokenOutSelect .defaultChainLogo").style.display = "flex"
+                    _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
+                }
 
-            chainLogo.onload = e => {
-                e.target.style.display = "initial"
-                _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
+                chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/logo.png"
             }
-            chainLogo.onerror = e => {
-                _this.querySelector("#tokenOutSelect .defaultChainLogo").style.display = "flex"
-                _this.querySelector("#tokenOutSelect .shimmerChainLogo").style.display = "none"
-            }
 
-            chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/logo.png"
         }
 
         if(this.amount !== undefined){
@@ -119,14 +123,13 @@ class SwapTokens extends StatefulElement {
                 _this.querySelector("#unavailable").style.display = "none"
                 _this.querySelector("#notfound").style.display = "none"
                 _this.querySelector("#minWrapper").style.display = "none"
+                _this.querySelector("#minNoAmnt").style.display = "none"
 
                 _this.querySelector("#tokenOutWrapper").classList.add("shimmerBG")
                 _this.querySelector("#next").disabled = true
                 _this.querySelector("#next").innerHTML = '<i class="fa-solid fa-spinner-third fa-spin"></i>'
 
                 getSwapRoute(Utils.toAtomicString(value, tokenIn.decimals), contractIn, chainIn, contractOut, chainOut).then(function (res) {
-
-                    console.log(res)
 
                     _this.querySelector("#tokenOutWrapper").classList.remove("shimmerBG")
                     _this.querySelector("#next").innerHTML = "Next"
@@ -136,6 +139,11 @@ class SwapTokens extends StatefulElement {
 
                     if(res == false){
                         _this.querySelector("#unavailable").style.display = "block"
+                        return
+                    }
+
+                    if(res.error != undefined && res.reason == "Amount too low"){
+                        _this.querySelector("#minNoAmnt").style.display = "block"
                         return
                     }
 
@@ -155,7 +163,7 @@ class SwapTokens extends StatefulElement {
 
                     _this.querySelector("#output").value = Utils.formatAmount(res.routes[0].amount, tokenOut.decimals)
 
-                    _this.querySelector("#next").disabled = new BN(Utils.toAtomicString(value, tokenIn.decimals)).gt(new BN(inBalance.balance)) || minDisable
+                    _this.querySelector("#next").disabled = tokenIn.chainID != "FIAT" && tokenOut.chainID != "FIAT" && (new BN(Utils.toAtomicString(value, tokenIn.decimals)).gt(new BN(inBalance.balance)) || minDisable)
 
                     _this.route = res
                 })
@@ -176,6 +184,7 @@ class SwapTokens extends StatefulElement {
             if(tokenIn != null) toExclude.push(tokenIn.contract)
             if(tokenOut != null) toExclude.push(tokenOut.contract)
             if(toExclude.length != 0) elem.exclude = toExclude
+            if(tokenOut != null && tokenOut.chainID == "FIAT") elem.excludeFiat = true
 
             document.body.appendChild(elem)
         })
@@ -191,6 +200,7 @@ class SwapTokens extends StatefulElement {
             if(tokenIn != null) toExclude.push(tokenIn.contract)
             if(tokenOut != null) toExclude.push(tokenOut.contract)
             if(toExclude.length != 0) elem.exclude = toExclude
+            if(tokenIn != null && tokenIn.chainID == "FIAT") elem.excludeFiat = true
 
             document.body.appendChild(elem)
         })
@@ -204,7 +214,12 @@ class SwapTokens extends StatefulElement {
         })
 
         const nextClick = this.registerFunction(() => {
-            const elem = document.createElement("confirm-swap")
+            let elemName = "confirm-swap"
+
+            if(tokenIn.chainID == "FIAT" || tokenOut.chainID == "FIAT")
+                elemName = "transak-confirm"
+
+            const elem = document.createElement(elemName)
             elem.tokenIn = tokenIn
             elem.tokenOut = tokenOut
             elem.amountIn = Utils.toAtomicString(_this.amount, tokenIn.decimals)
@@ -289,6 +304,7 @@ class SwapTokens extends StatefulElement {
                     <p id="unavailable" style="display: none">Service unavailable</p>
                     <p id="notfound" style="display: none">No route found</p>
                     <p id="minWrapper" style="display: none">Minimum: <span id="min"></span> ${tokenIn == null ? "" : tokenIn.ticker}</p>
+                    <p id="minNoAmnt" style="display: none">Given amount is too low</p>
                 </div>
                 <button class="button w-100" disabled id="next" onclick="${nextClick}">Next</button>
             </div>
@@ -485,7 +501,7 @@ class SwapTokens extends StatefulElement {
                 background: linear-gradient(to right, var(--gray-100) 8%, white 18%, var(--gray-100) 33%);
             }
             
-            #unavailable, #notfound, #minWrapper {
+            #unavailable, #notfound, #minWrapper, #minNoAmnt {
                 color: var(--red-700);
                 position: absolute;
                 margin-top: 1em;

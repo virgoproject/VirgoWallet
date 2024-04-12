@@ -71,7 +71,9 @@ const commonScripts = [
     "../js/panes/receive.js",
     "../js/panes/swap/swap.js",
     "../js/panes/swap/confirm.js",
-    "../js/panes/swap/selectToken.js"
+    "../js/panes/swap/selectToken.js",
+    "../js/panes/swap/transak/confirm.js",
+    "../js/panes/swap/transak/confirmed.js"
 ]
 
 const browserScripts = [
@@ -91,6 +93,7 @@ const mobileScripts = [
     "../../background/bundle.js",
     "../../background/swap/uniswap02Utils.js",
     "../../background/swap/uniswap03Utils.js",
+    "../../background/swap/crossSwapUtils.js",
     "../../background/swap/ethSwapUtils.js",
     "../../background/swap/atomicSwapUtils.js",
     "../../background/wallet/web3ABIs.js",

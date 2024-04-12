@@ -201,6 +201,14 @@ async function initSwap(chainIn, tokenIn, chainOut, tokenOut, amount, quote, gas
     return await browser.runtime.sendMessage({command: 'initSwap', chainIn, tokenIn, chainOut, tokenOut, amount, quote, gasLimit, gasPrice})
 }
 
+async function getCrossSwaps(){
+    return await browser.runtime.sendMessage({command: 'getCrossSwaps'})
+}
+
+async function getCrossSwap(hash){
+    return await browser.runtime.sendMessage({command: 'getCrossSwap', hash})
+}
+
 function removeToken(address){
     browser.runtime.sendMessage({command: 'removeToken', address})
 }
@@ -283,4 +291,20 @@ async function addNetwork(name, rpc, chainID, symbol, explorer){
 
 async function getAllTokens(){
     return await browser.runtime.sendMessage({command: "getAllTokens"})
+}
+
+async function getFiatTokens(){
+    return await browser.runtime.sendMessage({command: "getFiatTokens"})
+}
+
+async function createTransakOrder(tokenIn, tokenOut, amountIn, route, orderId){
+    return await browser.runtime.sendMessage({command: "createTransakOrder", tokenIn, tokenOut, amountIn, route, orderId})
+}
+
+async function getMailAddress(){
+    return await browser.runtime.sendMessage({command: "getMailAddress"})
+}
+
+async function setMailAddress(mailAddress){
+    return await browser.runtime.sendMessage({command: "setMailAddress", mailAddress})
 }

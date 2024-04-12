@@ -2,31 +2,33 @@ class SwapSelectToken extends StatefulElement {
 
     eventHandlers() {
         for(const elem of this.querySelectorAll(".token")){
-            const logo = elem.querySelector(".tokenLogo")
+            try {
+                const logo = elem.querySelector(".tokenLogo")
 
-            logo.onload = e => {
-                e.target.style.display = "initial"
-                elem.querySelector(".shimmerBG").style.display = "none"
-            }
-            logo.onerror = e => {
-                elem.querySelector(".defaultLogo").style.display = "flex"
-                elem.querySelector(".shimmerBG").style.display = "none"
-            }
+                logo.onload = e => {
+                    e.target.style.display = "initial"
+                    elem.querySelector(".shimmerBG").style.display = "none"
+                }
+                logo.onerror = e => {
+                    elem.querySelector(".defaultLogo").style.display = "flex"
+                    elem.querySelector(".shimmerBG").style.display = "none"
+                }
 
-            logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + elem.getAttribute("chainID") + "/" + elem.getAttribute("contract") + "/logo.png"
+                logo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + elem.getAttribute("chainID") + "/" + elem.getAttribute("contract") + "/logo.png"
 
-            const chainLogo = elem.querySelector(".chainLogo")
+                const chainLogo = elem.querySelector(".chainLogo")
 
-            chainLogo.onload = e => {
-                e.target.style.display = "initial"
-                elem.querySelector(".shimmerChainLogo").style.display = "none"
-            }
-            chainLogo.onerror = e => {
-                elem.querySelector(".defaultChainLogo").style.display = "flex"
-                elem.querySelector(".shimmerChainLogo").style.display = "none"
-            }
+                chainLogo.onload = e => {
+                    e.target.style.display = "initial"
+                    elem.querySelector(".shimmerChainLogo").style.display = "none"
+                }
+                chainLogo.onerror = e => {
+                    elem.querySelector(".defaultChainLogo").style.display = "flex"
+                    elem.querySelector(".shimmerChainLogo").style.display = "none"
+                }
 
-            chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + elem.getAttribute("chainID") + "/logo.png"
+                chainLogo.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + elem.getAttribute("chainID") + "/logo.png"
+            }catch(e){}
         }
     }
 
@@ -37,10 +39,18 @@ class SwapSelectToken extends StatefulElement {
         const [reset, setReset] = this.useState("reset", false)
 
         const {data, loading} = this.useInterval(async () => {
-            let tokens = await getAllTokens()
+            let tokens = await getFiatTokens()
+
+            let fiats = await getAllTokens()
+
+            tokens = tokens.concat(fiats)
 
             if(_this.exclude !== undefined){
                 tokens = tokens.filter(item => !_this.exclude.includes(item.contract) && !_this.exclude.includes(item.contract.toLowerCase()))
+            }
+
+            if(_this.excludeFiat){
+                tokens = tokens.filter(item => item.chainID != "FIAT")
             }
 
             return tokens
@@ -158,9 +168,11 @@ class SwapSelectToken extends StatefulElement {
                                 <div class="shimmerBG"></div>
                                 <div class="defaultLogo" style="display: none"><p class="m-auto">${data[i].name.charAt(0).toUpperCase()}</p></div>
                                 <img class="tokenLogo" style="display: none">
-                                <div class="shimmerBG shimmerChainLogo"></div>
-                                <div class="defaultChainLogo" style="display: none"><p class="m-auto">${data[i].chainName.charAt(0).toUpperCase()}</p></div>
-                                <img class="chainLogo" style="display: none">
+                                ${data[i].chainID != "FIAT" ? `
+                                    <div class="shimmerBG shimmerChainLogo"></div>
+                                    <div class="defaultChainLogo" style="display: none"><p class="m-auto">${data[i].chainName.charAt(0).toUpperCase()}</p></div>
+                                    <img class="chainLogo" style="display: none">
+                                ` : ""}
                             </div>
                             <div class="tokenText">
                                 <p class="tokenName">${data[i].name}</p>
