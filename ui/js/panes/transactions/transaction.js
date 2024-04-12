@@ -687,7 +687,7 @@ class TransactionCard extends StatefulElement {
     getBtns(json){
         const _this = this
 
-        if(json.contractAddr == "TRANSAK") return ""
+        if(json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP" || json.contractAddr == "TRANSAK") return ""
 
         if(json.status === undefined){
             const speedupClick = this.registerFunction(() => {
@@ -719,8 +719,6 @@ class TransactionCard extends StatefulElement {
                 </div>
             `
         }
-
-        if(json.contractAddr == "ATOMICSWAP" || json.contractAddr == "SIMPLESWAP") return ""
 
         const openExplorer = this.registerFunction(() => {
             browser.windows.create({
