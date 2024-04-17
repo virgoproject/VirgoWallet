@@ -143,6 +143,7 @@ class TransakConfirm extends StatefulElement {
             <div id="content" class="px-3">
                 <p class="text-left mb-0 label mt-3 text-sm">Mail address</p>
                 <input type="email" class="input w-100" placeholder="satoshi@gmail.com" oninput="${onInput}" id="input" ${mailAddress? `value="${mailAddress}"` : ""} onkeydown="${onKeyDown}">
+                <p class="text-gray-400 mt-3 text-sm">Fiat services are provided by Transak</p>
             </div>
             <div class="p-3">
                  <button class="button w-100" id="next" ${mailAddress? "" : "disabled"} onclick="${nextClick}">Next</button>
@@ -166,7 +167,7 @@ class TransakConfirm extends StatefulElement {
             <div id="content">
                 <iframe
                     id="transakIframe"
-                    src="https://global-stg.transak.com/?apiKey=d568fc2b-477e-46b3-9442-0affd05bbb83&environment=STAGING&productsAvailed=BUY&fiatAmount=${params.fiatAmount}&fiatCurrency=${params.fiatCurrency}&network=${params.network}&paymentMethod=${params.paymentMethods[selected].id}&cryptoCurrencyCode=${params.cryptoCurrency}&isFeeCalculationHidden=true&hideExchangeScreen=true&walletAddress=${address}&disableWalletAddressForm=true&email=${this.email}&hideMenu=true&themeColor=aa3180"
+                    src="https://global.transak.com/?apiKey=e24dddfe-449b-4597-85db-0ddf8c9538c6&environment=PRODUCTION&productsAvailed=BUY&fiatAmount=${params.fiatAmount}&fiatCurrency=${params.fiatCurrency}&network=${params.network}&paymentMethod=${params.paymentMethods[selected].id}&cryptoCurrencyCode=${params.cryptoCurrency}&isFeeCalculationHidden=true&hideExchangeScreen=true&walletAddress=${address}&disableWalletAddressForm=true&email=${this.email}&hideMenu=true&themeColor=aa3180"
                     allow="camera;microphone;payment"
                 </iframe>
             </div>
