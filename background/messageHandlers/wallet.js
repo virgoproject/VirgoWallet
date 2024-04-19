@@ -8,6 +8,7 @@ class WalletHandlers {
         addBgMessageHandler("addAccount", this.addAccount)
         addBgMessageHandler("changeAccount", this.changeAccount)
         addBgMessageHandler("changeAccountName", this.changeAccountName)
+        addBgMessageHandler("addAccountFromPrivateKey", this.addAccountFromPrivateKey)
     }
 
     static async getBaseInfos(request, sender, sendResponse){
@@ -86,6 +87,10 @@ class WalletHandlers {
         sendResponse(WalletHandlers._getBaseInfos())
     }
 
+    static async addAccountFromPrivateKey(request, sender, sendResponse){
+        sendResponse(baseWallet.addAccountFromPrivateKey(request.pKey))
+    }
+
     static changeAccount(request, sender, sendResponse){
         baseWallet.selectAddress(request.accountID)
         sendResponse(WalletHandlers._getBaseInfos())
@@ -95,10 +100,12 @@ class WalletHandlers {
     static changeAccountName(request, sender, sendResponse){
         accName[request.address] = request.newName
         browser.storage.local.set({"accountsNames": accName});
-        return false
+        sendResponse(true)
     }
 
+    static deleteAccount(request, sender, sendResponse){
 
+    }
 
 }
 

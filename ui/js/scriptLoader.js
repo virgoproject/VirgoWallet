@@ -53,7 +53,6 @@ const commonScripts = [
     "../js/panes/home/home.js",
     "../js/panes/home/header.js",
     "../js/panes/home/chainSelector.js",
-    "../js/panes/home/accounts.js",
     "../js/panes/home/mainBalance.js",
     "../js/panes/home/banners.js",
     "../js/panes/home/assets/assets.js",
@@ -73,7 +72,10 @@ const commonScripts = [
     "../js/panes/swap/confirm.js",
     "../js/panes/swap/selectToken.js",
     "../js/panes/swap/transak/confirm.js",
-    "../js/panes/swap/transak/confirmed.js"
+    "../js/panes/swap/transak/confirmed.js",
+    "../js/panes/home/accounts/accounts.js",
+    "../js/panes/home/accounts/addAccount.js",
+    "../js/panes/home/accounts/editAccount.js"
 ]
 
 const browserScripts = [

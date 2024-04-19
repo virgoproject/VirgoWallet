@@ -105,6 +105,10 @@ async function changeAccountName(address, newName){
     return await browser.runtime.sendMessage({command: 'changeAccountName', address, newName})
 }
 
+async function deleteAccount(address){
+    return await browser.runtime.sendMessage({command: 'deleteAccount', address})
+}
+
 async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset})
 }
@@ -307,4 +311,8 @@ async function getMailAddress(){
 
 async function setMailAddress(mailAddress){
     return await browser.runtime.sendMessage({command: "setMailAddress", mailAddress})
+}
+
+async function addAccountFromPrivateKey(pKey){
+    return await browser.runtime.sendMessage({command: "addAccountFromPrivateKey", pKey})
 }

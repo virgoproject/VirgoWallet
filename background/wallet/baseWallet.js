@@ -1,4 +1,3 @@
-let provider;
 let web3;
 let baseWallet;
 
@@ -42,34 +41,31 @@ class BaseWallet {
             this.selectedAddress = 0
 
         if(this.privateKeys === undefined || this.privateKeys.length == 0){
-            provider = new HDWalletProvider({
+            const hdprovider = new HDWalletProvider({
                 mnemonic: this.mnemonic,
                 providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
                 chainId: this.wallets[this.selectedWallet].chainID,
                 numberOfAddresses: this.nonce,
                 shareNonce: false,
-                pollingInterval: 10000
+                pollingInterval: 100000
             })
 
             this.privateKeys = []
 
-            for(const wallet in provider.wallets){
-                this.privateKeys.push("0x"+Converter.bytesToHex(provider.wallets[wallet].privateKey))
+            for(const wallet in hdprovider.wallets){
+                this.privateKeys.push("0x"+Converter.bytesToHex(hdprovider.wallets[wallet].privateKey))
             }
 
+            hdprovider.engine.stop()
+
             this.save()
-        }else{
-            provider = new HDWalletProvider({
-                privateKeys: this.privateKeys,
-                providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
-                chainId: this.wallets[this.selectedWallet].chainID,
-                numberOfAddresses: this.nonce,
-                shareNonce: false,
-                pollingInterval: 10000
-            })
         }
 
-        this.setProvider(provider)
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
+        for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
+            this.addresses.push(web3.eth.accounts.wallet[i].address)
+        }
 
         if(data.version !== undefined)
             this.version = data.version
@@ -134,8 +130,6 @@ class BaseWallet {
                 data = JSON.parse(Converter.utf8ArrayToStr(sjcl.codec.bytes.fromBits(sjcl.mode.ctr.decrypt(cipher, encryptedData, encryptedDataIV))))
             }
 
-            console.log(data)
-
             return new BaseWallet(data, encryptedDataKey, encryptedDataKeyIV, dataKey, passwordSalt)
         }catch(e){
             console.log(e)
@@ -169,15 +163,6 @@ class BaseWallet {
         }
 
         return wallets
-    }
-
-    setProvider(provider){
-        web3 = new Web3(provider)
-
-        web3.eth.getAccounts().then(accounts => {
-            this.addresses = accounts
-        })
-
     }
 
     //check current wallets against reference list, if some networks are missing add them
@@ -314,7 +299,7 @@ class BaseWallet {
 
     addAccount(){
         this.nonce++;
-        const newProvider = new HDWalletProvider({
+        const hdProvider = new HDWalletProvider({
             mnemonic: this.mnemonic,
             providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
             chainId: this.wallets[this.selectedWallet].chainID,
@@ -323,30 +308,55 @@ class BaseWallet {
             pollingInterval: 10000
         })
 
-        this.privateKeys = []
+        const addr = hdProvider.addresses[hdProvider.addresses.length-1]
 
-        for(const wallet in newProvider.wallets){
-            this.privateKeys.push("0x"+Converter.bytesToHex(newProvider.wallets[wallet].privateKey))
+        this.privateKeys.push("0x"+Converter.bytesToHex(hdProvider.wallets[addr].privateKey))
+
+        for(const wallet of this.wallets){
+            wallet.web3 = null
         }
 
-        this.setProvider(newProvider)
-        provider = newProvider
+        hdProvider.engine.stop()
+
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
+        this.addresses = []
+        for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
+            this.addresses.push(web3.eth.accounts.wallet[i].address)
+        }
+
         this.save()
+    }
+
+    addAccountFromPrivateKey(pKey){
+
+        for(const privateKey of this.privateKeys){
+            if(pKey.toLowerCase() == privateKey.toLowerCase()) return false
+        }
+
+        this.privateKeys.push(pKey)
+
+        for(const wallet of this.wallets){
+            wallet.web3 = null
+        }
+
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
+        this.addresses = []
+        for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
+            this.addresses.push(web3.eth.accounts.wallet[i].address)
+        }
+
+        this.save()
+
+        return true
     }
 
     selectWallet(newWalletID){
         this.selectedWallet = newWalletID
-        const newProvider = new HDWalletProvider({
-            privateKeys: this.privateKeys,
-            providerOrUrl: this.wallets[this.selectedWallet].rpcURL,
-            chainId: this.wallets[this.selectedWallet].chainID,
-            numberOfAddresses: this.nonce,
-            shareNonce: false,
-            pollingInterval: 10000
-        })
-        this.setProvider(newProvider)
-        provider.engine.stop()
-        provider = newProvider
+
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
         this.save()
         this.getCurrentWallet().update()
         this.getCurrentWallet().updatePrices()
@@ -396,18 +406,17 @@ class BaseWallet {
     getWeb3ByID(id){
         const chain = this.getChainByID(id)
 
-        const newProvider = new HDWalletProvider({
-            privateKeys: this.privateKeys,
-            providerOrUrl: chain.rpcURL,
-            chainId: chain.chainID,
-            numberOfAddresses: this.nonce,
-            shareNonce: false,
-            pollingInterval: 10000
-        })
+        if(!chain.web3){
+            chain.web3 = new Web3(chain.rpcURL)
 
-        const w3 = new Web3(newProvider)
+            for(const pKey of this.privateKeys){
+                const acc = chain.web3.eth.accounts.privateKeyToAccount(pKey)
+                chain.web3.eth.accounts.wallet.add(acc)
+            }
 
-        return w3
+        }
+
+        return chain.web3
     }
 
 }
