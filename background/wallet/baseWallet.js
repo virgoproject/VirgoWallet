@@ -53,11 +53,28 @@ class BaseWallet {
             this.privateKeys = []
 
             for(const wallet in hdprovider.wallets){
-                this.privateKeys.push("0x"+Converter.bytesToHex(hdprovider.wallets[wallet].privateKey))
+                this.privateKeys.push({
+                    privateKey: "0x"+Converter.bytesToHex(hdprovider.wallets[wallet].privateKey),
+                    hidden: false,
+                    type: "seed"
+                })
             }
 
             hdprovider.engine.stop()
 
+            this.save()
+        }
+
+        if(typeof this.privateKeys[0] == "string"){
+            const newPkeys = []
+            for(const pKey of this.privateKeys){
+                newPkeys.push({
+                    privateKey: pKey,
+                    hidden: false,
+                    type: "seed"
+                })
+            }
+            this.privateKeys = newPkeys
             this.save()
         }
 
@@ -310,7 +327,11 @@ class BaseWallet {
 
         const addr = hdProvider.addresses[hdProvider.addresses.length-1]
 
-        this.privateKeys.push("0x"+Converter.bytesToHex(hdProvider.wallets[addr].privateKey))
+        this.privateKeys.push({
+            privateKey: "0x"+Converter.bytesToHex(hdProvider.wallets[addr].privateKey),
+            hidden: false,
+            type: "seed"
+        })
 
         for(const wallet of this.wallets){
             wallet.web3 = null
@@ -331,10 +352,14 @@ class BaseWallet {
     addAccountFromPrivateKey(pKey){
 
         for(const privateKey of this.privateKeys){
-            if(pKey.toLowerCase() == privateKey.toLowerCase()) return false
+            if(pKey.toLowerCase() == privateKey.privateKey.toLowerCase()) return false
         }
 
-        this.privateKeys.push(pKey)
+        this.privateKeys.push({
+            privateKey: pKey,
+            hidden: false,
+            type: "imported"
+        })
 
         for(const wallet of this.wallets){
             wallet.web3 = null
@@ -410,13 +435,50 @@ class BaseWallet {
             chain.web3 = new Web3(chain.rpcURL)
 
             for(const pKey of this.privateKeys){
-                const acc = chain.web3.eth.accounts.privateKeyToAccount(pKey)
+                if(pKey.hidden) continue
+                const acc = chain.web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
                 chain.web3.eth.accounts.wallet.add(acc)
             }
 
         }
 
         return chain.web3
+    }
+
+    deleteAccount(address){
+        const acc = web3.eth.accounts.wallet[address]
+        if(!acc) return false
+
+        let i = 0
+        for(let i = 0; i < this.privateKeys.length; i++){
+            const pkey = this.privateKeys[i]
+            if(pkey.privateKey.toLowerCase() == acc.privateKey.toLowerCase()){
+                if(pkey.type == "seed"){
+                    pkey.hidden = true
+                    break
+                }
+
+                this.privateKeys.splice(i, 1)
+                break
+            }
+            i++
+        }
+
+        for(const wallet of this.wallets){
+            wallet.web3 = null
+        }
+
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
+        this.addresses = []
+        for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
+            this.addresses.push(web3.eth.accounts.wallet[i].address)
+        }
+
+        this.save()
+
+        return true
+
     }
 
 }

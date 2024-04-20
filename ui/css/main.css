@@ -146,6 +146,10 @@ body {
     transition: all ease-in 0.1s;
 }
 
+.buttonEmpty:disabled {
+    opacity: 0.5;
+}
+
 .button:disabled {
     background: #D78AC5 !important;
 }

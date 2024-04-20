@@ -9,6 +9,7 @@ class WalletHandlers {
         addBgMessageHandler("changeAccount", this.changeAccount)
         addBgMessageHandler("changeAccountName", this.changeAccountName)
         addBgMessageHandler("addAccountFromPrivateKey", this.addAccountFromPrivateKey)
+        addBgMessageHandler("deleteAccount", this.deleteAccount)
     }
 
     static async getBaseInfos(request, sender, sendResponse){
@@ -104,7 +105,7 @@ class WalletHandlers {
     }
 
     static deleteAccount(request, sender, sendResponse){
-
+        baseWallet.deleteAccount(request.address)
     }
 
 }

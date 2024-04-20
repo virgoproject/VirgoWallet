@@ -18,7 +18,7 @@ class EditAccount extends StatefulElement {
         let content;
         if(view == 0) content = this.details(data, setView)
         if(view == 1) content = this.edit(data, setView)
-        if(view == 2) content = this.remove(data, setView)
+        if(view == 2) content = this.delete(data, setView)
 
         return `
             <bottom-popup onclose="${back}">
@@ -90,13 +90,13 @@ class EditAccount extends StatefulElement {
                 <input type="text" class="input col-12" id="name" value="${account.name}" oninput="${validateInputs}">
             </div>
             <div class="mt-3 row">
-                <div class="col-6"><button class="w-100 buttonEmpty text-red-600" id="delete" onclick="${deleteClick}">Delete</button></div>
+                <div class="col-6"><button class="w-100 buttonEmpty text-red-600" id="delete" onclick="${deleteClick}" ${data.addresses.length == 1 ? "disabled" : ""}>Delete</button></div>
                 <div class="col-6"><button class="w-100 button" id="confirm" onclick="${saveClick}" disabled>Save</button></div>
             </div>
         `
     }
 
-    remove(data, setView){
+    delete(data, setView){
         const _this = this
 
         const account = data.addresses[this.accountID]
