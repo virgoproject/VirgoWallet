@@ -452,7 +452,11 @@ class BaseWallet {
         let i = 0
         for(let i = 0; i < this.privateKeys.length; i++){
             const pkey = this.privateKeys[i]
+            console.log(pkey.privateKey.toLowerCase())
+            console.log(acc.privateKey.toLowerCase())
+            console.log("")
             if(pkey.privateKey.toLowerCase() == acc.privateKey.toLowerCase()){
+                console.log("good")
                 if(pkey.type == "seed"){
                     pkey.hidden = true
                     break
@@ -461,7 +465,6 @@ class BaseWallet {
                 this.privateKeys.splice(i, 1)
                 break
             }
-            i++
         }
 
         for(const wallet of this.wallets){
@@ -479,6 +482,61 @@ class BaseWallet {
 
         return true
 
+    }
+
+    getAccountName(address){
+        let name = accName[address]
+
+        if (name === undefined || name === ""){
+            name = "Account "+baseWallet.getAddresses().indexOf(address)
+            accName[address] = name
+            browser.storage.local.set({"accountsNames": accName});
+        }
+
+        return name
+    }
+
+    getHiddenAccounts(){
+        const accounts = []
+
+        for(const pKey of this.privateKeys){
+            if(!pKey.hidden) continue
+            const acc = web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
+            accounts.push({
+                address: acc.address,
+                name: this.getAccountName(acc.address)
+            })
+        }
+
+        return accounts
+    }
+
+    unhideAccount(address){
+        for(const pKey of this.privateKeys){
+            if(!pKey.hidden) continue
+
+            const acc = web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
+
+            if(acc.address != address) continue
+
+            pKey.hidden = false
+            break
+        }
+
+        for(const wallet of this.wallets){
+            wallet.web3 = null
+        }
+
+        web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
+
+        this.addresses = []
+        for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
+            this.addresses.push(web3.eth.accounts.wallet[i].address)
+        }
+
+        this.save()
+
+        return true
     }
 
 }

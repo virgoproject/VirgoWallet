@@ -109,6 +109,14 @@ async function deleteAccount(address){
     return await browser.runtime.sendMessage({command: 'deleteAccount', address})
 }
 
+async function getHiddenAccounts(){
+    return await browser.runtime.sendMessage({command: 'getHiddenAccounts'})
+}
+
+async function unhideAccount(address){
+    return await browser.runtime.sendMessage({command: 'unhideAccount', address})
+}
+
 async function getTokenDetails(asset){
     return await browser.runtime.sendMessage({command: 'getTokenDetails', asset})
 }

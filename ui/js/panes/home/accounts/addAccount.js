@@ -20,7 +20,8 @@ class AddAccount extends StatefulElement {
 
         let content;
         if(menu == 0) content = this.main()
-        if(menu == 1) content = this.import()
+        if(menu == 1) content = this.add()
+        if(menu == 2) content = this.import()
 
         return `
             <bottom-popup onclose="${popupBack}">
@@ -38,15 +39,11 @@ class AddAccount extends StatefulElement {
         const [menu, setMenu] = this.useState("menu", 0)
 
         const addClick = this.registerFunction(() => {
-            addAccount().then(() => {
-                _this.parent.skipAnimation = true
-                _this.parent.runFunctions()
-            })
-            _this.remove()
+            setMenu(1)
         })
 
         const importClick = this.registerFunction(() => {
-            setMenu(1)
+            setMenu(2)
         })
 
         return `
@@ -55,7 +52,7 @@ class AddAccount extends StatefulElement {
                     <i class="fa-regular fa-plus"></i>
                 </div>
                 <div class="btnText ml-2">
-                    <p class="btnTitle">Create an account</p>
+                    <p class="btnTitle">Create or restore an account</p>
                     <p class="btnSubtitle text-sm">From your current seed phrase</p>
                 </div>
             </div>
@@ -70,6 +67,63 @@ class AddAccount extends StatefulElement {
             </div>
         `
 
+    }
+
+    add(){
+        const {data, loading} = this.useFunction(async () => {
+            return await getHiddenAccounts()
+        })
+
+        if(loading) return ""
+
+        const _this = this
+
+        const addClick = this.registerFunction(() => {
+            addAccount().then(() => {
+                _this.parent.skipAnimation = true
+                _this.parent.runFunctions()
+                notyf.success("Added account!")
+            })
+            _this.remove()
+        })
+
+        const rows = []
+
+        const restoreClick = this.registerFunction(e => {
+            unhideAccount(e.currentTarget.getAttribute("address")).then(() => {
+                _this.parent.skipAnimation = true
+                _this.parent.runFunctions()
+                notyf.success("Account restored!")
+            })
+            _this.remove()
+        })
+
+        for(const address of data){
+            rows.push(`
+                <div class="setupBtn mt-3" address="${address.address}" onclick="${restoreClick}">
+                    <div class="btnIcon">
+                        <i class="fa-regular fa-arrow-turn-left"></i>
+                    </div>
+                    <div class="btnText ml-2">
+                        <p class="btnTitle">${address.name}</p>
+                        <p class="btnSubtitle text-sm">${address.address}</p>
+                    </div>
+                </div>
+            `)
+        }
+
+        return `
+            ${rows}
+            <div class="setupBtn mt-3" onclick="${addClick}">
+                <div class="btnIcon">
+                    <i class="fa-regular fa-plus"></i>
+                </div>
+                <div class="btnText ml-2">
+                    <p class="btnTitle">New account</p>
+                    <p class="btnSubtitle text-sm">From your current seed phrase</p>
+                </div>
+            </div>
+        `
     }
 
     import(){
@@ -114,6 +168,7 @@ class AddAccount extends StatefulElement {
             #content {
                 flex-grow: 1;
                 min-height: 0;
+                overflow: auto;
             }
             
             .setupBtn {
@@ -157,6 +212,8 @@ class AddAccount extends StatefulElement {
             
             .btnSubtitle {
                 color: var(--gray-400);
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
         `;
     }

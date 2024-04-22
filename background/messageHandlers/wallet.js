@@ -10,6 +10,8 @@ class WalletHandlers {
         addBgMessageHandler("changeAccountName", this.changeAccountName)
         addBgMessageHandler("addAccountFromPrivateKey", this.addAccountFromPrivateKey)
         addBgMessageHandler("deleteAccount", this.deleteAccount)
+        addBgMessageHandler("getHiddenAccounts", this.getHiddenAccounts)
+        addBgMessageHandler("unhideAccount", this.unhideAccount)
     }
 
     static async getBaseInfos(request, sender, sendResponse){
@@ -105,7 +107,15 @@ class WalletHandlers {
     }
 
     static deleteAccount(request, sender, sendResponse){
-        baseWallet.deleteAccount(request.address)
+        sendResponse(baseWallet.deleteAccount(request.address))
+    }
+
+    static getHiddenAccounts(request, sender, sendResponse){
+        sendResponse(baseWallet.getHiddenAccounts())
+    }
+
+    static unhideAccount(request, sender, sendResponse){
+        sendResponse(baseWallet.unhideAccount(request.address))
     }
 
 }

@@ -90,7 +90,7 @@ class EditAccount extends StatefulElement {
                 <input type="text" class="input col-12" id="name" value="${account.name}" oninput="${validateInputs}">
             </div>
             <div class="mt-3 row">
-                <div class="col-6"><button class="w-100 buttonEmpty text-red-600" id="delete" onclick="${deleteClick}" ${data.addresses.length == 1 ? "disabled" : ""}>Delete</button></div>
+                <div class="col-6"><button class="w-100 buttonEmpty text-red-600" id="delete" onclick="${deleteClick}" ${data.selectedAddress == this.accountID ? "disabled" : ""}>Delete</button></div>
                 <div class="col-6"><button class="w-100 button" id="confirm" onclick="${saveClick}" disabled>Save</button></div>
             </div>
         `
@@ -106,7 +106,11 @@ class EditAccount extends StatefulElement {
         })
 
         const confirmClick = this.registerFunction(() => {
-            deleteAccount(account.address).then(() => {
+            deleteAccount(account.address).then(res => {
+                if(!res){
+                    notyf.error("Error: account doesn't exist")
+                    return
+                }
                 notyf.success("Account deleted!")
                 _this.resetParent()
                 _this.remove()

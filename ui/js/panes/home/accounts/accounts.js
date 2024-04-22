@@ -40,6 +40,7 @@ class AccountSelector extends StatefulElement {
             })
 
             const editClick = this.registerFunction(e => {
+                e.stopPropagation()
                 const elem = document.createElement("edit-account")
                 elem.accountID = e.currentTarget.getAttribute("addressid")
                 elem.resetParent = () => {
