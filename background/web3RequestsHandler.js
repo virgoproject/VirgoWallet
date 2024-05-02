@@ -178,49 +178,32 @@ function grantPendingAuthorization(auth, params){
             break
 
         case "sendTx":
-            console.log("confirming send")
-            console.log(auth)
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
-                console.log([{
-                    from: auth.from,
-                    to: auth.to,
-                    value: web3.utils.numberToHex(auth.value),
-                    data: auth.data,
-                    gas: web3.utils.numberToHex(auth.gas),
-                    gasPrice: web3.utils.numberToHex(params.gasPrice),
-                }])
-                web3.currentProvider.send({
-                    jsonrpc: "2.0",
-                    id: Date.now() + "." + Math.random(),
-                    method: auth.method,
-                    params: [{
-                        from: auth.from,
-                        to: auth.to,
-                        value: web3.utils.numberToHex(auth.value),
-                        data: auth.data,
-                        gas: web3.utils.numberToHex(auth.gas),
-                        gasPrice: web3.utils.numberToHex(params.gasPrice),
-                        nonce: web3.utils.numberToHex(nonce)
-                    }]
-                }, async function (error, resp) {
-                    console.log(resp)
+
+                const callback = (error, res) => {
+                    console.log(res)
                     console.log(error)
-                    if (!resp.error) {
+                    if (!error) {
                         respondToWeb3Request(auth.tabId, auth.reqId, {
                             success: true,
-                            data: resp.result
+                            data: {
+                                "id": auth.reqId,
+                                "jsonrpc": "2.0",
+                                "result": res
+                            }
                         })
 
                         if (auth.method === "eth_sendTransaction") {
                             console.log(origin)
                             let amount = auth.value
-                            let data =  TxIdentifier.getDecodeAbi(auth.data, resp.result, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, auth.origin)
+                            let data = TxIdentifier.getDecodeAbi(auth.data, res, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, auth.origin)
                             console.log(data)
                             baseWallet.getCurrentWallet().transactions.unshift(data)
                             baseWallet.save()
                         }
                         return
                     }
+
                     respondToWeb3Request(auth.tabId, auth.reqId, {
                         success: false,
                         error: {
@@ -228,7 +211,30 @@ function grantPendingAuthorization(auth, params){
                             code: error.code
                         }
                     })
-                })
+                }
+
+                if(auth.method === "eth_sendTransaction"){
+                    web3.eth.sendTransaction({
+                        from: auth.from,
+                        to: auth.to,
+                        value: web3.utils.numberToHex(auth.value),
+                        data: auth.data,
+                        gas: web3.utils.numberToHex(auth.gas),
+                        gasPrice: web3.utils.numberToHex(params.gasPrice),
+                        nonce: web3.utils.numberToHex(nonce)
+                    }, callback)
+                }else{
+                    web3.eth.signTransaction({
+                        from: auth.from,
+                        to: auth.to,
+                        value: web3.utils.numberToHex(auth.value),
+                        data: auth.data,
+                        gas: web3.utils.numberToHex(auth.gas),
+                        gasPrice: web3.utils.numberToHex(params.gasPrice),
+                        nonce: web3.utils.numberToHex(nonce)
+                    }, auth.from, callback)
+                }
+
             })
             break
 
