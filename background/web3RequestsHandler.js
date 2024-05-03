@@ -181,23 +181,16 @@ function grantPendingAuthorization(auth, params){
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
 
                 const callback = (error, res) => {
-                    console.log(res)
-                    console.log(error)
                     if (!error) {
                         respondToWeb3Request(auth.tabId, auth.reqId, {
                             success: true,
-                            data: {
-                                "id": auth.reqId,
-                                "jsonrpc": "2.0",
-                                "result": res
-                            }
+                            data: res
                         })
 
                         if (auth.method === "eth_sendTransaction") {
                             console.log(origin)
                             let amount = auth.value
                             let data = TxIdentifier.getDecodeAbi(auth.data, res, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, auth.origin)
-                            console.log(data)
                             baseWallet.getCurrentWallet().transactions.unshift(data)
                             baseWallet.save()
                         }
@@ -259,7 +252,7 @@ function grantPendingAuthorization(auth, params){
             }, function(error, resp){
                 console.log(error)
                 console.log(resp)
-                if(!resp.error){
+                if(!error){
                     respondToWeb3Request(auth.tabId, auth.reqId, {
                         success: true,
                         data: resp.result
@@ -318,6 +311,8 @@ function handleWeb3Request(origin, method, params, reqId, sender){
                 method: method,
                 params: params
             }, function(error, resp){
+                console.log(error)
+                console.log(resp)
                 if(!resp.error){
                     respondToWeb3Request(tabId, reqId, {
                         success: true,
@@ -369,19 +364,22 @@ function handleWeb3Request(origin, method, params, reqId, sender){
         default:
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
+            console.log(method)
+
             web3.currentProvider.send({
                 jsonrpc: "2.0",
                 id: Date.now() + "." + Math.random(),
                 method: method,
                 params: params
             }, function(error, resp){
-                if(!resp.error){
+                if(!error){
                     respondToWeb3Request(tabId, reqId, {
                         success: true,
                         data: resp.result
                     })
                     return
                 }
+                console.log(error)
                 respondToWeb3Request(tabId, reqId, {
                     success: false,
                     error: {
