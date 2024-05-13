@@ -23,6 +23,7 @@
     "abi-decoder": "^2.4.0",
     "assert": "^2.0.0",
     "bip39": "^3.0.4",
+    "bn.js": "^5.2.1",
     "browserify": "^17.0.0",
     "build": "^0.1.4",
     "crypto-browserify": "^3.12.0",

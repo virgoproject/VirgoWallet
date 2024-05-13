@@ -1,3 +1,6 @@
+//permit to JSON parse bigint to remove incompatibility with Web3.js 4.0
+BigInt.prototype.toJSON = function() { return this.toString() }
+
 const bgMessageHandlers = {}
 
 function addBgMessageHandler(command, handler){

@@ -180,23 +180,23 @@ function grantPendingAuthorization(auth, params){
         case "sendTx":
             web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce) {
 
-                const callback = (error, res) => {
-                    if (!error) {
-                        respondToWeb3Request(auth.tabId, auth.reqId, {
-                            success: true,
-                            data: res
-                        })
+                const callback = (res) => {
+                    respondToWeb3Request(auth.tabId, auth.reqId, {
+                        success: true,
+                        data: res
+                    })
 
-                        if (auth.method === "eth_sendTransaction") {
-                            console.log(origin)
-                            let amount = auth.value
-                            let data = TxIdentifier.getDecodeAbi(auth.data, res, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, auth.origin)
-                            baseWallet.getCurrentWallet().transactions.unshift(data)
-                            baseWallet.save()
-                        }
-                        return
+                    if (auth.method === "eth_sendTransaction") {
+                        console.log(origin)
+                        let amount = auth.value
+                        let data = TxIdentifier.getDecodeAbi(auth.data, res, Date.now(), auth.to, amount,params.gasPrice, auth.gas, nonce, auth.origin)
+                        baseWallet.getCurrentWallet().transactions.unshift(data)
+                        baseWallet.save()
                     }
+                }
 
+                const catchCallback = (error) => {
+                    console.log(error)
                     respondToWeb3Request(auth.tabId, auth.reqId, {
                         success: false,
                         error: {
@@ -215,7 +215,12 @@ function grantPendingAuthorization(auth, params){
                         gas: web3.utils.numberToHex(auth.gas),
                         gasPrice: web3.utils.numberToHex(params.gasPrice),
                         nonce: web3.utils.numberToHex(nonce)
-                    }, callback)
+                    })
+                    .then(res => {
+                        callback(res.transactionHash)
+                    }).catch(error => {
+                        catchCallback(error)
+                    })
                 }else{
                     web3.eth.signTransaction({
                         from: auth.from,
@@ -225,7 +230,12 @@ function grantPendingAuthorization(auth, params){
                         gas: web3.utils.numberToHex(auth.gas),
                         gasPrice: web3.utils.numberToHex(params.gasPrice),
                         nonce: web3.utils.numberToHex(nonce)
-                    }, auth.from, callback)
+                    }, auth.from)
+                    .then(res => {
+                        callback(res.raw)
+                    }).catch(error => {
+                        catchCallback(error)
+                    })
                 }
 
             })

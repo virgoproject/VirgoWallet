@@ -92,12 +92,12 @@ class TokensHandlers {
         web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
             if (request.asset == baseWallet.getCurrentWallet().ticker) {
 
-                request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+                request.amount = new BN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
 
                 web3.eth.sendTransaction({
                     from: baseWallet.getCurrentAddress(),
                     to: request.recipient,
-                    value: request.amount,
+                    value: request.amount.toString(),
                     gas: request.gasLimit,
                     gasPrice: request.gasPrice,
                     nonce: nonce
@@ -156,10 +156,10 @@ class TokensHandlers {
             else
                 decimals = decimals.decimals
 
-            request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
+            request.amount = new BN(Utils.toAtomicString(request.amount, decimals))
 
             const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
-            const transaction = contract.methods.transfer(request.recipient, request.amount);
+            const transaction = contract.methods.transfer(request.recipient, request.amount.toString());
 
             transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                 .on("transactionHash", function (hash) {

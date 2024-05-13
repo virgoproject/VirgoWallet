@@ -171,7 +171,7 @@ class EthSwapUtils {
             if(log.name == "Received" && log.address.toLowerCase() == transaction.recipient.toLowerCase()){
                 for(const event of log.events){
                     if(event.name == "amount"){
-                        transaction.swapInfos.amountOut = web3.utils.toBN(event.value).mul(web3.utils.toBN((1-Uniswap02Utils.baseSwapFee)*1000)).div(web3.utils.toBN("1000")).toString()
+                        transaction.swapInfos.amountOut = new BN(event.value).mul(new BN((1-Uniswap02Utils.baseSwapFee)*1000)).div(new BN("1000")).toString()
                         return
                     }
                 }

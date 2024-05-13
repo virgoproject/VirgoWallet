@@ -30,7 +30,7 @@ class Uniswap03Utils {
 
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
-        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
+        const minOut = new BN(quote.routes[0].amount).mul(new BN(quote.taxA)).div(new BN("1000")).mul(new BN(quote.taxB)).div(new BN("1000"))
 
         let cumuledFees = this.baseSwapFee
         for(let fee of route.fees){
@@ -50,9 +50,9 @@ class Uniswap03Utils {
 
         console.log(allowance)
 
-        if(web3.utils.toBN(allowance).lt(amount)){
+        if(new BN(allowance).lt(amount)){
             return {
-                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
+                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
                 feesRate: cumuledFees
             }
         }
@@ -87,7 +87,7 @@ class Uniswap03Utils {
         }
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
-        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
+        const minOut = new BN(quote.routes[0].amount).mul(new BN(quote.taxA)).div(new BN("1000")).mul(new BN(quote.taxB)).div(new BN("1000"))
 
         const path = this.encodePath(route.route, route.fees)
 
@@ -107,9 +107,9 @@ class Uniswap03Utils {
 
         const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
 
-        if(web3.utils.toBN(allowance).lt(amount)){
+        if(new BN(allowance).lt(amount)){
             return {
-                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
+                gas: this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas(),
                 feesRate: cumuledFees
             }
         }
@@ -157,7 +157,7 @@ class Uniswap03Utils {
 
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
-        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
+        const minOut = new BN(quote.routes[0].amount).mul(new BN(quote.taxA)).div(new BN("1000")).mul(new BN(quote.taxB)).div(new BN("1000"))
 
         return await new Promise(resolve => {
 
@@ -264,9 +264,9 @@ class Uniswap03Utils {
             }
 
             token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call().then(allowance => {
-                if(web3.utils.toBN(allowance).lt(amount)){
-                    token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
-                        token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
+                if(new BN(allowance).lt(amount)){
+                    token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
+                        token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
                             nonce++
                             swap(hash)
                         })
@@ -303,7 +303,7 @@ class Uniswap03Utils {
 
         const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
-        const minOut = web3.utils.toBN(quote.routes[0].amount).mul(web3.utils.toBN(quote.taxA)).div(web3.utils.toBN("1000")).mul(web3.utils.toBN(quote.taxB)).div(web3.utils.toBN("1000"))
+        const minOut = new BN(quote.routes[0].amount).mul(new BN(quote.taxA)).div(new BN("1000")).mul(new BN(quote.taxB)).div(new BN("1000"))
 
         return await new Promise(resolve => {
 
@@ -410,9 +410,9 @@ class Uniswap03Utils {
             }
 
             token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call().then(allowance => {
-                if(web3.utils.toBN(allowance).lt(amount)){
-                    token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
-                        token.methods.approve(dexParams.params.proxyAddress, web3.utils.toBN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
+                if(new BN(allowance).lt(amount)){
+                    token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).estimateGas().then(gas => {
+                        token.methods.approve(dexParams.params.proxyAddress, new BN("115792089237316195423570985008687907853269984665640564039457584007913129639935")).send({nonce: nonce, gasPrice: gasPrice, gas: gas}).on("transactionHash", hash => {
                             nonce++
                             swap(hash)
                         })
