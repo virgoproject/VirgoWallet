@@ -13,7 +13,7 @@ class EthSwapUtils {
                 routes: [
                     {
                         route: [token1, token2],
-                        amount: amount.toString(),
+                        amount: amount,
                         index: -1
                     }
                 ],
@@ -28,7 +28,7 @@ class EthSwapUtils {
                 routes: [
                     {
                         route: [token1, token2],
-                        amount: amount.toString(),
+                        amount: amount,
                         index: -1
                     }
                 ],
@@ -55,8 +55,6 @@ class EthSwapUtils {
                 json.error = true
 
             json.routes = finalRoutes
-
-            console.log(json)
 
             return json
 
@@ -171,7 +169,7 @@ class EthSwapUtils {
             if(log.name == "Received" && log.address.toLowerCase() == transaction.recipient.toLowerCase()){
                 for(const event of log.events){
                     if(event.name == "amount"){
-                        transaction.swapInfos.amountOut = new BN(event.value).mul(new BN((1-Uniswap02Utils.baseSwapFee)*1000)).div(new BN("1000")).toString()
+                        transaction.swapInfos.amountOut = (BigInt(event.value) * BigInt((1-Uniswap02Utils.baseSwapFee)*1000) / 1000n).toString()
                         return
                     }
                 }
@@ -212,7 +210,7 @@ class EthSwapUtils {
                     "contractAddr": "WRAP",
                     "date": Date.now(),
                     "recipient": baseWallet.getCurrentWallet().contract,
-                    "amount": amount.toString(),
+                    "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,
                     "nonce": nonce,
@@ -237,7 +235,7 @@ class EthSwapUtils {
                     "contractAddr": "UNWRAP",
                     "date": Date.now(),
                     "recipient": baseWallet.getCurrentWallet().contract,
-                    "amount": amount.toString(),
+                    "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,
                     "nonce": nonce,

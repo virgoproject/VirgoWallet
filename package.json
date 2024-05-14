@@ -17,8 +17,10 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
     "@truffle/hdwallet-provider": "^1.7.0",
     "@walletconnect/core": "^2.9.0",
+    "@walletconnect/utils": "^2.13.0",
     "@walletconnect/web3wallet": "^1.8.6",
     "abi-decoder": "^2.4.0",
     "assert": "^2.0.0",

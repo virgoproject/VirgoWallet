@@ -92,12 +92,12 @@ class TokensHandlers {
         web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
             if (request.asset == baseWallet.getCurrentWallet().ticker) {
 
-                request.amount = new BN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+                request.amount = Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals)
 
                 web3.eth.sendTransaction({
                     from: baseWallet.getCurrentAddress(),
                     to: request.recipient,
-                    value: request.amount.toString(),
+                    value: request.amount,
                     gas: request.gasLimit,
                     gasPrice: request.gasPrice,
                     nonce: nonce
@@ -108,7 +108,7 @@ class TokensHandlers {
                             "contractAddr": baseWallet.getCurrentWallet().ticker,
                             "date": Date.now(),
                             "recipient": request.recipient,
-                            "amount": request.amount.toString(),
+                            "amount": request.amount,
                             "gasPrice": request.gasPrice,
                             "gasLimit": request.gasLimit,
                             "nonce": nonce
@@ -156,10 +156,10 @@ class TokensHandlers {
             else
                 decimals = decimals.decimals
 
-            request.amount = new BN(Utils.toAtomicString(request.amount, decimals))
+            request.amount = Utils.toAtomicString(request.amount, decimals)
 
             const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
-            const transaction = contract.methods.transfer(request.recipient, request.amount.toString());
+            const transaction = contract.methods.transfer(request.recipient, request.amount);
 
             transaction.send({gas: request.gasLimit, gasPrice: request.gasPrice, nonce: nonce})
                 .on("transactionHash", function (hash) {
@@ -169,7 +169,7 @@ class TokensHandlers {
                         "contractAddr": request.asset,
                         "date": Date.now(),
                         "recipient": request.recipient,
-                        "amount": request.amount.toString(),
+                        "amount": request.amount,
                         "gasPrice": request.gasPrice,
                         "gasLimit": request.gasLimit,
                         "nonce": nonce

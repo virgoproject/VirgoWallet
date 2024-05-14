@@ -242,6 +242,8 @@ function grantPendingAuthorization(auth, params){
             break
 
         case "signMessage":
+            console.log(auth.data)
+
             //lowercase signing address otherwise hdwallet don't find account
             if(auth.data[0] !== undefined && typeof auth.data[0] === "string"){
                 auth.data[0] = auth.data[0].toLowerCase()
@@ -254,21 +256,14 @@ function grantPendingAuthorization(auth, params){
                 }catch(e){}
             }
 
-            web3.currentProvider.send({
-                jsonrpc: "2.0",
-                id: Date.now() + "." + Math.random(),
-                method: auth.method,
-                params: auth.data
-            }, function(error, resp){
-                console.log(error)
-                console.log(resp)
-                if(!error){
-                    respondToWeb3Request(auth.tabId, auth.reqId, {
-                        success: true,
-                        data: resp.result
-                    })
-                    return
-                }
+            const callback = (res) => {
+                respondToWeb3Request(auth.tabId, auth.reqId, {
+                    success: true,
+                    data: res
+                })
+            }
+
+            const catchCallback = (error) => {
                 respondToWeb3Request(auth.tabId, auth.reqId, {
                     success: false,
                     error: {
@@ -276,7 +271,47 @@ function grantPendingAuthorization(auth, params){
                         code: error.code
                     }
                 })
-            })
+            }
+
+            if(auth.method == "eth_sign"){
+                web3.eth.sign(auth.data[1], auth.data[0])
+                .then(res => {
+                    console.log(res)
+                    callback(res)
+                }).catch(error => {
+                    catchCallback(error)
+                })
+            }else if(auth.method == "eth_signTypedData" || auth.method == "eth_signTypedData_v1") {
+                try {
+                    callback(signUtils.signTypedData({
+                        data: auth.data[1],
+                        privateKey: Converter.hexToUint8Array(baseWallet.privateKeys[baseWallet.selectedAddress].privateKey),
+                        version: "V1"
+                    }))
+                } catch (e) {
+                    catchCallback(e)
+                }
+            }else if(auth.method == "eth_signTypedData_v3"){
+                try {
+                    callback(signUtils.signTypedData({
+                        data: auth.data[1],
+                        privateKey: Converter.hexToUint8Array(baseWallet.privateKeys[baseWallet.selectedAddress].privateKey),
+                        version: "V3"
+                    }))
+                } catch (e) {
+                    catchCallback(e)
+                }
+            }else if(auth.method == "eth_signTypedData_v4"){
+                try {
+                    callback(signUtils.signTypedData({
+                        data: auth.data[1],
+                        privateKey: Converter.hexToUint8Array(baseWallet.privateKeys[baseWallet.selectedAddress].privateKey),
+                        version: "V4"
+                    }))
+                } catch (e) {
+                    catchCallback(e)
+                }
+            }
             break
     }
 }
@@ -363,14 +398,12 @@ function handleWeb3Request(origin, method, params, reqId, sender){
             break
         case "eth_signTypedData":
         case "eth_signTypedData_v1":
-        case "eth_signTypedData_v2":
         case "eth_signTypedData_v3":
         case "eth_signTypedData_v4":
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
             signMessage(origin, [params[0], params[1]], tabId, reqId, method)
             break
-
         default:
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 

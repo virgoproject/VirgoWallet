@@ -11,6 +11,7 @@ class CrossSwapUtils {
         }
 
         try {
+            console.log("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const req = await fetch("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const json = await req.json()
 
@@ -31,13 +32,18 @@ class CrossSwapUtils {
 
     static async estimateSwapFees(chainA, tokenA, chainB, tokenB, amount, quote){
 
+        console.log(chainA)
+        console.log(tokenA)
+        console.log(chainB)
+        console.log(tokenB)
+
         if(chainA == chainB){
             return await baseWallet.getChainByID(chainA).estimateSwapFees(amount, quote)
         }
 
         const web3A = baseWallet.getWeb3ByID(chainA)
 
-        if(chainA == tokenA){
+        if(baseWallet.getChainByID(chainA).ticker == tokenA){
             const gas = await web3A.eth.estimateGas({from: baseWallet.getCurrentAddress(), to: "0xdb65702a9b26f8a643a31a4c84b9392589e03d7c"})
             return {
                 gas,
@@ -74,7 +80,7 @@ class CrossSwapUtils {
         const nonce = await web3A.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
         return await new Promise(resolve => {
-            if(chainA == tokenA){
+            if(baseWallet.getChainByID(chainA).ticker == tokenA){
                 web3A.eth.sendTransaction({
                     from: baseWallet.getCurrentAddress(),
                     to: json.address_from,

@@ -16,7 +16,7 @@ class SwapHandlers {
             request.tokenIn,
             request.chainOut,
             request.tokenOut,
-            new BN(request.amount)
+            request.amount
         ).then(function(resp){
             sendResponse(resp)
         })
@@ -28,7 +28,7 @@ class SwapHandlers {
             request.tokenIn,
             request.chainOut,
             request.tokenOut,
-            new BN(request.amount),
+            request.amount,
             request.quote
         ).then(function(resp){
             sendResponse(resp)
@@ -41,7 +41,7 @@ class SwapHandlers {
             request.tokenIn,
             request.chainOut,
             request.tokenOut,
-            new BN(request.amount),
+            request.amount,
             request.quote,
             request.gasLimit,
             request.gasPrice

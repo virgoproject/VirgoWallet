@@ -52,4 +52,22 @@ class Converter {
 
         return out;
     }
+
+    static hexToUint8Array(hexString) {
+        // Remove the '0x' prefix if present
+        if (hexString.slice(0, 2) === '0x') {
+            hexString = hexString.slice(2);
+        }
+
+        // Create a Uint8Array to hold the result
+        const uint8Array = new Uint8Array(hexString.length / 2);
+
+        // Loop through the hex string, two characters at a time
+        for (let i = 0; i < hexString.length; i += 2) {
+            // Convert each pair of characters to a byte and store it in the Uint8Array
+            uint8Array[i / 2] = parseInt(hexString.substr(i, 2), 16);
+        }
+
+        return uint8Array;
+    }
 }
