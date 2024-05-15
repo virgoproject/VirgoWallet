@@ -123,7 +123,7 @@ class StatefulElement extends HTMLElement {
                 _this.eventHandlers();
 
                 try {
-                    if(active) _this.shadow.querySelector("#"+active).focus()
+                    if(active) _this.querySelector("#"+active).focus()
                 }catch(e){}
 
                 _this.afterRender()

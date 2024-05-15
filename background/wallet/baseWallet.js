@@ -446,17 +446,23 @@ class BaseWallet {
     }
 
     deleteAccount(address){
-        const acc = web3.eth.accounts.wallet[address]
+
+        let acc = false;
+
+        for(const account of web3.eth.accounts.wallet){
+            if(account.address == address){
+                acc = account
+                break
+            }
+        }
+
         if(!acc) return false
 
         let i = 0
         for(let i = 0; i < this.privateKeys.length; i++){
             const pkey = this.privateKeys[i]
-            console.log(pkey.privateKey.toLowerCase())
-            console.log(acc.privateKey.toLowerCase())
-            console.log("")
+
             if(pkey.privateKey.toLowerCase() == acc.privateKey.toLowerCase()){
-                console.log("good")
                 if(pkey.type == "seed"){
                     pkey.hidden = true
                     break

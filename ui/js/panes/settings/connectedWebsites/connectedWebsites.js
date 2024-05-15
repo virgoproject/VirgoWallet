@@ -34,7 +34,7 @@ class ConnectedWebsites extends StatefulElement {
                 rows.push(`<connected-website data="${btoa(JSON.stringify(connectedWebsite))}"></connected-website>`)
             }
 
-            content = `<list>${rows}</list>`
+            content = rows
         }
 
         const back = this.registerFunction(() => {
@@ -43,19 +43,30 @@ class ConnectedWebsites extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <section-header title="Connected websites" backfunc="${back}"></section-header>
-                <div id="content">
-                    ${content}
+                <div id="wrapper">
+                    <section-header title="Connected websites" backfunc="${back}"></section-header>
+                    <scroll-view id="scroll">
+                        <div id="inner" class="mx-3 px-3 mb-2">
+                            ${content}
+                        </div>
+                    </scroll-view>
                 </div>
-                
             </div>
         `
     }
 
     style() {
         return `
-            #content {
-                padding: 0 2em;
+            #wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+            }
+        
+            #scroll {
+                flex-grow: 1;
+                min-height: 0;
             }
             
             #emptyTitle {

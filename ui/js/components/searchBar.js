@@ -32,6 +32,10 @@ class SearchBar extends StatefulElement {
         this.querySelector("#wrapper").classList.remove("closed")
     }
 
+    focus(){
+        this.querySelector("#input").focus()
+    }
+
     style() {
         return `
             #wrapper {
