@@ -18,10 +18,16 @@ class EditFeesNew extends StatefulElement {
 
     async render() {
 
+        let wallet
+        if(this.baseInfos.ticker !== undefined)
+            wallet = this.baseInfos
+        else
+            wallet = this.baseInfos.wallets[this.baseInfos.selectedWallet].wallet
+
         const [selected, setSelected] = this.useState("selected", 1)
 
         const {data: gasPrice, loading} = this.useInterval(async () => {
-            return await getGasPrice()
+            return await getGasPrice(wallet.chainID)
         }, 5000)
 
         const [display, setDisplay] = this.useState("display", false)
@@ -60,8 +66,6 @@ class EditFeesNew extends StatefulElement {
             if(e.currentTarget.classList.contains("selected")) return
             setSelected(Number.parseInt(e.currentTarget.id))
         })
-
-        const wallet = this.baseInfos.wallets[this.baseInfos.selectedWallet].wallet
 
         return `
             <bottom-popup prevent-remove onclose="${onClose}">
@@ -122,7 +126,7 @@ class EditFeesNew extends StatefulElement {
             
             .optionTitle {
                 min-width: fit-content;
-                margin-right: 1em;
+                padding-right: 1em;
             }
             
             .amountWrapper {

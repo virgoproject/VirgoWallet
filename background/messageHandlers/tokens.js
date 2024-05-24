@@ -11,6 +11,7 @@ class TokensHandlers {
         addBgMessageHandler("hasAsset", this.hasAsset)
         addBgMessageHandler("removeToken", this.removeToken)
         addBgMessageHandler("changeTokenTracking", this.changeTokenTracking)
+        addBgMessageHandler("getAllTokens", this.getAllTokens)
     }
 
     static estimateSendFees(request, sender, sendResponse){
@@ -41,6 +42,8 @@ class TokensHandlers {
     }
 
     static async _getBalance(asset){
+        if(asset == "") asset = baseWallet.getCurrentWallet().ticker
+
         const bal = baseWallet.getCurrentWallet().getBalances(baseWallet.getCurrentAddress())[asset]
 
         if(!bal.tracked){
@@ -59,6 +62,8 @@ class TokensHandlers {
         }else{
             const chain = baseWallet.getChainByID(request.chainID)
             const tempWeb3 = new Web3(chain.rpcURL)
+
+            if(request.asset == "") request.asset = chain.ticker
 
             let assetBal = chain.getBalances(baseWallet.getCurrentAddress())[request.asset]
             if(request.asset == chain.ticker){
@@ -87,7 +92,7 @@ class TokensHandlers {
         web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
             if (request.asset == baseWallet.getCurrentWallet().ticker) {
 
-                request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals))
+                request.amount = Utils.toAtomicString(request.amount, baseWallet.getCurrentWallet().decimals)
 
                 web3.eth.sendTransaction({
                     from: baseWallet.getCurrentAddress(),
@@ -103,7 +108,7 @@ class TokensHandlers {
                             "contractAddr": baseWallet.getCurrentWallet().ticker,
                             "date": Date.now(),
                             "recipient": request.recipient,
-                            "amount": request.amount.toString(),
+                            "amount": request.amount,
                             "gasPrice": request.gasPrice,
                             "gasLimit": request.gasLimit,
                             "nonce": nonce
@@ -151,7 +156,7 @@ class TokensHandlers {
             else
                 decimals = decimals.decimals
 
-            request.amount = web3.utils.toBN(Utils.toAtomicString(request.amount, decimals))
+            request.amount = Utils.toAtomicString(request.amount, decimals)
 
             const contract = new web3.eth.Contract(ERC20_ABI, request.asset, {from: baseWallet.getCurrentAddress()});
             const transaction = contract.methods.transfer(request.recipient, request.amount);
@@ -164,7 +169,7 @@ class TokensHandlers {
                         "contractAddr": request.asset,
                         "date": Date.now(),
                         "recipient": request.recipient,
-                        "amount": request.amount.toString(),
+                        "amount": request.amount,
                         "gasPrice": request.gasPrice,
                         "gasLimit": request.gasLimit,
                         "nonce": nonce
@@ -305,6 +310,30 @@ class TokensHandlers {
     static changeTokenTracking(request, sender, sendResponse){
         baseWallet.getCurrentWallet().changeTracking(request.contract)
         sendResponse(true)
+    }
+
+    static getAllTokens(request, sender, sendResponse){
+        const tokens = []
+
+        for (let i = baseWallet.wallets.length - 1; i >= 0; i--) {
+            const wallet = baseWallet.wallets[i]
+            for(const token of wallet.tokens){
+                const t = structuredClone(token)
+                t.chainID = wallet.chainID
+                t.chainName = wallet.name
+                tokens.unshift(t)
+            }
+            tokens.unshift({
+                contract: wallet.ticker,
+                name: wallet.asset,
+                ticker: wallet.ticker,
+                decimals: wallet.decimals,
+                chainID: wallet.chainID,
+                chainName: wallet.name
+            })
+        }
+
+        sendResponse(tokens)
     }
 
 }

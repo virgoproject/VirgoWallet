@@ -47,6 +47,9 @@ class TokensList extends StatefulElement {
             _this.searchVal = val //just to prevent scroll loading in case of search
             if(val == ""){
                 setReset(!reset)
+                setTimeout(() => {
+                    _this.querySelector("#scroll").focus()
+                }, 100)
                 return
             }
 

@@ -280,15 +280,6 @@ class EthWallet {
 
             //updating main asset balances
             web3.eth.getBalance(address).then(function(res){
-                if(balances[wallet.ticker].balance < res && !first){
-                    browser.notifications.create("txNotification", {
-                        "type": "basic",
-                        "title": "Money in!",
-                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                        "message": "Received " + (res-balances[wallet.ticker].balance)/10**wallet.decimals + " " + wallet.ticker + " on " + address
-                    });
-                }
-
                 balances[wallet.ticker].balance = res;
                 if(first){
                     updateCount++
@@ -309,14 +300,6 @@ class EthWallet {
                 const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
                 contract.methods.balanceOf(address).call()
                     .then(function(res){
-                        if(balances[token.contract].balance < res && !first){
-                            browser.notifications.create("txNotification", {
-                                "type": "basic",
-                                "title": "Money in!",
-                                "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                "message": "Received " + (res-balances[token.contract].balance)/10**token.decimals + " " + token.ticker + " on " + address
-                            });
-                        }
                         balances[token.contract].balance = res
                         if(first) {
                             updateCount++

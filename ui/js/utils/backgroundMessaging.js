@@ -2,6 +2,10 @@ async function getBaseInfos(){
     return await browser.runtime.sendMessage({command: 'getBaseInfos'})
 }
 
+async function getChainInfos(chainID){
+    return await browser.runtime.sendMessage({command: "getChainInfos", chainID})
+}
+
 async function getAsset(contract){
     const res = await getBaseInfos()
 
@@ -48,8 +52,8 @@ async function estimateSendFeesNft(recipient ,tokenId, address){
     return await browser.runtime.sendMessage({command: 'estimateSendFeesNft', recipient, tokenId, address})
 }
 
-async function getGasPrice(){
-    return await browser.runtime.sendMessage({command: 'getGasPrice'})
+async function getGasPrice(chainID = ""){
+    return await browser.runtime.sendMessage({command: 'getGasPrice', chainID})
 }
 
 async function getBalance(asset){
@@ -99,6 +103,18 @@ async function changeAccount(accountID){
 
 async function changeAccountName(address, newName){
     return await browser.runtime.sendMessage({command: 'changeAccountName', address, newName})
+}
+
+async function deleteAccount(address){
+    return await browser.runtime.sendMessage({command: 'deleteAccount', address})
+}
+
+async function getHiddenAccounts(){
+    return await browser.runtime.sendMessage({command: 'getHiddenAccounts'})
+}
+
+async function unhideAccount(address){
+    return await browser.runtime.sendMessage({command: 'unhideAccount', address})
 }
 
 async function getTokenDetails(asset){
@@ -185,16 +201,24 @@ async function getContact(address){
     return await browser.runtime.sendMessage({command: 'getContact', address})
 }
 
-async function getSwapRoute(amount, token1, token2){
-    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, token1, token2})
+async function getSwapRoute(amount, tokenIn, chainIn, tokenOut, chainOut){
+    return await browser.runtime.sendMessage({command: 'getSwapRoute', amount, tokenIn, chainIn, tokenOut, chainOut})
 }
 
-async function estimateSwapFees(amount, quote){
-    return await browser.runtime.sendMessage({command: 'estimateSwapFees', amount, quote})
+async function estimateSwapFees(chainIn, tokenIn, chainOut, tokenOut, amount, quote){
+    return await browser.runtime.sendMessage({command: 'estimateSwapFees', chainIn, tokenIn, chainOut, tokenOut, amount, quote})
 }
 
-async function initSwap(amount, quote, gasPrice){
-    return await browser.runtime.sendMessage({command: 'initSwap', amount, quote, gasPrice})
+async function initSwap(chainIn, tokenIn, chainOut, tokenOut, amount, quote, gasLimit, gasPrice){
+    return await browser.runtime.sendMessage({command: 'initSwap', chainIn, tokenIn, chainOut, tokenOut, amount, quote, gasLimit, gasPrice})
+}
+
+async function getCrossSwaps(){
+    return await browser.runtime.sendMessage({command: 'getCrossSwaps'})
+}
+
+async function getCrossSwap(hash){
+    return await browser.runtime.sendMessage({command: 'getCrossSwap', hash})
 }
 
 function removeToken(address){
@@ -205,7 +229,7 @@ function removeNft(address, tokenId){
     browser.runtime.sendMessage({command: 'removeNft' , address:address, tokenId })
 }
 
-async function getBalanceCross(chainID, asset){
+async function getBalanceCross(chainID, asset = ""){
     return await browser.runtime.sendMessage({command: 'getBalanceCross', chainID, asset})
 }
 
@@ -275,4 +299,28 @@ async function changeNetworkVisibility(index){
 
 async function addNetwork(name, rpc, chainID, symbol, explorer){
     return await browser.runtime.sendMessage({command: "addNetwork", name, rpc, chainID, symbol, explorer})
+}
+
+async function getAllTokens(){
+    return await browser.runtime.sendMessage({command: "getAllTokens"})
+}
+
+async function getFiatTokens(){
+    return await browser.runtime.sendMessage({command: "getFiatTokens"})
+}
+
+async function createTransakOrder(tokenIn, tokenOut, amountIn, route, orderId){
+    return await browser.runtime.sendMessage({command: "createTransakOrder", tokenIn, tokenOut, amountIn, route, orderId})
+}
+
+async function getMailAddress(){
+    return await browser.runtime.sendMessage({command: "getMailAddress"})
+}
+
+async function setMailAddress(mailAddress){
+    return await browser.runtime.sendMessage({command: "setMailAddress", mailAddress})
+}
+
+async function addAccountFromPrivateKey(pKey){
+    return await browser.runtime.sendMessage({command: "addAccountFromPrivateKey", pKey})
 }

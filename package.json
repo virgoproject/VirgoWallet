@@ -1,6 +1,6 @@
 {
   "name": "virgoWallet",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "",
   "scripts": {
     "build": "webpack",
@@ -17,12 +17,15 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
     "@truffle/hdwallet-provider": "^1.7.0",
     "@walletconnect/core": "^2.9.0",
+    "@walletconnect/utils": "^2.13.0",
     "@walletconnect/web3wallet": "^1.8.6",
     "abi-decoder": "^2.4.0",
     "assert": "^2.0.0",
     "bip39": "^3.0.4",
+    "bn.js": "^5.2.1",
     "browserify": "^17.0.0",
     "build": "^0.1.4",
     "crypto-browserify": "^3.12.0",

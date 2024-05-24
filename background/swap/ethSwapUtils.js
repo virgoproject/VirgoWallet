@@ -7,15 +7,13 @@ class EthSwapUtils {
 
     async getSwapRoute(amount, token1, token2){
 
-        console.log(amount)
-
         //Wrap ETH
         if(token1 == baseWallet.getCurrentWallet().ticker && token2.toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase()){
             return {
                 routes: [
                     {
                         route: [token1, token2],
-                        amount: amount.toString(),
+                        amount: amount,
                         index: -1
                     }
                 ],
@@ -30,7 +28,7 @@ class EthSwapUtils {
                 routes: [
                     {
                         route: [token1, token2],
-                        amount: amount.toString(),
+                        amount: amount,
                         index: -1
                     }
                 ],
@@ -40,7 +38,7 @@ class EthSwapUtils {
         }
 
         try {
-            const req = await fetch("https://swap.virgo.net/api/v1/quote/"+this.chainID+"/"+token1+"/"+token2+"/"+amount)
+            const req = await fetch("https://swap.virgo.net/api/v2/quote/"+this.chainID+"/"+token1+"/"+this.chainID+"/"+token2+"/"+amount)
             const json = await req.json()
 
             if(json.error != undefined || json.routes === undefined)
@@ -57,8 +55,6 @@ class EthSwapUtils {
                 json.error = true
 
             json.routes = finalRoutes
-
-            console.log(json)
 
             return json
 
@@ -173,7 +169,7 @@ class EthSwapUtils {
             if(log.name == "Received" && log.address.toLowerCase() == transaction.recipient.toLowerCase()){
                 for(const event of log.events){
                     if(event.name == "amount"){
-                        transaction.swapInfos.amountOut = web3.utils.toBN(event.value).mul(web3.utils.toBN((1-Uniswap02Utils.baseSwapFee)*1000)).div(web3.utils.toBN("1000")).toString()
+                        transaction.swapInfos.amountOut = (BigInt(event.value) * BigInt((1-Uniswap02Utils.baseSwapFee)*1000) / 1000n).toString()
                         return
                     }
                 }
@@ -214,7 +210,7 @@ class EthSwapUtils {
                     "contractAddr": "WRAP",
                     "date": Date.now(),
                     "recipient": baseWallet.getCurrentWallet().contract,
-                    "amount": amount.toString(),
+                    "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,
                     "nonce": nonce,
@@ -239,7 +235,7 @@ class EthSwapUtils {
                     "contractAddr": "UNWRAP",
                     "date": Date.now(),
                     "recipient": baseWallet.getCurrentWallet().contract,
-                    "amount": amount.toString(),
+                    "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,
                     "nonce": nonce,

@@ -122,7 +122,9 @@ class StatefulElement extends HTMLElement {
                 _this.renderFuncs();
                 _this.eventHandlers();
 
-                if(active) _this.shadow.querySelector("#"+active).focus()
+                try {
+                    if(active) _this.querySelector("#"+active).focus()
+                }catch(e){}
 
                 _this.afterRender()
             }catch (e){
@@ -300,7 +302,7 @@ class StatefulElement extends HTMLElement {
                 toCheck.push(e.childNodes[i]);
             }
 
-            if(e.nodeName == "#text" && e.textContent.trim() == "," && e.previousSibling != null && e.nextSibling != null){
+            if(e.nodeName == "#text" && (e.textContent.trim() == "," || (e.nextSibling != null && e.nextSibling.nodeName == "TABLE")) && e.previousSibling != null && e.nextSibling != null){
                 e.remove();
             }
 

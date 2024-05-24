@@ -14,6 +14,8 @@ class MiscHandlers {
         addBgMessageHandler("tutorialDone", this.tutorialDone)
         addBgMessageHandler("setupNot", this.setupNot)
         addBgMessageHandler("setTutorialDone", this.setTutorialDone)
+        addBgMessageHandler("setMailAddress", this.setMailAddress)
+        addBgMessageHandler("getMailAddress", this.getMailAddress)
     }
 
     static validateAddress(request, sender, sendResponse){
@@ -21,9 +23,13 @@ class MiscHandlers {
     }
 
     static getGasPrice(request, sender, sendResponse){
-        web3.eth.getGasPrice().then(function(gasPrice){
-            sendResponse(gasPrice)
-        })
+        if(request.chainID == ""){
+            web3.eth.getGasPrice().then(gasPrice => sendResponse(gasPrice))
+            return
+        }
+
+        const w3 = baseWallet.getWeb3ByID(request.chainID)
+        w3.eth.getGasPrice().then(gasPrice => sendResponse(gasPrice))
     }
 
     static closedBackupPopup(request, sender, sendResponse){
@@ -106,6 +112,20 @@ class MiscHandlers {
     static setTutorialDone(request, sender, sendResponse){
         browser.storage.local.set({"tutorialDone": true})
         tutorialDone = true
+    }
+
+    static getMailAddress(request, sender, sendResponse){
+        browser.storage.local.get('mailAddress').then(function(res) {
+            if(res.mailAddress === undefined){
+                sendResponse(false)
+                return
+            }
+            sendResponse(res.mailAddress)
+        })
+    }
+
+    static setMailAddress(request, sender, sendResponse){
+        browser.storage.local.set({"mailAddress": request.mailAddress})
     }
 
 }

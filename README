@@ -11,8 +11,8 @@ Used the minified version at https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2
 BN.Js ver. 5.2.1: https://github.com/indutny/bn.js/releases/tag/v5.2.1
 Used the /lib/bn.js file
 
-Web3.js ver 1.7.5: https://github.com/web3/web3.js/releases/tag/v1.7.5
-Used the minified version: /dist/web3.min.js file
+Web3.js ver 4.8.0: https://github.com/web3/web3.js/releases/tag/v1.7.5
+Used the minified version: https://cdn.jsdelivr.net/npm/web3@4.8.0/dist/web3.min.js
 
 Build instructions:
 

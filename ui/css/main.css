@@ -95,6 +95,10 @@ body {
     color: var(--red-400) !important;
 }
 
+.text-red-600 {
+    color: var(--red-600) !important;
+}
+
 .text-green-400 {
     color: var(--green-400) !important;
 }
@@ -140,6 +144,10 @@ body {
     border: none;
     padding: .375em .75em;
     transition: all ease-in 0.1s;
+}
+
+.buttonEmpty:disabled {
+    opacity: 0.5;
 }
 
 .button:disabled {

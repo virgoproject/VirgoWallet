@@ -1,8 +1,6 @@
 class ConfirmSwap extends StatefulElement {
 
     eventHandlers() {
-        if(this.chainID == null) return
-
         const _this = this
 
         const logoIn = this.querySelector("#tokenIn .logo")
@@ -16,7 +14,22 @@ class ConfirmSwap extends StatefulElement {
             _this.querySelector("#tokenIn .shimmerIcon").style.display = "none"
         }
 
-        logoIn.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenIn.contract + "/logo.png"
+        logoIn.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/" + this.tokenIn.contract + "/logo.png"
+
+        const chainLogoIn = this.querySelector("#tokenIn .chainLogo")
+
+        chainLogoIn.onload = e => {
+            e.target.style.display = "initial"
+            _this.querySelector("#tokenIn .shimmerChainLogo").style.display = "none"
+        }
+        chainLogoIn.onerror = e => {
+            _this.querySelector("#tokenIn .defaultChainLogo").style.display = "flex"
+            _this.querySelector("#tokenIn .shimmerChainLogo").style.display = "none"
+        }
+
+        chainLogoIn.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenIn.chainID + "/logo.png"
+
+
 
         const logoOut = this.querySelector("#tokenOut .logo")
 
@@ -29,23 +42,31 @@ class ConfirmSwap extends StatefulElement {
             _this.querySelector("#tokenOut .shimmerIcon").style.display = "none"
         }
 
-        logoOut.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.chainID + "/" + this.tokenOut.contract + "/logo.png"
+        logoOut.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/" + this.tokenOut.contract + "/logo.png"
+
+        const chainLogoOut = this.querySelector("#tokenOut .chainLogo")
+
+        chainLogoOut.onload = e => {
+            e.target.style.display = "initial"
+            _this.querySelector("#tokenOut .shimmerChainLogo").style.display = "none"
+        }
+        chainLogoOut.onerror = e => {
+            _this.querySelector("#tokenOut .defaultChainLogo").style.display = "flex"
+            _this.querySelector("#tokenOut .shimmerChainLogo").style.display = "none"
+        }
+
+        chainLogoOut.src = "https://raw.githubusercontent.com/virgoproject/tokens/main/" + this.tokenOut.chainID + "/logo.png"
 
     }
 
     render() {
         const _this = this
 
-        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
-            const infos = await getBaseInfos()
-            return infos
+        const {data: chainInfos, loading: chainInfosLoading} = this.useFunction(async () => {
+            return (await getChainInfos(_this.tokenIn.chainID)).wallet
         })
 
-        if(baseInfosLoading) return ""
-
-        const wallet = baseInfos.wallets[baseInfos.selectedWallet].wallet
-
-        this.chainID = wallet.chainID
+        if(chainInfosLoading) return ""
 
         const back = this.registerFunction(() => {
             _this.remove()
@@ -53,14 +74,14 @@ class ConfirmSwap extends StatefulElement {
 
         const {data: balance, loading: balanceLoading} = this.useInterval(async () => {
             return {
-                token: await getBalanceCross(wallet.chainID, _this.tokenIn.contract),
-                native: await getBalanceCross(wallet.chainID, wallet.ticker)
+                token: await getBalanceCross(_this.tokenIn.chainID, _this.tokenIn.contract),
+                native: await getBalanceCross(_this.tokenIn.chainID)
             }
         }, 10000)
 
         const {data: fees, loading: feesLoading} = this.useFunction(async () => {
-            const swapFees = await estimateSwapFees(Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals), _this.route)
-            const gasPrice = await getGasPrice()
+            const swapFees = await estimateSwapFees(_this.tokenIn.chainID, _this.tokenIn.contract, _this.tokenOut.chainID, _this.tokenOut.contract, _this.amountIn, _this.route)
+            const gasPrice = await getGasPrice(_this.tokenIn.chainID)
             return {
                 gasLimit: swapFees.gas,
                 gasPrice,
@@ -80,10 +101,10 @@ class ConfirmSwap extends StatefulElement {
         if(balanceLoading || feesLoading)
             feesContent = this.feesShimmer()
         else
-            feesContent = this.getFees(baseInfos, fees, wallet, balance, sending)
+            feesContent = this.getFees(fees, chainInfos, balance, sending)
 
         const confirmClick = this.registerFunction(() => {
-            initSwap(Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals), _this.route, _this.gasPrice)
+            initSwap(_this.tokenIn.chainID, _this.tokenIn.contract, _this.tokenOut.chainID, _this.tokenOut.contract, _this.amountIn, _this.route, fees.gasLimit, _this.gasPrice)
                 .then(function () {
                     notyf.success("Swap initiated!")
                     _this.feesEditor.remove()
@@ -102,9 +123,14 @@ class ConfirmSwap extends StatefulElement {
                     <div id="content">
                         <div>
                             <div class="tokenWrapper mt-3" id="tokenIn">
-                                <div class="shimmerBG shimmerIcon"></div>
-                                <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenIn.name.charAt(0).toUpperCase()}</p></div>
-                                <img class="logo" style="display: none">
+                                <div class="logosWrapper">
+                                    <div class="shimmerBG shimmerIcon"></div>
+                                    <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenIn.name.charAt(0).toUpperCase()}</p></div>
+                                    <img class="logo" style="display: none">
+                                    <div class="shimmerBG shimmerChainLogo"></div>
+                                    <div class="defaultChainLogo" style="display: none"><p class="m-auto">${_this.tokenIn.chainName.charAt(0).toUpperCase()}</p></div>
+                                    <img class="chainLogo" style="display: none">
+                                </div>
                                 <div class="textLeft">
                                     <p class="amountLabel text-sm">You swap</p>
                                     <div class="amountWrapper">
@@ -114,9 +140,14 @@ class ConfirmSwap extends StatefulElement {
                                 </div>
                             </div>
                             <div class="tokenWrapper mt-3" id="tokenOut">
-                                <div class="shimmerBG shimmerIcon"></div>
-                                <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenOut.name.charAt(0).toUpperCase()}</p></div>
-                                <img class="logo" style="display: none">
+                                <div class="logosWrapper">
+                                    <div class="shimmerBG shimmerIcon"></div>
+                                    <div class="defaultLogo" style="display: none"><p class="m-auto">${_this.tokenOut.name.charAt(0).toUpperCase()}</p></div>
+                                    <img class="logo" style="display: none">
+                                    <div class="shimmerBG shimmerChainLogo"></div>
+                                    <div class="defaultChainLogo" style="display: none"><p class="m-auto">${_this.tokenOut.chainName.charAt(0).toUpperCase()}</p></div>
+                                    <img class="chainLogo" style="display: none">
+                                </div>
                                 <div class="textLeft">
                                     <p class="amountLabel text-sm">You will get</p>
                                     <div class="amountWrapper">
@@ -135,7 +166,7 @@ class ConfirmSwap extends StatefulElement {
         `;
     }
 
-    getFees(baseInfos, fees, wallet, balance, sending){
+    getFees(fees, wallet, balance, sending){
         const _this = this
 
         const [gasPrice, setGasPrice] = this.useState("gasPrice", fees.gasPrice)
@@ -150,7 +181,7 @@ class ConfirmSwap extends StatefulElement {
         })
 
         if(this.feesEditor === undefined){
-            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, baseInfos)
+            this.feesEditor = EditFeesNew.init(gasLimit, setGasPrice, wallet)
         }
 
         const feesBN = new BN(gasLimit).mul(new BN(gasPrice))
@@ -206,6 +237,29 @@ class ConfirmSwap extends StatefulElement {
                 flex-grow: 1;
                 min-height: 0;
                 text-align: center;
+            }
+            
+            .logosWrapper {
+                height: 36px;
+                width: 36px;
+            }
+            
+            .chainLogo, .shimmerChainLogo, .defaultChainLogo {
+                position: relative;
+                height: 16px;
+                width: 16px;
+                border-radius: 100%;
+                left: 24px;
+                top: -44px;
+                border: 1px solid white;
+                animation-duration: 80s;
+            }
+            
+            .defaultChainLogo {
+                line-height: 16px;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+                font-weight: bold;
             }
             
             .shimmerIcon {

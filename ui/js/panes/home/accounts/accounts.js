@@ -29,12 +29,25 @@ class AccountSelector extends StatefulElement {
         for(const account of data.addresses){
 
             const accountClick = this.registerFunction(e => {
+                if(e.currentTarget.classList.contains("selected")) return
+
                 changeAccount(e.currentTarget.getAttribute("addressid")).then(() => {
                     _this.removeWithAnimation()
                     setTimeout(() => {
                         _this.resetHome()
                     },250)
                 })
+            })
+
+            const editClick = this.registerFunction(e => {
+                e.stopPropagation()
+                const elem = document.createElement("edit-account")
+                elem.accountID = e.currentTarget.getAttribute("addressid")
+                elem.resetParent = () => {
+                    _this.skipAnimation = true
+                    _this.runFunctions()
+                }
+                document.body.appendChild(elem)
             })
 
             rows.push(`
@@ -45,7 +58,7 @@ class AccountSelector extends StatefulElement {
                             <p class="accountName">${account.name}</p>
                             <p class="accountValue text-sm"><span class="val">${Utils.formatAmount(account.balances[selectedWallet.ticker].balance, selectedWallet.decimals)}</span><span> ${selectedWallet.ticker}</span></p>
                         </div>
-                        <i class="fa-regular ${data.selectedAddress == i ? "fa-check" : "fa-chevron-right" } text-xl accountRightIcon"></i>
+                        <i class="fa-regular fa-ellipsis-vertical text-xl accountRightIcon" onclick="${editClick}" addressid="${i}"></i>
                     </div>
                 </div>
             `)
@@ -53,10 +66,9 @@ class AccountSelector extends StatefulElement {
         }
 
         const addAccountClick = this.registerFunction(() => {
-            addAccount().then(() => {
-                _this.skipAnimation = true
-                _this.runFunctions()
-            })
+            const elem = document.createElement("add-account")
+            elem.parent = _this
+            document.body.appendChild(elem)
         })
 
         return `
@@ -109,11 +121,11 @@ class AccountSelector extends StatefulElement {
             }
             
             .account:hover {
-                background: var(--gray-100);
+                background: var(--gray-50);
             }
             
             .account.selected {
-                background: var(--gray-100);
+                background: var(--gray-50);
                 cursor: default;
             }
             
@@ -151,6 +163,16 @@ class AccountSelector extends StatefulElement {
             .accountRightIcon {
                 padding-top: 4px;
                 color: var(--gray-400);
+                cursor: pointer;
+                transition: all 0.2s ease-in;
+                width: 2em;
+                text-align: center;
+                height: 2em;
+                border-radius: 50%;
+            }
+            
+            .accountRightIcon:hover {
+                background: var(--gray-100);
             }
             
             .accountValue {
@@ -159,7 +181,7 @@ class AccountSelector extends StatefulElement {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
-                white-space: pre-wrap;
+                white-space: pre;
             }
             
             .accountValue .val {

@@ -4,40 +4,31 @@ class SwapHandlers {
         addBgMessageHandler("getSwapRoute", this.getSwapRoute)
         addBgMessageHandler("estimateSwapFees", this.estimateSwapFees)
         addBgMessageHandler("initSwap", this.initSwap)
+        addBgMessageHandler("getCrossSwaps", this.getCrossSwaps)
+        addBgMessageHandler("getCrossSwap", this.getCrossSwap)
+        addBgMessageHandler("getFiatTokens", this.getFiatTokens)
+        addBgMessageHandler("createTransakOrder", this.createTransakOrder)
     }
 
     static getSwapRoute(request, sender, sendResponse){
-        let decimals = baseWallet.getCurrentWallet().tokenSet.get(request.token1)
-
-        if(decimals === undefined)
-            decimals = baseWallet.getCurrentWallet().decimals
-        else
-            decimals = decimals.decimals
-
-        /**if(request.token1 == baseWallet.getCurrentWallet().ticker)
-         request.token1 = baseWallet.getCurrentWallet().contract
-         else if(request.token2 == baseWallet.getCurrentWallet().ticker)
-         request.token2 = baseWallet.getCurrentWallet().contract**/
-
-        baseWallet.getCurrentWallet().getSwapRoute(
-            web3.utils.toBN(Utils.toAtomicString(request.amount, decimals)),
-            request.token1,
-            request.token2
+        CrossSwapUtils.getSwapRoute(
+            request.chainIn,
+            request.tokenIn,
+            request.chainOut,
+            request.tokenOut,
+            request.amount
         ).then(function(resp){
             sendResponse(resp)
         })
     }
 
     static estimateSwapFees(request, sender, sendResponse){
-        let decimals2 = baseWallet.getCurrentWallet().tokenSet.get(request.quote.routes[0].route[0])
-
-        if(decimals2 === undefined)
-            decimals2 = baseWallet.getCurrentWallet().decimals
-        else
-            decimals2 = decimals2.decimals
-
-        baseWallet.getCurrentWallet().estimateSwapFees(
-            web3.utils.toBN(Utils.toAtomicString(request.amount, decimals2)),
+        CrossSwapUtils.estimateSwapFees(
+            request.chainIn,
+            request.tokenIn,
+            request.chainOut,
+            request.tokenOut,
+            request.amount,
             request.quote
         ).then(function(resp){
             sendResponse(resp)
@@ -45,24 +36,81 @@ class SwapHandlers {
     }
 
     static initSwap(request, sender, sendResponse){
-        let decimals3 = baseWallet.getCurrentWallet().tokenSet.get(request.quote.routes[0].route[0])
-
-        if(decimals3 === undefined)
-            decimals3 = baseWallet.getCurrentWallet().decimals
-        else
-            decimals3 = decimals3.decimals
-
-        baseWallet.getCurrentWallet().initSwap(
-            web3.utils.toBN(Utils.toAtomicString(request.amount, decimals3)),
+        CrossSwapUtils.initSwap(
+            request.chainIn,
+            request.tokenIn,
+            request.chainOut,
+            request.tokenOut,
+            request.amount,
             request.quote,
+            request.gasLimit,
             request.gasPrice
         ).then(function(resp){
-            baseWallet.getCurrentWallet().changeTracking(request.quote.routes[0].route[request.quote.routes[0].route.length-1], true)
+            //baseWallet.getCurrentWallet().changeTracking(request.quote.routes[0].route[request.quote.routes[0].route.length-1], true)
             sendResponse(true)
         })
     }
 
+    static getCrossSwaps(request, sender, sendResponse){
+        sendResponse(baseWallet.crossSwaps)
+    }
 
+    static getCrossSwap(request, sender, sendResponse){
+        for(const swap of baseWallet.crossSwaps){
+            if(swap.hash == request.hash){
+                sendResponse(swap)
+                return
+            }
+        }
+
+        sendResponse(false)
+    }
+
+    static getFiatTokens(request, sender, sendResponse){
+        sendResponse([
+            {
+                chainID: "FIAT",
+                chainName: "Fiat",
+                contract: "EUR",
+                decimals: 0,
+                name: "Euro",
+                ticker: "EUR"
+            },
+            {
+                chainID: "FIAT",
+                chainName: "Fiat",
+                contract: "USD",
+                decimals: 0,
+                name: "US Dollar",
+                ticker: "USD"
+            },
+        ])
+    }
+
+    static createTransakOrder(request, sender, sendResponse){
+        baseWallet.crossSwaps.unshift({
+            hash: "0x"+request.orderId,
+            contractAddr: "TRANSAK",
+            "date": Date.now(),
+            amount: request.amountIn,
+            origin: "Virgo Swap",
+            from: baseWallet.getCurrentAddress(),
+            cross: true,
+            swapInfos: {
+                chainA: request.tokenIn.chainID,
+                tokenA: request.tokenIn.contract,
+                chainB: request.tokenOut.chainID,
+                tokenB: request.tokenOut.contract,
+                orderID: request.orderId,
+                quote: request.route,
+                trStatus: "AWAITING_PAYMENT_FROM_USER",
+                status: 0,
+                amountIn: request.amountIn
+            },
+        })
+
+        baseWallet.save()
+    }
 
 }
 
