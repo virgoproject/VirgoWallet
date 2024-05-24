@@ -115,7 +115,7 @@ browserShim.runtime.onMessage.addListener = (func) => {
 browserShim.runtime.sendMessage = (message) => {
     return new Promise((resolve, reject) => {
         const resolveFilter = res => {
-            resolve(structuredClone(res))
+            resolve(JSON.parse(JSON.stringify(res)))
         }
         browserShim.runtime.onMessage.listener(structuredClone(message), "", resolveFilter)
     })
