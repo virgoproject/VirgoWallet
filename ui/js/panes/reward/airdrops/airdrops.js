@@ -2,6 +2,12 @@ class AirdropsPane extends StatefulElement {
 
     render() {
 
+        const _this = this
+
+        const back = this.registerFunction(() => {
+            _this.remove()
+        })
+
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
 
@@ -33,39 +39,43 @@ class AirdropsPane extends StatefulElement {
 
         if(loading){
             return `
-            <section-header title="Airdrops"></section-header>
-            <div id="content">
-                <div id="headerWrapper">
-                    <div id="headerShimmer" class="shimmerBG row"></div>
-                </div>
-                <div class="px-3">
-                    <div class="airdropShimmer mt-3">
-                        <div class="d-flex align-items-center">
-                            <div class="airdropShimmerLogo shimmerBG"></div>
-                            <div class="airdropNameShimmer shimmerBG"></div>
+            <div class="fullpageSection">
+                <div id="wrapper">
+                    <section-header title="Airdrops" backfunc="${back}"></section-header>
+                    <div id="content">
+                        <div id="headerWrapper">
+                            <div id="headerShimmer" class="shimmerBG row"></div>
                         </div>
-                        <div class="airdropAmountShimmer shimmerBG"></div>
-                    </div>
-                    <div class="airdropShimmer mt-3">
-                        <div class="d-flex align-items-center">
-                            <div class="airdropShimmerLogo shimmerBG"></div>
-                            <div class="airdropNameShimmer shimmerBG"></div>
+                        <div class="px-3">
+                            <div class="airdropShimmer mt-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="airdropShimmerLogo shimmerBG"></div>
+                                    <div class="airdropNameShimmer shimmerBG"></div>
+                                </div>
+                                <div class="airdropAmountShimmer shimmerBG"></div>
+                            </div>
+                            <div class="airdropShimmer mt-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="airdropShimmerLogo shimmerBG"></div>
+                                    <div class="airdropNameShimmer shimmerBG"></div>
+                                </div>
+                                <div class="airdropAmountShimmer shimmerBG"></div>
+                            </div>
+                            <div class="airdropShimmer mt-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="airdropShimmerLogo shimmerBG"></div>
+                                    <div class="airdropNameShimmer shimmerBG"></div>
+                                </div>
+                                <div class="airdropAmountShimmer shimmerBG"></div>
+                            </div>
+                            <div class="airdropShimmer mt-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="airdropShimmerLogo shimmerBG"></div>
+                                    <div class="airdropNameShimmer shimmerBG"></div>
+                                </div>
+                                <div class="airdropAmountShimmer shimmerBG"></div>
+                            </div>
                         </div>
-                        <div class="airdropAmountShimmer shimmerBG"></div>
-                    </div>
-                    <div class="airdropShimmer mt-3">
-                        <div class="d-flex align-items-center">
-                            <div class="airdropShimmerLogo shimmerBG"></div>
-                            <div class="airdropNameShimmer shimmerBG"></div>
-                        </div>
-                        <div class="airdropAmountShimmer shimmerBG"></div>
-                    </div>
-                    <div class="airdropShimmer mt-3">
-                        <div class="d-flex align-items-center">
-                            <div class="airdropShimmerLogo shimmerBG"></div>
-                            <div class="airdropNameShimmer shimmerBG"></div>
-                        </div>
-                        <div class="airdropAmountShimmer shimmerBG"></div>
                     </div>
                 </div>
             </div>
@@ -85,16 +95,20 @@ class AirdropsPane extends StatefulElement {
         }
 
         return `
-            <section-header title="Airdrops"></section-header>
-            <div id="content">
-                <div id="headerWrapper">
-                    <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
-                </div>
-                <div id="list" class="px-3">
-                    ${rows.length > 0 ? '<p class="label mt-3">Active airdrops</p>' : ''}
-                    ${rows}
-                    <p class="label mt-3">Ended airdrops</p>
-                    ${endedRows} 
+            <div class="fullpageSection">
+                <div id="wrapper">
+                    <section-header title="Airdrops" backfunc="${back}"></section-header>
+                    <div id="content">
+                        <div id="headerWrapper">
+                            <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
+                        </div>
+                        <div id="list" class="px-3">
+                            ${rows.length > 0 ? '<p class="label mt-3">Active airdrops</p>' : ''}
+                            ${rows}
+                            <p class="label mt-3">Ended airdrops</p>
+                            ${endedRows} 
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -102,6 +116,13 @@ class AirdropsPane extends StatefulElement {
 
     style() {
         return `
+            #wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+            }
+        
             #content {
                 height: 100%;
             }

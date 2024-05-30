@@ -766,6 +766,14 @@ iframe {
     line-height: 1;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
+.flex-0 {
+    flex: 0;
+}
+
 .shimmerBG {
     animation-duration: 9s;
     animation-fill-mode: forwards;

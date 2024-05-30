@@ -36,9 +36,9 @@ $("#footer .footerElem").click(function(){
     //temporary
     if($(this).attr("data-target") === "airdrop"){
         try {
-            document.querySelector("airdrops-pane").remove()
+            document.querySelector("reward-pane").remove()
         }catch (e){}
-        const elem = document.createElement("airdrops-pane")
+        const elem = document.createElement("reward-pane")
         document.querySelector("#airdropPane").appendChild(elem)
     }
 

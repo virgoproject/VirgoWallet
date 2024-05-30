@@ -14,10 +14,6 @@ const commonScripts = [
     "../js/panes/loading.js",
     "../js/panes/unlock.js",
     "../js/panes/setup.js",
-    "../js/panes/airdrops/airdrops.js",
-    "../js/panes/airdrops/header.js",
-    "../js/panes/airdrops/airdropCard.js",
-    "../js/panes/airdrops/join.js",
     "../js/web3/editFees.js",
     "../js/panes/settings/connectedWebsites/connectedWebsite.js",
     "../js/panes/settings/connectedWebsites/connectedWebsites.js",
@@ -75,7 +71,14 @@ const commonScripts = [
     "../js/panes/swap/transak/confirmed.js",
     "../js/panes/home/accounts/accounts.js",
     "../js/panes/home/accounts/addAccount.js",
-    "../js/panes/home/accounts/editAccount.js"
+    "../js/panes/home/accounts/editAccount.js",
+    "../js/panes/reward/reward.js",
+    "../js/panes/reward/rules.js",
+    "../js/panes/reward/airdrops/airdrops.js",
+    "../js/panes/reward/airdrops/header.js",
+    "../js/panes/reward/airdrops/airdropCard.js",
+    "../js/panes/reward/airdrops/join.js",
+    "../js/panes/reward/quests/quests.js",
 ]
 
 const browserScripts = [
