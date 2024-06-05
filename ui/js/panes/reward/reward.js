@@ -49,11 +49,11 @@ class RewardPane extends StatefulElement {
                         </div>
                     </div>
                 </div>
-                <div class="sectionButton mt-4 p-3" onclick="${airdropsClick}">
+                <div class="sectionButton mt-4 p-3" onclick="${airdropsClick}" id="airdropsBtn">
                     <p class="title m-0 text-gray-700 text-xl">Airdrops</p>
                     <p class="subtitle m-0 text-gray-400">Enter to earn free tokens and XP</p>
                 </div>
-                <div class="sectionButton mt-4 p-3" onclick="${questsClick}">
+                <div class="sectionButton mt-4 p-3" onclick="${questsClick}" id="questsBtn">
                     <p class="title m-0 text-gray-700 text-xl">Quests</p>
                     <p class="subtitle m-0 text-gray-400">Complete tasks to gain XP</p>
                 </div>
@@ -84,6 +84,21 @@ class RewardPane extends StatefulElement {
             
             #totalXP, #estReward {
                 font-weight: 600;
+            }
+            
+            #airdropsBtn, #questsBtn {
+                background-repeat: no-repeat;
+                background-position: center;
+                background-position-x: left;
+                background-size: contain;
+            }
+            
+            #airdropsBtn {
+                background-image: url(../images/reward/airdropBtn.png);
+            }
+            
+            #questsBtn {
+                background-image: url(../images/reward/questBtn.png);
             }
             
             .xpIcon {

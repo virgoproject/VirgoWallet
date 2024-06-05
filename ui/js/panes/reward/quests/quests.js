@@ -12,6 +12,7 @@ class QuestsPane extends StatefulElement {
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Quests" backfunc="${back}"></section-header>
+                    
                 </div>
             </div>
         `;
