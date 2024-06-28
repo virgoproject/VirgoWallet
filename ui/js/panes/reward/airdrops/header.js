@@ -3,7 +3,7 @@ class AirdropsHeader extends StatefulElement {
     render() {
         const participations = this.getAttribute("participations")
         const wins = this.getAttribute("wins")
-        let toWithdraw = parseInt(this.getAttribute("withdraw"))
+        let claimAvailable = this.getAttribute("withdraw")
 
         const [claimed, setClaimed] = this.useState("claimed", false)
 
@@ -26,7 +26,7 @@ class AirdropsHeader extends StatefulElement {
                 </div>
             </div>`
 
-        if(toWithdraw == 0 || claimed) claimBtn = ""
+        if(claimAvailable || claimed) claimBtn = ""
 
 
         return `

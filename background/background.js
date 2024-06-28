@@ -12,7 +12,7 @@ if(typeof browser === 'undefined'){
     importScripts("../commonJS/utils.js", "../commonJS/browser-polyfill.js", "xhrShim.js", "web3.min.js", "bip39.js", "hdwallet.js", "bundle.js",
         "utils/converter.js", "swap/uniswap02Utils.js", "swap/uniswap03Utils.js", "swap/ethSwapUtils.js", "swap/crossSwapUtils.js", "swap/atomicSwapUtils.js", "wallet/web3ABIs.js",
         "wallet/ethWallet.js", "wallet/baseWallet.js", "web3RequestsHandler.js","utils/txIdentifierAbi.js",
-        "messageHandlers/airdrops.js", "messageHandlers/contacts.js", "messageHandlers/tokens.js", "messageHandlers/transactions.js",
+        "messageHandlers/reward.js", "messageHandlers/contacts.js", "messageHandlers/tokens.js", "messageHandlers/transactions.js",
         "messageHandlers/atomicSwap.js", "messageHandlers/misc.js", "messageHandlers/NFTs.js", "messageHandlers/swap.js", "messageHandlers/wallet.js",
         "messageHandlers/web3.js", "messageHandlers/settings/connectedWebsites.js", "messageHandlers/settings/general.js",
         "messageHandlers/settings/networks.js", "messageHandlers/settings/security.js")

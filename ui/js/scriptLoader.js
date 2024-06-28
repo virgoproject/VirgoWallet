@@ -79,6 +79,7 @@ const commonScripts = [
     "../js/panes/reward/airdrops/airdropCard.js",
     "../js/panes/reward/airdrops/join.js",
     "../js/panes/reward/quests/quests.js",
+    "../js/panes/reward/quests/dailyReward.js",
 ]
 
 const browserScripts = [
@@ -113,7 +114,7 @@ const mobileScripts = [
     "../../background/messageHandlers/settings/general.js",
     "../../background/messageHandlers/settings/networks.js",
     "../../background/messageHandlers/settings/security.js",
-    "../../background/messageHandlers/airdrops.js",
+    "../../background/messageHandlers/reward.js",
     "../../background/messageHandlers/atomicSwap.js",
     "../../background/messageHandlers/contacts.js",
     "../../background/messageHandlers/misc.js",

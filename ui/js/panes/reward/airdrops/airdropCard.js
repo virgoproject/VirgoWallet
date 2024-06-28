@@ -39,11 +39,9 @@ class AirdropCard extends StatefulElement {
             return await getTokenDetailsCross(json.address, json.chainID)
         })
 
-        const {data: joined, loading: loading2} = this.useFunction(async () => {
-            return await checkAirdropJoined(json.id)
-        })
+        const joined = this.getAttribute("joined") == "true"
 
-        if(loading || loading2) return ""
+        if(loading) return ""
 
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
@@ -82,7 +80,7 @@ class AirdropCard extends StatefulElement {
                 </div>
                 <p id="name">${data.name}</p>
                 <div id="amountWrapper">
-                    <p id="amount">${json.reward/json.winnersCount}</p>
+                    <p id="amount">${Utils.formatAmount(json.reward/json.winnersCount, json.decimals)}</p>
                     <p id="ticker"> ${data.ticker}</p>
                     <i class="fa-regular fa-chevron-right" id="expand"></i>
                 </div>
@@ -90,7 +88,7 @@ class AirdropCard extends StatefulElement {
             <div class="mt-3" id="details">
                 <div class="row">
                     <div class="col-4 text-center">
-                        <p>${json.userJoined}</p>
+                        <p>${json.entryCount}</p>
                         <p class="text-gray-400 text-sm">Participants</p>
                     </div>
                     <div class="col-4 text-center">

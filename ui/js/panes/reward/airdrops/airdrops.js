@@ -11,23 +11,13 @@ class AirdropsPane extends StatefulElement {
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
 
-            const req1 = await fetch('https://airdrops.virgo.net:2053/api/user/stats',{
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({address: infos.addresses[0].address})
-            })
+            const req1 = await fetch('http://localhost:2053/api/airdrops/stats/'+infos.addresses[0].address)
             const userStats = await req1.json()
 
-            const req2 = await fetch('https://airdrops.virgo.net:2053/api/activedrops', {
-                method : 'GET',
-                headers: {'Content-Type': 'application/json'}
-            })
+            const req2 = await fetch('http://localhost:2053/api/airdrops/active')
             const activeAirdrops = await req2.json()
 
-            const req3 = await fetch('https://airdrops.virgo.net:2053/api/endedairdrop', {
-                method : 'GET',
-                headers: {'Content-Type': 'application/json'}
-            })
+            const req3 = await fetch('http://localhost:2053/api/airdrops/expired')
             const endedAirdrops = await req3.json()
 
             return {
@@ -82,10 +72,12 @@ class AirdropsPane extends StatefulElement {
             `
         }
 
+        console.log(data)
+
         const rows = []
 
         for(const airdrop of data.activeAirdrops){
-            rows.push(`<airdrop-card data='${JSON.stringify(airdrop)}'></airdrop-card>`)
+            rows.push(`<airdrop-card data='${JSON.stringify(airdrop)}' joined=${data.stats.joinedAirdrops.includes(airdrop.id)}></airdrop-card>`)
         }
 
         const endedRows = []
@@ -100,7 +92,7 @@ class AirdropsPane extends StatefulElement {
                     <section-header title="Airdrops" backfunc="${back}"></section-header>
                     <div id="content">
                         <div id="headerWrapper">
-                            <airdrops-header participations="${data.stats[0].length}" wins="${data.stats[1].length}" withdraw="${data.stats[2].length}"></airdrops-header>
+                            <airdrops-header participations="${data.stats.participations}" wins="${data.stats.wins}" withdraw="${data.stats.claimAvailable}"></airdrops-header>
                         </div>
                         <div id="list" class="px-3">
                             ${rows.length > 0 ? '<p class="label mt-3">Active airdrops</p>' : ''}

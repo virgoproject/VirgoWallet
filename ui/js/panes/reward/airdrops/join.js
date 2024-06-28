@@ -63,36 +63,20 @@ class JoinAirdrop extends StatefulElement {
             const val = _this.querySelector("#input").value
 
             setLoading(true)
-            getBaseInfos().then(function (infos) {
-                const address = infos.addresses[0].address
 
-                setAirdropJoined(address,_this.airdropId).then(function (infos) {
-
-                    if(infos){
-
-                        let userInfos = {
-                            airdropID : _this.airdropId,
-                            address,
-                            username: val
-                        }
-                        fetch('https://airdrops.virgo.net:2053/api/airdropsetplay',{
-                            method : "POST",
-                            body : JSON.stringify(userInfos),
-                            headers: {'Content-Type': 'application/json'}
-                        }).then(res => {
-                            setTimeout(() => {
-                                try {
-                                    document.querySelector("airdrops-pane").remove()
-                                }catch (e){}
-                                const elem = document.createElement("airdrops-pane")
-                                document.querySelector("#airdropPane").appendChild(elem)
-                                notyf.success("Airdrop successfully joined!")
-                                _this.remove()
-                            }, 1000)
-                        })
-                    }
-                })
+            joinAirdrop(_this.airdropId, val).then(res => {
+                try {
+                    document.querySelector("airdrops-pane").remove()
+                }catch (e){}
+                const elem = document.createElement("airdrops-pane")
+                document.querySelector("#airdropPane").appendChild(elem)
+                _this.remove()
+                if(res === true)
+                    notyf.success("Airdrop successfully joined!")
+                else
+                    notyf.error("Error: " + res.message)
             })
+
         })
 
         const onInput = this.registerFunction(e => {

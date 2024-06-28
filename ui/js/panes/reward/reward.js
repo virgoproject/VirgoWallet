@@ -2,6 +2,14 @@ class RewardPane extends StatefulElement {
 
     render() {
 
+        const {data, loading: dataLoading} = this.useFunction(async () => {
+            const infos = await getBaseInfos()
+            const res = await fetch("http://localhost:2053/api/reward/stats/"+infos.addresses[0].address)
+            return await res.json()
+        })
+
+        if(dataLoading) return ""
+
         const airdropsClick = this.registerFunction(() => {
             const elem = document.createElement("airdrops-pane")
             document.body.appendChild(elem)
@@ -26,24 +34,24 @@ class RewardPane extends StatefulElement {
                 </div>
                 <div class="d-flex">
                     <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}">
-                        <p id="rankName" class="text-xl m-0">GOLD</p>
+                        <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
                         <p class="text-sm mb-2">My Season rank</p>
                         <div id="rankProgress">
-                            <div id="rankProgressInner"></div>
+                            <div id="rankProgressInner" style="width: ${(data.rank.progress*100).toFixed(0)}%"></div>
                         </div>
                     </div>
                     <div class="flex-grow-1 ml-2">
                         <div class="rightBox mb-3">
                             <div class="d-flex align-items-center">
                                  <p class="xpIcon">XP</p>
-                                 <p id="totalXP" class="text-lg m-0 pl-2  text-gray-700">1,400</p>
+                                 <p id="totalXP" class="text-lg m-0 pl-2  text-gray-700">${data.totalXP}</p>
                             </div>
                             <p id="totalXPTitle" class="m-0  text-gray-700">Total XP</p>
                         </div>
                         <div class="rightBox">
                             <div class="d-flex align-items-center">
                                  <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon">
-                                 <p id="estReward" class="text-lg m-0 pl-2  text-gray-700">500 VGO</p>
+                                 <p id="estReward" class="text-lg m-0 pl-2  text-gray-700">${data.estReward} VGO</p>
                             </div>
                             <p id="estRewardTitle" class="m-0  text-gray-700">Estimated reward</p>
                         </div>

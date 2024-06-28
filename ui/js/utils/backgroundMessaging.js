@@ -245,20 +245,12 @@ async function tickerFromChainID(id){
     return await browser.runtime.sendMessage({command: 'tickerFromChainID', id})
 }
 
-async function checkAirdropJoined(id){
-    return await browser.runtime.sendMessage({command: 'checkAirdropJoined', id})
+async function joinAirdrop(id, twitterUsername){
+    return await browser.runtime.sendMessage({command: "joinAirdrop", id, twitterUsername})
 }
 
-async function setAirdropJoined(address,id){
-    return await browser.runtime.sendMessage({command: 'setAirdropJoined', address, id})
-}
-
-async function resetAirdrops(){
-    return await browser.runtime.sendMessage({command: 'resetAirdrops'})
-}
-
-async function checkClosedModalAirdrop(infos){
-    return await browser.runtime.sendMessage({command: 'checkClosedModal', infos})
+async function claimDailyReward(){
+    return await browser.runtime.sendMessage({command: "claimDailyReward"})
 }
 
 async function changeModalStatus(state){
