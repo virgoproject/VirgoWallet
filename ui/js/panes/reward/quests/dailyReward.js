@@ -20,16 +20,16 @@ class DailyReward extends StatefulElement {
         if(day > 0){
             day--
             firstClaimed = true
-            if(data.alreadyClaimed)
+            if(data.alreadyClaimed && day != 0)
                 day--
         }
 
         for(let i = 0; i < 4; i++){
 
-            let reward = data.rewardList[data.rewardList.length]
+            let reward = data.rewardList[data.rewardList.length-1]
             if(day <= data.rewardList.length-1) reward = data.rewardList[day]
 
-            if(i == 0 && firstClaimed || i == 1 && data.alreadyClaimed){
+            if(i == 0 && firstClaimed || (i == 1 && data.alreadyClaimed && data.streak != 1)){
                 rows.push(`
                     <div class="dayWrapper text-center ${i == 0 ? 'mr-2' : i == 3 ? 'ml-2' : 'mx-2'}">
                         <div class="dayBox claimed px-3 py-2">

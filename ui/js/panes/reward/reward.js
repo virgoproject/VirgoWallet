@@ -33,11 +33,13 @@ class RewardPane extends StatefulElement {
                     <p id="seasonSubtitle" class="text-gray-400 text-sm">End in 154 days</p>
                 </div>
                 <div class="d-flex">
-                    <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}">
-                        <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
-                        <p class="text-sm mb-2">My Season rank</p>
-                        <div id="rankProgress">
-                            <div id="rankProgressInner" style="width: ${(data.rank.progress*100).toFixed(0)}%"></div>
+                    <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}" style='background-image: url("../images/reward/ranks/${data.rank.rank.name}.png");'>
+                        <div id="rankBoxInner">
+                            <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
+                            <p class="text-sm mb-2">My Season rank</p>
+                            <div id="rankProgress">
+                                <div id="rankProgressInner" style="width: ${(data.rank.progress*100).toFixed(0)}%"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex-grow-1 ml-2">
@@ -76,7 +78,7 @@ class RewardPane extends StatefulElement {
             }
             
             #rankBox, .rightBox {
-                background: var(--gray-50);
+                background-color: var(--gray-50);
                 border-radius: 0.5em;
                 padding: 0.5em 1em;
             }
@@ -84,10 +86,17 @@ class RewardPane extends StatefulElement {
             #rankBox {
                 cursor: pointer;
                 transition: all 0.2s ease-in;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+            
+            #rankBoxInner {
+                background: #fafafa03;
+                backdrop-filter: blur(2px);
             }
             
             #rankBox:hover {
-                background: var(--gray-100);
+                background-color: var(--gray-100);
             }
             
             #totalXP, #estReward {

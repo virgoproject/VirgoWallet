@@ -16,6 +16,7 @@ class QuestsPane extends StatefulElement {
                         <div id="list" class="px-3">
                             <p class="label">Daily rewards</p>
                             <daily-reward></daily-reward>
+                            <swap-rewards></swap-rewards>
                         </div>
                     </div>
                 </div>
