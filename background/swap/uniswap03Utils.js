@@ -163,6 +163,11 @@ class Uniswap03Utils {
                 proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
                     gas += this.additionalGas
                     proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
+
+                        try{
+                            fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        }catch (e) {}
+
                         baseWallet.getCurrentWallet().transactions.unshift({
                             "hash": hash,
                             "contractAddr": "SWAP",
@@ -192,6 +197,11 @@ class Uniswap03Utils {
 
             const swapExactTokenForETH = function(approveHash, gas){
                 proxy.methods.univ3_swapExactTokensForETHSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).send({nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                    }catch (e) {}
+
                     baseWallet.getCurrentWallet().transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",
@@ -217,6 +227,11 @@ class Uniswap03Utils {
 
             const swapExactTokenForToken = function(approveHash, gas){
                 proxy.methods.univ3_swapExactTokensForTokensSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).send({nonce: nonce, gasPrice: gasPrice, from: baseWallet.getCurrentAddress(), gas: gas}).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                    }catch (e) {}
+
                     baseWallet.getCurrentWallet().transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",
@@ -309,6 +324,11 @@ class Uniswap03Utils {
                 proxy.methods.univ3_swapExactETHForTokens(dexParams.params.routerAddress, path, minOut).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
                     gas += this.additionalGas
                     proxy.methods.univ3_swapExactETHForTokens(dexParams.params.routerAddress, path, minOut).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
+
+                        try{
+                            fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        }catch (e) {}
+
                         baseWallet.getCurrentWallet().transactions.unshift({
                             "hash": hash,
                             "contractAddr": "SWAP",
@@ -338,6 +358,11 @@ class Uniswap03Utils {
 
             const swapExactTokenForETH = function(approveHash, gas){
                 proxy.methods.univ3_swapExactTokensForETH(dexParams.params.routerAddress, amount, route.route[0], path, minOut).send({nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                    }catch (e) {}
+
                     baseWallet.getCurrentWallet().transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",
@@ -363,6 +388,11 @@ class Uniswap03Utils {
 
             const swapExactTokenForToken = function(approveHash, gas){
                 proxy.methods.univ3_swapExactTokensForTokens(dexParams.params.routerAddress, amount, route.route[0], path, minOut).send({nonce: nonce, gasPrice: gasPrice, from: baseWallet.getCurrentAddress(), gas: gas}).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                    }catch (e) {}
+
                     baseWallet.getCurrentWallet().transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",

@@ -11,7 +11,6 @@ class CrossSwapUtils {
         }
 
         try {
-            console.log("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const req = await fetch("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const json = await req.json()
 
@@ -89,6 +88,11 @@ class CrossSwapUtils {
                     gasPrice: gasPrice,
                     nonce
                 }).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/simpleswap/${json.id}`)
+                    }catch (e) {}
+
                     baseWallet.crossSwaps.unshift({
                         hash,
                         contractAddr: "SIMPLESWAP",
@@ -124,6 +128,11 @@ class CrossSwapUtils {
 
             transaction.send({gas: gasLimit, gasPrice: gasPrice, nonce: nonce})
                 .on("transactionHash", hash => {
+
+                    try{
+                        fetch(`http://localhost:2053/api/reward/swap/register/simpleswap/${json.id}`)
+                    }catch (e) {}
+
                     baseWallet.crossSwaps.unshift({
                         hash,
                         contractAddr: "SIMPLESWAP",
