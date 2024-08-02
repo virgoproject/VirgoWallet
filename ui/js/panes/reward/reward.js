@@ -20,14 +20,18 @@ class RewardPane extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const referralClick = this.registerFunction(() => {
+            const elem = document.createElement("referral-pane")
+            document.body.appendChild(elem)
+        })
+
         const rulesClick = this.registerFunction(() => {
             const elem = document.createElement("reward-rules-pane")
             document.body.appendChild(elem)
         })
 
         return `
-            <section-header title="Reward center"></section-header>
-            <div id="content" class="px-3">
+            <div id="content" class="px-3 pt-3">
                 <div>
                     <p id="seasonTitle" class="text-xl mb-1 text-gray-700">Season 1</p>
                     <p id="seasonSubtitle" class="text-gray-400 text-sm">End in 154 days</p>
@@ -67,12 +71,22 @@ class RewardPane extends StatefulElement {
                     <p class="title m-0 text-gray-700 text-xl">Quests</p>
                     <p class="subtitle m-0 text-gray-400">Complete tasks to gain XP</p>
                 </div>
+                <div class="sectionButton mt-4 p-3" onclick="${referralClick}" id="questsBtn">
+                    <p class="title m-0 text-gray-700 text-xl">Referral</p>
+                    <p class="subtitle m-0 text-gray-400">Invite your friends to earn XP</p>
+                </div>
             </div>
         `;
     }
 
     style() {
         return `
+            #content {
+                height: 100%;
+                overflow: auto;
+                padding-bottom: 5em;
+            }
+        
             #seasonTitle {
                 font-weight: bold;
             }

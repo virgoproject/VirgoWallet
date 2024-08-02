@@ -80,7 +80,8 @@ const commonScripts = [
     "../js/panes/reward/airdrops/join.js",
     "../js/panes/reward/quests/quests.js",
     "../js/panes/reward/quests/dailyReward.js",
-    "../js/panes/reward/quests/swaps.js"
+    "../js/panes/reward/quests/swaps.js",
+    "../js/panes/reward/referral/referral.js"
 ]
 
 const browserScripts = [
