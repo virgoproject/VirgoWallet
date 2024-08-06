@@ -3,6 +3,7 @@ class RewardHandlers {
     static register(){
         addBgMessageHandler("joinAirdrop", this.joinAirdrop)
         addBgMessageHandler("claimDailyReward", this.claimDailyReward)
+        addBgMessageHandler("useReferralCode", this.useReferralCode)
     }
 
     static joinAirdrop(request, sender, sendResponse){
@@ -37,6 +38,26 @@ class RewardHandlers {
             }
 
             fetch('http://localhost:2053/api/reward/daily/register', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(resp => resp.json())
+                .then(json => {
+                    sendResponse(json)
+                })
+        })
+    }
+
+    static useReferralCode(request, sender, sendResponse){
+        const web3 = baseWallet.getWeb3ByID("1")
+
+        web3.eth.sign(request.code, baseWallet.getAddresses()[0]).then(res => {
+            const formData = {
+                signature: res.signature,
+            }
+
+            fetch('http://localhost:2053/api/reward/referral/register/'+request.code, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {'Content-Type': 'application/json'}

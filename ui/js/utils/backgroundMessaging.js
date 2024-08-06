@@ -316,3 +316,7 @@ async function setMailAddress(mailAddress){
 async function addAccountFromPrivateKey(pKey){
     return await browser.runtime.sendMessage({command: "addAccountFromPrivateKey", pKey})
 }
+
+async function useReferralCode(code){
+    return await browser.runtime.sendMessage({command: 'useReferralCode', code})
+}
