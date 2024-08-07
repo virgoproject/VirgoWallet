@@ -9,7 +9,9 @@ class DailyReward extends StatefulElement {
             return await res.json()
         })
 
-        if(dataLoading) return ""
+        if(dataLoading) return `
+            <div class="shimmerBG mt-1" id="shimmer"></div>
+        `
 
         const rows = []
 
@@ -143,6 +145,11 @@ class DailyReward extends StatefulElement {
                 display: flex;
                 flex-flow: column;
                 width: 25%;
+            }
+            
+            #shimmer {
+                border-radius: 0.5em;
+                height: 190px;
             }
         `;
     }

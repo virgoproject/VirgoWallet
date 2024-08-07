@@ -20,7 +20,36 @@ class ReferralPane extends StatefulElement {
             return await req.json()
         })
 
-        if(loading || invitesLoading) return ""
+        if(loading || invitesLoading) return `
+            <div class="fullpageSection">
+                <div id="wrapper">
+                    <section-header title="Referral" backfunc="${back}"></section-header>
+                    <div id="content">
+                        <scroll-view>
+                            <div class="px-3" style="padding-bottom: 85px">
+                                <div class="row shimmerBG" id="statsShimmer">
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <p class="text-lg mb-1" id="codeTitle">Invite your friends</p>
+                                        <p class="text-gray-400 mb-1">Refer them with your code and both earn bonus XP:</p>
+                                        <p id="referralCodeShimmer" class="text-3xl mb-1 shimmerBG"></p>
+                                        <p class="text-sm text-gray-400">You'll receive your reward once your friend reach silver.</p>
+                                    </div>
+                                    <img src="../images/reward/referralRewards.png" id="rewardImg">
+                                </div>      
+                                <p class="mt-3 mb-2 label">Your invites</p>
+                                <div id="invitesContainer">
+                                    <div class="shimmerBG inviteShimmer mt-3 mb-3"></div>
+                                    <div class="shimmerBG inviteShimmer mt-3 mb-3"></div>
+                                    <div class="shimmerBG inviteShimmer mt-3 mb-3"></div>
+                                </div>     
+                            </div>
+                        </scroll-view>
+                    </div>
+                </div>
+            </div>
+        `
 
         const [codeLoading, setCodeLoading] = this.useState("loading", false)
 
@@ -223,6 +252,23 @@ class ReferralPane extends StatefulElement {
             .inviteIcon.confirmed {
                 background-color: var(--green-100);
                 color: var(--green-600);
+            }
+            
+            #statsShimmer {
+                border-radius: 0.5em;
+                height: 5em;
+                margin: 0 0 0.5em;
+            }
+            
+            #referralCodeShimmer {
+                border-radius: 0.5em;
+                width: 5ch;
+                height: 1em;
+            }
+            
+            .inviteShimmer {
+                border-radius: 0.5em;
+                height: 3em;
             }
             
         `;

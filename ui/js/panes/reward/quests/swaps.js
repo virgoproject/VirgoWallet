@@ -8,7 +8,9 @@ class swapRewards extends StatefulElement {
             return await res.json()
         })
 
-        if(loading) return ""
+        if(loading) return `
+            <div class="shimmerBG mt-3" id="shimmer"></div>
+        `
 
         return `
             <div id="wrapper" class="mt-3 p-3 text-gray-700">
@@ -41,6 +43,11 @@ class swapRewards extends StatefulElement {
                 height: 6px;
                 border-radius: 1em;
                 width: 40%;
+            }
+            
+            #shimmer {
+                border-radius: 0.5em;
+                height: 190px;
             }
         `;
     }

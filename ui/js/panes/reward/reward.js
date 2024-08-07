@@ -8,7 +8,27 @@ class RewardPane extends StatefulElement {
             return await res.json()
         })
 
-        if(dataLoading) return ""
+        if(dataLoading) return `
+            <div id="content" class="px-3 pt-3">
+                <div>
+                    <div id="titleShimmer" class="mb-3 shimmerBG"></div>
+                    <div id="subtitleShimmer" class="shimmerBG"></div>
+                </div>
+                <div class="d-flex mt-3">
+                    <div class="flex-grow-1 mr-2 shimmerBG" id="rankShimmer">
+                    </div>
+                    <div class="flex-grow-1 ml-2">
+                        <div class="rightBoxShimmer mb-3 shimmerBG">
+                        </div>
+                        <div class="rightBoxShimmer shimmerBG">
+                        </div>
+                    </div>
+                </div>
+                <div class="shimmerBG buttonShimmer mt-4"></div>
+                <div class="shimmerBG buttonShimmer mt-4"></div>
+                <div class="shimmerBG buttonShimmer mt-4"></div>
+            </div>
+        `
 
         const airdropsClick = this.registerFunction(() => {
             const elem = document.createElement("airdrops-pane")
@@ -183,6 +203,32 @@ class RewardPane extends StatefulElement {
             
             .sectionButton .title {
                 font-weight: 600;
+            }
+            
+            #titleShimmer {
+                width: 8ch;
+                height: 1em;
+                border-radius: 0.5em;
+            }
+            
+            #subtitleShimmer {
+                width: 16ch;
+                height: 0.85em;
+                border-radius: 0.5em;
+            }
+            
+            #rankShimmer {
+                border-radius: 0.5em;
+            }
+            
+            .rightBoxShimmer {
+                border-radius: 0.5em;
+                height: 4em;
+            }
+            
+            .buttonShimmer {
+                border-radius: 0.5em;
+                height: 6em;
             }
         `;
     }
