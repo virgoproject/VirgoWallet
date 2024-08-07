@@ -10,11 +10,17 @@ class ReferralPane extends StatefulElement {
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const req1 = await fetch("http://localhost:2053/api/reward/referral/get/"+infos.addresses[0].address)
-            return await req1.json()
+            const req = await fetch("http://localhost:2053/api/reward/referral/get/"+infos.addresses[0].address)
+            return await req.json()
         })
 
-        if(loading) return ""
+        const {data: invites, loading: invitesLoading} = this.useFunction(async () => {
+            const infos = await getBaseInfos()
+            const req = await fetch("http://localhost:2053/api/reward/referral/invites/get/"+infos.addresses[0].address)
+            return await req.json()
+        })
+
+        if(loading || invitesLoading) return ""
 
         const [codeLoading, setCodeLoading] = this.useState("loading", false)
 
@@ -40,42 +46,100 @@ class ReferralPane extends StatefulElement {
 
         if(codeLoading) button = `<button id="next" class="button" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
+        let rows = []
+
+        this.boxNumber = 5
+
+        if(invites.length == 0){
+            rows.push(`
+                <div class="text-center">
+                    <img src="../images/noContact.png" class="w-100">
+                    <p class="text-lg mt-3 mb-1 weight-600 text-gray-700">No invites yet!</p>    
+                    <p class="text-gray-400">Your pending and confirmed referrals will appear here</p>
+                </div>
+            `)
+        }else{
+            rows = this.getRows(invites, 0, this.boxNumber)
+        }
+
+        const onNearEnd = this.registerFunction(() => {
+            if(_this.boxNumber >= invites.length) return
+
+            const oldBoxNum = _this.boxNumber
+            _this.boxNumber = Math.min(_this.boxNumber+5, invites.length)
+
+            const scroll = _this.querySelector("#invitesContainer")
+
+            for(const row of _this.getRows(invites, oldBoxNum, _this.boxNumber)){
+                scroll.insertAdjacentHTML("beforeend", row)
+            }
+        })
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Referral" backfunc="${back}"></section-header>
                     <div id="content">
-                        <div id="list" class="px-3">
-                            <div class="row" id="stats">
-                                <div class="col-6 text-center">
-                                    <p class="text-gray-700 text-xl m-0">${data.invited}</p>
-                                    <p class="text-gray-400 m-0">invites</p>
+                        <scroll-view onnearend="${onNearEnd}">
+                            <div class="px-3" style="padding-bottom: 85px">
+                                <div class="row" id="stats">
+                                    <div class="col-6 text-center">
+                                        <p class="text-gray-700 text-xl m-0">${data.invited}</p>
+                                        <p class="text-gray-400 m-0">invites</p>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p class="text-gray-700 text-xl m-0">${data.earned}</p>
+                                        <p class="text-gray-400 m-0">XP earned</p>
+                                    </div>
                                 </div>
-                                <div class="col-6 text-center">
-                                    <p class="text-gray-700 text-xl m-0">${data.earned}</p>
-                                    <p class="text-gray-400 m-0">XP earned</p>
+                                ${data.referred ? "" : `
+                                <div id="codeEntryWrapper" class="mt-3 mb-3">
+                                    <input type="text" placeholder="Apply a friend's code" id="codeInput" oninput="${onInput}" ${codeLoading ? "disabled" : ""}>
+                                    <div id="codeNextWrapper">
+                                        ${button}
+                                    </div>
                                 </div>
+                                `}
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <p class="text-lg mb-1" id="codeTitle">Invite your friends</p>
+                                        <p class="text-gray-400 mb-1">Refer them with your code and both earn bonus XP:</p>
+                                        <p id="referralCode" class="text-3xl mb-1">${data.code}</p>
+                                        <p class="text-sm text-gray-400">You'll receive your reward once your friend reach silver.</p>
+                                    </div>
+                                    <img src="../images/reward/referralRewards.png" id="rewardImg">
+                                </div>
+                                <p class="mt-3 mb-2 label">Your invites</p>
+                                <div id="invitesContainer">
+                                    ${rows}
+                                </div>                
                             </div>
-                            <div id="codeEntryWrapper" class="mt-3 mb-3">
-                                <input type="text" placeholder="Apply a friend's code" id="codeInput" oninput="${onInput}" ${codeLoading ? "disabled" : ""}>
-                                <div id="codeNextWrapper">
-                                    ${button}
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <p class="text-lg mb-1" id="codeTitle">Invite your friends</p>
-                                    <p class="text-gray-400 mb-1">Refer them with your code and both earn bonus XP:</p>
-                                    <p id="referralCode" class="text-3xl mb-1">${data.code}</p>
-                                    <p class="text-sm text-gray-400">You'll receive your reward once your friend reach silver.</p>
-                                </div>
-                                <img src="../images/reward/referralRewards.png" id="rewardImg">
-                            </div>
-                        </div>
+                        </scroll-view>
                     </div>
                 </div>
             </div>
         `
+    }
+
+    getRows(data, min, max){
+        const rows = []
+
+        for (let i = min; i < max; i++){
+            const invite = data[i]
+            rows.push(`
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="inviteIcon ${invite.status == 1 ? "confirmed" : ""}">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                        <p class="mb-0 ml-2 text-gray-700 weight-600">${invite.address}</p>           
+                    </div>
+                    <p class="mb-0 text-gray-400">${invite.status == 1 ? "+100 XP" : "pending"}</p>
+                </div>
+            `)
+        }
+
+        return rows
     }
 
     style() {
@@ -143,6 +207,22 @@ class ReferralPane extends StatefulElement {
             
             #codeNextWrapper {
                 padding: 0.5em;
+            }
+            
+            .inviteIcon {
+                height: 36px;
+                width: 36px;
+                text-align: center;
+                line-height: 36px;
+                font-size: 18px;
+                border-radius: 50%;
+                background-color: var(--gray-100);
+                color: var(--gray-600);
+            }
+            
+            .inviteIcon.confirmed {
+                background-color: var(--green-100);
+                color: var(--green-600);
             }
             
         `;
