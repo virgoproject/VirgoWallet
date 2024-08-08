@@ -63,7 +63,7 @@ class AirdropCard extends StatefulElement {
 
         const timeLeft = this.calcTimeLeft(json.endDate-Date.now())
 
-        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join this airdrop</button></div>`
+        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join and earn ${json.xpReward} XP!</button></div>`
 
         if(json.endDate < Date.now())
             button = ""
@@ -78,11 +78,11 @@ class AirdropCard extends StatefulElement {
                     <div class="shimmerBG" id="shimmerChainLogo"></div>
                     <img id="chainLogo" style="display: none">
                 </div>
-                <p id="name">${data.name}</p>
+                <p id="name" class="weight-600">${data.name}</p>
                 <div id="amountWrapper">
-                    <p id="amount">${Utils.formatAmount(json.reward/json.winnersCount, json.decimals)}</p>
-                    <p id="ticker"> ${data.ticker}</p>
-                    <i class="fa-regular fa-chevron-right" id="expand"></i>
+                    <p id="amount" class="text-gray-400">${Utils.formatAmount(json.reward/json.winnersCount, json.decimals)}</p>
+                    <p id="ticker" class="text-gray-400"> ${data.ticker}</p>
+                    <i class="fa-regular fa-chevron-right text-gray-400" id="expand"></i>
                 </div>
             </div>
             <div class="mt-3" id="details">

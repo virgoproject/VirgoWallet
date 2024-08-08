@@ -83,17 +83,23 @@ class RewardPane extends StatefulElement {
                         </div>
                     </div>
                 </div>
-                <div class="sectionButton mt-4 p-3" onclick="${airdropsClick}" id="airdropsBtn">
-                    <p class="title m-0 text-gray-700 text-xl">Airdrops</p>
-                    <p class="subtitle m-0 text-gray-400">Enter to earn free tokens and XP</p>
+                <div class="sectionButton mt-4" onclick="${airdropsClick}" id="airdropsBtn">
+                    <div class="buttonsInner p-3">
+                        <p class="title m-0 text-gray-700 text-xl">Airdrops</p>
+                        <p class="subtitle m-0">Enter to earn free tokens and XP</p>        
+                    </div>
                 </div>
-                <div class="sectionButton mt-4 p-3" onclick="${questsClick}" id="questsBtn">
-                    <p class="title m-0 text-gray-700 text-xl">Quests</p>
-                    <p class="subtitle m-0 text-gray-400">Complete tasks to gain XP</p>
+                <div class="sectionButton mt-4" onclick="${questsClick}" id="questsBtn">
+                    <div class="buttonsInner p-3">
+                        <p class="title m-0 text-gray-700 text-xl">Quests</p>
+                        <p class="subtitle m-0">Complete tasks to gain XP</p>    
+                    </div>
                 </div>
-                <div class="sectionButton mt-4 p-3" onclick="${referralClick}" id="questsBtn">
-                    <p class="title m-0 text-gray-700 text-xl">Referral</p>
-                    <p class="subtitle m-0 text-gray-400">Invite your friends to earn XP</p>
+                <div class="sectionButton mt-4" onclick="${referralClick}" id="questsBtn">
+                    <div class="buttonsInner p-3">
+                        <p class="title m-0 text-gray-700 text-xl">Referral</p>
+                        <p class="subtitle m-0">Invite your friends to earn XP</p>    
+                    </div>
                 </div>
             </div>
         `;
@@ -144,6 +150,17 @@ class RewardPane extends StatefulElement {
                 background-size: contain;
             }
             
+            .buttonsInner {
+                background: linear-gradient(270deg, var(--gray-50) 33%, transparent 120%);
+                border-radius: 0.5em;
+            }
+            
+            .subtitle {
+                mix-blend-mode: difference;
+                color: #757575 !important;
+                font-weight: 600;
+            }
+            
             #airdropsBtn {
                 background-image: url(../images/reward/airdropBtn.png);
             }
@@ -187,6 +204,7 @@ class RewardPane extends StatefulElement {
                 height: 6px;
                 border-radius: 1em;
                 width: 40%;
+                min-width: 10%;
             }
             
             .sectionButton {
@@ -199,6 +217,10 @@ class RewardPane extends StatefulElement {
             
             .sectionButton:hover {
                 background: var(--gray-100);
+            }
+            
+            .sectionButton:hover .buttonsInner {
+                background: linear-gradient(270deg, var(--gray-100) 33%, transparent 120%);
             }
             
             .sectionButton .title {

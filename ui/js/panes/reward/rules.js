@@ -8,29 +8,83 @@ class RewardRulesPane extends StatefulElement {
             _this.remove()
         })
 
+        const {data, loading} = this.useFunction(async () => {
+            const req = await fetch("http://localhost:2053/api/reward/ranks/get")
+            return await req.json()
+        })
+
+        const texts = []
+
+        if(loading){
+            for(let i = 0; i < 6; i++){
+                texts.push(`<div class="shimmerBG shimmerXP"></div>`)
+            }
+        }else{
+            for(const rank of data){
+                texts.push(`<p class="text-gray-400 mb-0">${rank.minXP}+</p>`)
+            }
+        }
+
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
                     <section-header title="Rules and ranks" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
-                        <p class="title text-gray-700 text-xl text-left m-0">Rules</p>
-                        <p class="subtitle text-gray-400 text-sm text-left">Welcome to the Virgo reward centre rules.<br>There are two ways to earn rewards</p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon mr-2">
-                            <div class="text-left ml-2 flex-1">
-                               <p id="activityTitle" class="mb-1 text-lg">Activity reward</p>
-                               <p class="text-gray-400 text-sm mb-0">Each season, an amount of VGO to share is allocated to reward user activity. This amount varies for each user, the more crypto you swap and send, the more VGO you earn. </p>         
+                        <scroll-view>
+                            <p class="title text-gray-700 text-xl text-left m-0">Rules</p>
+                            <p class="subtitle text-gray-400 text-sm text-left">Welcome to the Virgo reward centre rules.<br>There are two ways to earn rewards</p>
+                            <div class="d-flex align-items-center">
+                                <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon mr-2">
+                                <div class="text-left ml-2 flex-1">
+                                   <p id="activityTitle" class="mb-1 text-lg">Activity reward</p>
+                                   <p class="text-gray-400 text-sm mb-0">Each season, an amount of VGO to share is allocated to reward user activity. This amount varies for each user, the more crypto you swap and send, the more VGO you earn. </p>         
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center mt-3">
-                            <p class="xpIcon mr-2">XP</p>
-                            <div class="text-left ml-2 flex-1">
-                               <p id="xpTitle" class="mb-1 text-lg">Rank & XP</p>
-                               <p class="text-gray-400 text-sm mb-0">Collect XP by taking part in quests. These XP will make you climb the rank to get rewards at the end of each season.</p>         
+                            <div class="d-flex align-items-center mt-3">
+                                <p class="xpIcon mr-2">XP</p>
+                                <div class="text-left ml-2 flex-1">
+                                   <p id="xpTitle" class="mb-1 text-lg">Rank & XP</p>
+                                   <p class="text-gray-400 text-sm mb-0">Collect XP by taking part in quests. These XP will make you climb the rank to get rewards at the end of each season.</p>         
+                                </div>
                             </div>
-                        </div>
-                        <p class="title text-gray-700 text-xl text-left m-0">Ranks</p>
-                        
+                            <p class="title text-gray-700 text-xl text-left m-1 mt-3">Ranks</p>
+                            <div>
+                                <div class="d-flex mb-3">
+                                    <div>
+                                        <img src="../images/reward/ranks/bronze.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #5E4C2A">Bronze</p>
+                                        ${texts[0]}
+                                    </div>
+                                    <div>
+                                        <img src="../images/reward/ranks/silver.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #5D6B76">Silver</p>
+                                        ${texts[1]}
+                                    </div>
+                                    <div>
+                                        <img src="../images/reward/ranks/gold.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #F4A04F">Gold</p>
+                                        ${texts[2]}
+                                    </div>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <div>
+                                        <img src="../images/reward/ranks/platinum.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #728AA2">Platinum</p>
+                                        ${texts[3]}
+                                    </div>
+                                    <div>
+                                        <img src="../images/reward/ranks/diamond.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #45AFF8">Diamond</p>
+                                        ${texts[4]}
+                                    </div>
+                                    <div>
+                                        <img src="../images/reward/ranks/master.png" class="w-100">
+                                        <p class="weight-600 mb-0" style="color: #8A56D6">Master</p>
+                                        ${texts[5]}
+                                    </div>
+                                </div>
+                            </div>          
+                        </scroll-view>
                     </div>
                 </div>
             </div>
@@ -82,6 +136,13 @@ class RewardRulesPane extends StatefulElement {
             
             #xpTitle {
                 color: var(--green-700);
+            }
+            
+            .shimmerXP {
+                border-radius: 0.5em;
+                width: 7ch;
+                height: 1em;
+                margin: auto;
             }
             
         `;
