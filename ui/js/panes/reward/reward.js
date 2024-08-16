@@ -30,6 +30,14 @@ class RewardPane extends StatefulElement {
             </div>
         `
 
+        if(data.seasonStartDate > Date.now()){
+            return `
+                <div id="content" class="px-3 pt-3">
+                    <reward-start-timer date="${data.seasonStartDate}"></reward-start-timer>
+                </div>
+            `
+        }
+
         const airdropsClick = this.registerFunction(() => {
             const elem = document.createElement("airdrops-pane")
             document.body.appendChild(elem)
@@ -53,8 +61,8 @@ class RewardPane extends StatefulElement {
         return `
             <div id="content" class="px-3 pt-3">
                 <div>
-                    <p id="seasonTitle" class="text-xl mb-1 text-gray-700">Season 1</p>
-                    <p id="seasonSubtitle" class="text-gray-400 text-sm">End in 154 days</p>
+                    <p id="seasonTitle" class="text-xl mb-1 text-gray-700">Season ${data.seasonNumber}</p>
+                    <p id="seasonSubtitle" class="text-gray-400 text-sm">Ends in ${Math.floor((data.seasonEndDate-Date.now()) / (1000 * 60 * 60 * 24))} days</p>
                 </div>
                 <div class="d-flex">
                     <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}" style='background-image: url("../images/reward/ranks/${data.rank.rank.name}.png");'>

@@ -46,6 +46,7 @@ class WalletHandlers {
             "notifications" : notifications,
             "notificationsCount" : notifCounter,
             "selectedCurrency" : selectedCurrency,
+            "selectedLanguage" : selectedLanguage,
             "setupDone" : setupDone,
             "biometricsEnabled": biometricsEnabled
         }

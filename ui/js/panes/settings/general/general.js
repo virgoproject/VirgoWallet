@@ -15,6 +15,7 @@ class GeneralSettings extends StatefulElement {
            <div class="fullpageSection">
                 <section-header title="General Settings" backfunc="${back}"></section-header>
                 <select-currency></select-currency>
+                <select-language></select-language>
            </div>
         `
 

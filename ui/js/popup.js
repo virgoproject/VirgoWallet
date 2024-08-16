@@ -134,3 +134,7 @@ $(".bottomPopup .close").click(function(){
 Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.min.css");
 Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
 Stateful.addGlobalStylesheet("../css/main.css");
+
+getBaseInfos().then(res => {
+    Stateful.setLocale(res.selectedLanguage)
+})

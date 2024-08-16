@@ -68,6 +68,7 @@ browser.storage.local.get("notifications").then(function (res) {
 //fetchNotifs()
 
 let selectedCurrency = "usd"
+let selectedLanguage = "en"
 
 const pendingTransactions = {}
 const pendingSigns = {}
@@ -102,6 +103,13 @@ BaseWallet.loadFromJSON().then(() => {
             selectedCurrency = res.selectedCurrency
 
         loadedElems["selectedCurrency"] = true
+    })
+
+    browser.storage.local.get("selectedLanguage").then(function(res){
+        if(res.selectedLanguage !== undefined)
+            selectedLanguage = res.selectedLanguage
+
+        loadedElems["selectedLanguage"] = true
     })
 
     browser.storage.local.get("pendingAuthorizations").then(function(res){
@@ -196,7 +204,7 @@ BaseWallet.loadFromJSON().then(() => {
     })
 
     browser.alarms.onAlarm.addListener(async a => {
-        while(Object.keys(loadedElems).length < 13){
+        while(Object.keys(loadedElems).length < 14){
             await new Promise(r => setTimeout(r, 10));
         }
 

@@ -3,6 +3,8 @@ class Stateful {
     static elementsLocations = {}
     static globalStylesheets = []
     static stylesMap = {}
+    static locales = {}
+    static currentLocale = "en"
 
     static addGlobalStylesheet(href){
         const scriptUrl = new URL(document.currentScript.src);
@@ -52,6 +54,24 @@ class Stateful {
         }
 
         return ""+hash;
+    }
+
+    static addLocale(localeKey, locale){
+        this.locales[localeKey] = locale
+    }
+
+    static setLocale(localeKey){
+        if(!this.locales[localeKey] || this.currentLocale == localeKey) return
+        this.currentLocale = localeKey
+
+        for (const elem of document.querySelectorAll("[is-stateful]")) {
+            elem._renderContent();
+        }
+
+    }
+
+    static t(key){
+        return this.locales[this.currentLocale][key] || key;
     }
 
 }
@@ -109,6 +129,8 @@ class StatefulElement extends HTMLElement {
 
     async _renderContent(){
         this.beforeRender()
+
+        this.setAttribute("is-stateful", "")
 
         let active = this.shadow.activeElement
         if(active && active.id) active = active.id

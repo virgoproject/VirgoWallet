@@ -103,6 +103,10 @@ body {
     color: var(--green-400) !important;
 }
 
+.text-main-700 {
+    color: var(--main-700);
+}
+
 .button {
     color: white;
     background: var(--main-700);

@@ -9,6 +9,8 @@ const commonScripts = [
     "../js/utils/backgroundMessaging.js",
     "../js/utils/currencyToSymbol.js",
     "../js/utils/stateful.js",
+    "../js/locales/en.js",
+    "../js/locales/fr.js",
     "../../commonJS/qrcode.min.js",
     "../js/popup.js",
     "../js/panes/loading.js",
@@ -20,6 +22,7 @@ const commonScripts = [
     "../js/panes/settings/menu.js",
     "../js/panes/settings/general/general.js",
     "../js/panes/settings/general/selectCurrency.js",
+    "../js/panes/settings/general/selectLanguage.js",
     "../js/panes/settings/networks/manage.js",
     "../js/panes/settings/networks/networkRow.js",
     "../js/panes/settings/networks/add.js",
@@ -81,7 +84,8 @@ const commonScripts = [
     "../js/panes/reward/quests/quests.js",
     "../js/panes/reward/quests/dailyReward.js",
     "../js/panes/reward/quests/swaps.js",
-    "../js/panes/reward/referral/referral.js"
+    "../js/panes/reward/referral/referral.js",
+    "../js/panes/reward/startTimer.js",
 ]
 
 const browserScripts = [
