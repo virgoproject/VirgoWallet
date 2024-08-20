@@ -20,13 +20,13 @@ class AddContact extends StatefulElement {
 
             addContact(address.value, name.value, checkbox.checked).then(res => {
                 if(res){
-                    notyf.success("Contact added!")
+                    notyf.success(Stateful.t("contactAdded"))
                     _this.resetParent()
                     _this.remove()
                 }else{
                     const addressLabel = _this.querySelector("#addressLabel")
                     addressLabel.classList.add("error")
-                    addressLabel.innerHTML = "Contact already exists"
+                    addressLabel.innerHTML = Stateful.t("contactAlreadyExists")
                     address.disabled = name.disabled = checkbox.disabled = false
                 }
             })
@@ -41,22 +41,22 @@ class AddContact extends StatefulElement {
         return `
             <bottom-popup>
                 <div class="text-center">
-                    <p class="text-center text-xl" id="title">Add a contact</p>
+                    <p class="text-center text-xl" id="title">${Stateful.t("addContactTitle")}</p>
                     <div class="mt-3">
-                        <p class="label text-left text-sm" id="addressLabel">Address</p>
+                        <p class="label text-left text-sm" id="addressLabel">${Stateful.t("addContactAddressLabel")}</p>
                         <input type="text" class="input col-12" placeholder="0x4b4c..." id="address" oninput="${validateInputs}" onfocus="${onFocus}">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left text-sm">Name</p>
+                        <p class="label text-left text-sm">${Stateful.t("addContactNameLabel")}</p>
                         <input type="text" class="input col-12" placeholder="Satoshi" id="name" oninput="${validateInputs}" onfocus="${onFocus}">
                     </div>
                     <div class="mt-3 d-flex justify-content-between align-items-center">
-                        <p class="label text-left text-sm">Favorite</p>
+                        <p class="label text-left text-sm">${Stateful.t("addContactFavoriteLabel")}</p>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="checkbox" onfocus="${onFocus}">
                         </div>
                     </div>
-                    <button class="button w-100 mt-3" id="next" disabled onclick="${confirmClick}">Confirm</button>
+                    <button class="button w-100 mt-3" id="next" disabled onclick="${confirmClick}">${Stateful.t("addContactConfirmBtn")}</button>
                 </div>
             </bottom-popup>
         `;

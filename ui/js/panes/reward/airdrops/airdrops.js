@@ -31,7 +31,7 @@ class AirdropsPane extends StatefulElement {
             return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Airdrops" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("airdropsTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <div id="headerWrapper">
                             <div id="headerShimmer" class="shimmerBG row"></div>
@@ -72,8 +72,6 @@ class AirdropsPane extends StatefulElement {
             `
         }
 
-        console.log(data)
-
         const rows = []
 
         for(const airdrop of data.activeAirdrops){
@@ -89,15 +87,15 @@ class AirdropsPane extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Airdrops" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("airdropsTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <div id="headerWrapper">
                             <airdrops-header participations="${data.stats.participations}" wins="${data.stats.wins}" withdraw="${data.stats.claimAvailable}"></airdrops-header>
                         </div>
                         <div id="list" class="px-3">
-                            ${rows.length > 0 ? '<p class="label mt-3">Active airdrops</p>' : ''}
+                            ${rows.length > 0 ? '<p class="label mt-3">${Stateful.t("activeAirdropsTitle")}</p>' : ''}
                             ${rows}
-                            <p class="label mt-3">Ended airdrops</p>
+                            <p class="label mt-3">${Stateful.t("endedAirdropsTitle")}</p>
                             ${endedRows} 
                         </div>
                     </div>

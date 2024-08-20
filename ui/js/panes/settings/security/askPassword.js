@@ -33,6 +33,7 @@ class AskPassword extends StatefulElement {
 
         const onClose = this.registerFunction(() => {
             if(_this.callback) _this.callback(false)
+            _this.remove()
         })
 
         const onKeyDown = this.registerFunction(e => {

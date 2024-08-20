@@ -25,7 +25,7 @@ class AddAccount extends StatefulElement {
 
         return `
             <bottom-popup onclose="${popupBack}">
-                <section-header title="Add an account" no-padding backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("accountAddTitle")}" no-padding backfunc="${back}"></section-header>
                 <div id="content">
                     ${content}
                 </div>
@@ -52,8 +52,8 @@ class AddAccount extends StatefulElement {
                     <i class="fa-regular fa-plus"></i>
                 </div>
                 <div class="btnText ml-2">
-                    <p class="btnTitle">Create or restore an account</p>
-                    <p class="btnSubtitle text-sm">From your current seed phrase</p>
+                    <p class="btnTitle">${Stateful.t("accountAddRestoreBtnTitle")}</p>
+                    <p class="btnSubtitle text-sm">${Stateful.t("accountAddRestoreBtnSub")}</p>
                 </div>
             </div>
             <div class="setupBtn mt-3" onclick="${importClick}">
@@ -61,8 +61,8 @@ class AddAccount extends StatefulElement {
                     <i class="fa-regular fa-arrow-down"></i>
                 </div>
                 <div class="btnText ml-2">
-                    <p class="btnTitle">Import an account</p>
-                    <p class="btnSubtitle text-sm">From a raw private key</p>
+                    <p class="btnTitle">${Stateful.t("accountAddImportBtnTitle")}</p>
+                    <p class="btnSubtitle text-sm">${Stateful.t("accountAddImportBtnSub")}</p>
                 </div>
             </div>
         `
@@ -82,7 +82,7 @@ class AddAccount extends StatefulElement {
             addAccount().then(() => {
                 _this.parent.skipAnimation = true
                 _this.parent.runFunctions()
-                notyf.success("Added account!")
+                notyf.success(Stateful.t("accountAddedNotif"))
             })
             _this.remove()
         })
@@ -93,7 +93,7 @@ class AddAccount extends StatefulElement {
             unhideAccount(e.currentTarget.getAttribute("address")).then(() => {
                 _this.parent.skipAnimation = true
                 _this.parent.runFunctions()
-                notyf.success("Account restored!")
+                notyf.success(Stateful.t("accountRestoredNotif"))
             })
             _this.remove()
         })
@@ -119,8 +119,8 @@ class AddAccount extends StatefulElement {
                     <i class="fa-regular fa-plus"></i>
                 </div>
                 <div class="btnText ml-2">
-                    <p class="btnTitle">New account</p>
-                    <p class="btnSubtitle text-sm">From your current seed phrase</p>
+                    <p class="btnTitle">${Stateful.t("accountAddNewBtnTitle")}</p>
+                    <p class="btnSubtitle text-sm">${Stateful.t("accountAddNewBtnSub")}</p>
                 </div>
             </div>
         `
@@ -139,12 +139,12 @@ class AddAccount extends StatefulElement {
             const pKey = _this.querySelector("#input").value
             addAccountFromPrivateKey(pKey).then(res => {
                 if(res){
-                    notyf.success("Account successfully imported!")
+                    notyf.success(Stateful.t("accountImportedNotif"))
                     _this.remove()
                     return
                 }
 
-                notyf.error("Account already exists!")
+                notyf.error(Stateful.t("accountAlreadyExistsNotif"))
                 setValue("")
             })
             setValue(pKey)
@@ -152,11 +152,11 @@ class AddAccount extends StatefulElement {
 
         let button;
         if(value != "") button = `<button class="button w-100 mt-3" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
-        else button = `<button class="button w-100 mt-3" id="confirm" disabled onclick="${onClick}">Confirm</button>`
+        else button = `<button class="button w-100 mt-3" id="confirm" disabled onclick="${onClick}">${Stateful.t("accountImportConfirmBtn")}</button>`
 
         return `
             <div class="mt-3">
-                <p class="label text-left text-sm">Private key</p>
+                <p class="label text-left text-sm">${Stateful.t("accountImportPrivateKeyLabel")}</p>
                 <input type="text" class="input col-12" placeholder="0x35bcd4af32.." id="input" oninput="${onInput}" value="${value}" ${value != "" ? "disabled" : ""}>
             </div>
             ${button}

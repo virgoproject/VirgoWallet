@@ -67,25 +67,25 @@ class SecuritySettings extends StatefulElement {
 
     style() {
         return `
-        #content {
-            padding: 0em 1em;
-            overflow: auto;
-            height: 100%;
-            padding-bottom: 5em;
-        }
-        
-        .group {
-            padding: 1em;
-        }
-        
-        .title {
-            font-size: 1em;
-            font-weight: bold;
-        }
-        
-        .desc {
-            font-size: .85em;
-        }
+            #content {
+                padding: 0em 1em;
+                overflow: auto;
+                height: 100%;
+                padding-bottom: 5em;
+            }
+            
+            .group {
+                padding: 1em;
+            }
+            
+            .title {
+                font-size: 1em;
+                font-weight: bold;
+            }
+            
+            .desc {
+                font-size: .85em;
+            }
         `;
     }
 

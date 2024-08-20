@@ -29,7 +29,7 @@ class JoinAirdrop extends StatefulElement {
         for(const accName in conditions){
             rows.push(`<div class="row rule">
                 <div class="col-2"><i class="fa-regular fa-user-plus"></i></div>
-                <div class="col-8 text-center p-0 align-self-center"><p>Follow <a href="${conditions[accName]}" target="_blank">${accName}</a> on Twitter</p></div>
+                <div class="col-8 text-center p-0 align-self-center"><p>${Stateful.t("airdropJoinFollow1")} <a href="${conditions[accName]}" target="_blank">${accName}</a> ${Stateful.t("airdropJoinFollow2")}</p></div>
                 <div class="col-2"></div>
             </div>`)
 
@@ -37,20 +37,20 @@ class JoinAirdrop extends StatefulElement {
 
         rows.push(`<div class="row rule">
                 <div class="col-2"><i class="fa-regular fa-retweet"></i></div>
-                <div class="col-8 text-center p-0 align-self-center"><p>RT the airdrop tweet</p></div>
+                <div class="col-8 text-center p-0 align-self-center"><p>${Stateful.t("airdropJoinRT")}</p></div>
                 <div class="col-2"></div>
             </div>`)
 
         rows.push(`<div class="row rule">
                 <div class="col-2 align-self-center justify-content-center"><i class="fa-regular fa-check"></i></div>
-                <div class="col-8 text-center align-self-center"><p>Agree with our <a href="https://www.virgo.net/terms-and-conditions" target="_blank">terms and conditions</a></p></div>
+                <div class="col-8 text-center align-self-center"><p>${Stateful.t("airdropJoinTerms1")} <a href="https://www.virgo.net/terms-and-conditions" target="_blank">${Stateful.t("airdropJoinTerms2")}</a></p></div>
                 <div class="col-2"></div>
             </div>`)
 
         return `
-            <p class="text-center" id="title">Participation rules</p>
+            <p class="text-center" id="title">${Stateful.t("airdropJoinRulesTitle")}</p>
             <div>${rows}</div>
-            <button class="button w-100 mt-3" onclick="${onClick}">I agree, continue</button>
+            <button class="button w-100 mt-3" onclick="${onClick}">${Stateful.t("airdropJoinConfirmBtn")}</button>
         `
     }
 
@@ -72,7 +72,7 @@ class JoinAirdrop extends StatefulElement {
                 document.querySelector("#airdropPane").appendChild(elem)
                 _this.remove()
                 if(res === true)
-                    notyf.success("Airdrop successfully joined!")
+                    notyf.success(Stateful.t("airdropJoinedNotif"))
                 else
                     notyf.error("Error: " + res.message)
             })
@@ -83,14 +83,14 @@ class JoinAirdrop extends StatefulElement {
             this.querySelector("#join").disabled = !e.target.value.replace("@", "").match("^[A-Za-z0-9_]{4,15}$")
         })
 
-        let button = `<button class="button w-100 mt-3" disabled id="join" onclick="${onClick}">Join airdrop</button>`
+        let button = `<button class="button w-100 mt-3" disabled id="join" onclick="${onClick}">${Stateful.t("airdropJoinStep2Btn")}</button>`
 
         if(loading) button = `<button class="button w-100 mt-3" id="join" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
         return `
-            <p class="text-center" id="title">Participate</p>
-            <p class="label">Enter your <span>Twitter Username</span> to <br>verify your eligibility</p>
-            <input type="text" class="input col-12" placeholder="Twitter Username" oninput="${onInput}" id="input">
+            <p class="text-center" id="title">${Stateful.t("airdropJoinTitle")}</p>
+            <p class="label">${Stateful.t("airdropJoinTwitterLabel1")} <span>${Stateful.t("airdropJoinTwitterLabel2")}</span> ${Stateful.t("airdropJoinTwitterLabel3")} <br>${Stateful.t("airdropJoinTwitterLabel4")}</p>
+            <input type="text" class="input col-12" placeholder="${Stateful.t("airdropJoinTwitterInput")}" oninput="${onInput}" id="input">
             ${button}
         `
     }

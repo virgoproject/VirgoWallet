@@ -73,12 +73,12 @@ class AccountSelector extends StatefulElement {
 
         return `
             <div id="wrapper" ${this.skipAnimation ? "class='opened'" : ""}>
-                <section-header title="My accounts" righticon="fa-duotone fa-gear" rightclick="${settingsClick}"></section-header>
+                <section-header title="${Stateful.t("accountsTitle")}" righticon="fa-duotone fa-gear" rightclick="${settingsClick}"></section-header>
                 <scroll-view id="scroll" class="px-3 pt-3">
                     ${rows}
                 </scroll-view>
                 <div class="p-3">
-                    <button class="button w-100" onclick="${addAccountClick}">Add an account</button>              
+                    <button class="button w-100" onclick="${addAccountClick}">${Stateful.t("accountsAddBtn")}</button>              
                 </div>
             </div>
         `;

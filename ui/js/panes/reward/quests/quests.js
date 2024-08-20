@@ -11,10 +11,10 @@ class QuestsPane extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Quests" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("rewardQuestsTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <div id="list" class="px-3">
-                            <p class="label">Daily rewards</p>
+                            <p class="label">${Stateful.t("rewardQuestsDailyTitle")}</p>
                             <daily-reward></daily-reward>
                             <swap-rewards></swap-rewards>
                         </div>

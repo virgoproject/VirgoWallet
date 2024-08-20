@@ -37,7 +37,7 @@ class DailyReward extends StatefulElement {
                         <div class="dayBox claimed px-3 py-2">
                             <i class="fa-regular fa-check text-2xl"></i>
                         </div>              
-                        <p class="dayName m-0 mt-1 text-sm">Day ${day+1}</p>
+                        <p class="dayName m-0 mt-1 text-sm">${Stateful.t("rewardDailyDayTitle")} ${day+1}</p>
                     </div>
                 `)
             }else{
@@ -47,7 +47,7 @@ class DailyReward extends StatefulElement {
                             <p class="xpIcon m-auto mb-1">XP</p>
                             <p class="rewardAmount m-0 text-lg">${reward}</p>
                         </div>              
-                        <p class="dayName m-0 mt-1 text-sm">Day ${day+1}</p>
+                        <p class="dayName m-0 mt-1 text-sm">${Stateful.t("rewardDailyDayTitle")} ${day+1}</p>
                     </div>
                 `)
             }
@@ -65,20 +65,20 @@ class DailyReward extends StatefulElement {
                 setLoading(false)
                 _this.runFunctions()
                 if(res === true)
-                    notyf.success("Airdrop successfully joined!")
+                    notyf.success(Stateful.t("rewardDailyClaimedNotif"))
                 else
                     notyf.error("Error: " + res.message)
             })
 
         })
 
-        let button = `<button class="button w-100 mt-3" ${data.alreadyClaimed ? "disabled" : ""} id="join" onclick="${onClick}">Claim reward</button>`
+        let button = `<button class="button w-100 mt-3" ${data.alreadyClaimed ? "disabled" : ""} id="join" onclick="${onClick}">${Stateful.t("rewardDailyClaimBtn")}</button>`
 
         if(loading) button = `<button class="button w-100 mt-3" id="join" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
         return `
             <div id="wrapper" class="mt-1 p-3 text-gray-700">
-                <p id="title" style="font-weight: 600;">Log in every day and receive free XP!</p>
+                <p id="title" style="font-weight: 600;">${Stateful.t("rewardDailyTitle")}</p>
                 <div id="days">
                     ${rows}
                 </div>

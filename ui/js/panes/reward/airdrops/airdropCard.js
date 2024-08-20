@@ -63,7 +63,7 @@ class AirdropCard extends StatefulElement {
 
         const timeLeft = this.calcTimeLeft(json.endDate-Date.now())
 
-        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join and earn ${json.xpReward} XP!</button></div>`
+        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>${Stateful.t("airdropJoinBtn1")} ${json.xpReward} ${Stateful.t("airdropJoinBtn2")}</button></div>`
 
         if(json.endDate < Date.now())
             button = ""
@@ -89,15 +89,15 @@ class AirdropCard extends StatefulElement {
                 <div class="row">
                     <div class="col-4 text-center">
                         <p>${json.entryCount}</p>
-                        <p class="text-gray-400 text-sm">Participants</p>
+                        <p class="text-gray-400 text-sm">${Stateful.t("airdropParticipantsTitle")}</p>
                     </div>
                     <div class="col-4 text-center">
                         <p>${json.winnersCount}</p>
-                        <p class="text-gray-400 text-sm">Winners</p>
+                        <p class="text-gray-400 text-sm">${Stateful.t("airdropWinnersTitle")}</p>
                     </div>
                     <div class="col-4 text-center">
                         <p>${timeLeft.value}</p>
-                        <p class="text-gray-400 text-sm">${timeLeft.label} left</p>
+                        <p class="text-gray-400 text-sm">${timeLeft.label} ${Stateful.t("airdropTimeLeftTitle")}</p>
                     </div>
                     ${button}
                 </div>
@@ -217,9 +217,9 @@ class AirdropCard extends StatefulElement {
 
         // Create an array with non-zero values
         const nonZeroValues = [
-            { label: 'Days', value: days },
-            { label: 'Hours', value: hours },
-            { label: 'Minutes', value: minutes }
+            { label: Stateful.t("airdropTimeLeftDays"), value: days },
+            { label: Stateful.t("airdropTimeLeftHours"), value: hours },
+            { label: Stateful.t("airdropTimeLeftMinutes"), value: minutes }
         ];
 
         // Find the first non-zero value
@@ -229,7 +229,7 @@ class AirdropCard extends StatefulElement {
         if (firstNonZero) {
             return firstNonZero;
         } else {
-            return { label: 'Minutes', value: 0 }
+            return { label: Stateful.t("airdropTimeLeftMinutes"), value: 0 }
         }
     }
 
