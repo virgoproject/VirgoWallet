@@ -13,50 +13,50 @@ class TokenStatistics extends StatefulElement {
 
             if(json.coingecko_rank != null){
                 stats.push({
-                    name: "Rank",
+                    name: Stateful.t("tokenStatisticsRank"),
                     value: "#"+json.coingecko_rank
                 })
             }else{
                 stats.push({
-                    name: "Rank",
+                    name: Stateful.t("tokenStatisticsRank"),
                     value: "#-"
                 })
             }
 
             stats.push({
-                name: "Market Cap",
+                name: Stateful.t("tokenStatisticsMarketCap"),
                 value: "$" + Utils.beautifyAmount(json.market_data.market_cap.usd)
             })
 
             stats.push({
-                name: "24h Volume",
+                name: Stateful.t("tokenStatisticsVolume"),
                 value: "$" + Utils.beautifyAmount(json.market_data.total_volume.usd)
             })
 
             stats.push({
-                name: "Circulating supply",
+                name: Stateful.t("tokenStatisticsCirculatingSupply"),
                 value: Utils.beautifyAmount(json.market_data.circulating_supply) + " " + tokenInfos.ticker
             })
 
             stats.push({
-                name: "Total supply",
+                name: Stateful.t("tokenStatisticsTotalSupply"),
                 value: Utils.beautifyAmount(json.market_data.total_supply) + " " + tokenInfos.ticker
             })
 
             if(json.market_data.max_supply != null){
                 stats.push({
-                    name: "Max supply",
+                    name: Stateful.t("tokenStatisticsMaxSupply"),
                     value: Utils.beautifyAmount(json.market_data.max_supply) + " " + tokenInfos.ticker
                 })
             }
 
             stats.push({
-                name: "All Time High",
+                name: Stateful.t("tokenStatisticsATH"),
                 value: "$" + Utils.beautifyAmount(json.market_data.ath.usd)
             })
 
             stats.push({
-                name: "All Time Low",
+                name: Stateful.t("tokenStatisticsATL"),
                 value: "$" + Utils.beautifyAmount(json.market_data.atl.usd)
             })
 
@@ -66,7 +66,7 @@ class TokenStatistics extends StatefulElement {
         if(loading){
             return `
                 <div class="mx-3">
-                    <p id="title">Statistics</p>
+                    <p id="title">${Stateful.t("tokenDetailsFullStatisticsTitle")}</p>
                     <div class="stat">
                         <div class="shimmerTitle shimmerBG"></div>
                         <div class="shimmerValue shimmerBG"></div>
@@ -104,7 +104,7 @@ class TokenStatistics extends StatefulElement {
 
         return `
             <div class="mx-3">
-                <p id="title">Statistics</p>
+                <p id="title">${Stateful.t("tokenDetailsFullStatisticsTitle")}</p>
                 ${rows}
             </div>
         `

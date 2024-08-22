@@ -38,22 +38,22 @@ class RewardStartTimer extends StatefulElement {
                 <div id="timerWrapper">
                     <div class="timerCell">
                         <p class="timerCellValue text-3xl" id="days">27</p>
-                        <p class="timerCellTitle text-sm text-gray-400">DAYS</p>
+                        <p class="timerCellTitle text-sm text-gray-400">${Stateful.t("rewardTimerDaysTitle")}</p>
                     </div>
                     <div class="timerCell">
                         <p class="timerCellValue text-3xl" id="hours">7</p>
-                        <p class="timerCellTitle text-sm text-gray-400">HOURS</p>
+                        <p class="timerCellTitle text-sm text-gray-400">${Stateful.t("rewardTimerHoursTitle")}</p>
                     </div>
                     <div class="timerCell">
                         <p class="timerCellValue text-3xl" id="minutes">33</p>
-                        <p class="timerCellTitle text-sm text-gray-400">MINUTES</p>
+                        <p class="timerCellTitle text-sm text-gray-400">${Stateful.t("rewardTimerMinutesTitle")}</p>
                     </div>
                     <div class="timerCell">
                         <p class="timerCellValue text-3xl" id="seconds">12</p>
-                        <p class="timerCellTitle text-sm text-gray-400">SECONDS</p>
+                        <p class="timerCellTitle text-sm text-gray-400">${Stateful.t("rewardTimerSecondsTitle")}</p>
                     </div>
                 </div>
-                <p class="text-xl">Before the <span class="text-main-700">${Stateful.t("hello")}</span> season!</p>
+                <p class="text-xl">${Stateful.t("rewardTimerSub1")} <span class="text-main-700">${Stateful.t("rewardTimerSub2")}</span> ${Stateful.t("rewardTimerSub3")}</p>
             </div>
         `;
     }

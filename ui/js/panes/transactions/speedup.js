@@ -25,10 +25,10 @@ class SpeedupTransaction extends StatefulElement {
             return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Speed up transaction</p>
-                    <p id="label" class="mb-0 text-sm">New transaction fee</p>
+                    <p id="title">${Stateful.t("speedupTransactionTitle")}</p>
+                    <p id="label" class="mb-0 text-sm">${Stateful.t("speedupTransactionCostLabel")}</p>
                     <div class="shimmerBG" id="shimmerAmount"></div>    
-                    <button class="button w-100" disabled>Confirm</button>
+                    <button class="button w-100" disabled>${Stateful.t("speedupTransactionConfirmBtn")}</button>
                 </div>
             </bottom-popup>
             `
@@ -45,7 +45,7 @@ class SpeedupTransaction extends StatefulElement {
         }else if(new BN(data.balance).gte(new BN(data.value).add(newFee))){
             const confirmClick = this.registerFunction(() => {
                 speedUpTransaction(data.hash, data.gasPrice).then(hash => {
-                    notyf.success("Transaction sped up!")
+                    notyf.success(Stateful.t("speedupTransactionSuccessNotif"))
                     _this.updateHash(hash)
                     _this.runIntervals()
                     _this.remove()
@@ -53,16 +53,16 @@ class SpeedupTransaction extends StatefulElement {
                 setSending(true)
             })
 
-            button = `<button class="button w-100" onclick="${confirmClick}">Confirm</button>`
+            button = `<button class="button w-100" onclick="${confirmClick}">${Stateful.t("speedupTransactionConfirmBtn")}</button>`
         }else{
-            button = `<button class="button w-100" disabled>Insufficient ${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker} balance</button>`
+            button = `<button class="button w-100" disabled>${Stateful.t("speedupTransactionInsufficientBalance1")} ${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker} ${Stateful.t("speedupTransactionInsufficientBalance2")}</button>`
         }
 
         return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Speed up transaction</p>
-                    <p id="label" class="mb-0 text-sm">New transaction fee</p>
+                    <p id="title">${Stateful.t("speedupTransactionTitle")}</p>
+                    <p id="label" class="mb-0 text-sm">${Stateful.t("speedupTransactionCostLabel")}</p>
                     <p id="amount">${Utils.formatAmount(newFee, baseInfos.wallets[baseInfos.selectedWallet].wallet.decimals)} <span id="ticker">${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker}</span></p>
                     ${button}
                 </div>

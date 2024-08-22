@@ -3,35 +3,35 @@ class AutolockSettings extends StatefulElement {
     static options = [
         {
             value: "5",
-            text: "5 minutes"
+            text: "5 " + Stateful.t("autolockMinutes")
         },
         {
             value: "10",
-            text: "10 minutes"
+            text: "10 " + Stateful.t("autolockMinutes")
         },
         {
             value: "30",
-            text: "30 minutes"
+            text: "30 " + Stateful.t("autolockMinutes")
         },
         {
             value: "60",
-            text: "1 hour"
+            text: "1 " + Stateful.t("autolockHour")
         },
         {
             value: "120",
-            text: "2 hours"
+            text: "2 " + Stateful.t("autolockHours")
         },
         {
             value: "360",
-            text: "6 hours"
+            text: "6 " + Stateful.t("autolockHours")
         },
         {
             value: "720",
-            text: "12 hours"
+            text: "12 " + Stateful.t("autolockHours")
         },
         {
             value: "1440",
-            text: "1 day"
+            text: "1 " + Stateful.t("autolockDay")
         },
     ]
 
@@ -70,7 +70,7 @@ class AutolockSettings extends StatefulElement {
             </select>
             <div class="form-check form-switch mt-2">
                 <input class="form-check-input" type="checkbox" id="enabled" ${checked? "checked" : ""} onchange="${onChange}">
-                <label class="form-check-label" for="enabled">Enable autolock</label>
+                <label class="form-check-label" for="enabled">${Stateful.t("autolockEnableLabel")}</label>
             </div>
         `;
     }

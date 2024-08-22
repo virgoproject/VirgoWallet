@@ -23,8 +23,8 @@ class ConnectedWebsites extends StatefulElement {
             content = `
                 <NoConnectedWebsites class="text-center">
                     <img src="../images/noSites.png" alt="noSites" class="img-fluid" />
-                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No connected websites</p>
-                    <p id="emptySubtitle">Web3 connections will appear here</p>
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">${Stateful.t("noConnectedWebsitesTitle")}</p>
+                    <p id="emptySubtitle">${Stateful.t("noConnectedWebsitesSub")}</p>
                 </NoConnectedWebsites>
             `
         }else{
@@ -44,7 +44,7 @@ class ConnectedWebsites extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Connected websites" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("connectedWebsitesTitle")}" backfunc="${back}"></section-header>
                     <scroll-view id="scroll">
                         <div id="inner" class="mx-3 px-3 mb-2">
                             ${content}

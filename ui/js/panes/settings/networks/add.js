@@ -39,19 +39,19 @@ class AddNetwork extends StatefulElement {
             addNetwork(name.value, rpc.value.replace(/\s/g,''), chainID.value.replace(/\s/g,''), symbol.value.replace(/\s/g,''), explorer.value.replace(/\s/g,'')).then(res => {
                 if(res.status == 0){
                     errorText.style.display = "block"
-                    errorText.innerHTML = "Can't connect to network, please check your RPC URL"
+                    errorText.innerHTML = Stateful.t("networkAddCantConnectErr")
                     rpc.classList.add("is-invalid")
                 }
 
                 if(res.status == 1){
                     errorText.style.display = "block"
                     chainID.classList.add("is-invalid")
-                    errorText.innerHTML = "Network's chain ID doesn't correspond to provided one: Given " + chainID.value.replace(/\s/g,'') + ", received " + res.id
+                    errorText.innerHTML = Stateful.t("networkAddInvalidNetId")
                 }
 
                 if(res.status == 2){
                     _this.remove()
-                    notyf.success("Successfully added " + name.value.replace(/\s/g,'') + "!")
+                    notyf.success(Stateful.t("networkAddSuccessNotif") + name.value.replace(/\s/g,'') + "!")
                 }
 
                 enableLoadBtn($(button))
@@ -69,7 +69,7 @@ class AddNetwork extends StatefulElement {
         })
 
         let addBtn = `
-            <button class="button w-100 mt-4" disabled="disabled" id="btn">Continue</button>
+            <button class="button w-100 mt-4" disabled="disabled" id="btn">${Stateful.t("networkAddNextBtn")}</button>
         `
 
         if(loading){
@@ -82,26 +82,26 @@ class AddNetwork extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <section-header title="Add Network" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("networkAddTitle")}" backfunc="${back}"></section-header>
                 <div id="content">
                     <div class="mt-3">
-                        <p class="label text-left">Network name</p>
+                        <p class="label text-left">${Stateful.t("networkAddNameLabel")}</p>
                         <input type="text" class="input col-12" placeholder="Ethereum" id="name">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">RPC URL</p>
+                        <p class="label text-left">${Stateful.t("networkAddUrlLabel")}</p>
                         <input type="text" class="input col-12" placeholder="https://mysuperrpc.com" id="rpc">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Chain ID</p>
+                        <p class="label text-left">${Stateful.t("networkAddChainIdLabel")}</p>
                         <input type="number" class="input col-12" placeholder="1" id="id">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Token symbol</p>
+                        <p class="label text-left">${Stateful.t("networkAddSymbolLabel")}</p>
                         <input type="text" class="input col-12" placeholder="ETH" id="symbol">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Block explorer URL (optional)</p>
+                        <p class="label text-left">${Stateful.t("networkAddBlockExplorerLabel")}</p>
                         <input type="text" class="input col-12" placeholder="https://etherscan.io" id="explorer">
                     </div>
                     ${addBtn}

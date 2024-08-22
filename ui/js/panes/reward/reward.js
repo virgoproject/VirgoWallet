@@ -61,14 +61,14 @@ class RewardPane extends StatefulElement {
         return `
             <div id="content" class="px-3 pt-3">
                 <div>
-                    <p id="seasonTitle" class="text-xl mb-1 text-gray-700">Season ${data.seasonNumber}</p>
-                    <p id="seasonSubtitle" class="text-gray-400 text-sm">Ends in ${Math.floor((data.seasonEndDate-Date.now()) / (1000 * 60 * 60 * 24))} days</p>
+                    <p id="seasonTitle" class="text-xl mb-1 text-gray-700">${Stateful.t("rewardSeasonTitle")} ${data.seasonNumber}</p>
+                    <p id="seasonSubtitle" class="text-gray-400 text-sm">${Stateful.t("rewardSeasonTimeLeft1")} ${Math.floor((data.seasonEndDate-Date.now()) / (1000 * 60 * 60 * 24))} ${Stateful.t("rewardSeasonTimeLeft2")}</p>
                 </div>
                 <div class="d-flex">
                     <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}" style='background-image: url("../images/reward/ranks/${data.rank.rank.name}.png");'>
                         <div id="rankBoxInner">
                             <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
-                            <p class="text-sm mb-2">My Season rank</p>
+                            <p class="text-sm mb-2">${Stateful.t("rewardCurrentRankTitle")}</p>
                             <div id="rankProgress">
                                 <div id="rankProgressInner" style="width: ${(data.rank.progress*100).toFixed(0)}%"></div>
                             </div>
@@ -80,33 +80,33 @@ class RewardPane extends StatefulElement {
                                  <p class="xpIcon">XP</p>
                                  <p id="totalXP" class="text-lg m-0 pl-2  text-gray-700">${data.totalXP}</p>
                             </div>
-                            <p id="totalXPTitle" class="m-0  text-gray-700">Total XP</p>
+                            <p id="totalXPTitle" class="m-0  text-gray-700">${Stateful.t("rewardCurrentXPTitle")}</p>
                         </div>
                         <div class="rightBox">
                             <div class="d-flex align-items-center">
                                  <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon">
                                  <p id="estReward" class="text-lg m-0 pl-2  text-gray-700">${data.estReward} VGO</p>
                             </div>
-                            <p id="estRewardTitle" class="m-0  text-gray-700">Estimated reward</p>
+                            <p id="estRewardTitle" class="m-0  text-gray-700">${Stateful.t("rewardEstimatedRewardTitle")}</p>
                         </div>
                     </div>
                 </div>
                 <div class="sectionButton mt-4" onclick="${airdropsClick}" id="airdropsBtn">
                     <div class="buttonsInner p-3">
-                        <p class="title m-0 text-gray-700 text-xl">Airdrops</p>
-                        <p class="subtitle m-0">Enter to earn free tokens and XP</p>        
+                        <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardAirdropsBtnTitle")}</p>
+                        <p class="subtitle m-0">${Stateful.t("rewardAirdropsBtnSub")}</p>        
                     </div>
                 </div>
                 <div class="sectionButton mt-4" onclick="${questsClick}" id="questsBtn">
                     <div class="buttonsInner p-3">
-                        <p class="title m-0 text-gray-700 text-xl">Quests</p>
-                        <p class="subtitle m-0">Complete tasks to gain XP</p>    
+                        <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardQuestsBtnTitle")}</p>
+                        <p class="subtitle m-0">${Stateful.t("rewardQuestsBtnSub")}</p>    
                     </div>
                 </div>
                 <div class="sectionButton mt-4" onclick="${referralClick}" id="questsBtn">
                     <div class="buttonsInner p-3">
-                        <p class="title m-0 text-gray-700 text-xl">Referral</p>
-                        <p class="subtitle m-0">Invite your friends to earn XP</p>    
+                        <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardReferralBtnTitle")}</p>
+                        <p class="subtitle m-0">${Stateful.t("rewardReferralBtnSub")}</p>    
                     </div>
                 </div>
             </div>

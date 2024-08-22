@@ -23,7 +23,7 @@ class ReferralPane extends StatefulElement {
         if(loading || invitesLoading) return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Referral" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("rewardReferralTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <scroll-view>
                             <div class="px-3" style="padding-bottom: 85px">
@@ -31,14 +31,14 @@ class ReferralPane extends StatefulElement {
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <div>
-                                        <p class="text-lg mb-1" id="codeTitle">Invite your friends</p>
-                                        <p class="text-gray-400 mb-1">Refer them with your code and both earn bonus XP:</p>
+                                        <p class="text-lg mb-1" id="codeTitle">${Stateful.t("referralCodeTitle")}</p>
+                                        <p class="text-gray-400 mb-1">${Stateful.t("referralCodeSub")}</p>
                                         <p id="referralCodeShimmer" class="text-3xl mb-1 shimmerBG"></p>
-                                        <p class="text-sm text-gray-400">You'll receive your reward once your friend reach silver.</p>
+                                        <p class="text-sm text-gray-400">${Stateful.t("referralCodeAfter")}</p>
                                     </div>
                                     <img src="../images/reward/referralRewards.png" id="rewardImg">
                                 </div>      
-                                <p class="mt-3 mb-2 label">Your invites</p>
+                                <p class="mt-3 mb-2 label">${Stateful.t("referralInvitesTitle")}</p>
                                 <div id="invitesContainer">
                                     <div class="shimmerBG inviteShimmer mt-3 mb-3"></div>
                                     <div class="shimmerBG inviteShimmer mt-3 mb-3"></div>
@@ -83,8 +83,8 @@ class ReferralPane extends StatefulElement {
             rows.push(`
                 <div class="text-center">
                     <img src="../images/noContact.png" class="w-100">
-                    <p class="text-lg mt-3 mb-1 weight-600 text-gray-700">No invites yet!</p>    
-                    <p class="text-gray-400">Your pending and confirmed referrals will appear here</p>
+                    <p class="text-lg mt-3 mb-1 weight-600 text-gray-700">${Stateful.t("referralNoInvitesTitle")}</p>    
+                    <p class="text-gray-400">${Stateful.t("referralNoInvitesSub")}</p>
                 </div>
             `)
         }else{
@@ -107,23 +107,23 @@ class ReferralPane extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Referral" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("referralTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <scroll-view onnearend="${onNearEnd}">
                             <div class="px-3" style="padding-bottom: 85px">
                                 <div class="row" id="stats">
                                     <div class="col-6 text-center">
                                         <p class="text-gray-700 text-xl m-0">${data.invited}</p>
-                                        <p class="text-gray-400 m-0">invites</p>
+                                        <p class="text-gray-400 m-0">${Stateful.t("referralInvitesCountTitle")}</p>
                                     </div>
                                     <div class="col-6 text-center">
                                         <p class="text-gray-700 text-xl m-0">${data.earned}</p>
-                                        <p class="text-gray-400 m-0">XP earned</p>
+                                        <p class="text-gray-400 m-0">${Stateful.t("referralXPTitle")}</p>
                                     </div>
                                 </div>
                                 ${data.referred ? "" : `
                                 <div id="codeEntryWrapper" class="mt-3 mb-3">
-                                    <input type="text" placeholder="Apply a friend's code" id="codeInput" oninput="${onInput}" ${codeLoading ? "disabled" : ""}>
+                                    <input type="text" placeholder="${Stateful.t("referralCodeInput")}" id="codeInput" oninput="${onInput}" ${codeLoading ? "disabled" : ""}>
                                     <div id="codeNextWrapper">
                                         ${button}
                                     </div>
@@ -131,14 +131,14 @@ class ReferralPane extends StatefulElement {
                                 `}
                                 <div class="d-flex align-items-center">
                                     <div>
-                                        <p class="text-lg mb-1" id="codeTitle">Invite your friends</p>
-                                        <p class="text-gray-400 mb-1">Refer them with your code and both earn bonus XP:</p>
+                                        <p class="text-lg mb-1" id="codeTitle">${Stateful.t("referralCodeTitle")}</p>
+                                        <p class="text-gray-400 mb-1">${Stateful.t("referralCodeSub")}</p>
                                         <p id="referralCode" class="text-3xl mb-1">${data.code}</p>
-                                        <p class="text-sm text-gray-400">You'll receive your reward once your friend reach silver.</p>
+                                        <p class="text-sm text-gray-400">${Stateful.t("referralCodeAfter")}</p>
                                     </div>
                                     <img src="../images/reward/referralRewards.png" id="rewardImg">
                                 </div>
-                                <p class="mt-3 mb-2 label">Your invites</p>
+                                <p class="mt-3 mb-2 label">${Stateful.t("referralInvitesTitle")}</p>
                                 <div id="invitesContainer">
                                     ${rows}
                                 </div>                
@@ -163,7 +163,7 @@ class ReferralPane extends StatefulElement {
                         </div>
                         <p class="mb-0 ml-2 text-gray-700 weight-600">${invite.address}</p>           
                     </div>
-                    <p class="mb-0 text-gray-400">${invite.status == 1 ? "+100 XP" : "pending"}</p>
+                    <p class="mb-0 text-gray-400">${invite.status == 1 ? "+100 XP" : Stateful.t("referralPending")}</p>
                 </div>
             `)
         }

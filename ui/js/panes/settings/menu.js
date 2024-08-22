@@ -6,27 +6,27 @@ class SettingsMenu extends StatefulElement {
 
     static categories = [
         {
-            title: "General",
+            title: Stateful.t("settingsMenuGeneralTitle"),
             element: "general-settings",
             icon: "fa-gear"
         },
         {
-            title: "Security & Privacy",
+            title: Stateful.t("settingsMenuSecurityTitle"),
             element: "security-settings",
             icon: "fa-lock-keyhole"
         },
         {
-            title: "Connected Websites",
+            title: Stateful.t("settingsMenuWebsitesTitle"),
             element: "connected-websites",
             icon: "fa-globe"
         },
         {
-            title: "Manage Networks",
+            title: Stateful.t("settingsMenuNetworksTitle"),
             element: "networks-settings",
             icon: "fa-network-wired"
         },
         {
-            title: "Contact us",
+            title: Stateful.t("settingsMenuContactUsTitle"),
             element: "contact-settings",
             icon: "fa-comments"
         },
@@ -78,7 +78,7 @@ class SettingsMenu extends StatefulElement {
 
         return `
            <div class="fullpageSection">
-                <section-header title="Settings" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("settingsTitle")}" backfunc="${back}"></section-header>
                 ${rows}
            </div>
         `

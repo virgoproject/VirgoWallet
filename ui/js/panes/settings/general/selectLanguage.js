@@ -35,8 +35,8 @@ class SelectLanguage extends StatefulElement {
 
         return `
             <div class="row currencyConversion">
-                <h5 class="currencyConversionTitle">Language</h5>
-                <p class="currencyConversionDesc">${Stateful.t("hello")}</p>
+                <h5 class="currencyConversionTitle">${Stateful.t("langSettingTitle")}</h5>
+                <p class="currencyConversionDesc">${Stateful.t("langSettingSub")}</p>
                 <select id="select">
                     ${rows}
                 </select>

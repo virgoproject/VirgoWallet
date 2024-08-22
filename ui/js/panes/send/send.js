@@ -69,9 +69,9 @@ class SendToken extends StatefulElement {
         })
 
         let recent = `
-            ${this.getRows(data.favoriteContacts, "Favorite")}
+            ${this.getRows(data.favoriteContacts, Stateful.t("sendFavoriteLabel"))}
             <div class="pt-3">
-                ${this.getRows(data.recent, "Recent")}    
+                ${this.getRows(data.recent, Stateful.t("sendRecentLabel"))}    
             </div>
         `
 
@@ -79,8 +79,8 @@ class SendToken extends StatefulElement {
             recent = `
                 <div class="text-center mt-5">
                     <img src="../images/noRecent.png" id="nothingImg">
-                    <p id="nothingTitle" class="mt-3 text-lg mb-1">Nothing to show!</p>
-                    <p id="nothingSubtitle">Your recent and favorite contacts will appear here</p>      
+                    <p id="nothingTitle" class="mt-3 text-lg mb-1">${Stateful.t("sendNoRecentTitle")}</p>
+                    <p id="nothingSubtitle">${Stateful.t("sendNoRecentSub")}</p>      
                 </div>
             `
         }
@@ -90,22 +90,21 @@ class SendToken extends StatefulElement {
                 <section-header title="Send tokens"></section-header>
                 <div class="row m-0">
                     <div class="col-4 p-0 pr-2">
-                        <button class="button w-100" id="send"><i class="fa-solid fa-arrow-up"></i> Send</button>
+                        <button class="button w-100" id="send"><i class="fa-solid fa-arrow-up"></i> ${Stateful.t("sendSendBtn")}</button>
                     </div>
                     <div class="col-4 px-1">
-                        <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> Receive</button>
+                        <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> ${Stateful.t("sendSendBtn")}</button>
                     </div>
                     <div class="col-4 p-0 pl-2">
-                        <button class="button w-100" id="buy"><i class="fa-solid fa-dollar-sign"></i> Buy</button>
-                        <span id="soon">soon!</span>
+                        <button class="button w-100" id="buy"><i class="fa-solid fa-dollar-sign"></i> ${Stateful.t("sendBuyBtn")}</button>
                     </div>
                 </div>
-                <p class="mt-3 mb-0 label">To</p>
+                <p class="mt-3 mb-0 label">${Stateful.t("sendRecipientLabel")}</p>
                 <div id="recipientWrapper">
                     <div id="contacts" onclick="${contactsClick}">
                         <i class="fa-solid fa-address-book text-xl"></i>
                     </div>
-                    <input type="text" placeholder="Recipient address" id="recipient" oninput="${onInput}">
+                    <input type="text" placeholder="${Stateful.t("sendRecipientPlaceholder")}" id="recipient" oninput="${onInput}">
                     <div id="nextWrapper">
                         <button id="next" class="button" onclick="${onNext}" disabled><i class="fa-regular fa-arrow-right"></i></button>
                     </div>
@@ -189,20 +188,13 @@ class SendToken extends StatefulElement {
                 font-weight: 700;
             }
             
-            #buy {
-                color: var(--mainColor);
-                background: #F3F3F3;
-                opacity: 0.6;
-                cursor: default;
-            }
-            
-            #receive {
+            #receive, #buy {
                 color: var(--mainColor);
                 background: var(--gray-50);;
                 transition: all ease-in 0.1s;
             }
             
-            #receive:hover {
+            #receive:hover, #buy:hover {
                 background: var(--gray-100);
             }
             

@@ -27,10 +27,10 @@ class SettingsBackupSeed extends StatefulElement {
             return
         }
 
-        let title = "Your Seed Phrase"
+        let title = Stateful.t("seedBackupTitle")
 
-        if(step == 1) title = "Confirm Your Seed Phrase"
-        if(step == 2) title = "All done!"
+        if(step == 1) title = Stateful.t("seedBackupConfirmTitle")
+        if(step == 2) title = Stateful.t("seedBackupDoneTitle")
 
         const {data, loading} = this.useInterval(async () => {
             const res = await getMnemonic()
@@ -72,18 +72,17 @@ class SettingsBackupSeed extends StatefulElement {
 
         const copyClick = this.registerFunction(() => {
             copyToClipboard(data);
-            notyf.success("Copied to clipboard!");
+            notyf.success(Stateful.t("seedBackupCopiedNotif"));
         })
 
         return `
-            <p class="text-gray-700">This phrase permits you to recover your wallet in case of loss. <b>Write it down
-                on paper and keep it safe</b>, away from regard.</p>
+            <p class="text-gray-700">${Stateful.t("seedBackupExpl1")}<b>${Stateful.t("seedBackupExpl2")}</b>${Stateful.t("seedBackupExpl3")}</p>
             <div class="row">
                 ${words}
             </div>
-            <p id="copy" class="mt-3" onclick="${copyClick}"><i class="fa-solid fa-copy"></i> Copy to clipboard</p>
+            <p id="copy" class="mt-3" onclick="${copyClick}"><i class="fa-solid fa-copy"></i> ${Stateful.t("seedBackupCopyBtn")}</p>
             <div id="nextWrapper">
-                <button class="button w-100" onclick="${nextClick}">Continue</button>
+                <button class="button w-100" onclick="${nextClick}">${Stateful.t("seedBackupContinueBtn")}</button>
             </div>
         `
     }
@@ -147,7 +146,7 @@ class SettingsBackupSeed extends StatefulElement {
                 && _this.querySelector("input[name='2']:checked").hasAttribute("valid")){
                 setStep(2)
             }else{
-                notyf.error("Chosen words are invalid!")
+                notyf.error(Stateful.t("seedBackupChallengeInvalidNotif"))
             }
         })
 
@@ -184,7 +183,7 @@ class SettingsBackupSeed extends StatefulElement {
             }
 
             rows.push(`
-                <p class="text-left mb-1 text-sm label">Word #${pick+1}</p>
+                <p class="text-left mb-1 text-sm label">${Stateful.t("seedBackupChallengeWord")} #${pick+1}</p>
                 <div class="row mb-4" data-toggle="buttons">
                     ${cols}
                 </div>
@@ -192,10 +191,10 @@ class SettingsBackupSeed extends StatefulElement {
         }
 
         return `
-            <p class="text-gray-400">Please select the right answers between the words below</p>
+            <p class="text-gray-400">${Stateful.t("seedBackupChallengeExpl")}</p>
             ${rows}
             <div id="nextWrapper">
-                <button class="button w-100" id="confirmWords" disabled onclick="${btnClick}">Confirm</button>
+                <button class="button w-100" id="confirmWords" disabled onclick="${btnClick}">${Stateful.t("seedBackupChallengeConfirmBtn")}</button>
             </div>
         `
     }
@@ -209,10 +208,10 @@ class SettingsBackupSeed extends StatefulElement {
 
         return `
             <div class="text-center"><i class="fa-solid fa-circle-check text-green-400 text-7xl"></i></div>
-            <p class="text-gray-700 mt-3"><b>Seed phrase successfully saved!</b></p>
-            <p class="text-gray-400">Don't forget, never share this phrase to anyone, it can be used to steal your funds!</p>
+            <p class="text-gray-700 mt-3"><b>${Stateful.t("seedBackupDoneSub")}</b></p>
+            <p class="text-gray-400">${Stateful.t("seedBackupDoneSub2")}</p>
             <div id="nextWrapper">
-                <button class="button w-100" onclick="${btnClick}">Finish</button>
+                <button class="button w-100" onclick="${btnClick}">${Stateful.t("seedBackupDoneBtn")}</button>
             </div>
         `
     }

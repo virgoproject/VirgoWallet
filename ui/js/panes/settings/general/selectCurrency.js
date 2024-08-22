@@ -50,8 +50,8 @@ class SelectCurrency extends StatefulElement {
 
         return `
             <div class="row currencyConversion">
-                <h5 class="currencyConversionTitle">Currency Conversion</h5>
-                <p class="currencyConversionDesc">Display fiat values in using a specific currency throughout the application.</p>
+                <h5 class="currencyConversionTitle">${Stateful.t("currencySettingTitle")}</h5>
+                <p class="currencyConversionDesc">${Stateful.t("currencySettingSub")}</p>
                 <select id="select">
                     ${rows}
                 </select>

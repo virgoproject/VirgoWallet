@@ -28,58 +28,58 @@ class RewardRulesPane extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Rules and ranks" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("rewardRulesTitle")}" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
                         <scroll-view>
-                            <p class="title text-gray-700 text-xl text-left m-0">Rules</p>
-                            <p class="subtitle text-gray-400 text-sm text-left">Welcome to the Virgo reward centre rules.<br>There are two ways to earn rewards</p>
+                            <p class="title text-gray-700 text-xl text-left m-0">${Stateful.t("rewardRulesTitle2")}</p>
+                            <p class="subtitle text-gray-400 text-sm text-left">${Stateful.t("rewardRulesIntro1")}<br>${Stateful.t("rewardRulesIntro2")}</p>
                             <div class="d-flex align-items-center">
                                 <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon mr-2">
                                 <div class="text-left ml-2 flex-1">
-                                   <p id="activityTitle" class="mb-1 text-lg">Activity reward</p>
-                                   <p class="text-gray-400 text-sm mb-0">Each season, an amount of VGO to share is allocated to reward user activity. This amount varies for each user, the more crypto you swap and send, the more VGO you earn. </p>         
+                                   <p id="activityTitle" class="mb-1 text-lg">${Stateful.t("rewardRulesActivityTitle")}</p>
+                                   <p class="text-gray-400 text-sm mb-0">${Stateful.t("rewardRulesActivitySub")}</p>         
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mt-3">
                                 <p class="xpIcon mr-2">XP</p>
                                 <div class="text-left ml-2 flex-1">
-                                   <p id="xpTitle" class="mb-1 text-lg">Rank & XP</p>
-                                   <p class="text-gray-400 text-sm mb-0">Collect XP by taking part in quests. These XP will make you climb the rank to get rewards at the end of each season.</p>         
+                                   <p id="xpTitle" class="mb-1 text-lg">${Stateful.t("rewardRulesXPTitle")}</p>
+                                   <p class="text-gray-400 text-sm mb-0">${Stateful.t("rewardRulesXPSub")}</p>         
                                 </div>
                             </div>
-                            <p class="title text-gray-700 text-xl text-left m-1 mt-3">Ranks</p>
+                            <p class="title text-gray-700 text-xl text-left m-1 mt-3">${Stateful.t("rewardRulesRanksTitle")}</p>
                             <div>
                                 <div class="d-flex mb-3">
                                     <div>
                                         <img src="../images/reward/ranks/bronze.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #5E4C2A">Bronze</p>
+                                        <p class="weight-600 mb-0" style="color: #5E4C2A">${Stateful.t("rewardRulesBronzeTitle")}</p>
                                         ${texts[0]}
                                     </div>
                                     <div>
                                         <img src="../images/reward/ranks/silver.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #5D6B76">Silver</p>
+                                        <p class="weight-600 mb-0" style="color: #5D6B76">${Stateful.t("rewardRulesSilverTitle")}</p>
                                         ${texts[1]}
                                     </div>
                                     <div>
                                         <img src="../images/reward/ranks/gold.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #F4A04F">Gold</p>
+                                        <p class="weight-600 mb-0" style="color: #F4A04F">${Stateful.t("rewardRulesGoldTitle")}</p>
                                         ${texts[2]}
                                     </div>
                                 </div>
                                 <div class="d-flex mb-3">
                                     <div>
                                         <img src="../images/reward/ranks/platinum.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #728AA2">Platinum</p>
+                                        <p class="weight-600 mb-0" style="color: #728AA2">${Stateful.t("rewardRulesPlatinumTitle")}</p>
                                         ${texts[3]}
                                     </div>
                                     <div>
                                         <img src="../images/reward/ranks/diamond.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #45AFF8">Diamond</p>
+                                        <p class="weight-600 mb-0" style="color: #45AFF8">${Stateful.t("rewardRulesDiamondTitle")}</p>
                                         ${texts[4]}
                                     </div>
                                     <div>
                                         <img src="../images/reward/ranks/master.png" class="w-100">
-                                        <p class="weight-600 mb-0" style="color: #8A56D6">Master</p>
+                                        <p class="weight-600 mb-0" style="color: #8A56D6">${Stateful.t("rewardRulesMasterTitle")}</p>
                                         ${texts[5]}
                                     </div>
                                 </div>

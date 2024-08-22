@@ -62,8 +62,8 @@ class TokensList extends StatefulElement {
                 _this.querySelector("#inner").innerHTML = `
                     <div class="text-center mt-5 mb-5">
                         <img src="../images/notFound.png" class="img-fluid" />
-                        <h4>Not found!</h4>
-                        <p>Really want this asset? <br><span id="notFoundAdd">Add it now!</span></p>
+                        <h4>${Stateful.t("manageTokensNotFoundTitle")}</h4>
+                        <p>${Stateful.t("manageTokensNotFoundSub1")} <br><span id="notFoundAdd">${Stateful.t("manageTokensNotFoundSub2")}</span></p>
                     </div>
                 `
                 return
@@ -92,15 +92,15 @@ class TokensList extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Manage tokens" backfunc="${back}"></section-header>
-                    <search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a currency"></search-bar>
+                    <section-header title="${Stateful.t("manageTokensTitle")}" backfunc="${back}"></section-header>
+                    <search-bar inputhandler="${onSearch}" id="search" placeholder="${Stateful.t("manageTokensSearchPlaceholder")}"></search-bar>
                     <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner">
                             ${rows}
                         </div>
                     </scroll-view>
                     <div class="p-3">
-                        <button class="button w-100" onclick="${addTokenClick}">Add a new token</button>              
+                        <button class="button w-100" onclick="${addTokenClick}">${Stateful.t("manageTokensAddBtn")}</button>              
                     </div>
                 </div>
             </div>

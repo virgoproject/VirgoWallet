@@ -37,9 +37,9 @@ class TransakConfirm extends StatefulElement {
     render() {
         const _this = this
 
-        let title = "Buy " + this.tokenOut.ticker
+        let title = Stateful.t("transakBuyTitle") + " " + this.tokenOut.ticker
         if(this.tokenOut.chainID == "FIAT")
-            title = "Sell " + this.tokenIn.ticker
+            title = Stateful.t("transakSellTitle") + " " + this.tokenIn.ticker
 
         const [step, setStep] = this.useState("step", 0)
 
@@ -99,7 +99,7 @@ class TransakConfirm extends StatefulElement {
 
         return `
             <div id="content" class="px-3">
-                <p class="text-left mb-0 label mt-3 text-sm">Payment method</p>
+                <p class="text-left mb-0 label mt-3 text-sm">${Stateful.t("transakPaymentMethodLabel")}</p>
                 <table>
                     <tbody>
                         ${methods}
@@ -107,7 +107,7 @@ class TransakConfirm extends StatefulElement {
                 </table>
             </div>
             <div class="p-3">
-                 <button class="button w-100" onclick="${nextclick}">Next</button>
+                 <button class="button w-100" onclick="${nextclick}">${Stateful.t("transakPaymentMethodNextBtn")}</button>
             </div>
         `
     }
@@ -141,12 +141,12 @@ class TransakConfirm extends StatefulElement {
 
         return `
             <div id="content" class="px-3">
-                <p class="text-left mb-0 label mt-3 text-sm">Mail address</p>
+                <p class="text-left mb-0 label mt-3 text-sm">${Stateful.t("transakMailLabel")}</p>
                 <input type="email" class="input w-100" placeholder="satoshi@gmail.com" oninput="${onInput}" id="input" ${mailAddress? `value="${mailAddress}"` : ""} onkeydown="${onKeyDown}">
-                <p class="text-gray-400 mt-3 text-sm">Fiat services are provided by Transak</p>
+                <p class="text-gray-400 mt-3 text-sm">${Stateful.t("transakWatermark")}</p>
             </div>
             <div class="p-3">
-                 <button class="button w-100" id="next" ${mailAddress? "" : "disabled"} onclick="${nextClick}">Next</button>
+                 <button class="button w-100" id="next" ${mailAddress? "" : "disabled"} onclick="${nextClick}">${Stateful.t("transakMailNext")}</button>
             </div>
         `
     }

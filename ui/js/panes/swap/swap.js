@@ -132,7 +132,7 @@ class SwapTokens extends StatefulElement {
                 getSwapRoute(Utils.toAtomicString(value, tokenIn.decimals), contractIn, chainIn, contractOut, chainOut).then(function (res) {
 
                     _this.querySelector("#tokenOutWrapper").classList.remove("shimmerBG")
-                    _this.querySelector("#next").innerHTML = "Next"
+                    _this.querySelector("#next").innerHTML = Stateful.t("swapNextBtn")
 
                     if(res.error && res.reason == 'Amount must be >= 0') return
                     if(contractIn != _this.tokenIn.contract || contractOut != _this.tokenOut.contract || value != _this.amount) return
@@ -246,19 +246,19 @@ class SwapTokens extends StatefulElement {
 
         return `
             <div id="wrapper">
-                <section-header title="Swap"></section-header>
+                <section-header title="${Stateful.t("swapTitle")}"></section-header>
                 <div id="content">
                     <div class="labelWrapper text-sm mb-1">
-                         <p class="m-0">You send</p>
+                         <p class="m-0">${Stateful.t("swapTokenInLabel")}</p>
                          <div class="balanceWrapper">
-                            <p class="m-0">Available: </p>
+                            <p class="m-0">${Stateful.t("swapTokenInBal")}: </p>
                             <p class="m-0 balance">${inBalance == null ? "-" : inBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(inBalance.balance, inBalance.decimals)}</p>
                          </div>
                     </div>
                     <div class="tokenWrapper">
                         <div class="amountWrapper">
                             <input type="text" placeholder="0.0" class="amount text-2xl" oninput="${onInput}" id="input">
-                            <p id="max" onclick="${maxClick}">Max</p>
+                            <p id="max" onclick="${maxClick}">${Stateful.t("swapMaxBtn")}</p>
                         </div>
                         <div class="select" onclick="${selectInClick}" id="tokenInSelect">
                             <div class="selectHeight"></div>
@@ -276,9 +276,9 @@ class SwapTokens extends StatefulElement {
                     </div>
                     <div id="switch" class="text-2xl mt-4 mb-2" onclick="${switchClick}"><i class="fas fa-sync-alt"></i></div>
                     <div class="labelWrapper text-sm mb-1">
-                         <p class="m-0">You get</p>
+                         <p class="m-0">${Stateful.t("swapTokenOutLabel")}</p>
                          <div class="balanceWrapper">
-                            <p class="m-0">Available: </p>
+                            <p class="m-0">${Stateful.t("swapTokenOutBal")}: </p>
                             <p class="m-0 balance">${outBalance == null ? "-" : outBalanceLoading ? "<div class='shimmerBG balanceShimmer'></div>" : Utils.formatAmount(outBalance.balance, outBalance.decimals)}</p>
                          </div>
                     </div>
@@ -300,12 +300,12 @@ class SwapTokens extends StatefulElement {
                             <i class="selectIcon fa-solid fa-caret-down"></i>
                         </div>
                     </div>
-                    <p id="unavailable" style="display: none">Service unavailable</p>
-                    <p id="notfound" style="display: none">No route found</p>
-                    <p id="minWrapper" style="display: none">Minimum: <span id="min"></span> ${tokenIn == null ? "" : tokenIn.ticker}</p>
-                    <p id="minNoAmnt" style="display: none">Given amount is too low</p>
+                    <p id="unavailable" style="display: none">${Stateful.t("swapUnavailableErr")}</p>
+                    <p id="notfound" style="display: none">${Stateful.t("swapNotFoundErr")}</p>
+                    <p id="minWrapper" style="display: none">${Stateful.t("swapMinErr")}: <span id="min"></span> ${tokenIn == null ? "" : tokenIn.ticker}</p>
+                    <p id="minNoAmnt" style="display: none">${Stateful.t("swapMinAmountErr")}</p>
                 </div>
-                <button class="button w-100" disabled id="next" onclick="${nextClick}">Next</button>
+                <button class="button w-100" disabled id="next" onclick="${nextClick}">${Stateful.t("swapNextBtn")}</button>
             </div>
             <span id="inputCalcSpan" class="text-2xl"></span>
         `;
