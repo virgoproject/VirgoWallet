@@ -29,7 +29,7 @@ class ReceivePopup extends StatefulElement {
 
         return `
             <bottom-popup onclose="${back}">
-                <section-header title="Receive" no-padding></section-header>
+                <section-header title="${Stateful.t("receiveTitle")}" no-padding></section-header>
                 <div id="qrcode" class="mt-2"></div>
                 <div class="input-copiable mt-3" onclick="${onClick}">
                     <p class="input">${data}</p>

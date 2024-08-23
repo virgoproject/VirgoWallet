@@ -94,7 +94,7 @@ class SelectToken extends StatefulElement {
                 _this.querySelector("#inner").innerHTML = `
                     <div class="text-center mt-5 mb-5">
                         <img src="../images/notFound.png" class="img-fluid" />
-                        <h4>Not found!</h4>
+                        <h4>${Stateful.t("selectTokenNotFound")}</h4>
                     </div>
                 `
                 return
@@ -117,8 +117,8 @@ class SelectToken extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Select a token" backfunc="${back}"></section-header>
-                    <search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a currency"></search-bar>
+                    <section-header title="${Stateful.t("selectTokenTitle")}" backfunc="${back}"></section-header>
+                    <search-bar inputhandler="${onSearch}" id="search" placeholder="${Stateful.t("selectTokenSearchPlaceholder")}"></search-bar>
                     <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner" class="px-3">
                             ${rows}

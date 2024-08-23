@@ -6,7 +6,7 @@ class TransactionCard extends StatefulElement {
         this.querySelectorAll(".copy").forEach(e => {
 
             const clickFunc = event => {
-                notyf.success("Copied to clipboard!")
+                notyf.success(Stateful.t("transactionElementCopiedNotif"))
                 copyToClipboard(e.querySelector(".detailContent").textContent)
             }
 
@@ -82,11 +82,11 @@ class TransactionCard extends StatefulElement {
                 </div>
                 <div class="col-12 mt-2" id="details">
                     <div class="detail d-flex mt-2">
-                        <p class="detailTitle">Status</p>
+                        <p class="detailTitle">${Stateful.t("transactionStatusLabel")}</p>
                         <p class="detailContent" id="status">${this.getStatus(json)}</p>
                     </div>
                     <div class="detail d-flex mt-2">
-                        <p class="detailTitle">Date</p>
+                        <p class="detailTitle">${Stateful.t("transactionDateLabel")}</p>
                         <p class="detailContent">${(new Date(parseInt(json.date))).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/(\d+) (\w+) (\d+), (\d+):(\d+)/, "$1 $2. $3 $4:$5")}</p>
                     </div>
                     ${await this.getChainIn(json)}
@@ -95,7 +95,7 @@ class TransactionCard extends StatefulElement {
                     ${await this.getAmountOut(json)}
                     ${this.getTo(json)}
                     <div class="detail d-flex mt-2 copy">
-                        <p class="detailTitle">Hash</p>
+                        <p class="detailTitle">${Stateful.t("transactionHashLabel")}</p>
                         <p class="detailContent">${json.hash}</p>
                         <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
                     </div>
@@ -299,16 +299,16 @@ class TransactionCard extends StatefulElement {
     }
 
     async getTitle(json){
-        if(json.contractAddr == "UNWRAP") return "Unwrap token"
-        if(json.contractAddr == "WRAP") return "Wrap token"
-        if(json.contractAddr == "WEB3_CALL") return "Web3 Interaction"
-        if(json.contractAddr == "ATOMICSWAP") return "Atomic Swap"
-        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "SIMPLESWAP") return "Swap"
+        if(json.contractAddr == "UNWRAP") return Stateful.t("transactionUnwrapTitle")
+        if(json.contractAddr == "WRAP") return Stateful.t("transactionWrapTitle")
+        if(json.contractAddr == "WEB3_CALL") return Stateful.t("transactionWeb3Title")
+        if(json.contractAddr == "ATOMICSWAP") return Stateful.t("transactionAtomicSwapTitle")
+        if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP" || json.contractAddr == "SIMPLESWAP") return Stateful.t("transactionSwapTitle")
         if(json.contractAddr == "TRANSAK") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenB, json.swapInfos.chainB)
-            return "Buy " + tokenInfos.ticker
+            return Stateful.t("transactionBuyTitle") + " " + tokenInfos.ticker
         }
-        return "Transfer"
+        return Stateful.t("transactionTransferTitle")
     }
 
     async getSubtitle(json){
@@ -373,7 +373,7 @@ class TransactionCard extends StatefulElement {
             `
         }
 
-        return "To " + json.recipient
+        return Stateful.t("transactionTransferTo") + " " + json.recipient
     }
 
     async getAmount(json){
@@ -485,9 +485,9 @@ class TransactionCard extends StatefulElement {
 
     getStatus(json){
         if(json.contractAddr == "ATOMICSWAP"){
-            if(json.swapInfos.status == 3) return "Completed"
-            if(json.swapInfos.status == -1) return "Failed"
-            return "Pending"
+            if(json.swapInfos.status == 3) return Stateful.t("transactionStatusCompleted")
+            if(json.swapInfos.status == -1) return Stateful.t("transactionStatusFailed")
+            return Stateful.t("transactionStatusPending")
         }
 
         if(json.contractAddr == "SIMPLESWAP")
@@ -496,10 +496,10 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "TRANSAK")
             return json.swapInfos.trStatus
 
-        if(json.status === undefined) return "Pending";
-        if(json.status) return "Confirmed";
-        if(!json.status && json.canceling) return "Canceled";
-        return "Failed";
+        if(json.status === undefined) return Stateful.t("transactionStatusPending");
+        if(json.status) return Stateful.t("transactionStatusConfirmed");
+        if(!json.status && json.canceling) return Stateful.t("transactionStatusCanceled");
+        return Stateful.t("transactionStatusFailed");
     }
 
     getStatusClass(json){
@@ -563,7 +563,7 @@ class TransactionCard extends StatefulElement {
 
         return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Sent</p>
+                    <p class="detailTitle">${Stateful.t("transactionTokenOutLabel")}</p>
                     <p class="detailContent">${amount}</p>
                     <p class="pl-1">${ticker}</p>
                 </div>
@@ -578,7 +578,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Received</p>
+                    <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
@@ -592,7 +592,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Received</p>
+                    <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
@@ -606,7 +606,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Received</p>
+                    <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
@@ -621,7 +621,7 @@ class TransactionCard extends StatefulElement {
 
         return `
             <div class="detail d-flex mt-2 copy">
-                <p class="detailTitle">To</p>
+                <p class="detailTitle">${Stateful.t("transactionRecipientLabel")}</p>
                 <p class="detailContent">${json.recipient}</p>
                 <p class="detailCopy text-sm"><i class="fa-regular fa-copy"></i></p>
             </div>
@@ -634,7 +634,7 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "ATOMICSWAP" && json.swapInfos.gasUsed != undefined){
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Fees</p>
+                    <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.swapInfos.gasUsed, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
                 </div>
             `
@@ -644,7 +644,7 @@ class TransactionCard extends StatefulElement {
             const chainInfos = await getChainInfos(json.swapInfos.chainA)
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Fees</p>
+                    <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, chainInfos.wallet.decimals)}</p><p class="pl-1">${chainInfos.wallet.ticker}</p>
                 </div>
             `
@@ -653,7 +653,7 @@ class TransactionCard extends StatefulElement {
         if(json.gasUsed === undefined){
             return `
                 <div class="detail d-flex mt-2">
-                    <p class="detailTitle">Max fees</p>
+                    <p class="detailTitle">${Stateful.t("transactionMaxFeesLabel")}</p>
                     <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
                 </div>
             `
@@ -661,7 +661,7 @@ class TransactionCard extends StatefulElement {
 
         return `
             <div class="detail d-flex mt-2">
-                <p class="detailTitle">Fees</p>
+                <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
                 <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
             </div>
         `
@@ -678,7 +678,7 @@ class TransactionCard extends StatefulElement {
 
         return `
             <div class="detail d-flex mt-2">
-                <p class="detailTitle">Origin</p>
+                <p class="detailTitle">${Stateful.t("transactionOriginLabel")}</p>
                 <p class="detailContent">${origin}</p>
             </div>
         `
@@ -711,10 +711,10 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="row mt-3">
                     <div class="col-6 pr-2">
-                        <button class="button w-100 button-red" onclick="${cancelClick}">Cancel</button>
+                        <button class="button w-100 button-red" onclick="${cancelClick}">${Stateful.t("transactionCancelBtn")}</button>
                     </div>
                     <div class="col-6 pl-2">
-                        <button class="button w-100 button-green" onclick="${speedupClick}">Speed up</button>
+                        <button class="button w-100 button-green" onclick="${speedupClick}">${Stateful.t("transactionSpeedupBtn")}</button>
                     </div>
                 </div>
             `
@@ -726,7 +726,7 @@ class TransactionCard extends StatefulElement {
             })
         })
 
-        return `<button class="button w-100 mt-3" onclick="${openExplorer}">Open in explorer</button>`
+        return `<button class="button w-100 mt-3" onclick="${openExplorer}">${Stateful.t("transactionOpenExplorerBtn")}</button>`
     }
 
     async getChainIn(json){
@@ -736,7 +736,7 @@ class TransactionCard extends StatefulElement {
 
         return `
             <div class="detail d-flex mt-2">
-                <p class="detailTitle">Chain In</p>
+                <p class="detailTitle">${Stateful.t("transactionChainInLabel")}</p>
                 <p class="detailContent">${chainInfos.wallet.name}</p>
             </div>
         `
@@ -749,7 +749,7 @@ class TransactionCard extends StatefulElement {
 
         return `
             <div class="detail d-flex mt-2">
-                <p class="detailTitle">Chain Out</p>
+                <p class="detailTitle">${Stateful.t("transactionChainOutLabel")}</p>
                 <p class="detailContent">${chainInfos.wallet.name}</p>
             </div>
         `

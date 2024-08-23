@@ -41,11 +41,11 @@ class EditFeesNew extends StatefulElement {
         if(loading){
             if(display) return `
                 <bottom-popup prevent-remove onclose="${onClose}">
-                    <section-header title="Edit network fees" no-padding></section-header>
+                    <section-header title="${Stateful.t("editFeesTitle")}" no-padding></section-header>
                     <div class="optionShimmer mb-2 mt-3 shimmerBG"></div>
                     <div class="optionShimmer mb-2 shimmerBG"></div>
                     <div class="optionShimmer mb-2 shimmerBG"></div>
-                    <button class="button w-100 mt-3" disabled>Save</button>
+                    <button class="button w-100 mt-3" disabled>${Stateful.t("editFeesSaveBtn")}</button>
                 </bottom-popup>
             `
 
@@ -69,29 +69,29 @@ class EditFeesNew extends StatefulElement {
 
         return `
             <bottom-popup prevent-remove onclose="${onClose}">
-                <section-header title="Edit network fees" no-padding></section-header>
+                <section-header title="${Stateful.t("editFeesTitle")}" no-padding></section-header>
                 <div class="option mb-2 mt-3 ${selected == 0 ? "selected" : ""}" id="0" onclick="${optionClick}">
-                    <p class="optionTitle">Slow</p>
+                    <p class="optionTitle">${Stateful.t("editFeesSlowLabel")}</p>
                     <div class="amountWrapper">
                         <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN("80")).div(new BN("100")).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="option mb-2 ${selected == 1 ? "selected" : ""}" id="1" onclick="${optionClick}">
-                    <p class="optionTitle">Medium</p>
+                    <p class="optionTitle">${Stateful.t("editFeesMediumLabel")}</p>
                     <div class="amountWrapper">
                         <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="option mb-2 ${selected == 2 ? "selected" : ""}" id="2" onclick="${optionClick}">
-                    <p class="optionTitle">Fast</p>
+                    <p class="optionTitle">${Stateful.t("editFeesFastLabel")}</p>
                     <div class="amountWrapper">
                         <p class="amount">${Utils.formatAmount(new BN(gasPrice).mul(new BN("120")).div(new BN("100")).mul(new BN(this.gasLimit)).toString(), wallet.decimals)}</p>
                         <p class="symbol"> ${wallet.ticker}</p>
                     </div>
                 </div>
-                <button class="button w-100 mt-3" onclick="${onClose}">Save</button>
+                <button class="button w-100 mt-3" onclick="${onClose}">${Stateful.t("editFeesSaveBtn")}</button>
             </bottom-popup>
         `;
     }
