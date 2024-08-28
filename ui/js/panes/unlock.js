@@ -137,7 +137,7 @@ class UnlockWallet extends StatefulElement {
                     </div>
                 </div>
                 <div class="text-center">
-                    <p id="recoverText">${Stateful.t("unlockRecoverLabel1")}<br>${Stateful.t("unlockRecoverLabel2")}/p>
+                    <p id="recoverText">${Stateful.t("unlockRecoverLabel1")}<br>${Stateful.t("unlockRecoverLabel2")}</p>
                     <p id="recover" onclick="${recoverClick}">${Stateful.t("unlockRecoverBtn")}</p>
                 </div>
             </div>

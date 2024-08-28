@@ -18,7 +18,7 @@ class WalletHandlers {
         checkAutolock()
 
         if(baseWallet === undefined)
-            sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled})
+            sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled, "selectedLanguage": selectedLanguage})
         else {
             while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                 await new Promise(r => setTimeout(r, 10));
