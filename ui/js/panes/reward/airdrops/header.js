@@ -9,11 +9,7 @@ class AirdropsHeader extends StatefulElement {
 
         const onClick = this.registerFunction(() => {
             getBaseInfos().then(function (infos) {
-                fetch('https://airdrops.virgo.net:2053/api/getreward',{
-                    method: "POST",
-                    body: JSON.stringify({address: infos.addresses[0].address}),
-                    headers: {'Content-Type': 'application/json'}
-                }).then( res => {
+                fetch('https://airdrops.virgo.net:2083/api/airdrop/claim/'+infos.addresses[0].address).then( res => {
                     setClaimed(true)
                     notyf.success(Stateful.t("airdropClaimedLabel"))
                 })
@@ -26,7 +22,7 @@ class AirdropsHeader extends StatefulElement {
                 </div>
             </div>`
 
-        if(claimAvailable || claimed) claimBtn = ""
+        if(claimAvailable == "false" || claimed) claimBtn = ""
 
 
         return `

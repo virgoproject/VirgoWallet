@@ -90,7 +90,7 @@ class CrossSwapUtils {
                 }).on("transactionHash", hash => {
 
                     try{
-                        fetch(`http://localhost:2053/api/reward/swap/register/simpleswap/${json.id}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/simpleswap/${json.id}`)
                     }catch (e) {}
 
                     baseWallet.crossSwaps.unshift({
@@ -130,7 +130,7 @@ class CrossSwapUtils {
                 .on("transactionHash", hash => {
 
                     try{
-                        fetch(`http://localhost:2053/api/reward/swap/register/simpleswap/${json.id}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/simpleswap/${json.id}`)
                     }catch (e) {}
 
                     baseWallet.crossSwaps.unshift({

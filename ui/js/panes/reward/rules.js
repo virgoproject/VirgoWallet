@@ -9,7 +9,7 @@ class RewardRulesPane extends StatefulElement {
         })
 
         const {data, loading} = this.useFunction(async () => {
-            const req = await fetch("http://localhost:2053/api/reward/ranks/get")
+            const req = await fetch("https://airdrops.virgo.net:2083/api/reward/ranks/get")
             return await req.json()
         })
 

@@ -93,7 +93,7 @@ class Uniswap02Utils {
                     proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                         try{
-                            fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                            fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
                         }catch (e) {}
 
                         baseWallet.getCurrentWallet().transactions.unshift({
@@ -131,7 +131,7 @@ class Uniswap02Utils {
                 proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).send({nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                     try{
-                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
                     }catch (e) {}
 
                     baseWallet.getCurrentWallet().transactions.unshift({
@@ -161,7 +161,7 @@ class Uniswap02Utils {
                 proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).send({nonce: nonce, gasPrice: gasPrice, from: baseWallet.getCurrentAddress(), gas: gas}).on("transactionHash", hash => {
 
                     try{
-                        fetch(`http://localhost:2053/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
                     }catch (e) {}
 
                     baseWallet.getCurrentWallet().transactions.unshift({

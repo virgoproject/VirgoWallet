@@ -11,13 +11,13 @@ class AirdropsPane extends StatefulElement {
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
 
-            const req1 = await fetch('http://localhost:2053/api/airdrops/stats/'+infos.addresses[0].address)
+            const req1 = await fetch('https://airdrops.virgo.net:2083/api/airdrops/stats/'+infos.addresses[0].address)
             const userStats = await req1.json()
 
-            const req2 = await fetch('http://localhost:2053/api/airdrops/active')
+            const req2 = await fetch('https://airdrops.virgo.net:2083/api/airdrops/active')
             const activeAirdrops = await req2.json()
 
-            const req3 = await fetch('http://localhost:2053/api/airdrops/expired')
+            const req3 = await fetch('https://airdrops.virgo.net:2083/api/airdrops/expired')
             const endedAirdrops = await req3.json()
 
             return {
@@ -93,7 +93,7 @@ class AirdropsPane extends StatefulElement {
                             <airdrops-header participations="${data.stats.participations}" wins="${data.stats.wins}" withdraw="${data.stats.claimAvailable}"></airdrops-header>
                         </div>
                         <div id="list" class="px-3">
-                            ${rows.length > 0 ? '<p class="label mt-3">${Stateful.t("activeAirdropsTitle")}</p>' : ''}
+                            ${rows.length > 0 ? '<p class="label mt-3">'+Stateful.t("activeAirdropsTitle")+'</p>' : ''}
                             ${rows}
                             <p class="label mt-3">${Stateful.t("endedAirdropsTitle")}</p>
                             ${endedRows} 

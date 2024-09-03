@@ -10,13 +10,13 @@ class ReferralPane extends StatefulElement {
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const req = await fetch("http://localhost:2053/api/reward/referral/get/"+infos.addresses[0].address)
+            const req = await fetch("https://airdrops.virgo.net:2083/api/reward/referral/get/"+infos.addresses[0].address)
             return await req.json()
         })
 
         const {data: invites, loading: invitesLoading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const req = await fetch("http://localhost:2053/api/reward/referral/invites/get/"+infos.addresses[0].address)
+            const req = await fetch("https://airdrops.virgo.net:2083/api/reward/referral/invites/get/"+infos.addresses[0].address)
             return await req.json()
         })
 

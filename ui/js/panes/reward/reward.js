@@ -2,11 +2,11 @@ class RewardPane extends StatefulElement {
 
     render() {
 
-        const {data, loading: dataLoading} = this.useFunction(async () => {
+        const {data, loading: dataLoading} = this.useInterval(async () => {
             const infos = await getBaseInfos()
-            const res = await fetch("http://localhost:2053/api/reward/stats/"+infos.addresses[0].address)
+            const res = await fetch("https://airdrops.virgo.net:2083/api/reward/stats/"+infos.addresses[0].address)
             return await res.json()
-        })
+        }, 10000)
 
         if(dataLoading) return `
             <div id="content" class="px-3 pt-3">

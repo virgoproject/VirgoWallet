@@ -5,7 +5,7 @@ class DailyReward extends StatefulElement {
 
         const {data, loading: dataLoading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const res = await fetch("http://localhost:2053/api/reward/daily/get/"+infos.addresses[0].address)
+            const res = await fetch("https://airdrops.virgo.net:2083/api/reward/daily/get/"+infos.addresses[0].address)
             return await res.json()
         })
 

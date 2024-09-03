@@ -15,7 +15,7 @@ class RewardHandlers {
                 twitterUsername: request.twitterUsername
             }
 
-            fetch('http://localhost:2053/api/airdrop/'+request.id+"/join", {
+            fetch('https://airdrops.virgo.net:2083/api/airdrop/'+request.id+"/join", {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {'Content-Type': 'application/json'}
@@ -37,7 +37,7 @@ class RewardHandlers {
                 signature: res.signature
             }
 
-            fetch('http://localhost:2053/api/reward/daily/register', {
+            fetch('https://airdrops.virgo.net:2083/api/reward/daily/register', {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {'Content-Type': 'application/json'}
@@ -57,7 +57,7 @@ class RewardHandlers {
                 signature: res.signature,
             }
 
-            fetch('http://localhost:2053/api/reward/referral/register/'+request.code, {
+            fetch('https://airdrops.virgo.net:2083/api/reward/referral/register/'+request.code, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {'Content-Type': 'application/json'}

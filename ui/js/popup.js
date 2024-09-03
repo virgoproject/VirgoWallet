@@ -136,6 +136,7 @@ Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
 Stateful.addGlobalStylesheet("../css/main.css");
 
 getBaseInfos().then(res => {
+    if(res.selectedLanguage == "" && navigator.language !== undefined) res.selectedLanguage = navigator.language.substring(0,2)
     console.log("lang set to " + res.selectedLanguage)
     Stateful.setLocale(res.selectedLanguage)
 })

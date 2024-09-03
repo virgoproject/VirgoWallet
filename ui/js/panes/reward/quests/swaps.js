@@ -4,7 +4,7 @@ class swapRewards extends StatefulElement {
 
         const {data, loading} = this.useFunction(async () => {
             const infos = await getBaseInfos()
-            const res = await fetch("http://localhost:2053/api/reward/swap/get/"+infos.addresses[0].address)
+            const res = await fetch("https://airdrops.virgo.net:2083/api/reward/swap/get/"+infos.addresses[0].address)
             return await res.json()
         })
 

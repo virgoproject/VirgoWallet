@@ -68,7 +68,7 @@ browser.storage.local.get("notifications").then(function (res) {
 //fetchNotifs()
 
 let selectedCurrency = "usd"
-let selectedLanguage = "en"
+let selectedLanguage = ""
 
 const pendingTransactions = {}
 const pendingSigns = {}
