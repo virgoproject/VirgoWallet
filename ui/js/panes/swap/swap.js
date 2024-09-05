@@ -181,8 +181,8 @@ class SwapTokens extends StatefulElement {
             }
 
             let toExclude = []
-            if(tokenIn != null) toExclude.push(tokenIn.contract)
-            if(tokenOut != null) toExclude.push(tokenOut.contract)
+            if(tokenIn != null) toExclude.push(tokenIn.chainID + tokenIn.contract)
+            if(tokenOut != null) toExclude.push(tokenOut.chainID + tokenOut.contract)
             if(toExclude.length != 0) elem.exclude = toExclude
 
             document.body.appendChild(elem)
@@ -196,8 +196,8 @@ class SwapTokens extends StatefulElement {
             }
 
             let toExclude = []
-            if(tokenIn != null) toExclude.push(tokenIn.contract)
-            if(tokenOut != null) toExclude.push(tokenOut.contract)
+            if(tokenIn != null) toExclude.push(tokenIn.chainID + tokenIn.contract)
+            if(tokenOut != null) toExclude.push(tokenOut.chainID + tokenOut.contract)
             if(toExclude.length != 0) elem.exclude = toExclude
             elem.excludeFiat = true
 

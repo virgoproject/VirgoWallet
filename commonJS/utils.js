@@ -114,7 +114,11 @@ class Utils {
         }
     }
 
-    static cutTo4Decimals(number) {
+    static cutTo4Decimals(number){
+        return this.cutTo3Decimals(number)
+    }
+
+    static cutTo3Decimals(number) {
         let numString = String(number)
 
         let res = ""
@@ -124,7 +128,7 @@ class Utils {
         for(const char of numString){
             res += char
             if((reachedDecimal && nonZeroNb > 0) || (reachedDecimal && char != "0")) nonZeroNb++
-            if(nonZeroNb >= 4) break
+            if(nonZeroNb >= 3) break
             if(char == ".") reachedDecimal = true
         }
 

@@ -87,15 +87,15 @@ class SendToken extends StatefulElement {
 
         return `
             <div id="wrapper">
-                <section-header title="Send tokens"></section-header>
-                <div class="row m-0">
-                    <div class="col-4 p-0 pr-2">
+                <section-header title="${Stateful.t("sendTitle")}"></section-header>
+                <div class="d-flex m-0">
+                    <div class="p-0 pr-2">
                         <button class="button w-100" id="send"><i class="fa-solid fa-arrow-up"></i> ${Stateful.t("sendSendBtn")}</button>
                     </div>
-                    <div class="col-4 px-1">
-                        <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> ${Stateful.t("sendSendBtn")}</button>
+                    <div class="px-1">
+                        <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> ${Stateful.t("sendReceiveBtn")}</button>
                     </div>
-                    <div class="col-4 p-0 pl-2">
+                    <div class="p-0 pl-2">
                         <button class="button w-100" id="buy"><i class="fa-solid fa-dollar-sign"></i> ${Stateful.t("sendBuyBtn")}</button>
                     </div>
                 </div>

@@ -66,7 +66,7 @@ class TokenStatistics extends StatefulElement {
         if(loading){
             return `
                 <div class="mx-3">
-                    <p id="title">${Stateful.t("tokenDetailsFullStatisticsTitle")}</p>
+                    <p id="title">${Stateful.t("tokenStatisticsTitle")}</p>
                     <div class="stat">
                         <div class="shimmerTitle shimmerBG"></div>
                         <div class="shimmerValue shimmerBG"></div>
@@ -104,7 +104,7 @@ class TokenStatistics extends StatefulElement {
 
         return `
             <div class="mx-3">
-                <p id="title">${Stateful.t("tokenDetailsFullStatisticsTitle")}</p>
+                <p id="title">${Stateful.t("tokenStatisticsTitle")}</p>
                 ${rows}
             </div>
         `

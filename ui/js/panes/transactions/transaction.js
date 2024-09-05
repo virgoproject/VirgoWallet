@@ -317,7 +317,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex text-sm">
-                    <span id="subtitleAmount">-${Utils.formatAmount(json.amount, tokenInfos.decimals)}</span>
+                    <span id="subtitleAmount">-${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, tokenInfos.decimals))}</span>
                     <span id="subtitleTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -326,7 +326,7 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "WRAP") {
             return `
                 <div class="d-flex text-sm">
-                    <span id="subtitleAmount">-${Utils.formatAmount(json.amount, this.selectedWallet.decimals)}</span>
+                    <span id="subtitleAmount">-${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.decimals))}</span>
                     <span id="subtitleTicker">${this.selectedWallet.ticker}</span>
                 </div>
             `
@@ -338,7 +338,7 @@ class TransactionCard extends StatefulElement {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerA, json.swapInfos.chainIdA)
             return `
                 <div class="d-flex text-sm">
-                    <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
+                    <span id="subtitleAmount">-${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))}</span>
                     <span id="subtitleTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -348,7 +348,7 @@ class TransactionCard extends StatefulElement {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenIn, this.selectedWallet.chainID)
             return `
                 <div class="d-flex text-sm">
-                    <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
+                    <span id="subtitleAmount">-${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))}</span>
                     <span id="subtitleTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -358,7 +358,7 @@ class TransactionCard extends StatefulElement {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenA, json.swapInfos.chainA)
             return `
                 <div class="d-flex text-sm">
-                    <span id="subtitleAmount">-${Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)}</span>
+                    <span id="subtitleAmount">-${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))}</span>
                     <span id="subtitleTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -380,7 +380,7 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "UNWRAP") {
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.amount, this.selectedWallet.decimals)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.decimals))}</span>
                     <span id="amountTicker">${this.selectedWallet.ticker}</span>
                 </div>
             `
@@ -391,7 +391,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.amount, tokenInfos.decimals)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, tokenInfos.decimals))}</span>
                     <span id="amountTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -402,7 +402,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.amount, this.selectedWallet.ticker)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.ticker))}</span>
                     <span id="amountTicker">${this.selectedWallet.ticker}</span>
                 </div>
             `
@@ -415,7 +415,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</span>
                     <span id="amountTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -428,7 +428,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</span>
                     <span id="amountTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -441,7 +441,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</span>
                     <span id="amountTicker">${tokenInfos.ticker}</span>
                 </div>
             `
@@ -449,7 +449,7 @@ class TransactionCard extends StatefulElement {
 
         const tokenInfos = await getTokenDetailsCross(json.contractAddr, this.selectedWallet.chainID)
 
-        return "-" + Utils.formatAmount(json.amount, tokenInfos.decimals) + " " + tokenInfos.ticker
+        return "-" + Utils.cutTo3Decimals(Utils.formatAmount(json.amount, tokenInfos.decimals)) + " " + tokenInfos.ticker
     }
 
     getIcon(json){
@@ -521,32 +521,32 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "UNWRAP"){
             const tokenInfos = await getTokenDetailsCross(json.recipient, this.selectedWallet.chainID)
 
-            amount = Utils.formatAmount(json.amount, tokenInfos.decimals)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.amount, tokenInfos.decimals))
             ticker = tokenInfos.ticker
         }
 
         if(json.contractAddr == "WEB3_CALL" || json.contractAddr == "WRAP") {
             if(json.amount == 0) return ""
 
-            amount = Utils.formatAmount(json.amount, this.selectedWallet.ticker)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.ticker))
             ticker = this.selectedWallet.ticker
         }
 
         if(json.contractAddr == "ATOMICSWAP") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tickerA, json.swapInfos.chainIdA)
-            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))
             ticker = tokenInfos.ticker
         }
 
         if(json.contractAddr == "SWAP" || json.contractAddr == "WEB3_SWAP") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenIn, this.selectedWallet.chainID)
-            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))
             ticker = tokenInfos.ticker
         }
 
         if(json.contractAddr == "SIMPLESWAP") {
             const tokenInfos = await getTokenDetailsCross(json.swapInfos.tokenA, json.swapInfos.chainA)
-            amount = Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountIn, tokenInfos.decimals))
             ticker = tokenInfos.ticker
         }
 
@@ -557,7 +557,7 @@ class TransactionCard extends StatefulElement {
 
         if(amount == ""){
             const tokenInfos = await getTokenDetailsCross(json.contractAddr, this.selectedWallet.chainID)
-            amount = Utils.formatAmount(json.amount, tokenInfos.decimals)
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.amount, tokenInfos.decimals))
             ticker = tokenInfos.ticker
         }
 
@@ -579,7 +579,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
             `
@@ -593,7 +593,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
             `
@@ -607,7 +607,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionTokenInLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals)}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.swapInfos.amountOut, tokenInfos.decimals))}</p>
                     <p class="pl-1">${tokenInfos.ticker}</p>
                 </div>
             `
@@ -635,7 +635,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.swapInfos.gasUsed, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.gasPrice * json.swapInfos.gasUsed, this.selectedWallet.decimals))}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
                 </div>
             `
         }
@@ -645,7 +645,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, chainInfos.wallet.decimals)}</p><p class="pl-1">${chainInfos.wallet.ticker}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.gasPrice * json.gasLimit, chainInfos.wallet.decimals))}</p><p class="pl-1">${chainInfos.wallet.ticker}</p>
                 </div>
             `
         }
@@ -654,7 +654,7 @@ class TransactionCard extends StatefulElement {
             return `
                 <div class="detail d-flex mt-2">
                     <p class="detailTitle">${Stateful.t("transactionMaxFeesLabel")}</p>
-                    <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasLimit, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
+                    <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.gasPrice * json.gasLimit, this.selectedWallet.decimals))}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
                 </div>
             `
         }
@@ -662,7 +662,7 @@ class TransactionCard extends StatefulElement {
         return `
             <div class="detail d-flex mt-2">
                 <p class="detailTitle">${Stateful.t("transactionFeesLabel")}</p>
-                <p class="detailContent">${Utils.formatAmount(json.gasPrice * json.gasUsed, this.selectedWallet.decimals)}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
+                <p class="detailContent">${Utils.cutTo3Decimals(Utils.formatAmount(json.gasPrice * json.gasUsed, this.selectedWallet.decimals))}</p><p class="pl-1">${this.selectedWallet.ticker}</p>
             </div>
         `
     }

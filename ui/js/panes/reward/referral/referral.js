@@ -23,7 +23,7 @@ class ReferralPane extends StatefulElement {
         if(loading || invitesLoading) return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="${Stateful.t("rewardReferralTitle")}" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("referralTitle")}" backfunc="${back}"></section-header>
                     <div id="content">
                         <scroll-view>
                             <div class="px-3" style="padding-bottom: 85px">
@@ -155,6 +155,9 @@ class ReferralPane extends StatefulElement {
 
         for (let i = min; i < max; i++){
             const invite = data[i]
+
+            if(!invite) break
+
             rows.push(`
                 <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
                     <div class="d-flex align-items-center">

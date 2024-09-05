@@ -40,7 +40,7 @@ class EditAccount extends StatefulElement {
         })
 
         return `
-            <section-header title="Account details" no-padding></section-header>
+            <section-header title="${Stateful.t("accountDetailsTitle")}" no-padding></section-header>
             <div class="mt-3">
                 <p class="label text-left text-sm" id="addressLabel">${Stateful.t("accountDetailsAddressLabel")}</p>
                 <div class="input-copiable" onclick="${copyAddress}">
@@ -118,7 +118,7 @@ class EditAccount extends StatefulElement {
         })
 
         return `
-            <section-header title="Delete account" no-padding backfunc="${onBack}"></section-header>
+            <section-header title="${Stateful.t("accountDeleteTitle")}" no-padding backfunc="${onBack}"></section-header>
             <div class="mt-3 mb-3 text-center">
                 <div><i class="fa-solid fa-circle-exclamation text-red-400 text-7xl"></i></div>
                 <p class="deleteWarn mt-3 text-gray-700">${Stateful.t("accountDeleteWarnTitle")}</p>
