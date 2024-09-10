@@ -1,4 +1,4 @@
-Stateful.addLocale("vn", {
+Stateful.addLocale("vi", {
 contactNotFound: "Không tìm thấy liên hệ!",
 contactSearchPlaceholder: "Tìm kiếm liên hệ",
 noContactsTitle: "Chưa có liên hệ!",

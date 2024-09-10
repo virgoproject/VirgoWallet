@@ -1,4 +1,4 @@
-Stateful.addLocale("cn", {
+Stateful.addLocale("zh", {
     contactNotFound: "未找到联系人!",
     contactSearchPlaceholder: "搜索联系人",
     noContactsTitle: "尚无联系人!",

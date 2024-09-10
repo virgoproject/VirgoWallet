@@ -1,4 +1,4 @@
-Stateful.addLocale("kr", {
+Stateful.addLocale("ko", {
 contactNotFound: "연락처를 찾을 수 없습니다!",
 contactSearchPlaceholder: "연락처 검색",
 noContactsTitle: "아직 연락처가 없습니다!",

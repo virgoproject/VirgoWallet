@@ -1,4 +1,4 @@
-Stateful.addLocale("id", {
+Stateful.addLocale("hi", {
 contactNotFound: "Contact tidak ditemukan!",
 contactSearchPlaceholder: "Cari kontak",
 noContactsTitle: "Belum ada kontak!",

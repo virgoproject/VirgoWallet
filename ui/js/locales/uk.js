@@ -1,4 +1,4 @@
-Stateful.addLocale("ua", {
+Stateful.addLocale("uk", {
 contactNotFound: "Контакт не знайдено!",
 contactSearchPlaceholder: "Знайти контакт",
 noContactsTitle: "Контактів ще немає!",

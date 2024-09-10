@@ -6,7 +6,20 @@ class SelectLanguage extends StatefulElement {
 
     languages = {
         "en": "English",
-        "fr": "Fran&#xE7;ais"
+        "fr": "Français",
+        "es": "Español",
+        "ar": "العربية",
+        "zh": "中文",
+        "de": "Deutsch",
+        "hi": "हिन्दी",
+        "it": "Italiano",
+        "ja": "日本語",
+        "ko": "한국어",
+        "pt": "Português",
+        "ru": "Русский",
+        "tr": "Türkçe",
+        "uk": "Українська",
+        "vi": "Tiếng Việt",
     }
 
     eventHandlers() {
@@ -22,6 +35,7 @@ class SelectLanguage extends StatefulElement {
 
         if(!selected){
             getBaseInfos().then(res => {
+                if(res.selectedLanguage == "") res.selectedLanguage = "en"
                 setSelected(res.selectedLanguage)
             })
             return ""

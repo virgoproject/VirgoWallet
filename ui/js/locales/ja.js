@@ -1,4 +1,4 @@
-Stateful.addLocale("jp", {
+Stateful.addLocale("ja", {
 contactNotFound: "連絡先が見つかりません！",
 contactSearchPlaceholder: "連絡先を検索",
 noContactsTitle: "まだ連絡先がありません！",
@@ -297,7 +297,7 @@ swapMaxBtn: "最大",
 swapTokenOutLabel: "受け取るトークン",
 swapTokenOutBal: "利用可能",
 swapUnavailableErr: "サービスが利用できません",
-swapNotFoundErr: "ルートが見つかりません"
+swapNotFoundErr: "ルートが見つかりません",
 swapMinErr: "最小限",
 swapMinAmountErr: "指定された金額が少なすぎます",
 tokenDetailsFullOverviewBtn: "概要",
