@@ -15,7 +15,7 @@ const commonScripts = [
     "../js/locales/ar.js",
     "../js/locales/zh.js",
     "../js/locales/de.js",
-    "../js/locales/hi.js",
+    "../js/locales/id.js",
     "../js/locales/it.js",
     "../js/locales/ja.js",
     "../js/locales/ko.js",
