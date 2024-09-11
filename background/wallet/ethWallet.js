@@ -628,7 +628,7 @@ class EthWallet {
 
     initSwapUtils(){
         if(this.swapUtils === undefined)
-            this.swapUtils = new EthSwapUtils(this.chainID, this.swapV2Params)
+            this.swapUtils = new EthSwapUtils(this)
     }
 
     async getSwapRoute(amount, token1, token2){

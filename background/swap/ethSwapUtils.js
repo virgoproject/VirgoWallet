@@ -1,14 +1,17 @@
 class EthSwapUtils {
 
-    constructor(chainID, params) {
-        this.chainID = chainID
-        this.params = params
+    constructor(chain) {
+        this.chain = chain
+        this.chainID = chain.chainID
+        this.params = chain.swapV2Params
+        this.uni02Utils = new Uniswap02Utils(chain)
+        this.uni03Utils = new Uniswap03Utils(chain)
     }
 
     async getSwapRoute(amount, token1, token2){
 
         //Wrap ETH
-        if(token1 == baseWallet.getCurrentWallet().ticker && token2.toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase()){
+        if(token1 == this.chain.ticker && token2.toLowerCase() == this.chain.contract.toLowerCase()){
             return {
                 routes: [
                     {
@@ -23,7 +26,7 @@ class EthSwapUtils {
         }
 
         //Unwrap WETH
-        if(token1.toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase() && token2 == baseWallet.getCurrentWallet().ticker){
+        if(token1.toLowerCase() == this.chain.contract.toLowerCase() && token2 == this.chain.ticker){
             return {
                 routes: [
                     {
@@ -66,12 +69,12 @@ class EthSwapUtils {
     async estimateSwapFees(amount, quote){
 
         //Wrap ETH
-        if(quote.routes[0].route[0] == baseWallet.getCurrentWallet().ticker && quote.routes[0].route[quote.routes[0].route.length-1].toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase()){
+        if(quote.routes[0].route[0] == this.chain.ticker && quote.routes[0].route[quote.routes[0].route.length-1].toLowerCase() == this.chain.contract.toLowerCase()){
             return await this.estimateWrapFees(amount)
         }
 
         //Unwrap WETH
-        if(quote.routes[0].route[0].toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase() && quote.routes[0].route[quote.routes[0].route.length-1] == baseWallet.getCurrentWallet().ticker){
+        if(quote.routes[0].route[0].toLowerCase() == this.chain.contract.toLowerCase() && quote.routes[0].route[quote.routes[0].route.length-1] == this.chain.ticker){
             return await this.estimateUnwrapFees(amount)
         }
 
@@ -79,9 +82,9 @@ class EthSwapUtils {
 
         switch(dexParams.type){
             case "uni02":
-                return await Uniswap02Utils.estimateSwapFees(dexParams, amount, quote)
+                return await this.uni02Utils.estimateSwapFees(dexParams, amount, quote)
             case "uni03":
-                return await Uniswap03Utils.estimateSwapFees(dexParams, amount, quote)
+                return await this.uni03Utils.estimateSwapFees(dexParams, amount, quote)
         }
 
     }
@@ -89,12 +92,12 @@ class EthSwapUtils {
     async initSwap(amount, quote, gasPrice){
 
         //Wrap ETH
-        if(quote.routes[0].route[0] == baseWallet.getCurrentWallet().ticker && quote.routes[0].route[quote.routes[0].route.length-1].toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase()){
+        if(quote.routes[0].route[0] == this.chain.ticker && quote.routes[0].route[quote.routes[0].route.length-1].toLowerCase() == this.chain.contract.toLowerCase()){
             return await this.initWrap(amount, gasPrice)
         }
 
         //Unwrap WETH
-        if(quote.routes[0].route[0].toLowerCase() == baseWallet.getCurrentWallet().contract.toLowerCase() && quote.routes[0].route[quote.routes[0].route.length-1] == baseWallet.getCurrentWallet().ticker){
+        if(quote.routes[0].route[0].toLowerCase() == this.chain.contract.toLowerCase() && quote.routes[0].route[quote.routes[0].route.length-1] == this.chain.ticker){
             return await this.initUnwrap(amount, gasPrice)
         }
 
@@ -102,9 +105,9 @@ class EthSwapUtils {
 
         switch(dexParams.type){
             case "uni02":
-                return await Uniswap02Utils.initSwap(dexParams, amount, quote, gasPrice)
+                return await this.uni02Utils.initSwap(dexParams, amount, quote, gasPrice)
             case "uni03":
-                return await Uniswap03Utils.initSwap(dexParams, amount, quote, gasPrice)
+                return await this.uni03Utils.initSwap(dexParams, amount, quote, gasPrice)
         }
 
     }
@@ -179,7 +182,7 @@ class EthSwapUtils {
     }
 
     async estimateWrapFees(amount){
-        const weth = new web3.eth.Contract(WETH_ABI, baseWallet.getCurrentWallet().contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         return {
             gas: await weth.methods.deposit().estimateGas({from: baseWallet.getCurrentAddress(), value: amount}),
@@ -188,7 +191,7 @@ class EthSwapUtils {
     }
 
     async estimateUnwrapFees(amount){
-        const weth = new web3.eth.Contract(WETH_ABI, baseWallet.getCurrentWallet().contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         return {
             gas: await weth.methods.withdraw(amount).estimateGas({from: baseWallet.getCurrentAddress()}),
@@ -197,7 +200,9 @@ class EthSwapUtils {
     }
 
     async initWrap(amount, gasPrice){
-        const weth = new web3.eth.Contract(WETH_ABI, baseWallet.getCurrentWallet().contract, { from: baseWallet.getCurrentAddress()});
+        const _this = this
+
+        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         let nonce = await web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
@@ -205,11 +210,11 @@ class EthSwapUtils {
 
         return await new Promise(resolve => {
             weth.methods.deposit().send({from: baseWallet.getCurrentAddress(), value: amount, gasPrice, gas, nonce}).on("transactionHash", hash => {
-                baseWallet.getCurrentWallet().transactions.unshift({
+                _this.chain.transactions.unshift({
                     "hash": hash,
                     "contractAddr": "WRAP",
                     "date": Date.now(),
-                    "recipient": baseWallet.getCurrentWallet().contract,
+                    "recipient": _this.chain.contract,
                     "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,
@@ -222,7 +227,9 @@ class EthSwapUtils {
     }
 
     async initUnwrap(amount, gasPrice){
-        const weth = new web3.eth.Contract(WETH_ABI, baseWallet.getCurrentWallet().contract, { from: baseWallet.getCurrentAddress()});
+        const _this = this
+
+        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         let nonce = await web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
@@ -230,11 +237,11 @@ class EthSwapUtils {
 
         return await new Promise(resolve => {
             weth.methods.withdraw(amount).send({from: baseWallet.getCurrentAddress(), gasPrice, gas, nonce}).on("transactionHash", hash => {
-                baseWallet.getCurrentWallet().transactions.unshift({
+                _this.chain.transactions.unshift({
                     "hash": hash,
                     "contractAddr": "UNWRAP",
                     "date": Date.now(),
-                    "recipient": baseWallet.getCurrentWallet().contract,
+                    "recipient": _this.chain.contract,
                     "amount": amount,
                     "gasPrice": gasPrice,
                     "gasLimit": gas,

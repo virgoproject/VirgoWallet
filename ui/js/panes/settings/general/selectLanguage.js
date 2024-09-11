@@ -26,6 +26,10 @@ class SelectLanguage extends StatefulElement {
         this.querySelector("#select").addEventListener("change", (event) => {
             setLanguage(event.target.value)
             Stateful.setLocale(event.target.value)
+            $("#footerHomeText").html(Stateful.t("footerHomeText"))
+            $("#footerPayText").html(Stateful.t("footerPayText"))
+            $("#footerSwapText").html(Stateful.t("footerSwapText"))
+            $("#footerRewardsText").html(Stateful.t("footerRewardsText"))
         });
     }
 

@@ -31,11 +31,6 @@ class CrossSwapUtils {
 
     static async estimateSwapFees(chainA, tokenA, chainB, tokenB, amount, quote){
 
-        console.log(chainA)
-        console.log(tokenA)
-        console.log(chainB)
-        console.log(tokenB)
-
         if(chainA == chainB){
             return await baseWallet.getChainByID(chainA).estimateSwapFees(amount, quote)
         }

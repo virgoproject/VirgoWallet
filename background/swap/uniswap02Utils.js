@@ -4,7 +4,11 @@ class Uniswap02Utils {
     static defaultSwapGas = 600000n
     static additionalGas = 50000n
 
-    static async estimateSwapFees(dexParams, amount, quote){
+    constructor(chain) {
+        this.chain = chain
+    }
+
+    async estimateSwapFees(dexParams, amount, quote){
         console.log("uni02")
 
         const initialRoute = quote.routes[0].route
@@ -12,7 +16,7 @@ class Uniswap02Utils {
         const route = []
 
         for(const node of initialRoute){
-            if(node == baseWallet.getCurrentWallet().ticker){
+            if(node == this.chain.ticker){
                 route.push(dexParams.params.WETH)
                 continue
             }
@@ -28,7 +32,7 @@ class Uniswap02Utils {
         console.log(quote)
         console.log(amount)
 
-        if(initialRoute[0] == baseWallet.getCurrentWallet().ticker)
+        if(initialRoute[0] == this.chain.ticker)
             return {
                 gas: (await proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas).toString(),
                 feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
@@ -48,7 +52,7 @@ class Uniswap02Utils {
             }
         }
 
-        if(initialRoute[initialRoute.length-1] == baseWallet.getCurrentWallet().ticker)
+        if(initialRoute[initialRoute.length-1] == this.chain.ticker)
             return {
                 gas: (await proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas).toString(),
                 feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
@@ -63,7 +67,7 @@ class Uniswap02Utils {
 
     }
 
-    static async initSwap(dexParams, amount, quote, gasPrice){
+    async initSwap(dexParams, amount, quote, gasPrice){
         const _this = this
 
         const initialRoute = quote.routes[0].route
@@ -71,7 +75,7 @@ class Uniswap02Utils {
         const route = []
 
         for(const node of initialRoute){
-            if(node == baseWallet.getCurrentWallet().ticker){
+            if(node == this.chain.ticker){
                 route.push(dexParams.params.WETH)
                 continue
             }
@@ -93,10 +97,10 @@ class Uniswap02Utils {
                     proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                         try{
-                            fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                            fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${_this.chain.chainID}/${hash}`)
                         }catch (e) {}
 
-                        baseWallet.getCurrentWallet().transactions.unshift({
+                        _this.chain.transactions.unshift({
                             "hash": hash,
                             "contractAddr": "SWAP",
                             "date": Date.now(),
@@ -120,7 +124,7 @@ class Uniswap02Utils {
                 })
             }
 
-            if(initialRoute[0] == baseWallet.getCurrentWallet().ticker){
+            if(initialRoute[0] == _this.chain.ticker){
                 swapExactETHForToken()
                 return
             }
@@ -131,10 +135,10 @@ class Uniswap02Utils {
                 proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).send({nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                     try{
-                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${_this.chain.chainID}/${hash}`)
                     }catch (e) {}
 
-                    baseWallet.getCurrentWallet().transactions.unshift({
+                    _this.chain.transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",
                         "date": Date.now(),
@@ -161,10 +165,10 @@ class Uniswap02Utils {
                 proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).send({nonce: nonce, gasPrice: gasPrice, from: baseWallet.getCurrentAddress(), gas: gas}).on("transactionHash", hash => {
 
                     try{
-                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${baseWallet.getCurrentWallet().chainID}/${hash}`)
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/${_this.chain.chainID}/${hash}`)
                     }catch (e) {}
 
-                    baseWallet.getCurrentWallet().transactions.unshift({
+                    _this.chain.transactions.unshift({
                         "hash": hash,
                         "contractAddr": "SWAP",
                         "date": Date.now(),
@@ -188,7 +192,7 @@ class Uniswap02Utils {
             }
 
             const estimateGas = function (approveHash){
-                if(initialRoute[initialRoute.length-1].toLowerCase() == baseWallet.getCurrentWallet().ticker){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
                     proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
                         swapExactTokensForETH(approveHash, (gas + _this.additionalGas).toString())
                     })
@@ -200,7 +204,7 @@ class Uniswap02Utils {
             }
 
             const swap = function (approveHash){
-                if(initialRoute[initialRoute.length-1].toLowerCase() == baseWallet.getCurrentWallet().ticker){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
                     swapExactTokensForETH(approveHash, _this.defaultSwapGas)
                     return
                 }
