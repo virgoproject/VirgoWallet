@@ -16,7 +16,7 @@ class BaseWallet {
         for(const wallet of data.wallets){
             switch(wallet.type){
                 case "web3":
-                    if(wallet.wallet.chainID == "400") continue
+                    if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") continue
                     this.wallets.push(EthWallet.fromJSON(wallet.wallet))
                     break
             }

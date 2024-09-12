@@ -6,6 +6,7 @@ class EthSwapUtils {
         this.params = chain.swapV2Params
         this.uni02Utils = new Uniswap02Utils(chain)
         this.uni03Utils = new Uniswap03Utils(chain)
+        this.web3 = baseWallet.getWeb3ByID(chain.chainID)
     }
 
     async getSwapRoute(amount, token1, token2){
@@ -115,7 +116,7 @@ class EthSwapUtils {
     async updateTransactionStatus(transaction, receipt){
         const _this = this
 
-        const txData = await web3.eth.getTransaction(transaction.hash)
+        const txData = await this.web3.eth.getTransaction(transaction.hash)
 
         const method = abiDecoder.decodeMethod(txData.input)
 
@@ -182,7 +183,7 @@ class EthSwapUtils {
     }
 
     async estimateWrapFees(amount){
-        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new this.web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         return {
             gas: await weth.methods.deposit().estimateGas({from: baseWallet.getCurrentAddress(), value: amount}),
@@ -191,7 +192,7 @@ class EthSwapUtils {
     }
 
     async estimateUnwrapFees(amount){
-        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new this.web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
         return {
             gas: await weth.methods.withdraw(amount).estimateGas({from: baseWallet.getCurrentAddress()}),
@@ -202,9 +203,9 @@ class EthSwapUtils {
     async initWrap(amount, gasPrice){
         const _this = this
 
-        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new this.web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
-        let nonce = await web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
+        let nonce = await this.web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
         let gas = await weth.methods.deposit().estimateGas({from: baseWallet.getCurrentAddress(), value: amount})
 
@@ -229,9 +230,9 @@ class EthSwapUtils {
     async initUnwrap(amount, gasPrice){
         const _this = this
 
-        const weth = new web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
+        const weth = new this.web3.eth.Contract(WETH_ABI, this.chain.contract, { from: baseWallet.getCurrentAddress()});
 
-        let nonce = await web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
+        let nonce = await this.web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
         let gas = await weth.methods.withdraw(amount).estimateGas({from: baseWallet.getCurrentAddress()})
 

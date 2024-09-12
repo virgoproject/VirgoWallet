@@ -6,6 +6,7 @@ class Uniswap02Utils {
 
     constructor(chain) {
         this.chain = chain
+        this.web3 = baseWallet.getWeb3ByID(chain.chainID)
     }
 
     async estimateSwapFees(dexParams, amount, quote){
@@ -24,7 +25,7 @@ class Uniswap02Utils {
             route.push(node)
         }
 
-        const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
+        const proxy = new this.web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
         const minOut = BigInt(quote.routes[0].amount) * BigInt(quote.taxA) / 1000n * BigInt(quote.taxB) / 1000n
 
@@ -34,11 +35,11 @@ class Uniswap02Utils {
 
         if(initialRoute[0] == this.chain.ticker)
             return {
-                gas: (await proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + this.additionalGas).toString(),
-                feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
+                gas: (await proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + Uniswap02Utils.additionalGas).toString(),
+                feesRate: Uniswap02Utils.baseSwapFee + (route.length-1)*dexParams.params.feesRate
             }
 
-        const token = new web3.eth.Contract(ERC20_ABI, route[0], { from: baseWallet.getCurrentAddress()});
+        const token = new this.web3.eth.Contract(ERC20_ABI, route[0], { from: baseWallet.getCurrentAddress()});
 
         const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
 
@@ -47,22 +48,22 @@ class Uniswap02Utils {
         if(allowance < BigInt(amount)){
             console.log("here")
             return {
-                gas: (this.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, 115792089237316195423570985008687907853269984665640564039457584007913129639935n).estimateGas()).toString(),
-                feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
+                gas: (Uniswap02Utils.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, 115792089237316195423570985008687907853269984665640564039457584007913129639935n).estimateGas()).toString(),
+                feesRate: Uniswap02Utils.baseSwapFee + (route.length-1)*dexParams.params.feesRate
             }
         }
 
         if(initialRoute[initialRoute.length-1] == this.chain.ticker)
             return {
-                gas: (await proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas).toString(),
-                feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
+                gas: (await proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap02Utils.additionalGas).toString(),
+                feesRate: Uniswap02Utils.baseSwapFee + (route.length-1)*dexParams.params.feesRate
             }
 
         console.log("here")
 
         return {
-            gas: (await proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + this.additionalGas).toString(),
-            feesRate: this.baseSwapFee + (route.length-1)*dexParams.params.feesRate
+            gas: (await proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap02Utils.additionalGas).toString(),
+            feesRate: Uniswap02Utils.baseSwapFee + (route.length-1)*dexParams.params.feesRate
         }
 
     }
@@ -83,17 +84,17 @@ class Uniswap02Utils {
             route.push(node)
         }
 
-        const proxy = new web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
+        const proxy = new this.web3.eth.Contract(VIRGOSWAP_ABI, dexParams.params.proxyAddress, { from: baseWallet.getCurrentAddress()});
 
         const minOut = BigInt(quote.routes[0].amount) * BigInt(quote.taxA) / 1000n * BigInt(quote.taxB) / 1000n
 
-        let nonce = await web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
+        let nonce = await this.web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending")
 
         return await new Promise(resolve => {
 
             const swapExactETHForToken = function(){
                 proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
-                    gas = (gas + _this.additionalGas).toString()
+                    gas = (gas + _Uniswap02Utils.additionalGas).toString()
                     proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                         try{
@@ -129,7 +130,7 @@ class Uniswap02Utils {
                 return
             }
 
-            const token = new web3.eth.Contract(ERC20_ABI, route[0], { from: baseWallet.getCurrentAddress()})
+            const token = new this.web3.eth.Contract(ERC20_ABI, route[0], { from: baseWallet.getCurrentAddress()})
 
             const swapExactTokensForETH = function(approveHash, gas){
                 proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).send({nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
@@ -194,21 +195,21 @@ class Uniswap02Utils {
             const estimateGas = function (approveHash){
                 if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
                     proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
-                        swapExactTokensForETH(approveHash, (gas + _this.additionalGas).toString())
+                        swapExactTokensForETH(approveHash, (gas + _Uniswap02Utils.additionalGas).toString())
                     })
                     return
                 }
                 proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
-                    swapExactTokensForTokens(approveHash, (gas + _this.additionalGas).toString())
+                    swapExactTokensForTokens(approveHash, (gas + _Uniswap02Utils.additionalGas).toString())
                 })
             }
 
             const swap = function (approveHash){
                 if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
-                    swapExactTokensForETH(approveHash, _this.defaultSwapGas)
+                    swapExactTokensForETH(approveHash, _Uniswap02Utils.defaultSwapGas)
                     return
                 }
-                swapExactTokensForTokens(approveHash, _this.defaultSwapGas)
+                swapExactTokensForTokens(approveHash, _Uniswap02Utils.defaultSwapGas)
             }
 
             token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call().then(allowance => {
