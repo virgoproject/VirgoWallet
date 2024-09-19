@@ -7,7 +7,7 @@ class CrossSwapUtils {
     static async getSwapRoute(chainA, tokenA, chainB, tokenB, amount){
 
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).getSwapRoute(amount, tokenA, tokenB)
+            return await baseWallet.getChainByID(chainA).swap().getSwapRoute(amount, tokenA, tokenB)
         }
 
         try {
@@ -32,7 +32,7 @@ class CrossSwapUtils {
     static async estimateSwapFees(chainA, tokenA, chainB, tokenB, amount, quote){
 
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).estimateSwapFees(amount, quote)
+            return await baseWallet.getChainByID(chainA).swap().estimateSwapFees(amount, quote)
         }
 
         const web3A = baseWallet.getWeb3ByID(chainA)
@@ -58,7 +58,7 @@ class CrossSwapUtils {
     static async initSwap(chainA, tokenA, chainB, tokenB, amount, quote, gasLimit, gasPrice){
 
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).initSwap(amount, quote, gasPrice)
+            return await baseWallet.getChainByID(chainA).swap().initSwap(amount, quote, gasPrice)
         }
 
         const web3A = baseWallet.getWeb3ByID(chainA)

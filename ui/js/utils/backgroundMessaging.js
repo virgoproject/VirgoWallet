@@ -281,14 +281,6 @@ async function setLanguage(lang){
     return await browser.runtime.sendMessage({command: 'setLanguage', lang})
 }
 
-async function getNotifications(){
-    return await browser.runtime.sendMessage({command: 'getNotifications'})
-}
-
-async function hideNotification(id){
-    return await browser.runtime.sendMessage({command: 'hideNotification', id})
-}
-
 async function changeNetworkVisibility(index){
     return await browser.runtime.sendMessage({command: "changeNetworkVisibility", index})
 }

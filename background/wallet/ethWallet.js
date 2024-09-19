@@ -1,6 +1,6 @@
 class EthWallet {
 
-    constructor(name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, atomicSwapParams, nft, tracked) {
+    constructor(baseWalletInst, name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, nft, tracked) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -13,7 +13,7 @@ class EthWallet {
         this.transactions = transactions
         this.explorer = explorer
         this.testnet = testnet
-        this.atomicSwapParams = atomicSwapParams
+        this.atomicSwapParams = false
         this.tracked = tracked
         this.swapV2Params = swapV2Params
 
@@ -33,31 +33,23 @@ class EthWallet {
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
 
-        const wallet = this
-
-        if(this.chainID == 204 || this.chainID == 8453 || this.chainID == 10 || this.chainID == 42220 || this.chainID == 42161){
-            if(this.tokenSet.has("0x7420B4b9a0110cdC71fB720908340C03F9Bc03EC") || this.tokenSet.has("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")){
-                this.tokens = []
-                this.tokenSet = new Map()
-            }
-        }
+        const _this = this
 
         try {
             fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/infos.json")
                 .then(function(resp){
                     try {
                         resp.json().then(function(res){
-                            console.log(res)
-                            wallet.CG_Platform = res.CG_Platform
+                            _this.CG_Platform = res.CG_Platform
                             for(let token of res.tokens){
                                 try {
-                                    if(!wallet.hasToken(token)){
+                                    if(!_this.hasToken(token)){
                                         fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/" + token + "/infos.json")
                                             .then(function(resp2){
                                                 console.log("adding " + chainID + " " + token)
                                                 resp2.json().then(function(res2){
                                                     console.log("added " + res2.ticker)
-                                                    wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
+                                                    _this.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
                                                 })
                                             })
                                     }
@@ -67,7 +59,6 @@ class EthWallet {
                             }
                         }).catch(e => {
                             console.log(e)
-                            console.log("ssss")
                         })
                     }catch(e){
                         console.log(e)
@@ -76,96 +67,38 @@ class EthWallet {
         }catch(e){
             console.log(e)
         }
+
+        const timer = setInterval(function(){
+            if(baseWallet != baseWalletInst){
+                clearInterval(timer)
+                return
+            }
+            _this.update()
+        }, 10000)
+
+        const startupWait = setInterval(() => {
+            if(_this.getAddressesJSON().length == 0) return
+            _this.update(true)
+            clearInterval(startupWait)
+        }, 50)
+
+        const priceTimer = setInterval(function(){
+            if(baseWallet != baseWalletInst){
+                clearInterval(priceTimer)
+                return
+            }
+            _this.updatePrices()
+        }, 60000)
+
     }
 
-    static fromJSON(json){
+    static fromJSON(json, baseWalletInst){
         if(json.swapV2Params === undefined) json.swapV2Params = false
         if(json.tracked === undefined) json.tracked = true
         if(json.transactions === undefined) json.transactions = []
         if (json.nft === undefined) json.nft = []
-        if(json.explorer === undefined){
-            switch(json.chainID){
-                case 1:
-                    json.explorer = "https://etherscan.io/tx/"
-                    break
-                case 3:
-                    json.explorer = "https://ropsten.etherscan.io/tx/"
-                    break
-                case 56:
-                    json.explorer = "https://bscscan.com/tx/"
-                    break
-                case 137:
-                    json.explorer = "https://polygonscan.com/tx/"
-                    break
-            }
-        }
-        switch(json.chainID){
-            case 1:
-                json.atomicSwapParams = {
-                    lockerAddress: "0x07AF5E2075BB32FfdFF5Ac2Ffb492bdE5D98D65b",
-                    orders: []
-                }
-                break
-            case 137:
-                json.atomicSwapParams = {
-                    lockerAddress: "0xf91E9e5C955c0d19b435a8Bf526b8365a8E4eDf0",
-                    orders: []
-                }
-                break
-            case 56:
-                json.atomicSwapParams = {
-                    lockerAddress: "0xFE8919beCDbC0A2d7BdEB03981f90B26C2DAc200",
-                    orders: []
-                }
-                break
-            case 500:
-                json.RPC = "https://mainnet-rpc.hyperonscan.com/"
-                json.explorer = "https://hyperonscan.com/tx/"
-                break
-            default:
-                json.atomicSwapParams = false
-        }
 
-        if(json.chainID == 1)
-            json.RPC = "https://rpc.ankr.com/eth"
-
-        if(json.chainID == 3){
-            json.name = "Goerli"
-            json.chainID = 5
-            json.ticker = "GETH"
-            json.RPC = "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-            json.explorer = "https://goerli.etherscan.io/tx/"
-            json.testnet = true
-        }
-        if(json.chainID == 400)
-            json.testnet = true
-
-        if(json.chainID == 128)
-            json.RPC = "https://http-mainnet.hecochain.com/"
-
-        if(json.chainID == 61)
-            json.RPC = "https://geth-de.etc-network.info"
-
-        if(json.chainID == 137)
-            json.RPC = "https://rpc.ankr.com/polygon"
-
-        for(let transaction of json.transactions){
-            if(transaction.contractAddr == "SWAP" && (transaction.origin === undefined || transaction.swapInfos.tokenIn === undefined || transaction.swapInfos.tokenOut === undefined)){
-                transaction.origin = "Virgo Swap"
-                transaction.swapInfos.tokenIn = transaction.swapInfos.route[0]
-                transaction.swapInfos.tokenOut = transaction.swapInfos.route[transaction.swapInfos.route.length-1]
-            }
-
-            if(transaction.contractAddr == "WEB3_SWAP" && transaction.swapInfos === undefined){
-                transaction.swapInfos = transaction.swap
-            }
-
-            if(transaction.contractAddr == "ATOMICSWAP" && transaction.origin === undefined){
-                transaction.origin = "Virgo Swap"
-            }
-        }
-
-        return new EthWallet(json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.atomicSwapParams, json.nft, json.tracked)
+        return new EthWallet(baseWalletInst, json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.nft, json.tracked)
     }
 
     toJSON(){
@@ -198,23 +131,11 @@ class EthWallet {
             let balances = this.getBalances(address)
             json.push({
                 "address": address,
-                "name": this.getAccountName(address),
+                "name": baseWallet.getAccountName(address),
                 "balances": balances
             })
         }
         return json
-    }
-
-    getAccountName(address){
-        let name = accName[address]
-
-        if (name === undefined || name === ""){
-            name = "Account "+baseWallet.getAddresses().indexOf(address)
-            accName[address] = name
-            browser.storage.local.set({"accountsNames": accName});
-        }
-
-        return name
     }
 
     getBalances(address){
@@ -487,28 +408,23 @@ class EthWallet {
     }
 
     updatePrices(){
-        console.log("updating prices")
         const _this = this
-        if (!this.CG_Platform) return
-        //not optimised, better to fetch prices for all addresses at once
-            for(const token of this.tokens){
-                if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
-                console.log("updating price for " + token.contract)
-                console.log(selectedCurrency)
-                fetch("https://api.coingecko.com/api/v3/simple/token_price/" + this.CG_Platform + "?contract_addresses=" + token.contract.toLowerCase() + "&vs_currencies="+ selectedCurrency +"&include_24hr_change=true")
-                    .then(function (resp) {
-                        resp.json().then(function (res) {
-                            console.log(res)
-                            const price = {
-                                price: parseFloat(res[token.contract.toLowerCase()][selectedCurrency]),
-                                change: parseFloat(res[token.contract.toLowerCase()][selectedCurrency+"_24h_change"])
-                            }
-                            _this.prices.set(token.contract, price)
-                        })
-                    }).catch(function (e) {
-                    console.log(e)
-                })
-            }
+        for(const token of this.tokens){
+            if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
+
+            fetch(`http://localhost:2053/api/token/price/${_this.chainID}/${token.contract}/${selectedCurrency}`)
+                .then(function (resp) {
+                    resp.json().then(function (res) {
+                        if(res.price && res.change)
+                            _this.prices.set(token.contract, {
+                                price: parseFloat(res.price),
+                                change: parseFloat(res.change)
+                            })
+                    })
+                }).catch(function (e) {
+                console.log(e)
+            })
+        }
     }
 
     hasToken(contract){
@@ -626,27 +542,11 @@ class EthWallet {
         return this.transactions.find(tx => tx.hash === hash)
     }
 
-    initSwapUtils(){
+    swap(){
         if(this.swapUtils === undefined)
             this.swapUtils = new EthSwapUtils(this)
-    }
 
-    async getSwapRoute(amount, token1, token2){
-        this.initSwapUtils()
-
-        return await this.swapUtils.getSwapRoute(amount, token1, token2)
-    }
-
-    async estimateSwapFees(amount, quote){
-        this.initSwapUtils()
-
-        return await this.swapUtils.estimateSwapFees(amount, quote)
-    }
-
-    async initSwap(amount, quote, gasPrice){
-        this.initSwapUtils()
-
-        return await this.swapUtils.initSwap(amount, quote, gasPrice)
+        return this.swapUtils
     }
 
 }

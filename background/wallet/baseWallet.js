@@ -17,7 +17,7 @@ class BaseWallet {
             switch(wallet.type){
                 case "web3":
                     if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") continue
-                    this.wallets.push(EthWallet.fromJSON(wallet.wallet))
+                    this.wallets.push(EthWallet.fromJSON(wallet.wallet, this))
                     break
             }
         }
@@ -292,7 +292,6 @@ class BaseWallet {
         const res = await browser.storage.local.get("wallet")
         if (res.wallet === undefined) {
             baseWallet = BaseWallet.generateWallet()
-            baseWallet.startLoop()
             baseWallet.save()
             loadedElems["baseWallet"] = true
             return true
@@ -300,7 +299,6 @@ class BaseWallet {
             let wallet = BaseWallet.fromJSON(res.wallet, password)
             if(wallet){
                 baseWallet = wallet
-                baseWallet.startLoop()
                 loadedElems["baseWallet"] = true
                 return true
             }

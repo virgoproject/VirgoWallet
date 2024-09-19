@@ -46,23 +46,11 @@ const loadedElems = {}
 
 let connectedWebsites = []
 
-const notifsStored = []
-
-let notifications = []
-
-let notifCounter = 0;
-
 browser.storage.local.get("connectedWebsites").then(function(res){
     if(res.connectedWebsites !== undefined)
         connectedWebsites = res.connectedWebsites
 
     loadedElems["connectedWebsites"] = true
-})
-
-browser.storage.local.get("notifications").then(function (res) {
-    if(res.notifications !== undefined)
-        notifications = res.notifications
-    loadedElems["notifications"] = true
 })
 
 //fetchNotifs()
@@ -140,10 +128,6 @@ BaseWallet.loadFromJSON().then(() => {
         loadedElems["accountsNames"] = true
     })
 
-    browser.alarms.get('notifs').then(a => {
-        if (!a) browser.alarms.create('notifs', { periodInMinutes: 1.0 })
-      })
-
     browser.storage.local.get('setupDone').then(function (res) {
         if (res.setupDone !== undefined && res.setupDone !== null){
             setupDone = res.setupDone;
@@ -204,7 +188,7 @@ BaseWallet.loadFromJSON().then(() => {
     })
 
     browser.alarms.onAlarm.addListener(async a => {
-        while(Object.keys(loadedElems).length < 14){
+        while(Object.keys(loadedElems).length < 13){
             await new Promise(r => setTimeout(r, 10));
         }
 
@@ -216,8 +200,6 @@ BaseWallet.loadFromJSON().then(() => {
                 browser.storage.session.set({"unlockPassword": null})
             }
 
-        }else if(a.name === "notifs"){
-          //fetchNotifs()
         }
     })
 
@@ -266,48 +248,6 @@ function forgetWallet() {
     browser.storage.local.remove("wallet");
     browser.storage.local.remove("lastShowedSetupPwMsg");
     wallet = null;
-}
-
-function fetchNotifs() {
-    fetch('https://airdrops.virgo.net:2096/api/notifications/retrieve',{
-        method : 'GET',
-        headers: {'Content-Type': 'application/json'}
-    }).then(response => response.json())
-        .then(results => {
-            browser.storage.local.get('notifications').then(function(res) {
-                const notifsIds = {}
-
-                if (res.notifications === undefined) res.notifications = []
-
-                for(const notif of res.notifications){
-                    notifsIds[notif.id] = true
-                }
-
-                for(const notif of results){
-                    if(!notifsIds[notif.id]){
-                        res.notifications.push(notif)
-                    }
-                }
-                countNotifs()
-                browser.storage.local.set({"notifications": res.notifications})
-            })
-        })
-}
-
-function countNotifs(){
-    browser.storage.local.get('notifications').then(function(res) {
-        for (let i=0 ; i < res.notifications.length ; i++) {
-            console.log(res.notifications[i].shown)
-            if(res.notifications[i].shown === undefined){
-                notifCounter = notifCounter+1
-            }
-            if(notifCounter === 0){
-                browser.action.setBadgeText({text : ""})
-            }else {
-                browser.action.setBadgeText({text : notifCounter.toString()})
-            }
-        }
-    })
 }
 
 function sendMessageToTabs(command, data){

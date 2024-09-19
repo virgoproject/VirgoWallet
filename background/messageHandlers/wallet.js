@@ -43,8 +43,6 @@ class WalletHandlers {
             "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
             "updatePopup":  baseWallet.version != VERSION,
             "connectedSites": connectedWebsites,
-            "notifications" : notifications,
-            "notificationsCount" : notifCounter,
             "selectedCurrency" : selectedCurrency,
             "selectedLanguage" : selectedLanguage,
             "setupDone" : setupDone,
