@@ -36,18 +36,12 @@ class SecurityHandlers {
 
     static async restoreFromMnemonic(request, sender, sendResponse){
         try {
-            const startLoop = baseWallet === undefined
             baseWallet = BaseWallet.generateWallet(request.mnemonic)
             baseWallet.save()
 
             accName = {}
             browser.storage.local.set({"accountsNames": accName})
 
-            if(startLoop) baseWallet.startLoop()
-            else {
-                baseWallet.getCurrentWallet().update()
-                baseWallet.getCurrentWallet().updatePrices()
-            }
             browser.storage.local.set({"setupDone": true})
             setupDone = true
 

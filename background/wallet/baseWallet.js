@@ -65,6 +65,7 @@ class BaseWallet {
             this.save()
         }
 
+        //old fix
         if(typeof this.privateKeys[0] == "string"){
             const newPkeys = []
             for(const pKey of this.privateKeys){
@@ -92,30 +93,6 @@ class BaseWallet {
         }
 
         this.getSwapParams()
-    }
-
-    startLoop(){
-        const timer = setInterval(function(){
-            if(baseWallet === undefined){
-                clearInterval(timer)
-                return
-            }
-            baseWallet.getCurrentWallet().update()
-        }, 10000)
-
-        const startupWait = setInterval(() => {
-            if(baseWallet.getCurrentWallet().getAddressesJSON().length == 0) return
-            baseWallet.getCurrentWallet().update(true)
-            clearInterval(startupWait)
-        }, 50)
-
-        const priceTimer = setInterval(function(){
-            if(baseWallet === undefined){
-                clearInterval(priceTimer)
-                return
-            }
-            baseWallet.getCurrentWallet().updatePrices()
-        }, 60000)
     }
 
     static generateWallet(mnemonic){
@@ -332,7 +309,7 @@ class BaseWallet {
         })
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         hdProvider.engine.stop()
@@ -360,7 +337,7 @@ class BaseWallet {
         })
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
@@ -429,17 +406,6 @@ class BaseWallet {
     getWeb3ByID(id){
         const chain = this.getChainByID(id)
 
-        if(!chain.web3){
-            chain.web3 = new Web3(chain.rpcURL)
-
-            for(const pKey of this.privateKeys){
-                if(pKey.hidden) continue
-                const acc = chain.web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
-                chain.web3.eth.accounts.wallet.add(acc)
-            }
-
-        }
-
         return chain.web3
     }
 
@@ -472,7 +438,7 @@ class BaseWallet {
         }
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
@@ -528,7 +494,7 @@ class BaseWallet {
         }
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)

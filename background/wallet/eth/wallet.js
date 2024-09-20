@@ -33,63 +33,9 @@ class EthWallet {
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
 
-        const _this = this
+        this.initProvider()
 
-        try {
-            fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/infos.json")
-                .then(function(resp){
-                    try {
-                        resp.json().then(function(res){
-                            _this.CG_Platform = res.CG_Platform
-                            for(let token of res.tokens){
-                                try {
-                                    if(!_this.hasToken(token)){
-                                        fetch("https://raw.githubusercontent.com/virgoproject/tokens/main/" + chainID + "/" + token + "/infos.json")
-                                            .then(function(resp2){
-                                                console.log("adding " + chainID + " " + token)
-                                                resp2.json().then(function(res2){
-                                                    console.log("added " + res2.ticker)
-                                                    _this.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
-                                                })
-                                            })
-                                    }
-                                }catch(e){
-                                    console.log(e)
-                                }
-                            }
-                        }).catch(e => {
-                            console.log(e)
-                        })
-                    }catch(e){
-                        console.log(e)
-                    }
-                })
-        }catch(e){
-            console.log(e)
-        }
-
-        const timer = setInterval(function(){
-            if(baseWallet != baseWalletInst){
-                clearInterval(timer)
-                return
-            }
-            _this.update()
-        }, 10000)
-
-        const startupWait = setInterval(() => {
-            if(_this.getAddressesJSON().length == 0) return
-            _this.update(true)
-            clearInterval(startupWait)
-        }, 50)
-
-        const priceTimer = setInterval(function(){
-            if(baseWallet != baseWalletInst){
-                clearInterval(priceTimer)
-                return
-            }
-            _this.updatePrices()
-        }, 60000)
-
+        new EthWalletUpdater(this, baseWalletInst)
     }
 
     static fromJSON(json, baseWalletInst){
@@ -138,6 +84,20 @@ class EthWallet {
         return json
     }
 
+    getCurrentAddress(){
+        return this.getAddresses()[baseWallet.selectedAddress]
+    }
+
+    getAddresses(){
+        const addrs = []
+
+        for(let i = 0; i < this.web3.eth.accounts.wallet.length; i++){
+            addrs.push(this.web3.eth.accounts.wallet[i].address)
+        }
+
+        return addrs
+    }
+
     getBalances(address){
         let balances = this.balances.get(address)
         if(balances === undefined){
@@ -150,7 +110,8 @@ class EthWallet {
                 "tracked": true,
                 "balance": 0,
                 "price": 0,
-                "change": 0
+                "change": 0,
+                "isNative": true
             }
 
             for(const token of this.tokens){
@@ -407,26 +368,6 @@ class EthWallet {
         }
     }
 
-    updatePrices(){
-        const _this = this
-        for(const token of this.tokens){
-            if(!token.tracked && token.contract.toLowerCase() != this.contract.toLowerCase()) continue
-
-            fetch(`http://localhost:2053/api/token/price/${_this.chainID}/${token.contract}/${selectedCurrency}`)
-                .then(function (resp) {
-                    resp.json().then(function (res) {
-                        if(res.price && res.change)
-                            _this.prices.set(token.contract, {
-                                price: parseFloat(res.price),
-                                change: parseFloat(res.change)
-                            })
-                    })
-                }).catch(function (e) {
-                console.log(e)
-            })
-        }
-    }
-
     hasToken(contract){
         contract = web3.utils.toChecksumAddress(contract)
         return this.tokenSet.has(contract) || this.tokenSet.has(contract.toLowerCase())
@@ -547,6 +488,16 @@ class EthWallet {
             this.swapUtils = new EthSwapUtils(this)
 
         return this.swapUtils
+    }
+
+    initProvider(){
+        this.web3 = new Web3(this.rpcURL)
+
+        for(const pKey of baseWallet.privateKeys){
+            if(pKey.hidden) continue
+            const acc = this.web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
+            this.web3.eth.accounts.wallet.add(acc)
+        }
     }
 
 }
