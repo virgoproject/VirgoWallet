@@ -17,21 +17,21 @@ class EthWalletUpdater {
                 clearInterval(timer)
                 return
             }
-            _this.update()
+            //_this.update()
         }, 10000)
 
         const startupWait = setInterval(() => {
             if(_this.wallet.getAddressesJSON().length === 0) return
-            _this.update()
             clearInterval(startupWait)
-        }, 50)
+            //_this.update()
+        }, 5000)
 
         const priceTimer = setInterval(function(){
             if(baseWallet !== baseWalletInst){
                 clearInterval(priceTimer)
                 return
             }
-            _this.updatePrices()
+            //_this.updatePrices()
         }, 60000)
     }
 
@@ -40,12 +40,12 @@ class EthWalletUpdater {
 
         const address = this.wallet.getCurrentAddress()
 
-        const balances = this.wallet.getBalances().get(address)
+        const balances = this.wallet.getBalances(address)
+
+        console.log(balances)
 
         const tracked = []
         const untracked = []
-
-
 
         for(const token of balances){
             if(token.isNative) continue//exclude native asset as we dont update it like others
@@ -53,19 +53,24 @@ class EthWalletUpdater {
             else untracked.push(token)
         }
 
-        let toUpdate = []
-
         if(this.trackedUpdateIndex < tracked.length && this.trackedUpdateIndex !== -1){
             //update tracked tokens
             const toSelect = Math.min(tracked.length-this.trackedUpdateIndex, 10)
-            toUpdate = tracked.slice(this.trackedUpdateIndex, this.trackedUpdateIndex+toSelect)
+
+            this.updateTokenSet(tracked.slice(this.trackedUpdateIndex, this.trackedUpdateIndex+toSelect))
+
             this.trackedUpdateIndex = this.trackedUpdateIndex+toSelect
+
         }else if(this.trackedUpdateIndex === -1) {
             //update untracked tokens then set trackedIndex to zero so next time we update tracked tokens
             const toSelect = Math.min(untracked.length-this.untrackedUpdateIndex, 10)
-            toUpdate = untracked.slice(this.untrackedUpdateIndex, this.untrackedUpdateIndex+toSelect)
+
+            this.updateTokenSet(untracked.slice(this.untrackedUpdateIndex, this.untrackedUpdateIndex+toSelect))
+
             this.untrackedUpdateIndex = this.untrackedUpdateIndex+toSelect
+
             this.trackedUpdateIndex = 0
+
         }else{
             //update native asset at the end of tracked tokens
             _this.wallet.web3.eth.getBalance(address).then(function(res){
@@ -76,8 +81,13 @@ class EthWalletUpdater {
             return
         }
 
+    }
 
+    updateTokenSet(tokens){
 
+        for(const token of tokens){
+            console.log(token)
+        }
     }
 
     updatePrices(){

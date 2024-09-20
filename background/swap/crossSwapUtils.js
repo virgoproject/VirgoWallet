@@ -1,7 +1,7 @@
 class CrossSwapUtils {
 
     constructor() {
-        setInterval(this.update, 10000)
+        //setInterval(this.update, 10000)
     }
 
     static async getSwapRoute(chainA, tokenA, chainB, tokenB, amount){

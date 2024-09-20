@@ -16,6 +16,7 @@ class EthWallet {
         this.atomicSwapParams = false
         this.tracked = tracked
         this.swapV2Params = swapV2Params
+        this.baseWalletInst = baseWalletInst
 
         this.balances = new Map()
         this.prices = new Map()
@@ -32,8 +33,6 @@ class EthWallet {
         for(let transaction of this.transactions)
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
-
-        this.initProvider()
 
         new EthWalletUpdater(this, baseWalletInst)
     }
@@ -73,7 +72,7 @@ class EthWallet {
     getAddressesJSON(){
         const json = []
 
-        for(const address of baseWallet.getAddresses()){
+        for(const address of this.getAddresses()){
             let balances = this.getBalances(address)
             json.push({
                 "address": address,
@@ -146,7 +145,7 @@ class EthWallet {
     }
 
     //TODO: Refactor everything so its clearer
-    update(first = false){
+    /**update(first = false){
         console.log("updating " + this.name + " wallet")
         const wallet = this
 
@@ -366,7 +365,7 @@ class EthWallet {
                 }
             })
         }
-    }
+    }**/
 
     hasToken(contract){
         contract = web3.utils.toChecksumAddress(contract)
@@ -493,7 +492,7 @@ class EthWallet {
     initProvider(){
         this.web3 = new Web3(this.rpcURL)
 
-        for(const pKey of baseWallet.privateKeys){
+        for(const pKey of this.baseWalletInst.privateKeys){
             if(pKey.hidden) continue
             const acc = this.web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
             this.web3.eth.accounts.wallet.add(acc)

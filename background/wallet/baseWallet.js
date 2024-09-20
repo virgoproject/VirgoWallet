@@ -79,6 +79,10 @@ class BaseWallet {
             this.save()
         }
 
+        for(const wallet of this.wallets){
+            wallet.initProvider()
+        }
+
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
 
         for(let i = 0; i < web3.eth.accounts.wallet.length; i++){
