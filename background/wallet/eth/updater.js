@@ -6,7 +6,7 @@ class EthWalletUpdater {
 
         this.trackedUpdateIndex = 0
         this.untrackedUpdateIndex = 0
-        this.updateBatchSize = 10
+        this.updateBatchSize = 50
 
         this.multicall = new this.wallet.web3.eth.Contract(MULTICALL3, "0xcA11bde05977b3631167028862bE2a173976CA11")
 
@@ -20,7 +20,7 @@ class EthWalletUpdater {
                 return
             }
             _this.update()
-        }, 10000)
+        }, 5000)
 
         const startupWait = setInterval(() => {
             if(_this.wallet.getAddressesJSON().length === 0) return
@@ -34,7 +34,7 @@ class EthWalletUpdater {
                 return
             }
             _this.updatePrices()
-        }, 60000)
+        }, 300000)
     }
 
     update(){
@@ -54,17 +54,23 @@ class EthWalletUpdater {
             else untracked.push(tokenAddr)
         }
 
-        if(this.trackedUpdateIndex < tracked.length && this.trackedUpdateIndex !== -1){
+        _this.wallet.web3.eth.getBalance(address).then(function(res){
+            balances[_this.wallet.ticker].balance = res;
+        })
+
+        if(this.trackedUpdateIndex < tracked.length){
             //update tracked tokens
-            const toSelect = Math.min(tracked.length-this.trackedUpdateIndex, 10)
+            const toSelect = Math.min(tracked.length-this.trackedUpdateIndex, this.updateBatchSize)
 
             this.updateTokenSet(tracked.slice(this.trackedUpdateIndex, this.trackedUpdateIndex+toSelect), balances, address)
 
             this.trackedUpdateIndex = this.trackedUpdateIndex+toSelect
 
-        }else if(this.trackedUpdateIndex === -1) {
+        }else{
             //update untracked tokens then set trackedIndex to zero so next time we update tracked tokens
-            const toSelect = Math.min(untracked.length-this.untrackedUpdateIndex, 10)
+            if(this.untrackedUpdateIndex >= untracked.length) this.untrackedUpdateIndex = 0
+
+            const toSelect = Math.min(untracked.length-this.untrackedUpdateIndex, this.updateBatchSize)
 
             this.updateTokenSet(untracked.slice(this.untrackedUpdateIndex, this.untrackedUpdateIndex+toSelect), balances, address)
 
@@ -72,45 +78,55 @@ class EthWalletUpdater {
 
             this.trackedUpdateIndex = 0
 
-        }else{
-            //update native asset at the end of tracked tokens
-            _this.wallet.web3.eth.getBalance(address).then(function(res){
-                balances[_this.wallet.ticker].balance = res;
-            })
-
-            this.trackedUpdateIndex = -1
-            return
         }
 
     }
 
     updateTokenSet(tokens, balances, address){
+        const _this = this
+
         this.fetchTokenBalances(tokens, address).then(bals => {
             for(const bal in bals){
                 const balance = bals[bal]
-                console.log(balance)
+
+                if(!balance.balance) continue
+
+                if(balances[balance.token].balance != balance.balance){
+                    balances[balance.token].balance = balance.balance
+
+                    if(balances[balance.token].autotrack && balance.balance != 0)
+                        _this.wallet.changeTracking(balance.token, true)
+
+                    _this.updatePrice(balance.token)
+                }
             }
         })
     }
 
     updatePrices(){
-        const _this = this
-        for(const token of this.wallet.tokens){
-            if(!token.tracked && token.contract.toLowerCase() !== _this.wallet.contract.toLowerCase()) continue
 
-            fetch(`http://localhost:2053/api/token/price/${_this.wallet.chainID}/${token.contract}/${selectedCurrency}`)
-                .then(function (resp) {
-                    resp.json().then(function (res) {
-                        if(res.price && res.change)
-                            _this.wallet.prices.set(token.contract, {
-                                price: parseFloat(res.price),
-                                change: parseFloat(res.change)
-                            })
-                    })
-                }).catch(function (e) {
-                    console.log(e)
-                })
+        for(const token of this.wallet.tokens){
+            if(!token.tracked && token.contract.toLowerCase() !== this.wallet.contract.toLowerCase()) continue
+
+            this.updatePrice(token.contract)
         }
+    }
+
+    updatePrice(token){
+        const _this = this
+
+        fetch(`http://localhost:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
+            .then(function (resp) {
+                resp.json().then(function (res) {
+                    if(res.price && res.change)
+                        _this.wallet.prices.set(token, {
+                            price: parseFloat(res.price),
+                            change: parseFloat(res.change)
+                        })
+                })
+            }).catch(function (e) {
+                console.log(e)
+            })
     }
 
     fetchTokens(){

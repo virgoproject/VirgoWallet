@@ -27,8 +27,10 @@ class EthWallet {
         for (let nft of this.nft)
             this.nftSet.set(nft.contract+nft.tokenId, nft)
 
-        for(let token of this.tokens)
+        for(let token of this.tokens){
+            if(token.autotrack === undefined) token.autotrack = true
             this.tokenSet.set(token.contract, token)
+        }
 
         for(let transaction of this.transactions)
             if(transaction.contractAddr == "ATOMICSWAP")
@@ -110,6 +112,7 @@ class EthWallet {
                 "decimals": this.decimals,
                 "contract": this.contract,
                 "tracked": true,
+                "autotrack": true,
                 "balance": 0,
                 "price": 0,
                 "change": 0,
@@ -123,6 +126,7 @@ class EthWallet {
                     "decimals": token.decimals,
                     "contract": token.contract,
                     "tracked": token.tracked,
+                    "autotrack": true,
                     "balance": 0,
                     "price": 0,
                     "change": 0
@@ -389,7 +393,8 @@ class EthWallet {
             "ticker": ticker,
             "decimals": decimals,
             "contract": contract,
-            "tracked": track
+            "tracked": track,
+            "autotrack": true
         }
 
         this.tokens.push(token)
@@ -403,6 +408,7 @@ class EthWallet {
                 "decimals": token.decimals,
                 "contract": token.contract,
                 "tracked": track,
+                "autotrack": true,
                 "balance": 0,
                 "price": 0,
                 "change": 0
@@ -471,9 +477,11 @@ class EthWallet {
                 if(setToTrue)
                     newState = true
                 token.tracked = newState
+                token.autotrack = newState
                 for(const address of baseWallet.getAddresses()) {
                     let balances = this.getBalances(address)
                     balances[token.contract].tracked = newState
+                    balances[token.contract].autotrack = newState
                 }
                 baseWallet.save()
                 return;
