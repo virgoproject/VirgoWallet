@@ -362,8 +362,6 @@ class BaseWallet {
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
 
         this.save()
-        this.getCurrentWallet().update()
-        this.getCurrentWallet().updatePrices()
 
         if(typeof walletConnect !== 'undefined'){
             walletConnect.updateSessions("chainChanged")
