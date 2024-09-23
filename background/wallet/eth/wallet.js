@@ -33,8 +33,11 @@ class EthWallet {
         for(let transaction of this.transactions)
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
+    }
 
-        new EthWalletUpdater(this, baseWalletInst)
+    init(){
+        this.initProvider()
+        new EthWalletUpdater(this)
     }
 
     static fromJSON(json, baseWalletInst){

@@ -1,6 +1,6 @@
 class EthWalletUpdater {
 
-    constructor(ethWallet, baseWalletInst) {
+    constructor(ethWallet) {
 
         this.wallet = ethWallet
 
@@ -8,30 +8,32 @@ class EthWalletUpdater {
         this.untrackedUpdateIndex = 0
         this.updateBatchSize = 10
 
+        this.multicall = new this.wallet.web3.eth.Contract(MULTICALL3, "0xcA11bde05977b3631167028862bE2a173976CA11")
+
         this.fetchTokens()
 
         const _this = this
 
         const timer = setInterval(function(){
-            if(baseWallet !== baseWalletInst){
+            if(baseWallet !== _this.wallet.baseWalletInst){
                 clearInterval(timer)
                 return
             }
-            //_this.update()
+            _this.update()
         }, 10000)
 
         const startupWait = setInterval(() => {
             if(_this.wallet.getAddressesJSON().length === 0) return
             clearInterval(startupWait)
-            //_this.update()
-        }, 5000)
+            _this.update()
+        }, 50)
 
         const priceTimer = setInterval(function(){
-            if(baseWallet !== baseWalletInst){
+            if(baseWallet !== _this.wallet.baseWalletInst){
                 clearInterval(priceTimer)
                 return
             }
-            //_this.updatePrices()
+            _this.updatePrices()
         }, 60000)
     }
 
@@ -42,22 +44,21 @@ class EthWalletUpdater {
 
         const balances = this.wallet.getBalances(address)
 
-        console.log(balances)
-
         const tracked = []
         const untracked = []
 
-        for(const token of balances){
+        for(const tokenAddr in balances){
+            const token = balances[tokenAddr]
             if(token.isNative) continue//exclude native asset as we dont update it like others
-            if(token.tracked) tracked.push(token)
-            else untracked.push(token)
+            if(token.tracked) tracked.push(tokenAddr)
+            else untracked.push(tokenAddr)
         }
 
         if(this.trackedUpdateIndex < tracked.length && this.trackedUpdateIndex !== -1){
             //update tracked tokens
             const toSelect = Math.min(tracked.length-this.trackedUpdateIndex, 10)
 
-            this.updateTokenSet(tracked.slice(this.trackedUpdateIndex, this.trackedUpdateIndex+toSelect))
+            this.updateTokenSet(tracked.slice(this.trackedUpdateIndex, this.trackedUpdateIndex+toSelect), balances, address)
 
             this.trackedUpdateIndex = this.trackedUpdateIndex+toSelect
 
@@ -65,7 +66,7 @@ class EthWalletUpdater {
             //update untracked tokens then set trackedIndex to zero so next time we update tracked tokens
             const toSelect = Math.min(untracked.length-this.untrackedUpdateIndex, 10)
 
-            this.updateTokenSet(untracked.slice(this.untrackedUpdateIndex, this.untrackedUpdateIndex+toSelect))
+            this.updateTokenSet(untracked.slice(this.untrackedUpdateIndex, this.untrackedUpdateIndex+toSelect), balances, address)
 
             this.untrackedUpdateIndex = this.untrackedUpdateIndex+toSelect
 
@@ -83,11 +84,13 @@ class EthWalletUpdater {
 
     }
 
-    updateTokenSet(tokens){
-
-        for(const token of tokens){
-            console.log(token)
-        }
+    updateTokenSet(tokens, balances, address){
+        this.fetchTokenBalances(tokens, address).then(bals => {
+            for(const bal in bals){
+                const balance = bals[bal]
+                console.log(balance)
+            }
+        })
     }
 
     updatePrices(){
@@ -146,6 +149,36 @@ class EthWalletUpdater {
         }catch(e){
             console.log(e)
         }
+    }
+
+    async fetchTokenBalances(tokens, walletAddress) {
+
+        const _this = this
+
+        const calls = []
+
+        for(const token of tokens){
+            const tokenContract = new _this.wallet.web3.eth.Contract(ERC20_ABI, token)
+            calls.push({
+                target: token,
+                allowFailure: true,
+                callData: tokenContract.methods.balanceOf(walletAddress).encodeABI()
+            })
+        }
+
+        const returnData = await _this.multicall.methods.aggregate3(calls).call()
+
+        const balances = returnData.map((result, i) => {
+            const { success, returnData } = result
+            if (success) {
+                const balance = web3.eth.abi.decodeParameter('uint256', returnData)
+                return { token: tokens[i], balance }
+            } else {
+                return { token: tokens[i], balance: null }
+            }
+        });
+
+        return balances;
     }
 
 }

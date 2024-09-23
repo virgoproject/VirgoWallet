@@ -80,7 +80,7 @@ class BaseWallet {
         }
 
         for(const wallet of this.wallets){
-            wallet.initProvider()
+            wallet.init()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
