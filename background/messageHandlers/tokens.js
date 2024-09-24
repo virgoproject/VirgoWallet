@@ -12,6 +12,7 @@ class TokensHandlers {
         addBgMessageHandler("removeToken", this.removeToken)
         addBgMessageHandler("changeTokenTracking", this.changeTokenTracking)
         addBgMessageHandler("getAllTokens", this.getAllTokens)
+        addBgMessageHandler("getTokens", this.getTokens)
     }
 
     static estimateSendFees(request, sender, sendResponse){
@@ -317,20 +318,34 @@ class TokensHandlers {
 
         for (let i = baseWallet.wallets.length - 1; i >= 0; i--) {
             const wallet = baseWallet.wallets[i]
-            for(const token of wallet.tokens){
+            const balances = wallet.getBalances(wallet.getCurrentAddress())
+            console.log(balances)
+            for(const tokenAddr in balances){
+                const token = balances[tokenAddr]
                 const t = structuredClone(token)
                 t.chainID = wallet.chainID
                 t.chainName = wallet.name
+                t.contract = tokenAddr
                 tokens.unshift(t)
             }
-            tokens.unshift({
-                contract: wallet.ticker,
-                name: wallet.asset,
-                ticker: wallet.ticker,
-                decimals: wallet.decimals,
-                chainID: wallet.chainID,
-                chainName: wallet.name
-            })
+        }
+
+        sendResponse(tokens)
+    }
+
+    static getTokens(request, sender, sendResponse){
+        const tokens = []
+
+        const wallet = baseWallet.getCurrentWallet()
+        const balances = wallet.getBalances(wallet.getCurrentAddress())
+
+        for(const tokenAddr in balances){
+            const token = balances[tokenAddr]
+            const t = structuredClone(token)
+            t.chainID = wallet.chainID
+            t.chainName = wallet.name
+            t.contract = tokenAddr
+            tokens.unshift(t)
         }
 
         sendResponse(tokens)

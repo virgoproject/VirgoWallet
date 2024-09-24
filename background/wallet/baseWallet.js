@@ -16,7 +16,10 @@ class BaseWallet {
         for(const wallet of data.wallets){
             switch(wallet.type){
                 case "web3":
-                    if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") continue
+                    if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") {
+                        continue
+                    }
+                    console.log("qdqzdqz " + wallet.wallet.name)
                     this.wallets.push(EthWallet.fromJSON(wallet.wallet, this))
                     break
             }
@@ -169,7 +172,7 @@ class BaseWallet {
         let referenceWallets = BaseWallet.getBaseWallets()
 
         try {
-            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/chainaddition1/chains.json")
+            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/refs/heads/main/chains.json")
             referenceWallets = await refWalletsReq.json()
         }catch(e){}
 
@@ -180,7 +183,9 @@ class BaseWallet {
                 if(refWallet.wallet.chainID == wallet.chainID) continue b
 
             changed = true
-            this.wallets.push(EthWallet.fromJSON(refWallet.wallet))
+            const wallet = EthWallet.fromJSON(refWallet.wallet)
+            wallet.init()
+            this.wallets.push(wallet)
         }
 
         if(changed) this.save()

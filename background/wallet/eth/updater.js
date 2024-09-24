@@ -19,13 +19,36 @@ class EthWalletUpdater {
                 clearInterval(timer)
                 return
             }
-            _this.update()
+            try{
+                _this.update()
+            }catch(e){
+                console.log("Failed to update " + this.wallet.name + " balances:")
+                console.log(e)
+            }
+        }, 5000)
+
+        const transactionsTimer = setInterval(function(){
+            if(baseWallet !== _this.wallet.baseWalletInst){
+                clearInterval(transactionsTimer)
+                return
+            }
+            try{
+                _this.updateTransactions()
+            }catch(e){
+                console.log("Failed to update " + this.wallet.name + " transactions:")
+                console.log(e)
+            }
         }, 5000)
 
         const startupWait = setInterval(() => {
             if(_this.wallet.getAddressesJSON().length === 0) return
             clearInterval(startupWait)
-            _this.update()
+            try{
+                _this.update()
+            }catch(e){
+                console.log("Failed to update " + this.wallet.name + " balances:")
+                console.log(e)
+            }
         }, 50)
 
         const priceTimer = setInterval(function(){
@@ -115,7 +138,7 @@ class EthWalletUpdater {
     updatePrice(token){
         const _this = this
 
-        fetch(`http://localhost:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
+        fetch(`https://api.virgo.net:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
             .then(function (resp) {
                 resp.json().then(function (res) {
                     if(res.price && res.change)
@@ -195,6 +218,126 @@ class EthWalletUpdater {
         });
 
         return balances;
+    }
+
+    updateTransactions(){
+        const _this = this
+        if(this.wallet.transactions.length > 0){
+            web3.eth.getBlockNumber().then(function(blockNumber){
+                for(const transaction of _this.wallet.transactions){
+                    if((transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") && !(transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)) continue
+
+                    web3.eth.getTransactionReceipt(transaction.hash).then(async function(receipt){
+                        if(receipt == null){
+                            if(transaction.canceling){
+                                transaction.status = false
+                                transaction.gasUsed = 21000
+                                transaction.gasPrice = transaction.cancelingPrice
+                                baseWallet.save()
+                            }
+                            return
+                        }
+
+                        if(transaction.status === undefined || (transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)){
+                            if(receipt.status){
+
+                                if(transaction.contractAddr == "SWAP"){
+
+                                    await _this.wallet.swap().updateTransactionStatus(transaction, receipt)
+
+                                } else if(transaction.contractAddr == "WEB3_SWAP"){
+
+                                    try {
+                                        switch (transaction.swapInfos.type){
+                                            case 'swapExactETHForTokens':
+                                            case 'exactInput':
+                                            case 'exactInputSingle':
+                                            case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForTokens':
+                                            case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
+                                            case 'swapExactTokensForETH':
+                                                let log = receipt.logs[receipt.logs.length-1]
+
+                                                let decodedLog = null
+
+                                                for(let nLog of receipt.logs){
+                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenOut.toLowerCase()){
+                                                        log = nLog
+                                                        try {
+                                                            decodedLog = web3.eth.abi.decodeLog([{
+                                                                type: 'address',
+                                                                name: 'from',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'address',
+                                                                name: 'to',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'uint256',
+                                                                name: 'value'
+                                                            }], log.data, [log.topics[1], log.topics[2], log.topics[3]])
+                                                            break
+                                                        }catch(e){}
+                                                    }
+                                                }
+
+                                                if(decodedLog == null) break
+
+                                                transaction.swapInfos.amountOut = decodedLog.value
+                                                break
+
+                                            case 'swapTokensForExactETH':
+                                            case 'swapTokensForExactTokens':
+                                            case 'swapETHForExactTokens':
+                                            case 'exactOutput':
+                                            case 'exactOutputSingle':
+                                                let log2 = receipt.logs[receipt.logs.length-1]
+
+                                                let decodedLog2 = null
+
+                                                for(let nLog of receipt.logs){
+                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenIn.toLowerCase()){
+                                                        log2 = nLog
+                                                        try {
+                                                            decodedLog2 = web3.eth.abi.decodeLog([{
+                                                                type: 'address',
+                                                                name: 'from',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'address',
+                                                                name: 'to',
+                                                                indexed: true
+                                                            },{
+                                                                type: 'uint256',
+                                                                name: 'value'
+                                                            }], log2.data, [log2.topics[1], log2.topics[2], log2.topics[3]])
+                                                            break
+                                                        }catch(e){}
+                                                    }
+                                                }
+
+                                                if(decodedLog2 == null) break
+
+                                                transaction.swapInfos.amountIn = decodedLog2.value
+                                                break
+                                        }
+                                    }catch (e) {}
+
+                                }
+
+                            }
+                        }
+
+                        transaction.confirmations = blockNumber - receipt.blockNumber
+                        transaction.gasUsed = receipt.gasUsed
+                        transaction.status = receipt.status
+
+                        baseWallet.save()
+                    })
+                }
+            })
+        }
     }
 
 }

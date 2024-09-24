@@ -38,15 +38,25 @@ class SwapSelectToken extends StatefulElement {
 
         const [reset, setReset] = this.useState("reset", false)
 
-        const {data, loading} = this.useInterval(async () => {
-            let tokens = await getFiatTokens()
+        const {data: baseInfos, loading: baseInfosLoading} = this.useFunction(async () => {
+            return await getBaseInfos()
+        })
 
-            let fiats = await getAllTokens()
+        const {data, loading} = this.useInterval(async () => {
+            let fiats = await getFiatTokens()
+
+            let tokens = await getAllTokens()
+
+            tokens = tokens.sort((a,b) => {
+                const sortValA = a.price == 0 ? a.balance/10**a.decimals*2 : a.price*(a.balance/10**a.decimals)
+                const sortValB = b.price == 0 ? b.balance/10**b.decimals*2 : b.price*(b.balance/10**b.decimals)
+                return sortValB-sortValA
+            })
 
             tokens = tokens.concat(fiats)
 
             if(_this.exclude !== undefined){
-                tokens = tokens.filter(item => !_this.exclude.includes(item.contract) && !_this.exclude.includes(item.contract.toLowerCase()))
+                tokens = tokens.filter(item => !_this.exclude.includes(item.chainID + item.contract) && !_this.exclude.includes(item.chainID + item.contract.toLowerCase()))
             }
 
             if(_this.excludeFiat){
@@ -56,13 +66,17 @@ class SwapSelectToken extends StatefulElement {
             return tokens
         }, 60000)
 
-        if(loading){
+        if(loading || baseInfosLoading){
             return `
                 <div id="loading">
                     <i class="fas fa-spinner fa-pulse"></i>
                 </div>
             `
         }
+
+        console.log(baseInfos)
+
+        this.baseInfos = baseInfos
 
         this.boxNumber = 15
 
@@ -159,6 +173,8 @@ class SwapSelectToken extends StatefulElement {
             _this.remove()
         })
 
+        console.log(_this.baseInfos)
+
         for (let i = min; i < max; i++) {
             try {
                 rows.push(`
@@ -178,7 +194,10 @@ class SwapSelectToken extends StatefulElement {
                                 <p class="tokenName">${data[i].name}</p>
                                 <p class="tokenAddress text-sm">${data[i].ticker} &centerdot; ${data[i].chainName}</p>
                             </div>
-                            <i class="fa-regular fa-chevron-right text-xl tokenRightIcon"></i>
+                            <div class="rightText">
+                                <p class="balance"><span class="val">${Utils.cutTo4Decimals(Utils.formatAmount(data[i].balance, data[i].decimals))}</span></p>
+                                <p class="fiatValue text-sm"><span class="fiatval">${(data[i].price*data[i].balance/10**data[i].decimals).toFixed(2)}</span><span class="fiatSymbol">${currencyToSymbol(_this.baseInfos.selectedCurrency)}</span></p>
+                            </div>
                         </div>
                     </div>
                 `)
@@ -294,6 +313,33 @@ class SwapSelectToken extends StatefulElement {
                 background-color: var(--gray-100);
                 color: var(--gray-600);
                 font-weight: bold;
+            }
+            
+            .rightText {
+                text-align: right;
+                margin-left: 0.5em;
+            }
+            
+            .balance {
+                white-space: pre-wrap;
+                margin: 0px;
+                color: var(--gray-700);
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                font-weight: 600;
+            }
+            
+            .fiatValue {
+                margin: 0;
+                color: var(--gray-400);
+            }
+            
+            .val {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         `;
     }

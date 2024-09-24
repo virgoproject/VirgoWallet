@@ -6,7 +6,7 @@ class WalletLoading extends StatefulElement {
             return await getBaseInfos()
         })
 
-        if(baseInfosLoading){
+        if(baseInfosLoading || this.hasAttribute("simple")){
             return `
                 <div id="loadingWrapper">
                     <img src="../images/logoGradient.png" id="loadingImage">
@@ -52,6 +52,8 @@ class WalletLoading extends StatefulElement {
                 right: 0;
                 justify-content: center;
                 flex-direction: column;
+                z-index: 999999999;
+                background: white;
             }
         `;
     }

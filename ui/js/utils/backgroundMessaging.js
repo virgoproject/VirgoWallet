@@ -32,6 +32,10 @@ async function getAsset(contract){
     return false
 }
 
+async function getTokens(){
+    return await browser.runtime.sendMessage({command: 'getTokens'})
+}
+
 async function getTransaction(hash){
     return await browser.runtime.sendMessage({command: 'getTransaction', hash})
 }

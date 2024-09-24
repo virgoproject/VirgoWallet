@@ -4,7 +4,12 @@ class WalletHome extends StatefulElement {
         const {data, loading} = this.useInterval(async () => {
             const baseInfos = await getBaseInfos()
             if(baseInfos.locked) location.reload()
+            return baseInfos
         }, 10000)
+
+        if(loading){
+            return `<wallet-loading simple="true"></wallet-loading>`
+        }
 
         const resetAssets = this.registerFunction(() => {
             this.querySelector("#assets").forceUpdate()

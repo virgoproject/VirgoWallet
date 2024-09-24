@@ -1,6 +1,7 @@
 class EthWallet {
 
     constructor(baseWalletInst, name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, nft, tracked) {
+        console.log("Innit " + name)
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -35,6 +36,8 @@ class EthWallet {
         for(let transaction of this.transactions)
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
+
+        console.log("good " + this.name)
     }
 
     init(){
@@ -89,7 +92,11 @@ class EthWallet {
     }
 
     getCurrentAddress(){
-        return this.getAddresses()[baseWallet.selectedAddress]
+        try {
+            return this.getAddresses()[baseWallet.selectedAddress]
+        }catch(e){
+            console.log(this.name + ": Failed to get current address")
+        }
     }
 
     getAddresses(){
@@ -126,7 +133,7 @@ class EthWallet {
                     "decimals": token.decimals,
                     "contract": token.contract,
                     "tracked": token.tracked,
-                    "autotrack": true,
+                    "autotrack": token.autotrack,
                     "balance": 0,
                     "price": 0,
                     "change": 0
@@ -150,229 +157,6 @@ class EthWallet {
 
         return balances
     }
-
-    //TODO: Refactor everything so its clearer
-    /**update(first = false){
-        console.log("updating " + this.name + " wallet")
-        const wallet = this
-
-        let updateCount = 0
-        const updateTarget = (this.tokens.length+1)*baseWallet.getAddresses().length
-
-        const _this = this
-
-        //update balances
-        for(const address of baseWallet.getAddresses()){
-
-            let balances = this.getBalances(address)
-
-            //updating main asset balances
-            web3.eth.getBalance(address).then(function(res){
-                balances[wallet.ticker].balance = res;
-                if(first){
-                    updateCount++
-                    console.log(updateCount + "/" + updateTarget)
-                    if (updateCount >= updateTarget)
-                        wallet.updatePrices()
-                }
-            })
-
-            //update tokens balances
-            for(const token of this.tokens){
-                if(!token.tracked){
-                    if(first)
-                        updateCount++
-                    continue
-                }
-
-                const contract = new web3.eth.Contract(ERC20_ABI, token.contract, { from: address});
-                contract.methods.balanceOf(address).call()
-                    .then(function(res){
-                        balances[token.contract].balance = res
-                        if(first) {
-                            updateCount++
-                            console.log(updateCount + "/" + updateTarget)
-                            if (updateCount >= updateTarget)
-                                wallet.updatePrices()
-                        }
-                    })
-            }
-
-        }
-
-        if(this.transactions.length > 0){
-            web3.eth.getBlockNumber().then(function(blockNumber){
-                for(const transaction of wallet.transactions){
-                    if((transaction.confirmations !== undefined && transaction.confirmations >= 12 || transaction.status == false || transaction.contractAddr == "ATOMICSWAP") && !(transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)) continue
-
-                    web3.eth.getTransactionReceipt(transaction.hash).then(async function(receipt){
-                        if(receipt == null){
-                            if(transaction.canceling){
-                                transaction.status = false
-                                transaction.gasUsed = 21000
-                                transaction.gasPrice = transaction.cancelingPrice
-                                baseWallet.save()
-                                browser.notifications.create("txNotification", {
-                                    "type": "basic",
-                                    "title": "Transaction canceled!",
-                                    "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                    "message": "Transaction " + transaction.hash + " successfully canceled"
-                                });
-                            }
-                            return
-                        }
-
-                        if(transaction.status === undefined || (transaction.contractAddr == "SWAP" && transaction.swapInfos.amountOut == undefined)){
-                            if(receipt.status){
-
-                                if(transaction.contractAddr == "SWAP"){
-
-                                    _this.initSwapUtils()
-                                    await _this.swapUtils.updateTransactionStatus(transaction, receipt)
-
-                                } else if(transaction.contractAddr == "WEB3_SWAP"){
-
-                                    try {
-                                        console.log(transaction.swapInfos.type)
-
-                                        switch (transaction.swapInfos.type){
-                                            case 'swapExactETHForTokens':
-                                            case 'exactInput':
-                                            case 'exactInputSingle':
-                                            case 'swapExactETHForTokensSupportingFeeOnTransferTokens':
-                                            case 'swapExactTokensForTokensSupportingFeeOnTransferTokens':
-                                            case 'swapExactTokensForTokens':
-                                            case 'swapExactTokensForETHSupportingFeeOnTransferTokens':
-                                            case 'swapExactTokensForETH':
-                                                let log = receipt.logs[receipt.logs.length-1]
-
-                                                let decodedLog = null
-
-                                                for(let nLog of receipt.logs){
-                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenOut.toLowerCase()){
-                                                        log = nLog
-                                                        try {
-                                                            console.log(log)
-
-                                                            decodedLog = web3.eth.abi.decodeLog([{
-                                                                type: 'address',
-                                                                name: 'from',
-                                                                indexed: true
-                                                            },{
-                                                                type: 'address',
-                                                                name: 'to',
-                                                                indexed: true
-                                                            },{
-                                                                type: 'uint256',
-                                                                name: 'value'
-                                                            }], log.data, [log.topics[1], log.topics[2], log.topics[3]])
-                                                            break
-                                                        }catch(e){}
-                                                    }
-                                                }
-
-                                                if(decodedLog == null){
-                                                    console.log("no good log")
-                                                    break
-                                                }
-
-                                                console.log(decodedLog)
-                                                console.log("amountOut: " + decodedLog.value)
-
-                                                transaction.swapInfos.amountOut = decodedLog.value
-                                                break
-
-                                            case 'swapTokensForExactETH':
-                                            case 'swapTokensForExactTokens':
-                                            case 'swapETHForExactTokens':
-                                            case 'exactOutput':
-                                            case 'exactOutputSingle':
-                                                let log2 = receipt.logs[receipt.logs.length-1]
-
-                                                let decodedLog2 = null
-
-                                                for(let nLog of receipt.logs){
-                                                    if(nLog.address.toLowerCase() == transaction.swapInfos.tokenIn.toLowerCase()){
-                                                        console.log(nLog.address + " " + transaction.swapInfos.tokenIn)
-                                                        log2 = nLog
-                                                        try {
-                                                            console.log(log2)
-
-                                                            decodedLog2 = web3.eth.abi.decodeLog([{
-                                                                type: 'address',
-                                                                name: 'from',
-                                                                indexed: true
-                                                            },{
-                                                                type: 'address',
-                                                                name: 'to',
-                                                                indexed: true
-                                                            },{
-                                                                type: 'uint256',
-                                                                name: 'value'
-                                                            }], log2.data, [log2.topics[1], log2.topics[2], log2.topics[3]])
-                                                            break
-                                                        }catch(e){}
-                                                    }
-                                                }
-
-                                                if(decodedLog2 == null){
-                                                    console.log("no good log")
-                                                    break
-                                                }
-
-                                                console.log(decodedLog2)
-                                                console.log("amountIn: " + decodedLog2.value)
-
-                                                transaction.swapInfos.amountIn = decodedLog2.value
-                                                break
-                                        }
-                                    }catch (e) {
-                                        console.log(e)
-                                    }
-
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Swap successful!",
-                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + transaction.hash + " confirmed"
-                                    })
-
-                                } else {
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Transaction confirmed!",
-                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + transaction.hash + " confirmed"
-                                    })
-                                }
-
-                            }else if(receipt.status == false){
-                                if(transaction.contractAddr == "SWAP")
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Swap failed.",
-                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + transaction.hash + " failed"
-                                    })
-                                else
-                                    browser.notifications.create("txNotification", {
-                                        "type": "basic",
-                                        "title": "Transaction failed.",
-                                        "iconUrl": browser.runtime.getURL("/ui/images/walletLogo.png"),
-                                        "message": "Transaction " + transaction.hash + " failed"
-                                    })
-                            }
-                        }
-
-                        transaction.confirmations = blockNumber - receipt.blockNumber
-                        transaction.gasUsed = receipt.gasUsed
-                        transaction.status = receipt.status
-                        baseWallet.save()
-                    })
-                }
-            })
-        }
-    }**/
 
     hasToken(contract){
         contract = web3.utils.toChecksumAddress(contract)

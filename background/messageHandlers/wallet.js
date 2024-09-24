@@ -34,7 +34,7 @@ class WalletHandlers {
             setupDone = true
         }
 
-        return {
+        const infos = {
             "wallets": baseWallet.getWalletsJSON(),
             "selectedWallet": baseWallet.selectedWallet,
             "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
@@ -48,6 +48,8 @@ class WalletHandlers {
             "setupDone" : setupDone,
             "biometricsEnabled": biometricsEnabled
         }
+
+        return infos
     }
 
     static getChainInfos(request, sender, sendResponse){
