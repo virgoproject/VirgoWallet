@@ -31,8 +31,10 @@ class SelectToken extends StatefulElement {
             let tokens = await getTokens()
 
             tokens = tokens.sort((a,b) => {
-                const sortValA = a.price == 0 ? a.balance/10**a.decimals*2 : a.price*(a.balance/10**a.decimals)
-                const sortValB = b.price == 0 ? b.balance/10**b.decimals*2 : b.price*(b.balance/10**b.decimals)
+                let sortValA = a.price == 0 ? a.balance/10**a.decimals*2 : a.price*(a.balance/10**a.decimals)
+                if(a.isNative) sortValA = sortValA + 1
+                let sortValB = b.price == 0 ? b.balance/10**b.decimals*2 : b.price*(b.balance/10**b.decimals)
+                if(b.isNative) sortValB = sortValB + 1
                 return sortValB-sortValA
             })
 

@@ -19,15 +19,12 @@ class BaseWallet {
                     if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") {
                         continue
                     }
-                    console.log("qdqzdqz " + wallet.wallet.name)
                     this.wallets.push(EthWallet.fromJSON(wallet.wallet, this))
                     break
             }
         }
 
         this.addresses = []
-
-        this.checkMissingWallets()
 
         this.crossSwaps = data.crossSwaps
         if(this.crossSwaps === undefined)
@@ -98,6 +95,8 @@ class BaseWallet {
             this.version = VERSION//To change for VERSION after next update
             this.save()
         }
+
+        this.checkMissingWallets()
 
         this.getSwapParams()
     }
@@ -183,7 +182,7 @@ class BaseWallet {
                 if(refWallet.wallet.chainID == wallet.chainID) continue b
 
             changed = true
-            const wallet = EthWallet.fromJSON(refWallet.wallet)
+            const wallet = EthWallet.fromJSON(refWallet.wallet, this)
             wallet.init()
             this.wallets.push(wallet)
         }
