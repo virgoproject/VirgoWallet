@@ -94,7 +94,7 @@ class Uniswap02Utils {
 
             const swapExactETHForToken = function(){
                 proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
-                    gas = (gas + _Uniswap02Utils.additionalGas).toString()
+                    gas = (gas + Uniswap02Utils.additionalGas).toString()
                     proxy.methods.swapExactETHForTokens(dexParams.params.routerAddress, route, minOut.toString()).send({value: amount, nonce: nonce, gasPrice: gasPrice, gas: gas, from: baseWallet.getCurrentAddress()}).on("transactionHash", hash => {
 
                         try{
@@ -195,21 +195,21 @@ class Uniswap02Utils {
             const estimateGas = function (approveHash){
                 if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
                     proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
-                        swapExactTokensForETH(approveHash, (gas + _Uniswap02Utils.additionalGas).toString())
+                        swapExactTokensForETH(approveHash, (gas + Uniswap02Utils.additionalGas).toString())
                     })
                     return
                 }
                 proxy.methods.swapExactTokensForTokens(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
-                    swapExactTokensForTokens(approveHash, (gas + _Uniswap02Utils.additionalGas).toString())
+                    swapExactTokensForTokens(approveHash, (gas + Uniswap02Utils.additionalGas).toString())
                 })
             }
 
             const swap = function (approveHash){
                 if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
-                    swapExactTokensForETH(approveHash, _Uniswap02Utils.defaultSwapGas)
+                    swapExactTokensForETH(approveHash, Uniswap02Utils.defaultSwapGas)
                     return
                 }
-                swapExactTokensForTokens(approveHash, _Uniswap02Utils.defaultSwapGas)
+                swapExactTokensForTokens(approveHash, Uniswap02Utils.defaultSwapGas)
             }
 
             token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call().then(allowance => {

@@ -85,7 +85,7 @@ class RewardPane extends StatefulElement {
                         <div class="rightBox">
                             <div class="d-flex align-items-center">
                                  <img src="https://raw.githubusercontent.com/virgoproject/tokens/main/56/0xfb526228ff1c019e4604c7e7988c097d96bd5b70/logo.png" class="vgoIcon">
-                                 <p id="estReward" class="text-lg m-0 pl-2  text-gray-700">${data.estReward} VGO</p>
+                                 <p id="estReward" class="text-lg m-0 pl-2  text-gray-700">${Utils.cutToDecimals(data.estReward, 1)} VGO</p>
                             </div>
                             <p id="estRewardTitle" class="m-0  text-gray-700">${Stateful.t("rewardEstimatedRewardTitle")}</p>
                         </div>

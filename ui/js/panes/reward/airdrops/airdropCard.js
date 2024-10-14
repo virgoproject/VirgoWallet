@@ -41,7 +41,17 @@ class AirdropCard extends StatefulElement {
 
         const joined = this.getAttribute("joined") == "true"
 
-        if(loading) return ""
+        if(loading) return `
+            <div class="mt-1 p-3" id="topWrapper">
+                <div id="logosWrapper">
+                    <div class="shimmerBG" id="shimmerLogo"></div>
+                </div>
+                <div class="shimmerBG" id="nameShimmer"></div>
+                <div id="amountWrapper">
+                    <div class="shimmerBG" id="amountShimmer"></div>
+                </div>
+            </div>
+        `
 
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
@@ -200,6 +210,19 @@ class AirdropCard extends StatefulElement {
 
             .opened #details {
                 display: block;
+            }
+            
+            #nameShimmer {
+                width: 10ch;
+                height: 1em;
+                margin-left: 1em;
+                border-radius: 0.5em;
+            }
+            
+            #amountShimmer {
+                width: 5ch;
+                height: 1em;
+                border-radius: 0.5em;
             }
         `;
     }

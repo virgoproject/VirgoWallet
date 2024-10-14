@@ -12,6 +12,13 @@ class swapRewards extends StatefulElement {
             <div class="shimmerBG mt-3" id="shimmer"></div>
         `
 
+        const ctaClick = this.registerFunction(() => {
+            document.querySelector("quests-pane").remove()
+            document.getElementById("footerSwapBtn").click()
+        })
+
+        console.log(data)
+
         return `
             <div id="wrapper" class="mt-3 p-3 text-gray-700">
                 <p id="title" style="font-weight: 600;">${Stateful.t("rewardSwapTitle1")} ${data.max} ${Stateful.t("rewardSwapTitle2")}</p>
@@ -19,8 +26,11 @@ class swapRewards extends StatefulElement {
                 <div id="progress">
                     <div id="progressInner" style="width: ${Math.max(5, data.current/data.max*100).toFixed(0)}%"></div>
                 </div>
-                <p class="text-sm text-gray-400 mt-2 mb-0 text-right">${data.current}/${data.max}</p>
-                <button class="button w-100 mt-3">${Stateful.t("rewardSwapCTABtn")}</button>
+                <div class="d-flex justify-content-between">
+                    <p class="text-sm text-gray-400 mt-2 mb-0">${data.xpPerUSD} XP/USD</p>
+                    <p class="text-sm text-gray-400 mt-2 mb-0 text-right">${data.current}/${data.max}</p>
+                </div>
+                <button class="button w-100 mt-3" onclick="${ctaClick}">${Stateful.t("rewardSwapCTABtn")}</button>
             </div>
         `;
     }
