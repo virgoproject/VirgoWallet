@@ -11,6 +11,7 @@ class SelectLanguage extends StatefulElement {
         "ar": "العربية",
         "zh": "中文",
         "de": "Deutsch",
+        "bn": "বাংলা",
         "id": "Bahasa Indonesia",
         "it": "Italiano",
         "ja": "日本語",

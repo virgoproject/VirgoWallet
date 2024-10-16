@@ -319,7 +319,6 @@ class TokensHandlers {
         for (let i = baseWallet.wallets.length - 1; i >= 0; i--) {
             const wallet = baseWallet.wallets[i]
             const balances = wallet.getBalances(wallet.getCurrentAddress())
-            console.log(balances)
             for(const tokenAddr in balances){
                 const token = balances[tokenAddr]
                 const t = structuredClone(token)

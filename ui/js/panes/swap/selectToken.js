@@ -76,8 +76,6 @@ class SwapSelectToken extends StatefulElement {
             `
         }
 
-        console.log(baseInfos)
-
         this.baseInfos = baseInfos
 
         this.boxNumber = 15

@@ -68,6 +68,10 @@ class SendToken extends StatefulElement {
             document.body.appendChild(elem)
         })
 
+        const buyClick = this.registerFunction(() => {
+            document.getElementById("footerSwapBtn").click()
+        })
+
         let recent = `
             ${this.getRows(data.favoriteContacts, Stateful.t("sendFavoriteLabel"))}
             <div class="pt-3">
@@ -96,7 +100,7 @@ class SendToken extends StatefulElement {
                         <button class="button w-100" id="receive" onclick="${receiveClick}"><i class="fa-solid fa-arrow-down"></i> ${Stateful.t("sendReceiveBtn")}</button>
                     </div>
                     <div class="p-0 pl-2">
-                        <button class="button w-100" id="buy"><i class="fa-solid fa-dollar-sign"></i> ${Stateful.t("sendBuyBtn")}</button>
+                        <button class="button w-100" id="buy" onclick="${buyClick}"><i class="fa-solid fa-dollar-sign"></i> ${Stateful.t("sendBuyBtn")}</button>
                     </div>
                 </div>
                 <p class="mt-3 mb-0 label">${Stateful.t("sendRecipientLabel")}</p>

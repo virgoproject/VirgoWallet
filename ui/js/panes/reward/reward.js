@@ -93,20 +93,17 @@ class RewardPane extends StatefulElement {
                 </div>
                 <div class="sectionButton mt-4" onclick="${airdropsClick}" id="airdropsBtn">
                     <div class="buttonsInner p-3">
-                        <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardAirdropsBtnTitle")}</p>
-                        <p class="subtitle m-0">${Stateful.t("rewardAirdropsBtnSub")}</p>        
+                        <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardAirdropsBtnTitle")}</p>  
                     </div>
                 </div>
                 <div class="sectionButton mt-4" onclick="${questsClick}" id="questsBtn">
                     <div class="buttonsInner p-3">
                         <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardQuestsBtnTitle")}</p>
-                        <p class="subtitle m-0">${Stateful.t("rewardQuestsBtnSub")}</p>    
                     </div>
                 </div>
-                <div class="sectionButton mt-4" onclick="${referralClick}" id="questsBtn">
+                <div class="sectionButton mt-4" onclick="${referralClick}" id="referralBtn">
                     <div class="buttonsInner p-3">
                         <p class="title m-0 text-gray-700 text-xl">${Stateful.t("rewardReferralBtnTitle")}</p>
-                        <p class="subtitle m-0">${Stateful.t("rewardReferralBtnSub")}</p>    
                     </div>
                 </div>
             </div>
@@ -151,7 +148,7 @@ class RewardPane extends StatefulElement {
                 font-weight: 600;
             }
             
-            #airdropsBtn, #questsBtn {
+            #airdropsBtn, #questsBtn, #referralBtn {
                 background-repeat: no-repeat;
                 background-position: center;
                 background-position-x: left;
@@ -175,6 +172,10 @@ class RewardPane extends StatefulElement {
             
             #questsBtn {
                 background-image: url(../images/reward/questBtn.png);
+            }
+            
+            #referralBtn {
+                background-image: url(../images/reward/referralBtn.png);
             }
             
             .xpIcon {

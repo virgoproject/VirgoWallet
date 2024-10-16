@@ -1,4 +1,4 @@
-Stateful.addLocale("bd", {
+Stateful.addLocale("bn", {
     contactNotFound: "যোগাযোগ পাওয়া যায়নি!",
     contactSearchPlaceholder: "একটি যোগাযোগ অনুসন্ধান করুন",
     noContactsTitle: "এখনও কোনো যোগাযোগ নেই!",
