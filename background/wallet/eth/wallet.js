@@ -145,7 +145,7 @@ class EthWallet {
         }
 
         for(const token of this.tokens){
-            const price = this.prices.get(token.contract)
+            const price = this.prices.get(token.contract.toLowerCase())
             if(price === undefined) continue
             balances[token.contract].change = price.change
             balances[token.contract].price = price.price
