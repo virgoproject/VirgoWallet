@@ -57,7 +57,7 @@ class EthWalletUpdater {
                 return
             }
             _this.updatePrices()
-        }, 300000)
+        }, 30000)
     }
 
     update(){
@@ -131,12 +131,24 @@ class EthWalletUpdater {
         for(const token of this.wallet.tokens){
             if(!token.tracked && token.contract.toLowerCase() !== this.wallet.contract.toLowerCase()) continue
 
-            this.updatePrice(token.contract)
+            try {
+                this.updatePrice(token.contract)
+            }catch (e) {
+                console.log("suce pute")
+            }
         }
+
+        console.log("heeooeo")
+        console.log(this.wallet.contract)
+        this.updatePrice(this.wallet.contract)
     }
 
     updatePrice(token){
         const _this = this
+
+        token = token.toLowerCase()
+
+        console.log("updating price for " + _this.wallet.chainID + " " + token)
 
         fetch(`https://api.virgo.net:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
             .then(function (resp) {
