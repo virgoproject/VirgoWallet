@@ -78,7 +78,9 @@ class EthWalletUpdater {
         }
 
         _this.wallet.web3.eth.getBalance(address).then(function(res){
-            balances[_this.wallet.ticker].balance = res;
+            if(balances[_this.wallet.ticker].balance == res) return
+            balances[_this.wallet.ticker].balance = res
+            this.updatePrice(this.wallet.contract)
         })
 
         if(this.trackedUpdateIndex < tracked.length){
@@ -100,7 +102,6 @@ class EthWalletUpdater {
             this.untrackedUpdateIndex = this.untrackedUpdateIndex+toSelect
 
             this.trackedUpdateIndex = 0
-
         }
 
     }
@@ -138,8 +139,6 @@ class EthWalletUpdater {
             }
         }
 
-        console.log("heeooeo")
-        console.log(this.wallet.contract)
         this.updatePrice(this.wallet.contract)
     }
 
@@ -153,6 +152,7 @@ class EthWalletUpdater {
         fetch(`https://api.virgo.net:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
             .then(function (resp) {
                 resp.json().then(function (res) {
+                    console.log(res)
                     if(res.price && res.change)
                         _this.wallet.prices.set(token, {
                             price: parseFloat(res.price),

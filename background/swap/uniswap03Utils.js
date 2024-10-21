@@ -43,15 +43,22 @@ class Uniswap03Utils {
             cumuledFees+=(fee/1000000)
         }
 
-        if(initialRoute.route[0] == this.chain.ticker)
+        console.log("got here")
+
+        if(initialRoute.route[0] == this.chain.ticker){
+            console.log("laaaa")
+            console.log(dexParams.params.proxyAddress)
             return {
                 gas: (await proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
             }
+        }
 
         const token = new this.web3.eth.Contract(ERC20_ABI, route.route[0], { from: baseWallet.getCurrentAddress()});
 
         const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
+
+        console.log("got hereqq")
 
         if(allowance < BigInt(amount)){
             return {
@@ -60,11 +67,15 @@ class Uniswap03Utils {
             }
         }
 
+        console.log("got heresds")
+
         if(initialRoute.route[initialRoute.route.length-1] == this.chain.ticker)
             return {
                 gas: (await proxy.methods.univ3_swapExactTokensForETHSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
             }
+
+        console.log("gotq here")
 
         return {
             gas: (await proxy.methods.univ3_swapExactTokensForTokensSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap03Utils.additionalGas).toString(),
