@@ -113,7 +113,7 @@ class EthWalletUpdater {
             for(const bal in bals){
                 const balance = bals[bal]
 
-                if(!balance.balance) continue
+                if(balance.balance === null) continue
 
                 if(balances[balance.token].balance != balance.balance){
                     balances[balance.token].balance = balance.balance
