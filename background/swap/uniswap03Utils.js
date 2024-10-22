@@ -47,7 +47,10 @@ class Uniswap03Utils {
 
         if(initialRoute.route[0] == this.chain.ticker){
             console.log("laaaa")
-            console.log(dexParams.params.proxyAddress)
+            console.log(dexParams.params.routerAddress)
+            console.log(route.route)
+            console.log(route.fees[0])
+            console.log(minOut)
             return {
                 gas: (await proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees

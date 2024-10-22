@@ -70,7 +70,7 @@ class RewardPane extends StatefulElement {
                             <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
                             <p class="text-sm mb-2">${Stateful.t("rewardCurrentRankTitle")}</p>
                             <div id="rankProgress">
-                                <div id="rankProgressInner" style="width: ${(data.rank.progress*100).toFixed(0)}%"></div>
+                                <div id="rankProgressInner" style="width: ${(Math.min(data.rank.progress*100, 100)).toFixed(0)}%"></div>
                             </div>
                         </div>
                     </div>
