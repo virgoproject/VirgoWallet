@@ -96,21 +96,23 @@ class AirdropCard extends StatefulElement {
                 </div>
             </div>
             <div class="mt-3" id="details">
-                <div class="row">
-                    <div class="col-4 text-center">
+                <div class="d-flex justify-content-around">
+                    <div class="text-center">
                         <p>${json.entryCount}</p>
                         <p class="text-gray-400 text-sm">${Stateful.t("airdropParticipantsTitle")}</p>
                     </div>
-                    <div class="col-4 text-center">
+                    <div class="text-center">
                         <p>${json.winnersCount}</p>
                         <p class="text-gray-400 text-sm">${Stateful.t("airdropWinnersTitle")}</p>
                     </div>
-                    <div class="col-4 text-center">
-                        <p>${timeLeft.value}</p>
-                        <p class="text-gray-400 text-sm">${timeLeft.label} ${Stateful.t("airdropTimeLeftTitle")}</p>
-                    </div>
-                    ${button}
+                    ${json.endDate < Date.now() ? "" : `
+                        <div class="text-center">
+                            <p>${timeLeft.value}</p>
+                            <p class="text-gray-400 text-sm">${timeLeft.label} ${Stateful.t("airdropTimeLeftTitle")}</p>
+                        </div>
+                    `}
                 </div>
+                ${button}
             </div>
         </div>
         `;

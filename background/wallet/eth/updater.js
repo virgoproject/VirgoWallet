@@ -57,7 +57,7 @@ class EthWalletUpdater {
                 return
             }
             _this.updatePrices()
-        }, 30000)
+        }, 600000)
     }
 
     update(){
@@ -80,7 +80,8 @@ class EthWalletUpdater {
         _this.wallet.web3.eth.getBalance(address).then(function(res){
             if(balances[_this.wallet.ticker].balance == res) return
             balances[_this.wallet.ticker].balance = res
-            this.updatePrice(this.wallet.contract)
+            console.log("updating native price for " + _this.wallet.chainID)
+            _this.updatePrice(_this.wallet.contract)
         })
 
         if(this.trackedUpdateIndex < tracked.length){
@@ -134,9 +135,7 @@ class EthWalletUpdater {
 
             try {
                 this.updatePrice(token.contract)
-            }catch (e) {
-                console.log("suce pute")
-            }
+            }catch (e) {}
         }
 
         this.updatePrice(this.wallet.contract)
@@ -147,21 +146,23 @@ class EthWalletUpdater {
 
         token = token.toLowerCase()
 
-        console.log("updating price for " + _this.wallet.chainID + " " + token)
-
         fetch(`https://api.virgo.net:2053/api/token/price/${_this.wallet.chainID}/${token}/${selectedCurrency}`)
             .then(function (resp) {
                 resp.json().then(function (res) {
-                    console.log(res)
-                    if(res.price && res.change)
+                    if(res.price && res.change){
                         _this.wallet.prices.set(token, {
                             price: parseFloat(res.price),
                             change: parseFloat(res.change)
                         })
+                        if(token.toLowerCase() == _this.wallet.contract.toLowerCase()){
+                            _this.wallet.prices.set(_this.wallet.ticker, {
+                                price: parseFloat(res.price),
+                                change: parseFloat(res.change)
+                            })
+                        }
+                    }
                 })
-            }).catch(function (e) {
-                console.log(e)
-            })
+            }).catch(function (e) {})
     }
 
     fetchTokens(){
@@ -181,6 +182,7 @@ class EthWalletUpdater {
                                             .then(function(resp2){
                                                 console.log("adding " + _this.wallet.chainID + " " + token)
                                                 resp2.json().then(function(res2){
+                                                    if(res2.name === undefined || res2.ticker === undefined || res2.decimals === undefined || res2.contract === undefined) return
                                                     console.log("added " + res2.ticker)
                                                     _this.wallet.addToken(res2.name, res2.ticker, res2.decimals, res2.contract, false)
                                                 })

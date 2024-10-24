@@ -65,16 +65,17 @@ class RewardPane extends StatefulElement {
                     <p id="seasonSubtitle" class="text-gray-400 text-sm">${Stateful.t("rewardSeasonTimeLeft1")} ${Math.floor((data.seasonEndDate-Date.now()) / (1000 * 60 * 60 * 24))} ${Stateful.t("rewardSeasonTimeLeft2")}</p>
                 </div>
                 <div class="d-flex">
-                    <div class="flex-grow-1 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}" style='background-image: url("../images/reward/ranks/${data.rank.rank.name}.png");'>
+                    <div class="flex-0 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}">
+                        <img src="../images/reward/ranks/${data.rank.rank.name}.png" class="w-100" style="margin-top: -50%;transform: translateY(25%);">
                         <div id="rankBoxInner">
                             <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
-                            <p class="text-sm mb-2">${Stateful.t("rewardCurrentRankTitle")}</p>
+                            <p class="text-nowrap text-sm mb-2">${Stateful.t("rewardCurrentRankTitle")}</p>
                             <div id="rankProgress">
                                 <div id="rankProgressInner" style="width: ${(Math.min(data.rank.progress*100, 100)).toFixed(0)}%"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-grow-1 ml-2">
+                    <div class="flex-1 ml-2">
                         <div class="rightBox mb-3">
                             <div class="d-flex align-items-center">
                                  <p class="xpIcon">XP</p>

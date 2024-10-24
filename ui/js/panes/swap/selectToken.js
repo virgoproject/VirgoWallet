@@ -47,11 +47,26 @@ class SwapSelectToken extends StatefulElement {
 
             let tokens = await getAllTokens()
 
+            console.log(tokens)
+
             tokens = tokens.sort((a,b) => {
+
+                if(a.decimals === undefined) a.decimals = 18
+                if(b.decimals === undefined) b.decimals = 18
+
                 let sortValA = a.price == 0 ? a.balance/10**(a.decimals*2) : a.price*(a.balance/10**a.decimals)
                 if(a.isNative) sortValA = sortValA + 1
                 let sortValB = b.price == 0 ? b.balance/10**(b.decimals*2) : b.price*(b.balance/10**b.decimals)
                 if(b.isNative) sortValB = sortValB + 1
+
+                if(isNaN(sortValA)){
+                    console.log(a)
+                }
+
+                if(isNaN(sortValB)){
+                    console.log(b)
+                }
+
                 return sortValB-sortValA
             })
 

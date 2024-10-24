@@ -37,12 +37,11 @@ class EthWallet {
             if(transaction.contractAddr == "ATOMICSWAP")
                 atomicSwap.addOrder(transaction.swapInfos)
 
-        console.log("good " + this.name)
     }
 
     init(){
         this.initProvider()
-        new EthWalletUpdater(this)
+        this.updater = new EthWalletUpdater(this)
     }
 
     static fromJSON(json, baseWalletInst){
@@ -50,6 +49,8 @@ class EthWallet {
         if(json.tracked === undefined) json.tracked = true
         if(json.transactions === undefined) json.transactions = []
         if (json.nft === undefined) json.nft = []
+
+        if(json.chainID == 137 || json.chainID == "137") json.ticker = "POL"
 
         return new EthWallet(baseWalletInst, json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.nft, json.tracked)
     }
@@ -153,6 +154,12 @@ class EthWallet {
                 balances[this.ticker].change = price.change
                 balances[this.ticker].price = price.price
             }
+        }
+
+        const nativePrice = this.prices.get(this.ticker)
+        if(nativePrice){
+            balances[this.ticker].change = nativePrice.change
+            balances[this.ticker].price = nativePrice.price
         }
 
         return balances
