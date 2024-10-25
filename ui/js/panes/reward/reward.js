@@ -66,7 +66,7 @@ class RewardPane extends StatefulElement {
                 </div>
                 <div class="d-flex">
                     <div class="flex-0 mr-2 pb-3 d-flex flex-column justify-content-end" id="rankBox" onclick="${rulesClick}">
-                        <img src="../images/reward/ranks/${data.rank.rank.name}.png" class="w-100" style="margin-top: -50%;transform: translateY(25%);">
+                        <img src="../images/reward/ranks/${data.rank.rank.name.toLowerCase()}.png" class="w-100" style="margin-top: -50%;transform: translateY(25%);">
                         <div id="rankBoxInner">
                             <p id="rankName" class="text-xl m-0">${data.rank.rank.name.toUpperCase()}</p>
                             <p class="text-nowrap text-sm mb-2">${Stateful.t("rewardCurrentRankTitle")}</p>
