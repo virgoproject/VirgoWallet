@@ -90,7 +90,7 @@ class AirdropCard extends StatefulElement {
                 </div>
                 <p id="name" class="weight-600">${data.name}</p>
                 <div id="amountWrapper">
-                    <p id="amount" class="text-gray-400">${Utils.formatAmount(json.reward/json.winnersCount, json.decimals)}</p>
+                    <p id="amount" class="text-gray-400">${Utils.formatAmount((BigInt(json.reward)/BigInt(json.winnersCount)).toString(), json.decimals)}</p>
                     <p id="ticker" class="text-gray-400"> ${data.ticker}</p>
                     <i class="fa-regular fa-chevron-right text-gray-400" id="expand"></i>
                 </div>
