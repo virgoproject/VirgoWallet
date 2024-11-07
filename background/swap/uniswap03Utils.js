@@ -43,14 +43,7 @@ class Uniswap03Utils {
             cumuledFees+=(fee/1000000)
         }
 
-        console.log("got here")
-
-        if(initialRoute.route[0] == this.chain.ticker){
-            console.log("laaaa")
-            console.log(dexParams.params.routerAddress)
-            console.log(route.route)
-            console.log(route.fees[0])
-            console.log(minOut)
+        if(initialRoute.route[0].toLowerCase() == this.chain.ticker.toLowerCase()){
             return {
                 gas: (await proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
@@ -61,8 +54,6 @@ class Uniswap03Utils {
 
         const allowance = await token.methods.allowance(baseWallet.getCurrentAddress(), dexParams.params.proxyAddress).call()
 
-        console.log("got hereqq")
-
         if(allowance < BigInt(amount)){
             return {
                 gas: (Uniswap03Utils.defaultSwapGas + await token.methods.approve(dexParams.params.proxyAddress, 115792089237316195423570985008687907853269984665640564039457584007913129639935n).estimateGas()).toString(),
@@ -70,15 +61,11 @@ class Uniswap03Utils {
             }
         }
 
-        console.log("got heresds")
-
-        if(initialRoute.route[initialRoute.route.length-1] == this.chain.ticker)
+        if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == this.chain.ticker.toLowerCase())
             return {
                 gas: (await proxy.methods.univ3_swapExactTokensForETHSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
             }
-
-        console.log("gotq here")
 
         return {
             gas: (await proxy.methods.univ3_swapExactTokensForTokensSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap03Utils.additionalGas).toString(),
@@ -113,7 +100,7 @@ class Uniswap03Utils {
             cumuledFees+=(fee/1000000)
         }
 
-        if(initialRoute.route[0] == this.chain.ticker)
+        if(initialRoute.route[0].toLowerCase() == this.chain.ticker.toLowerCase())
             return {
                 gas: (await proxy.methods.univ3_swapExactETHForTokens(dexParams.params.routerAddress, path, minOut).estimateGas({from: baseWallet.getCurrentAddress(), value: amount}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
@@ -130,7 +117,7 @@ class Uniswap03Utils {
             }
         }
 
-        if(initialRoute.route[initialRoute.route.length-1] == this.chain.ticker)
+        if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == this.chain.ticker.toLowerCase())
             return {
                 gas: (await proxy.methods.univ3_swapExactTokensForETH(dexParams.params.routerAddress, amount, route.route[0], path, minOut).estimateGas({ from: baseWallet.getCurrentAddress()}) + Uniswap03Utils.additionalGas).toString(),
                 feesRate: cumuledFees
@@ -177,7 +164,7 @@ class Uniswap03Utils {
 
         return await new Promise(resolve => {
 
-            if(initialRoute.route[0] == _this.chain.ticker){
+            if(initialRoute.route[0].toLowerCase() == _this.chain.ticker.toLowerCase()){
                 console.log("swapExactETHForToken")
                 proxy.methods.univ3_swapExactETHForTokensSingle(dexParams.params.routerAddress, route.route, route.fees[0], minOut).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
                     gas += Uniswap03Utils.additionalGas
@@ -198,9 +185,9 @@ class Uniswap03Utils {
                             "nonce": nonce,
                             "origin": "Virgo Swap",
                             "swapInfos": {
-                                "route": route.route,
-                                "tokenIn": route.route[0],
-                                "tokenOut": route.route[route.route.length-1],
+                                "route": initialRoute.route,
+                                "tokenIn": initialRoute.route[0],
+                                "tokenOut": initialRoute.route[initialRoute.route.length-1],
                                 "amountIn": amount,
                                 "approveHash": ""
                             }
@@ -232,9 +219,9 @@ class Uniswap03Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route.route,
-                            "tokenIn": route.route[0],
-                            "tokenOut": route.route[route.route.length-1],
+                            "route": initialRoute.route,
+                            "tokenIn": initialRoute.route[0],
+                            "tokenOut": initialRoute.route[initialRoute.route.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -262,9 +249,9 @@ class Uniswap03Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route.route,
-                            "tokenIn": route.route[0],
-                            "tokenOut": route.route[route.route.length-1],
+                            "route": initialRoute.route,
+                            "tokenIn": initialRoute.route[0],
+                            "tokenOut": initialRoute.route[initialRoute.route.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -275,7 +262,7 @@ class Uniswap03Utils {
             }
 
             const estimateGas = function (approveHash){
-                if(initialRoute.route[initialRoute.route.length-1] == _this.chain.ticker){
+                if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     proxy.methods.univ3_swapExactTokensForETHSingle(dexParams.params.routerAddress, amount, route.route, route.fees[0], minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
                         swapExactTokenForETH(approveHash, gas + Uniswap03Utils.additionalGas)
                     })
@@ -287,7 +274,7 @@ class Uniswap03Utils {
             }
 
             const swap = function (approveHash){
-                if(initialRoute.route[initialRoute.route.length-1] == _this.chain.ticker){
+                if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     swapExactTokenForETH(approveHash, Uniswap03Utils.defaultSwapGas)
                     return
                 }
@@ -322,7 +309,7 @@ class Uniswap03Utils {
         route.route = []
 
         for(const node of initialRoute.route){
-            if(node == this.chain.ticker){
+            if(node.toLowerCase() == this.chain.ticker.toLowerCase()){
                 route.route.push(dexParams.params.WETH)
                 continue
             }
@@ -338,7 +325,7 @@ class Uniswap03Utils {
 
         return await new Promise(resolve => {
 
-            if(initialRoute.route[0] == _this.chain.ticker){
+            if(initialRoute.route[0].toLowerCase() == _this.chain.ticker.toLowerCase()){
                 console.log("swapExactETHForToken")
                 proxy.methods.univ3_swapExactETHForTokens(dexParams.params.routerAddress, path, minOut).estimateGas({value: amount, from: baseWallet.getCurrentAddress()}).then(gas => {
                     gas += Uniswap03Utils.additionalGas
@@ -359,9 +346,9 @@ class Uniswap03Utils {
                             "nonce": nonce,
                             "origin": "Virgo Swap",
                             "swapInfos": {
-                                "route": route.route,
-                                "tokenIn": route.route[0],
-                                "tokenOut": route.route[route.route.length-1],
+                                "route": initialRoute.route,
+                                "tokenIn": initialRoute.route[0],
+                                "tokenOut": initialRoute.route[initialRoute.route.length-1],
                                 "amountIn": amount,
                                 "approveHash": ""
                             }
@@ -393,9 +380,9 @@ class Uniswap03Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route.route,
-                            "tokenIn": route.route[0],
-                            "tokenOut": route.route[route.route.length-1],
+                            "route": initialRoute.route,
+                            "tokenIn": initialRoute.route[0],
+                            "tokenOut": initialRoute.route[initialRoute.route.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -423,9 +410,9 @@ class Uniswap03Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route.route,
-                            "tokenIn": route.route[0],
-                            "tokenOut": route.route[route.route.length-1],
+                            "route": initialRoute.route,
+                            "tokenIn": initialRoute.route[0],
+                            "tokenOut": initialRoute.route[initialRoute.route.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -436,7 +423,7 @@ class Uniswap03Utils {
             }
 
             const estimateGas = function (approveHash){
-                if(initialRoute.route[initialRoute.route.length-1] == _this.chain.ticker){
+                if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     proxy.methods.univ3_swapExactTokensForETH(dexParams.params.routerAddress, amount, route.route[0], path, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
                         swapExactTokenForETH(approveHash, gas + Uniswap03Utils.additionalGas)
                     })
@@ -448,7 +435,7 @@ class Uniswap03Utils {
             }
 
             const swap = function (approveHash){
-                if(initialRoute.route[initialRoute.route.length-1] == _this.chain.ticker){
+                if(initialRoute.route[initialRoute.route.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     swapExactTokenForETH(approveHash, Uniswap03Utils.defaultSwapGas)
                     return
                 }

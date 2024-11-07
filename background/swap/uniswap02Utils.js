@@ -112,9 +112,9 @@ class Uniswap02Utils {
                             "nonce": nonce,
                             "origin": "Virgo Swap",
                             "swapInfos": {
-                                "route": route,
-                                "tokenIn": route[0],
-                                "tokenOut": route[route.length-1],
+                                "route": initialRoute,
+                                "tokenIn": initialRoute[0],
+                                "tokenOut": initialRoute[initialRoute.length-1],
                                 "amountIn": amount,
                                 "approveHash": ""
                             }
@@ -125,7 +125,7 @@ class Uniswap02Utils {
                 })
             }
 
-            if(initialRoute[0] == _this.chain.ticker){
+            if(initialRoute[0].toLowerCase() == _this.chain.ticker.toLowerCase()){
                 swapExactETHForToken()
                 return
             }
@@ -150,9 +150,9 @@ class Uniswap02Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route,
-                            "tokenIn": route[0],
-                            "tokenOut": route[route.length-1],
+                            "route": initialRoute,
+                            "tokenIn": initialRoute[0],
+                            "tokenOut": initialRoute[initialRoute.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -180,9 +180,9 @@ class Uniswap02Utils {
                         "nonce": nonce,
                         "origin": "Virgo Swap",
                         "swapInfos": {
-                            "route": route,
-                            "tokenIn": route[0],
-                            "tokenOut": route[route.length-1],
+                            "route": initialRoute,
+                            "tokenIn": initialRoute[0],
+                            "tokenOut": initialRoute[initialRoute.length-1],
                             "amountIn": amount,
                             "approveHash": approveHash
                         }
@@ -193,7 +193,7 @@ class Uniswap02Utils {
             }
 
             const estimateGas = function (approveHash){
-                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     proxy.methods.swapExactTokensForETH(dexParams.params.routerAddress, amount, route, minOut).estimateGas({from: baseWallet.getCurrentAddress()}).then(gas => {
                         swapExactTokensForETH(approveHash, (gas + Uniswap02Utils.additionalGas).toString())
                     })
@@ -205,7 +205,7 @@ class Uniswap02Utils {
             }
 
             const swap = function (approveHash){
-                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker){
+                if(initialRoute[initialRoute.length-1].toLowerCase() == _this.chain.ticker.toLowerCase()){
                     swapExactTokensForETH(approveHash, Uniswap02Utils.defaultSwapGas)
                     return
                 }

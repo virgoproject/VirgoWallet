@@ -469,10 +469,8 @@ class TransactionCard extends StatefulElement {
     }
 
     getProgressRing(json){
-        if(!(json.status === undefined || json.status)) return ""
-
         let confirmations = 0
-        if(json.confirmations) confirmations = json.confirmations
+        if(json.confirmations) confirmations = Number(json.confirmations)
 
         let progress = Math.min(100, (confirmations+1)/13*100)
 
