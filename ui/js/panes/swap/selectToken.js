@@ -47,8 +47,6 @@ class SwapSelectToken extends StatefulElement {
 
             let tokens = await getAllTokens()
 
-            console.log(tokens)
-
             tokens = tokens.sort((a,b) => {
 
                 if(a.decimals === undefined) a.decimals = 18
@@ -59,18 +57,10 @@ class SwapSelectToken extends StatefulElement {
                 let sortValB = b.price == 0 ? b.balance/10**(b.decimals*2) : b.price*(b.balance/10**b.decimals)
                 if(b.isNative) sortValB = sortValB + 1
 
-                if(isNaN(sortValA)){
-                    console.log(a)
-                }
-
-                if(isNaN(sortValB)){
-                    console.log(b)
-                }
-
                 return sortValB-sortValA
             })
 
-            tokens = tokens.concat(fiats)
+            tokens = fiats.concat(tokens)
 
             if(_this.exclude !== undefined){
                 tokens = tokens.filter(item => !_this.exclude.includes(item.chainID + item.contract) && !_this.exclude.includes(item.chainID + item.contract.toLowerCase()))
@@ -209,10 +199,12 @@ class SwapSelectToken extends StatefulElement {
                                 <p class="tokenName">${data[i].name}</p>
                                 <p class="tokenAddress text-sm">${data[i].ticker} &centerdot; ${data[i].chainName}</p>
                             </div>
-                            <div class="rightText">
-                                <p class="balance"><span class="val">${Utils.cutTo4Decimals(Utils.formatAmount(data[i].balance, data[i].decimals))}</span></p>
-                                <p class="fiatValue text-sm"><span class="fiatval">${(data[i].price*data[i].balance/10**data[i].decimals).toFixed(2)}</span><span class="fiatSymbol">${currencyToSymbol(_this.baseInfos.selectedCurrency)}</span></p>
-                            </div>
+                            ${data[i].chainID != "FIAT" ? `
+                                <div class="rightText">
+                                    <p class="balance"><span class="val">${Utils.cutTo4Decimals(Utils.formatAmount(data[i].balance, data[i].decimals))}</span></p>
+                                    <p class="fiatValue text-sm"><span class="fiatval">${(data[i].price*data[i].balance/10**data[i].decimals).toFixed(2)}</span><span class="fiatSymbol">${currencyToSymbol(_this.baseInfos.selectedCurrency)}</span></p>
+                                </div>
+                            ` : ""}
                         </div>
                     </div>
                 `)

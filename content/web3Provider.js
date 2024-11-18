@@ -36,7 +36,6 @@ console.log("virgo wallet - Injected Web3")
 
 virgoProvider = new Proxy({
     isVirgo: true,
-    isMetaMask: true,
     isEIP1193: true,
     networkVersion: '1',
     chainId: '0x1',

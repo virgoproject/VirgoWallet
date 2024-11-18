@@ -407,8 +407,6 @@ function handleWeb3Request(origin, method, params, reqId, sender){
         default:
             if(!isWebsiteAuthorized(origin, tabId, reqId)) return
 
-            console.log(method)
-
             web3.currentProvider.send({
                 jsonrpc: "2.0",
                 id: Date.now() + "." + Math.random(),

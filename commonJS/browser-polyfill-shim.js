@@ -100,7 +100,11 @@ browserShim.tabs.sendMessage = (id, params) => {
 }
 
 browserShim.windows.create = (params) => {
-    if(params.url.startsWith("http")) return
+    if(params.url.startsWith("http")) {
+        console.log(window.location.href)
+        window.location.href = params.url
+        return
+    }
 
     const iframe = document.createElement("iframe")
     iframe.src = params.url.replace("/ui/html/", "")
