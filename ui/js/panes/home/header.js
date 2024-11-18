@@ -27,11 +27,13 @@ class HomeHeader extends StatefulElement {
 
         let chainSelector = document.querySelector("chain-selector")
         const chainClick = this.registerFunction(() => {
+            if(chainSelector && chainSelector.deleting) chainSelector = false
             if(!chainSelector){
                 chainSelector = document.createElement("chain-selector")
                 chainSelector.resetHome = () => {
                     _this.resetassets()
                     _this.runFunctions()
+                    chainSelector.removeWithAnimation()
                 }
                 document.body.appendChild(chainSelector)
                 this.querySelector("#chainNameIcon").classList.add("opened")

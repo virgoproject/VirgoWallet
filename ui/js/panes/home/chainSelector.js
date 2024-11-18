@@ -38,11 +38,18 @@ class ChainSelector extends StatefulElement {
             if(!chain.tracked) continue
 
             const chainClick = this.registerFunction(e => {
+
+                const wallet = data.selectedWallet
+
                 browser.runtime.sendMessage({command: 'changeWallet', walletId: e.currentTarget.getAttribute("walletid")}).then(() => {
-                    _this.removeWithAnimation()
-                    setTimeout(() => {
-                        _this.resetHome()
-                    },250)
+                    const interval = setInterval(() => {
+                        getBaseInfos().then(infos => {
+                            if(infos.selectedWallet != wallet){
+                                _this.resetHome()
+                                clearInterval(interval)
+                            }
+                        })
+                    }, 50)
                 })
             })
 
@@ -156,6 +163,7 @@ class ChainSelector extends StatefulElement {
 
     removeWithAnimation(){
         const _this = this
+        this.deleting = true
         this.querySelector("#wrapper").classList.remove("opened");
         setTimeout(() => {
             _this.remove()

@@ -5,7 +5,7 @@ class WalletHome extends StatefulElement {
             const baseInfos = await getBaseInfos()
             if(baseInfos.locked) location.reload()
             return baseInfos
-        }, 10000)
+        }, 5000)
 
         if(loading){
             return `<wallet-loading simple="true"></wallet-loading>`
