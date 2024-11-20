@@ -220,80 +220,98 @@ class TokensHandlers {
         })
     }
 
-    static getTokenDetailsCross(request, sender, sendResponse){
-        const wallet = baseWallet.getChainByID(request.chainID)
 
-        if(wallet.ticker == request.contract){
-            sendResponse({
-                contract: request.contract,
+    /**
+     * Get token Details
+     */
+    static tokenDetailsCache = new Map();
+
+    static async _fetchTokenDetails(chainID, contractAddress) {
+        const cacheKey = `${chainID}-${contractAddress}`;
+        if (this.tokenDetailsCache.has(cacheKey)) {
+            return this.tokenDetailsCache.get(cacheKey);
+        }
+
+        const wallet = baseWallet.getChainByID(chainID)
+
+        //check if token is chain's native asset
+        if (wallet.ticker === contractAddress) {
+            return {
+                contract: contractAddress,
                 name: wallet.asset,
                 decimals: wallet.decimals,
-                ticker: wallet.ticker
-            })
-            return
+                ticker: wallet.ticker,
+            };
         }
 
-        if(wallet.hasToken(request.contract)){
-            sendResponse(wallet.getToken(request.contract))
-            return
+        //check if that's a know token
+        if (wallet.hasToken(contractAddress)) {
+            return wallet.getToken(contractAddress);
         }
 
-        const web3_cross = baseWallet.getWeb3ByID(request.chainID)
+        //if not found, fetch with web3
+        try {
+            const web3Instance = baseWallet.getWeb3ByID(chainID)
 
-        const tokenContract = new web3_cross.eth.Contract(ERC20_ABI, request.contract, { from: baseWallet.getCurrentAddress()});
+            const tokenContract = new web3Instance.eth.Contract(ERC20_ABI, contractAddress);
 
-        tokenContract.methods.name().call().then(function(name){
-            tokenContract.methods.decimals().call().then(function(decimals){
-                tokenContract.methods.symbol().call().then(function(symbol){
-                    sendResponse({
-                        contract: request.contract,
-                        name: name,
-                        decimals: decimals,
-                        ticker: symbol
-                    })
-                }).catch(function(){
-                    sendResponse(false)
-                })
-            }).catch(function(){
-                sendResponse(false)
-            })
-        }).catch(function(){
-            sendResponse(false)
-        })
+            const [name, decimals, symbol] = await Promise.all([
+                tokenContract.methods.name().call(),
+                tokenContract.methods.decimals().call(),
+                tokenContract.methods.symbol().call(),
+            ]);
+
+            const tokenDetails = {
+                contract: contractAddress,
+                name,
+                decimals,
+                ticker: symbol,
+            };
+
+            this.tokenDetailsCache.set(cacheKey, tokenDetails);
+            return tokenDetails;
+        } catch (error) {
+            console.error(`Error fetching token details for ${contractAddress} on chain ${chainID}:`, error);
+            return false;
+        }
     }
 
-    static getTokenDetails(request, sender, sendResponse){
-        if(request.asset === undefined){
-            sendResponse(false)
-            return
+    static async getTokenDetails(request, sender, sendResponse) {
+        if (!request.asset) {
+            sendResponse(false);
+            return;
         }
 
-        if(baseWallet.getCurrentWallet().hasToken(request.asset)){
-            sendResponse(baseWallet.getCurrentWallet().tokenSet.get(request.asset))
-            return
-        }
+        const chainID = baseWallet.getCurrentWallet().chainID;
 
-        const tokenContract = new web3.eth.Contract(ERC20_ABI, request.asset, { from: baseWallet.getCurrentAddress()});
+        console.log("getTokenDetails")
+        console.log(request.asset)
+        console.log(chainID)
+        console.log("")
 
-        tokenContract.methods.name().call().then(function(name){
-            tokenContract.methods.decimals().call().then(function(decimals){
-                tokenContract.methods.symbol().call().then(function(symbol){
-                    sendResponse({
-                        contract: request.asset,
-                        name: name,
-                        decimals: decimals,
-                        symbol: symbol
-                    })
-                }).catch(function(){
-                    sendResponse(false)
-                })
-            }).catch(function(){
-                sendResponse(false)
-            })
-        }).catch(function(){
-            sendResponse(false)
-        })
+        const tokenDetails = await TokensHandlers._fetchTokenDetails(chainID, request.asset);
+
+        sendResponse(tokenDetails || false);
     }
+
+    static async getTokenDetailsCross(request, sender, sendResponse) {
+        const { chainID, contract } = request;
+
+        console.log("cross")
+        console.log(chainID, contract)
+        console.log("")
+
+        if (!chainID || !contract) {
+            sendResponse(false);
+            return;
+        }
+
+        const tokenDetails = await TokensHandlers._fetchTokenDetails(chainID, contract);
+
+        sendResponse(tokenDetails || false);
+    }
+
+
 
     static addToken(request, sender, sendResponse){
         baseWallet.getCurrentWallet().addToken(request.name, request.symbol, request.decimals, request.contract)
