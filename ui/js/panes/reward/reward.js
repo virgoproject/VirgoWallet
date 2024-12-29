@@ -38,6 +38,14 @@ class RewardPane extends StatefulElement {
             `
         }
 
+        if(data.seasonEndDate < Date.now()){
+            return `
+                <div id="content" class="px-3 pt-3">
+                    <reward-finished data="${btoa(JSON.stringify(data))}"></reward-finished>
+                </div>
+            `
+        }
+
         const airdropsClick = this.registerFunction(() => {
             const elem = document.createElement("airdrops-pane")
             document.body.appendChild(elem)
