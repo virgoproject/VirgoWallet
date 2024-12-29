@@ -99,6 +99,7 @@ const commonScripts = [
     "../js/panes/reward/quests/swaps.js",
     "../js/panes/reward/referral/referral.js",
     "../js/panes/reward/startTimer.js",
+    "../js/panes/reward/finished.js",
 ]
 
 const browserScripts = [
