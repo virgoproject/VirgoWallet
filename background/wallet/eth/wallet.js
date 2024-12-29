@@ -1,7 +1,6 @@
 class EthWallet {
 
-    constructor(baseWalletInst, name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, nft, tracked) {
-        console.log("Innit " + name)
+    constructor(baseWalletInst, name, asset, ticker, decimals, contract, rpcURL, chainID, tokens, transactions, explorer, swapV2Params, testnet, nft, tracked, official) {
         this.name = name
         this.asset = asset
         this.ticker = ticker
@@ -16,6 +15,7 @@ class EthWallet {
         this.testnet = testnet
         this.atomicSwapParams = false
         this.tracked = tracked
+        this.official = official
         this.swapV2Params = swapV2Params
         this.baseWalletInst = baseWalletInst
 
@@ -49,10 +49,11 @@ class EthWallet {
         if(json.tracked === undefined) json.tracked = true
         if(json.transactions === undefined) json.transactions = []
         if (json.nft === undefined) json.nft = []
+        if(json.official === undefined) json.official = false
 
         if(json.chainID == 137 || json.chainID == "137") json.ticker = "POL"
 
-        return new EthWallet(baseWalletInst, json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.nft, json.tracked)
+        return new EthWallet(baseWalletInst, json.name, json.asset, json.ticker, json.decimals, json.contract, json.RPC, json.chainID, json.tokens, json.transactions, json.explorer, json.swapV2Params, json.testnet, json.nft, json.tracked, json.official)
     }
 
     toJSON(){
@@ -74,6 +75,7 @@ class EthWallet {
                 "testnet": this.testnet,
                 "atomicSwapParams": this.atomicSwapParams,
                 "tracked": this.tracked,
+                "official": this.official
             }
         }
     }

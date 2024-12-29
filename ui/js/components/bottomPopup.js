@@ -44,7 +44,7 @@ class BottomPopup extends StatefulElement {
                 bottom: 0;
                 padding: 1em;
                 cursor: default;
-                max-height: 70%;
+                max-height: 80%;
                 display: flex;
                 flex-direction: column;
             }

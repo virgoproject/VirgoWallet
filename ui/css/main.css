@@ -808,3 +808,8 @@ iframe {
 .weight-600 {
     font-weight: 600!important;
 }
+
+.input.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

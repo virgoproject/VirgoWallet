@@ -39,6 +39,7 @@ const commonScripts = [
     "../js/panes/settings/networks/manage.js",
     "../js/panes/settings/networks/networkRow.js",
     "../js/panes/settings/networks/add.js",
+    "../js/panes/settings/networks/edit.js",
     "../js/panes/settings/security/security.js",
     "../js/panes/settings/security/autolock.js",
     "../js/panes/settings/security/askPassword.js",

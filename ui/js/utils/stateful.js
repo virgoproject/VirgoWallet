@@ -71,7 +71,7 @@ class Stateful {
     }
 
     static t(key){
-        return this.locales[this.currentLocale][key] || key;
+        return this.locales[this.currentLocale][key] || this.locales["en"][key] || key;
     }
 
 }

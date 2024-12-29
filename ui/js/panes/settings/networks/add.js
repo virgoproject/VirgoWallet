@@ -4,39 +4,32 @@ class AddNetwork extends StatefulElement {
         super();
     }
 
-    eventHandlers() {
+    render() {
         const _this = this
 
-        const name = this.querySelector("#name");
-        const rpc = this.querySelector("#rpc");
-        const chainID = this.querySelector("#id");
-        const symbol = this.querySelector("#symbol");
-        const explorer = this.querySelector("#explorer");
-        const button = this.querySelector("#btn");
-        const errorText = this.querySelector("#error");
+        const [loading, setLoading] = this.useState("loading", false)
 
-        name.oninput = () => {
+        const back = this.registerFunction(() => {
+            _this.remove()
+        })
+
+        const onInput = this.registerFunction(() => {
+            if(loading) return
             _this.settingsNetworkAddValidate()
-        }
+        })
 
-        rpc.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
+        const btnClick = this.registerFunction(() => {
 
-        chainID.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
+            const name = _this.querySelector("#name");
+            const rpc = _this.querySelector("#rpc");
+            const chainID = _this.querySelector("#id");
+            const symbol = _this.querySelector("#symbol");
+            const explorer = _this.querySelector("#explorer");
+            const errorText = _this.querySelector("#error");
 
-        symbol.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        explorer.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        button.onclick = () => {
             addNetwork(name.value, rpc.value.replace(/\s/g,''), chainID.value.replace(/\s/g,''), symbol.value.replace(/\s/g,''), explorer.value.replace(/\s/g,'')).then(res => {
+                setLoading(false)
+
                 if(res.status == 0){
                     errorText.style.display = "block"
                     errorText.innerHTML = Stateful.t("networkAddCantConnectErr")
@@ -53,23 +46,13 @@ class AddNetwork extends StatefulElement {
                     _this.remove()
                     notyf.success(Stateful.t("networkAddSuccessNotif") + name.value.replace(/\s/g,'') + "!")
                 }
-
-                enableLoadBtn($(button))
             })
-        }
-    }
 
-    render() {
-        const _this = this
-
-        const [loading, setLoading] = this.useState("loading", false)
-
-        const back = this.registerFunction(() => {
-            _this.remove()
+            setLoading(true)
         })
 
         let addBtn = `
-            <button class="button w-100 mt-4" disabled="disabled" id="btn">${Stateful.t("networkAddNextBtn")}</button>
+            <button class="button w-100 mt-4" disabled="disabled" id="btn" onclick="${btnClick}">${Stateful.t("networkAddNextBtn")}</button>
         `
 
         if(loading){
@@ -86,23 +69,23 @@ class AddNetwork extends StatefulElement {
                 <div id="content">
                     <div class="mt-3">
                         <p class="label text-left">${Stateful.t("networkAddNameLabel")}</p>
-                        <input type="text" class="input col-12" placeholder="Ethereum" id="name">
+                        <input type="text" class="input col-12" placeholder="Ethereum" id="name" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
                         <p class="label text-left">${Stateful.t("networkAddUrlLabel")}</p>
-                        <input type="text" class="input col-12" placeholder="https://mysuperrpc.com" id="rpc">
+                        <input type="text" class="input col-12" placeholder="https://mysuperrpc.com" id="rpc" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
                         <p class="label text-left">${Stateful.t("networkAddChainIdLabel")}</p>
-                        <input type="number" class="input col-12" placeholder="1" id="id">
+                        <input type="number" class="input col-12" placeholder="1" id="id" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
                         <p class="label text-left">${Stateful.t("networkAddSymbolLabel")}</p>
-                        <input type="text" class="input col-12" placeholder="ETH" id="symbol">
+                        <input type="text" class="input col-12" placeholder="ETH" id="symbol" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
                         <p class="label text-left">${Stateful.t("networkAddBlockExplorerLabel")}</p>
-                        <input type="text" class="input col-12" placeholder="https://etherscan.io" id="explorer">
+                        <input type="text" class="input col-12" placeholder="https://etherscan.io" id="explorer" oninput="${onInput}">
                     </div>
                     ${addBtn}
                     <p class="text-danger mt-2 text-center" style="display: none" id="error"></p>

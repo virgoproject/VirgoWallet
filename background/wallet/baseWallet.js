@@ -179,7 +179,13 @@ class BaseWallet {
 
         b: for(const refWallet of referenceWallets){
             for(const wallet of this.wallets)
-                if(refWallet.wallet.chainID == wallet.chainID) continue b
+                if(refWallet.wallet.chainID == wallet.chainID){
+                    if(!wallet.official){
+                        wallet.official = true
+                        changed = true
+                    }
+                    continue b
+                }
 
             changed = true
             const wallet = EthWallet.fromJSON(refWallet.wallet, this)
