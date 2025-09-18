@@ -63,6 +63,10 @@ class WalletHandlers {
             if(res){
                 browser.storage.session.set({"unlockPassword": request.password})
 
+                try {
+                    reactMessaging.storePassword(request.password)
+                }catch(e){}
+
                 while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                     await new Promise(r => setTimeout(r, 10));
                 }
