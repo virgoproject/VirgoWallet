@@ -69,7 +69,7 @@ class SettingsNewPassword extends StatefulElement {
                         document.querySelector("wallet-setup").remove()
                     }catch (e) {}
                 }else{
-                    notyf.success("Password set!")
+                    notyf.success(Stateful.t("newPasswordSuccessNotif"))
                 }
                 _this.remove()
             })
@@ -101,12 +101,12 @@ class SettingsNewPassword extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Setup your password" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("newPasswordTitle")}" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
-                        <p class="text-gray-400 text-center mt-3">This password will unlock your wallet only on this service</p>
+                        <p class="text-gray-400 text-center mt-3">${Stateful.t("newPasswordSub")}</p>
                         <div>
                             <div class="mt-3">
-                                <p class="label text-left text-sm mb-2">New password</p>
+                                <p class="label text-left text-sm mb-2">${Stateful.t("newPasswordLabel")}</p>
                                 <div class="btnInputWrapper">
                                     <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input1" oninput="${onInput}" onfocus="${onFocus}">
                                     <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input1">
@@ -115,32 +115,32 @@ class SettingsNewPassword extends StatefulElement {
                                 </div>
                             </div>
                             <div class="mt-3">
-                                <p class="label text-left text-sm mb-2">Confirm password</p>
+                                <p class="label text-left text-sm mb-2">${Stateful.t("newPasswordRepeatLabel")}</p>
                                 <div class="btnInputWrapper">
                                     <input type="password" class="input ${error ? 'is-invalid' : ''}" id="input2" oninput="${onInput}" onfocus="${onFocus}">
                                     <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="input2">
                                         <i class="fa-regular fa-eye"></i>
                                     </div>
                                 </div>
-                                <p class="label text-left mt-2 text-sm">Must be at least 8 characters long</p>
+                                <p class="label text-left mt-2 text-sm">${Stateful.t("newPasswordRequirement")}</p>
                             </div>
-                            ${error ? "<div class='mt-3 text-center'><p class='text-danger'>Passwords don't match</p></div>" : ""}
+                            ${error ? "<div class='mt-3 text-center'><p class='text-danger'>"+Stateful.t("newPasswordInvalid")+"</p></div>" : ""}
                         </div>
                         <div>
                             <div class="form-check">
                                   <input class="form-check-input" type="checkbox" value="" id="warn1" onchange="${onInput}">
                                   <label class="form-check-label text-gray-700" for="flexCheckDefault">
-                                    I understand that Virgo cannot recover this password for me.
+                                    ${Stateful.t("newPasswordCheckLabel")}
                                   </label>
                             </div>
                             <div class="form-check mt-3">
                                   <input class="form-check-input" type="checkbox" value="" id="warn2" onchange="${onInput}">
                                   <label class="form-check-label text-gray-700" for="flexCheckDefault">
-                                    I have read and accept the <span id="tos" onclick="${tosClick}">product terms of service.</span>
+                                    ${Stateful.t("newPasswordTerms1")} <span id="tos" onclick="${tosClick}">${Stateful.t("newPasswordTerms2")}</span>
                                   </label>
                             </div>
                             <div class="py-3 mt-3">
-                                <button class="button w-100" id="confirm" disabled onclick="${onClick}">Confirm</button>
+                                <button class="button w-100" id="confirm" disabled onclick="${onClick}">${Stateful.t("newPasswordConfirmBtn")}</button>
                             </div>
                         </div>
                     </div>

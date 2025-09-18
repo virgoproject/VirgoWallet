@@ -97,8 +97,8 @@ class TransactionsHistory extends StatefulElement {
             rows.push(`
                 <div class="text-center mt-4">
                     <img src="../images/noContact.png" id="emptyImg">
-                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No transactions yet!</p>
-                    <p id="emptySubtitle">Your transaction history will appear here.</p>
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">${Stateful.t("transactionsEmptyTitle")}</p>
+                    <p id="emptySubtitle">${Stateful.t("transactionsEmptySub")}</p>
                 </div>
             `)
         }
@@ -106,7 +106,7 @@ class TransactionsHistory extends StatefulElement {
         return `
            <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="History" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("transactionsTitle")}" backfunc="${back}"></section-header>
                     <scroll-view id="scroll" onnearend="${onNearEnd}">
                         <div id="inner">
                             ${rows}
@@ -129,10 +129,10 @@ class TransactionsHistory extends StatefulElement {
                 let displayedDate = date
 
                 if(date == today)
-                    displayedDate = "Today"
+                    displayedDate = Stateful.t("transactionsDateToday")
 
                 if(date == yesterday)
-                    displayedDate = "Yesterday"
+                    displayedDate = Stateful.t("transactionsDateYesterday")
 
                 if(!this.dates.includes(displayedDate)){
                     this.dates.push(displayedDate)

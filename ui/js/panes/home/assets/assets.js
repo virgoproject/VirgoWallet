@@ -21,10 +21,10 @@ class HomeAssets extends StatefulElement {
                 document.body.appendChild(elem)
             })
 
-            manageBtn = `<p class="m-0" id="manageBtn" onclick="${manageClick}">Manage Tokens</p>`
+            manageBtn = `<p class="m-0" id="manageBtn" onclick="${manageClick}">${Stateful.t("manageTokensBtn")}</p>`
             content = `<home-tokens id="content"></home-tokens>`
         }else{
-            manageBtn = `<p class="m-0" id="manageBtn">Manage NFTs</p>`
+            manageBtn = `<p class="m-0" id="manageBtn">${Stateful.t("manageNTFsBtn")}</p>`
             content = `<home-nfts id="content"></home-nfts>`
         }
 
@@ -32,10 +32,10 @@ class HomeAssets extends StatefulElement {
             <div class="d-flex justify-content-between" id="menu">
                 <div class="d-flex">
                     <div class="menuElem ${menu == 'tokens' ? 'selected' : ''} mr-2" id="tokensBtn" onclick="${menuClick}">
-                        Tokens
+                        ${Stateful.t("tokensBtn")}
                     </div>
                     <div class="menuElem ${menu == 'nfts' ? 'selected' : ''} ml-2" id="nftsBtn" onclick="${menuClick}">
-                        NFTs
+                        ${Stateful.t("NFTsBtn")}
                     </div>
                 </div>
                 ${manageBtn}

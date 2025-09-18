@@ -32,6 +32,10 @@ async function getAsset(contract){
     return false
 }
 
+async function getTokens(){
+    return await browser.runtime.sendMessage({command: 'getTokens'})
+}
+
 async function getTransaction(hash){
     return await browser.runtime.sendMessage({command: 'getTransaction', hash})
 }
@@ -245,20 +249,12 @@ async function tickerFromChainID(id){
     return await browser.runtime.sendMessage({command: 'tickerFromChainID', id})
 }
 
-async function checkAirdropJoined(id){
-    return await browser.runtime.sendMessage({command: 'checkAirdropJoined', id})
+async function joinAirdrop(id, twitterUsername){
+    return await browser.runtime.sendMessage({command: "joinAirdrop", id, twitterUsername})
 }
 
-async function setAirdropJoined(address,id){
-    return await browser.runtime.sendMessage({command: 'setAirdropJoined', address, id})
-}
-
-async function resetAirdrops(){
-    return await browser.runtime.sendMessage({command: 'resetAirdrops'})
-}
-
-async function checkClosedModalAirdrop(infos){
-    return await browser.runtime.sendMessage({command: 'checkClosedModal', infos})
+async function claimDailyReward(){
+    return await browser.runtime.sendMessage({command: "claimDailyReward"})
 }
 
 async function changeModalStatus(state){
@@ -285,12 +281,8 @@ async function setSelectedCurrency(currency) {
     return await browser.runtime.sendMessage({command: 'setSelectedCurrency', currency})
 }
 
-async function getNotifications(){
-    return await browser.runtime.sendMessage({command: 'getNotifications'})
-}
-
-async function hideNotification(id){
-    return await browser.runtime.sendMessage({command: 'hideNotification', id})
+async function setLanguage(lang){
+    return await browser.runtime.sendMessage({command: 'setLanguage', lang})
 }
 
 async function changeNetworkVisibility(index){
@@ -323,4 +315,8 @@ async function setMailAddress(mailAddress){
 
 async function addAccountFromPrivateKey(pKey){
     return await browser.runtime.sendMessage({command: "addAccountFromPrivateKey", pKey})
+}
+
+async function useReferralCode(code){
+    return await browser.runtime.sendMessage({command: 'useReferralCode', code})
 }

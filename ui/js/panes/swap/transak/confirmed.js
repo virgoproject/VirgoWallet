@@ -10,14 +10,14 @@ class TransakConfirmed extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Done" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("transakDoneTitle")}" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
                         <img src="../images/done.gif" class="w-75">
-                        <p class="text-xl text-gray-700">Order created!</p>
-                        <p class="mt-3 text-gray-400">Your crypto should arrive soon,<br>you can track the order status in your transaction history.</p>
+                        <p class="text-xl text-gray-700">${Stateful.t("transakDoneTitle2")}</p>
+                        <p class="mt-3 text-gray-400">${Stateful.t("transakDoneSub1")}<br>${Stateful.t("transakDoneSub2")}</p>
                     </div>
                     <div class="p-3">
-                         <button class="button w-100" onclick="${back}">Close</button>
+                         <button class="button w-100" onclick="${back}">${Stateful.t("transakDoneCloseBtn")}</button>
                     </div>
                 </div>
             </div>

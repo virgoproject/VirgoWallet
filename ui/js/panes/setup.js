@@ -19,8 +19,8 @@ class WalletSetup extends StatefulElement {
             <div class="fullpageSection" id="wrapper">
                 <div class="text-center">
                     <img src="../images/logoGradient.png" id="logo">
-                    <p id="title" class="mt-3 text-xl">Welcome</p>  
-                    <p id="subtitle">The crypto wallet that rewards its users</p>  
+                    <p id="title" class="mt-3 text-xl">${Stateful.t("setupTitle")}</p>  
+                    <p id="subtitle">${Stateful.t("setupSub")}</p>  
                 </div>
                 <div class="px-3">
                     <div class="setupBtn">
@@ -28,8 +28,8 @@ class WalletSetup extends StatefulElement {
                             <i class="fa-regular fa-plus"></i>
                         </div>
                         <div class="btnText ml-2" onclick="${createClick}">
-                            <p class="btnTitle">I don't have a wallet</p>
-                            <p class="btnSubtitle text-sm">Create a new account, seed phrase, and password</p>
+                            <p class="btnTitle">${Stateful.t("setupNewWalletTitle")}</p>
+                            <p class="btnSubtitle text-sm">${Stateful.t("setupNewWalletSub")}</p>
                         </div>
                     </div>
                     <div class="setupBtn mt-3">
@@ -37,8 +37,8 @@ class WalletSetup extends StatefulElement {
                             <i class="fa-regular fa-arrow-down"></i>
                         </div>
                         <div class="btnText ml-2" onclick="${recoverClick}">
-                            <p class="btnTitle">I already have a wallet</p>
-                            <p class="btnSubtitle text-sm">Import your seed phrase from Metamask, Trust..</p>
+                            <p class="btnTitle">${Stateful.t("setupImportTitle")}</p>
+                            <p class="btnSubtitle text-sm">${Stateful.t("setupImportSub")}</p>
                         </div>
                     </div>
                 </div>

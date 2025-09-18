@@ -4,34 +4,6 @@ class SettingsMenu extends StatefulElement {
         super();
     }
 
-    static categories = [
-        {
-            title: "General",
-            element: "general-settings",
-            icon: "fa-gear"
-        },
-        {
-            title: "Security & Privacy",
-            element: "security-settings",
-            icon: "fa-lock-keyhole"
-        },
-        {
-            title: "Connected Websites",
-            element: "connected-websites",
-            icon: "fa-globe"
-        },
-        {
-            title: "Manage Networks",
-            element: "networks-settings",
-            icon: "fa-network-wired"
-        },
-        {
-            title: "Contact us",
-            element: "contact-settings",
-            icon: "fa-comments"
-        },
-    ]
-
     eventHandlers() {
         const _this = this
 
@@ -58,9 +30,37 @@ class SettingsMenu extends StatefulElement {
             _this.remove()
         })
 
+        const categories  = [
+            {
+                title: Stateful.t("settingsMenuGeneralTitle"),
+                element: "general-settings",
+                icon: "fa-gear"
+            },
+            {
+                title: Stateful.t("settingsMenuSecurityTitle"),
+                element: "security-settings",
+                icon: "fa-lock-keyhole"
+            },
+            {
+                title: Stateful.t("settingsMenuWebsitesTitle"),
+                element: "connected-websites",
+                icon: "fa-globe"
+            },
+            {
+                title: Stateful.t("settingsMenuNetworksTitle"),
+                element: "networks-settings",
+                icon: "fa-network-wired"
+            },
+            {
+                title: Stateful.t("settingsMenuContactUsTitle"),
+                element: "contact-settings",
+                icon: "fa-comments"
+            },
+        ]
+
         const rows = []
 
-        for(const cat of SettingsMenu.categories){
+        for(const cat of categories){
             rows.push(
                 `<div class="row tab" toOpen="${cat.element}">
                     <div class="col-2 align-self-center text-center">
@@ -78,7 +78,7 @@ class SettingsMenu extends StatefulElement {
 
         return `
            <div class="fullpageSection">
-                <section-header title="Settings" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("settingsTitle")}" backfunc="${back}"></section-header>
                 ${rows}
            </div>
         `

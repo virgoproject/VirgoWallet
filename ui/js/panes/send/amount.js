@@ -122,7 +122,7 @@ class SendTokenAmount extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Amount" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("sendAmountTitle")}" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
                         <div id="select" class="mt-3" onclick="${selectClick}">
                             <div class="shimmerBG" id="shimmerIcon"></div>
@@ -132,15 +132,15 @@ class SendTokenAmount extends StatefulElement {
                             <i id="selectTokenIcon" class="fa-solid fa-caret-down"></i>
                         </div>
                         <input type="number" placeholder="0.0" id="amount" class="mt-3 text-4xl" oninput="${onInput}">
-                        <p id="max" class="mt-3 text-lg" onclick="${maxClick}">Use max</p>
+                        <p id="max" class="mt-3 text-lg" onclick="${maxClick}">${Stateful.t("sendAmountMaxBtn")}</p>
                         <p id="fiatConversion" class="mt-3">${currencyToSymbol(baseInfos.selectedCurrency)} <span id="fiat">-</span></p>
                         <div id="balanceWrapper" class="mt-3">
-                            <p id="balanceText">Balance: </p>
+                            <p id="balanceText">${Stateful.t("sendAmountBalanceLabel")} </p>
                             <p id="balance">${balanceLoading ? "<div class='shimmerBG' id='balanceShimmer'></div>" : Utils.formatAmount(balance.balance, balance.decimals)}</p>
                         </div>  
                     </div>
                     <div class="p-3">
-                        <button class="button w-100" id="next" disabled onclick="${nextClick}">Next</button>              
+                        <button class="button w-100" id="next" disabled onclick="${nextClick}">${Stateful.t("sendAmountNextBtn")}</button>              
                     </div>
                 </div>
             </div>

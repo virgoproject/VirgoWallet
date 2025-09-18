@@ -62,7 +62,7 @@ class SendTokenConfirm extends StatefulElement {
                 _this.gasLimit,
                 _this.gasPrice)
                 .then(function(res){
-                    notyf.success("Transaction sent!")
+                    notyf.success(Stateful.t("sendConfirmSentNotif"))
                     _this.feesEditor.remove()
                     _this.removeParent()
                     _this.remove()
@@ -70,22 +70,22 @@ class SendTokenConfirm extends StatefulElement {
             setSending(true)
         })
 
-        let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">Confirm</button>`
+        let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">${Stateful.t("sendConfirmBtn")}</button>`
         if(sending) button = `<button class="button w-100" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Confirm" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("sendConfirmTitle")}" backfunc="${back}"></section-header>
                     <div id="content" class="px-3">
-                        <p class="text-lg mb-0 mt-3" id="amountTitle">Amount</p>
+                        <p class="text-lg mb-0 mt-3" id="amountTitle">${Stateful.t("sendConfirmAmountLabel")}</p>
                         <div id="amountWrapper" class="text-3xl">
                            <p id="amount">${Utils.formatAmount(_this.amount, _this.token.decimals)}</p>
                            <p id="amountSymbol"> ${_this.token.ticker}</p> 
                         </div>
-                        <p class="text-left mb-0 label mt-3">From</p>
+                        <p class="text-left mb-0 label mt-3">${Stateful.t("sendConfirmFromLabel")}</p>
                         ${this.getContact(data, data.baseInfos.addresses[data.baseInfos.selectedAddress].address)}
-                        <p class="text-left mb-0 label mt-3">To</p>
+                        <p class="text-left mb-0 label mt-3">${Stateful.t("sendConfirmToLabel")}</p>
                         ${this.getContact(data, _this.address)}
                         ${feesContent}
                     </div>
@@ -125,14 +125,14 @@ class SendTokenConfirm extends StatefulElement {
         return `
             <div id="feesWrapper" class="mt-4">
                 <div class="feesRow mb-2">
-                    <p class="feesTitle">Fees<span id="editFees" onclick="${editFeesClick}">Edit</span></p>
+                    <p class="feesTitle">${Stateful.t("sendConfirmFeesLabel")}<span id="editFees" onclick="${editFeesClick}">${Stateful.t("sendConfirmEditFeesBtn")}</span></p>
                     <div class="feesAmountWrapper">
                         <p class="feesAmount">${Utils.formatAmount(feesBN.toString(), wallet.decimals)}</p>
                         <p> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="feesRow">
-                    <p class="feesTitle">Total</p>
+                    <p class="feesTitle">${Stateful.t("sendConfirmTotalLabel")}</p>
                     <div class="feesAmountWrapper">
                         <p class="feesAmount">${Utils.formatAmount(totalNative.toString(), wallet.decimals)}</p>
                         <p> ${wallet.ticker}</p>

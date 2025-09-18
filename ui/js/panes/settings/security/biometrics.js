@@ -20,7 +20,7 @@ class BiometricsSettings extends StatefulElement {
         return `
             <div class="form-check form-switch mt-2">
                 <input class="form-check-input" type="checkbox" id="enabled" ${checked? "checked" : ""} onchange="${onChange}">
-                <label class="form-check-label" for="enabled">Enable biometrics unlock</label>
+                <label class="form-check-label" for="enabled">${Stateful.t("biometricsSettingLabel")}</label>
             </div>
         `
 

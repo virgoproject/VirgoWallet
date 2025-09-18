@@ -25,10 +25,10 @@ class CancelTransaction extends StatefulElement {
             return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Cancel transaction</p>
-                    <p id="label" class="mb-0 text-sm">Cancel cost</p>
+                    <p id="title">${Stateful.t("cancelTransactionTitle")}</p>
+                    <p id="label" class="mb-0 text-sm">${Stateful.t("cancelTransactionCostLabel")}</p>
                     <div class="shimmerBG" id="shimmerAmount"></div>    
-                    <button class="button w-100" disabled>Confirm</button>
+                    <button class="button w-100" disabled>${Stateful.t("cancelTransactionConfirmBtn")}</button>
                 </div>
             </bottom-popup>
             `
@@ -45,7 +45,7 @@ class CancelTransaction extends StatefulElement {
         }else if(new BN(data.balance).gte(new BN(data.value).add(newFee))){
             const confirmClick = this.registerFunction(() => {
                 cancelTransaction(data.hash, data.gasPrice).then(hash => {
-                    notyf.success("Cancel request sent!")
+                    notyf.success(Stateful.t("cancelTransactionSuccessNotif"))
                     _this.updateHash(hash)
                     _this.runIntervals()
                     _this.remove()
@@ -53,16 +53,16 @@ class CancelTransaction extends StatefulElement {
                 setSending(true)
             })
 
-            button = `<button class="button w-100" onclick="${confirmClick}">Confirm</button>`
+            button = `<button class="button w-100" onclick="${confirmClick}">${Stateful.t("cancelTransactionConfirmBtn")}</button>`
         }else{
-            button = `<button class="button w-100" disabled>Insufficient ${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker} balance</button>`
+            button = `<button class="button w-100" disabled>${Stateful.t("cancelTransactionInsufficientBalanceBtn1")} ${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker} ${Stateful.t("cancelTransactionInsufficientBalanceBtn2")}</button>`
         }
 
         return `
             <bottom-popup>
                 <div class="text-center">
-                    <p id="title">Cancel transaction</p>
-                    <p id="label" class="mb-0 text-sm">Cancel cost</p>
+                    <p id="title">${Stateful.t("cancelTransactionTitle")}</p>
+                    <p id="label" class="mb-0 text-sm">${Stateful.t("cancelTransactionCostLabel")}</p>
                     <p id="amount">${Utils.formatAmount(newFee, baseInfos.wallets[baseInfos.selectedWallet].wallet.decimals)} <span id="ticker">${baseInfos.wallets[baseInfos.selectedWallet].wallet.ticker}</span></p>
                     ${button}
                 </div>

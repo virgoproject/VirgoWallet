@@ -16,15 +16,15 @@ class BaseWallet {
         for(const wallet of data.wallets){
             switch(wallet.type){
                 case "web3":
-                    if(wallet.wallet.chainID == "400") continue
-                    this.wallets.push(EthWallet.fromJSON(wallet.wallet))
+                    if(wallet.wallet.chainID == "400" || wallet.wallet.chainID == "500") {
+                        continue
+                    }
+                    this.wallets.push(EthWallet.fromJSON(wallet.wallet, this))
                     break
             }
         }
 
         this.addresses = []
-
-        this.checkMissingWallets()
 
         this.crossSwaps = data.crossSwaps
         if(this.crossSwaps === undefined)
@@ -65,6 +65,7 @@ class BaseWallet {
             this.save()
         }
 
+        //old fix
         if(typeof this.privateKeys[0] == "string"){
             const newPkeys = []
             for(const pKey of this.privateKeys){
@@ -76,6 +77,10 @@ class BaseWallet {
             }
             this.privateKeys = newPkeys
             this.save()
+        }
+
+        for(const wallet of this.wallets){
+            wallet.init()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
@@ -91,31 +96,9 @@ class BaseWallet {
             this.save()
         }
 
+        this.checkMissingWallets()
+
         this.getSwapParams()
-    }
-
-    startLoop(){
-        const timer = setInterval(function(){
-            if(baseWallet === undefined){
-                clearInterval(timer)
-                return
-            }
-            baseWallet.getCurrentWallet().update()
-        }, 10000)
-
-        const startupWait = setInterval(() => {
-            if(baseWallet.getCurrentWallet().getAddressesJSON().length == 0) return
-            baseWallet.getCurrentWallet().update(true)
-            clearInterval(startupWait)
-        }, 50)
-
-        const priceTimer = setInterval(function(){
-            if(baseWallet === undefined){
-                clearInterval(priceTimer)
-                return
-            }
-            baseWallet.getCurrentWallet().updatePrices()
-        }, 60000)
     }
 
     static generateWallet(mnemonic){
@@ -188,7 +171,7 @@ class BaseWallet {
         let referenceWallets = BaseWallet.getBaseWallets()
 
         try {
-            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/chainaddition1/chains.json")
+            const refWalletsReq = await fetch("https://raw.githubusercontent.com/virgoproject/tokens/refs/heads/main/chains.json")
             referenceWallets = await refWalletsReq.json()
         }catch(e){}
 
@@ -196,10 +179,18 @@ class BaseWallet {
 
         b: for(const refWallet of referenceWallets){
             for(const wallet of this.wallets)
-                if(refWallet.wallet.chainID == wallet.chainID) continue b
+                if(refWallet.wallet.chainID == wallet.chainID){
+                    if(!wallet.official){
+                        wallet.official = true
+                        changed = true
+                    }
+                    continue b
+                }
 
             changed = true
-            this.wallets.push(EthWallet.fromJSON(refWallet.wallet))
+            const wallet = EthWallet.fromJSON(refWallet.wallet, this)
+            wallet.init()
+            this.wallets.push(wallet)
         }
 
         if(changed) this.save()
@@ -292,7 +283,6 @@ class BaseWallet {
         const res = await browser.storage.local.get("wallet")
         if (res.wallet === undefined) {
             baseWallet = BaseWallet.generateWallet()
-            baseWallet.startLoop()
             baseWallet.save()
             loadedElems["baseWallet"] = true
             return true
@@ -300,7 +290,6 @@ class BaseWallet {
             let wallet = BaseWallet.fromJSON(res.wallet, password)
             if(wallet){
                 baseWallet = wallet
-                baseWallet.startLoop()
                 loadedElems["baseWallet"] = true
                 return true
             }
@@ -334,7 +323,7 @@ class BaseWallet {
         })
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         hdProvider.engine.stop()
@@ -362,7 +351,7 @@ class BaseWallet {
         })
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
@@ -383,8 +372,6 @@ class BaseWallet {
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
 
         this.save()
-        this.getCurrentWallet().update()
-        this.getCurrentWallet().updatePrices()
 
         if(typeof walletConnect !== 'undefined'){
             walletConnect.updateSessions("chainChanged")
@@ -431,17 +418,6 @@ class BaseWallet {
     getWeb3ByID(id){
         const chain = this.getChainByID(id)
 
-        if(!chain.web3){
-            chain.web3 = new Web3(chain.rpcURL)
-
-            for(const pKey of this.privateKeys){
-                if(pKey.hidden) continue
-                const acc = chain.web3.eth.accounts.privateKeyToAccount(pKey.privateKey)
-                chain.web3.eth.accounts.wallet.add(acc)
-            }
-
-        }
-
         return chain.web3
     }
 
@@ -474,7 +450,7 @@ class BaseWallet {
         }
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)
@@ -530,7 +506,7 @@ class BaseWallet {
         }
 
         for(const wallet of this.wallets){
-            wallet.web3 = null
+            wallet.initProvider()
         }
 
         web3 = this.getWeb3ByID(this.wallets[this.selectedWallet].chainID)

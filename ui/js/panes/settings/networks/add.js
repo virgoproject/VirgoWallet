@@ -4,61 +4,6 @@ class AddNetwork extends StatefulElement {
         super();
     }
 
-    eventHandlers() {
-        const _this = this
-
-        const name = this.querySelector("#name");
-        const rpc = this.querySelector("#rpc");
-        const chainID = this.querySelector("#id");
-        const symbol = this.querySelector("#symbol");
-        const explorer = this.querySelector("#explorer");
-        const button = this.querySelector("#btn");
-        const errorText = this.querySelector("#error");
-
-        name.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        rpc.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        chainID.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        symbol.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        explorer.oninput = () => {
-            _this.settingsNetworkAddValidate()
-        }
-
-        button.onclick = () => {
-            addNetwork(name.value, rpc.value.replace(/\s/g,''), chainID.value.replace(/\s/g,''), symbol.value.replace(/\s/g,''), explorer.value.replace(/\s/g,'')).then(res => {
-                if(res.status == 0){
-                    errorText.style.display = "block"
-                    errorText.innerHTML = "Can't connect to network, please check your RPC URL"
-                    rpc.classList.add("is-invalid")
-                }
-
-                if(res.status == 1){
-                    errorText.style.display = "block"
-                    chainID.classList.add("is-invalid")
-                    errorText.innerHTML = "Network's chain ID doesn't correspond to provided one: Given " + chainID.value.replace(/\s/g,'') + ", received " + res.id
-                }
-
-                if(res.status == 2){
-                    _this.remove()
-                    notyf.success("Successfully added " + name.value.replace(/\s/g,'') + "!")
-                }
-
-                enableLoadBtn($(button))
-            })
-        }
-    }
-
     render() {
         const _this = this
 
@@ -68,8 +13,46 @@ class AddNetwork extends StatefulElement {
             _this.remove()
         })
 
+        const onInput = this.registerFunction(() => {
+            if(loading) return
+            _this.settingsNetworkAddValidate()
+        })
+
+        const btnClick = this.registerFunction(() => {
+
+            const name = _this.querySelector("#name");
+            const rpc = _this.querySelector("#rpc");
+            const chainID = _this.querySelector("#id");
+            const symbol = _this.querySelector("#symbol");
+            const explorer = _this.querySelector("#explorer");
+            const errorText = _this.querySelector("#error");
+
+            addNetwork(name.value, rpc.value.replace(/\s/g,''), chainID.value.replace(/\s/g,''), symbol.value.replace(/\s/g,''), explorer.value.replace(/\s/g,'')).then(res => {
+                setLoading(false)
+
+                if(res.status == 0){
+                    errorText.style.display = "block"
+                    errorText.innerHTML = Stateful.t("networkAddCantConnectErr")
+                    rpc.classList.add("is-invalid")
+                }
+
+                if(res.status == 1){
+                    errorText.style.display = "block"
+                    chainID.classList.add("is-invalid")
+                    errorText.innerHTML = Stateful.t("networkAddInvalidNetId")
+                }
+
+                if(res.status == 2){
+                    _this.remove()
+                    notyf.success(Stateful.t("networkAddSuccessNotif") + name.value.replace(/\s/g,'') + "!")
+                }
+            })
+
+            setLoading(true)
+        })
+
         let addBtn = `
-            <button class="button w-100 mt-4" disabled="disabled" id="btn">Continue</button>
+            <button class="button w-100 mt-4" disabled="disabled" id="btn" onclick="${btnClick}">${Stateful.t("networkAddNextBtn")}</button>
         `
 
         if(loading){
@@ -82,27 +65,27 @@ class AddNetwork extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <section-header title="Add Network" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("networkAddTitle")}" backfunc="${back}"></section-header>
                 <div id="content">
                     <div class="mt-3">
-                        <p class="label text-left">Network name</p>
-                        <input type="text" class="input col-12" placeholder="Ethereum" id="name">
+                        <p class="label text-left">${Stateful.t("networkAddNameLabel")}</p>
+                        <input type="text" class="input col-12" placeholder="Ethereum" id="name" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">RPC URL</p>
-                        <input type="text" class="input col-12" placeholder="https://mysuperrpc.com" id="rpc">
+                        <p class="label text-left">${Stateful.t("networkAddUrlLabel")}</p>
+                        <input type="text" class="input col-12" placeholder="https://mysuperrpc.com" id="rpc" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Chain ID</p>
-                        <input type="number" class="input col-12" placeholder="1" id="id">
+                        <p class="label text-left">${Stateful.t("networkAddChainIdLabel")}</p>
+                        <input type="number" class="input col-12" placeholder="1" id="id" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Token symbol</p>
-                        <input type="text" class="input col-12" placeholder="ETH" id="symbol">
+                        <p class="label text-left">${Stateful.t("networkAddSymbolLabel")}</p>
+                        <input type="text" class="input col-12" placeholder="ETH" id="symbol" oninput="${onInput}">
                     </div>
                     <div class="mt-3">
-                        <p class="label text-left">Block explorer URL (optional)</p>
-                        <input type="text" class="input col-12" placeholder="https://etherscan.io" id="explorer">
+                        <p class="label text-left">${Stateful.t("networkAddBlockExplorerLabel")}</p>
+                        <input type="text" class="input col-12" placeholder="https://etherscan.io" id="explorer" oninput="${onInput}">
                     </div>
                     ${addBtn}
                     <p class="text-danger mt-2 text-center" style="display: none" id="error"></p>

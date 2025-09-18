@@ -106,7 +106,7 @@ class ConfirmSwap extends StatefulElement {
         const confirmClick = this.registerFunction(() => {
             initSwap(_this.tokenIn.chainID, _this.tokenIn.contract, _this.tokenOut.chainID, _this.tokenOut.contract, _this.amountIn, _this.route, fees.gasLimit, _this.gasPrice)
                 .then(function () {
-                    notyf.success("Swap initiated!")
+                    notyf.success(Stateful.t("swapConfirmNotif"))
                     _this.feesEditor.remove()
                     _this.resetParent()
                     _this.remove()
@@ -114,12 +114,12 @@ class ConfirmSwap extends StatefulElement {
             setSending(true)
         })
 
-        let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">Confirm</button>`
+        let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">${Stateful.t("swapConfirmBtn")}</button>`
         if(sending) button = `<button class="button w-100" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <bottom-popup onclose="${back}">
-                    <section-header title="Confirm Swap" no-padding></section-header>
+                    <section-header title="${Stateful.t("swapConfirmTitle")}" no-padding></section-header>
                     <div id="content">
                         <div>
                             <div class="tokenWrapper mt-3" id="tokenIn">
@@ -132,7 +132,7 @@ class ConfirmSwap extends StatefulElement {
                                     <img class="chainLogo" style="display: none">
                                 </div>
                                 <div class="textLeft">
-                                    <p class="amountLabel text-sm">You swap</p>
+                                    <p class="amountLabel text-sm">${Stateful.t("swapConfirmTokenInLabel")}</p>
                                     <div class="amountWrapper">
                                         <p class="amount">${Utils.formatAmount(_this.amountIn, _this.tokenIn.decimals)}</p>
                                         <p> ${_this.tokenIn.ticker}</p>
@@ -149,7 +149,7 @@ class ConfirmSwap extends StatefulElement {
                                     <img class="chainLogo" style="display: none">
                                 </div>
                                 <div class="textLeft">
-                                    <p class="amountLabel text-sm">You will get</p>
+                                    <p class="amountLabel text-sm">${Stateful.t("swapConfirmTokenOutLabel")}</p>
                                     <div class="amountWrapper">
                                         <p class="amount">${Utils.formatAmount(_this.route.routes[0].amount, _this.tokenOut.decimals)}</p>
                                         <p> ${_this.tokenOut.ticker}</p>
@@ -194,27 +194,27 @@ class ConfirmSwap extends StatefulElement {
         return `
             <div id="feesWrapper" class="mt-4">
                 <div class="feesRow mb-2">
-                    <p class="feesTitle">Network fees<span id="editFees" onclick="${editFeesClick}">Edit</span></p>
+                    <p class="feesTitle">${Stateful.t("swapConfirmNetFeesLabel")}<span id="editFees" onclick="${editFeesClick}">${Stateful.t("swapConfirmFeesEditBtn")}</span></p>
                     <div class="feesAmountWrapper">
                         <p class="feesAmount">${Utils.formatAmount(feesBN.toString(), wallet.decimals)}</p>
                         <p> ${wallet.ticker}</p>
                     </div>
                 </div>
                 <div class="feesRow mb-2">
-                    <p class="feesTitle">Swap fees</p>
+                    <p class="feesTitle">${Stateful.t("swapConfirmSwapFeesLabel")}</p>
                     <div class="feesAmountWrapper">
                         <p class="feesAmount">${Utils.formatAmount(new BN(_this.amountIn).mul(new BN(fees.feesRate*1000)).div(new BN(1000)).toString(), _this.tokenIn.decimals)}</p>
                         <p> ${_this.tokenIn.ticker}</p>
                     </div>
                 </div>
                 <div class="feesRow mb-2">
-                    <p class="feesTitle">Slippage</p>
+                    <p class="feesTitle">${Stateful.t("swapConfirmSlippageLabel")}</p>
                     <div class="feesAmountWrapper">
-                        <p class="feesAmount">Auto</p>
+                        <p class="feesAmount">${Stateful.t("swapConfirmSlippage")}</p>
                     </div>
                 </div>
                 <div class="feesRow">
-                    <p class="feesTitle">Total</p>
+                    <p class="feesTitle">${Stateful.t("swapConfirmTotalLabel")}</p>
                     <div class="feesAmountWrapper">
                         <p class="feesAmount">${Utils.formatAmount(totalNative.toString(), wallet.decimals)}</p>
                         <p> ${wallet.ticker}</p>

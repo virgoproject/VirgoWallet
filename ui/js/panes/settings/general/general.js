@@ -13,8 +13,9 @@ class GeneralSettings extends StatefulElement {
 
         return `
            <div class="fullpageSection">
-                <section-header title="General Settings" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("generalSettingsTitle")}" backfunc="${back}"></section-header>
                 <select-currency></select-currency>
+                <select-language></select-language>
            </div>
         `
 

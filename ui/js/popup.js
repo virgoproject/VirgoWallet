@@ -36,9 +36,9 @@ $("#footer .footerElem").click(function(){
     //temporary
     if($(this).attr("data-target") === "airdrop"){
         try {
-            document.querySelector("airdrops-pane").remove()
+            document.querySelector("reward-pane").remove()
         }catch (e){}
-        const elem = document.createElement("airdrops-pane")
+        const elem = document.createElement("reward-pane")
         document.querySelector("#airdropPane").appendChild(elem)
     }
 
@@ -134,3 +134,19 @@ $(".bottomPopup .close").click(function(){
 Stateful.addGlobalStylesheet("../css/fontAwesome/css/all.min.css");
 Stateful.addGlobalStylesheet("../css/bootstrap.min.css");
 Stateful.addGlobalStylesheet("../css/main.css");
+
+getBaseInfos().then(res => {
+    if(res.selectedLanguage == "" && navigator.language !== undefined){
+        res.selectedLanguage = navigator.language.substring(0,2)
+        if(Stateful.locales[res.selectedLanguage]){
+            setLanguage(res.selectedLanguage)
+        }
+    } 
+    console.log("lang set to " + res.selectedLanguage)
+    Stateful.setLocale(res.selectedLanguage)
+
+    $("#footerHomeText").html(Stateful.t("footerHomeText"))
+    $("#footerPayText").html(Stateful.t("footerPayText"))
+    $("#footerSwapText").html(Stateful.t("footerSwapText"))
+    $("#footerRewardsText").html(Stateful.t("footerRewardsText"))
+})

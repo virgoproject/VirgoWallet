@@ -8,8 +8,6 @@ class MiscHandlers {
         addBgMessageHandler("tickerFromChainID", this.tickerFromChainID)
         addBgMessageHandler("checkClosedModal", this.checkClosedModal)
         addBgMessageHandler("changeModalStatus", this.changeModalStatus)
-        addBgMessageHandler("getNotifications", this.getNotifications)
-        addBgMessageHandler("hideNotification", this.hideNotification)
         addBgMessageHandler("setSetupDone", this.setSetupDone)
         addBgMessageHandler("tutorialDone", this.tutorialDone)
         addBgMessageHandler("setupNot", this.setupNot)
@@ -68,30 +66,6 @@ class MiscHandlers {
             json['airdrop' + request.state[i].airdropID] = true
             browser.storage.local.set(json)
         }
-    }
-
-    static getNotifications(request, sender, sendResponse){
-        browser.storage.local.get('notifications').then(function(res) {
-            sendResponse(res.notifications)
-            countNotifs()
-        })
-    }
-
-    static hideNotification(request, sender, sendResponse){
-        browser.storage.local.get('notifications').then(function(res) {
-            for (var i=0 ; i < res.notifications.length ; i++)
-            {
-
-                if (res.notifications[i].id === Number(request.id)) {
-                    res.notifications[i].shown = false;
-                    browser.storage.local.set({"notifications": res.notifications})
-                    countNotifs()
-                    sendResponse(true)
-                    break
-                }
-            }
-
-        })
     }
 
     static setSetupDone(request, sender, sendResponse){

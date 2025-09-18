@@ -4,8 +4,8 @@ class HomeNFTs extends StatefulElement {
         return `
             <div class="text-center mt-4">
                 <img src="../images/nftsoon.png" id="img">
-                <p id="title" class="mt-3 text-lg mb-1">Ongoing maintenance!</p>
-                <p id="subtitle">Your NFTs will appear here soon</p>
+                <p id="title" class="mt-3 text-lg mb-1">${Stateful.t("NFTsMaintenanceTitle")}</p>
+                <p id="subtitle">${Stateful.t("NFTsMaintenanceSub")}</p>
             </div>
         `;
     }

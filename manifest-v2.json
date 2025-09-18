@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Virgo Wallet",
-  "version": "0.8.7",
+  "version": "0.9.0",
   "short_name": "Virgo Wallet",
   "description": "An easy-to-use, cross-chain wallet in your browser!",
   "permissions": ["storage", "notifications", "alarms", "clipboardRead"],
@@ -18,8 +18,8 @@
     "scripts": [
       "commonJS/utils.js", "commonJS/browser-polyfill.js", "background/xhrShim.js", "background/web3.min.js", "background/bip39.js", "background/hdwallet.js", "background/bundle.js",
       "background/utils/converter.js", "background/swap/uniswap02Utils.js", "background/swap/uniswap03Utils.js", "background/swap/ethSwapUtils.js", "background/swap/atomicSwapUtils.js", "background/wallet/web3ABIs.js",
-      "background/wallet/ethWallet.js", "background/wallet/baseWallet.js", "background/web3RequestsHandler.js","background/utils/txIdentifierAbi.js", "background/background.js",
-      "background/messageHandlers/airdrops.js", "background/messageHandlers/contacts.js", "background/messageHandlers/tokens.js", "background/messageHandlers/transactions.js",
+      "background/wallet/eth/wallet.js", "background/wallet/baseWallet.js", "background/web3RequestsHandler.js","background/utils/txIdentifierAbi.js", "background/background.js",
+      "background/messageHandlers/reward.js", "background/messageHandlers/contacts.js", "background/messageHandlers/tokens.js", "background/messageHandlers/transactions.js",
       "background/messageHandlers/atomicSwap.js", "background/messageHandlers/misc.js", "background/messageHandlers/NFTs.js", "background/messageHandlers/swap.js", "background/messageHandlers/wallet.js",
       "background/messageHandlers/web3.js", "background/messageHandlers/settings/connectedWebsites.js", "background/messageHandlers/settings/general.js",
       "background/messageHandlers/settings/networks.js", "background/messageHandlers/settings/security.js"

@@ -31,7 +31,7 @@ class QRScannerRequest extends StatefulElement {
 
         const accept = this.registerFunction(() => {
             walletConnect.allow(_this.req)
-            notyf.success("Successfully connected!")
+            notyf.success(Stateful.t("qrReaderConnectedNotif"))
             _this.removeParent()
             _this.remove()
         })
@@ -42,12 +42,12 @@ class QRScannerRequest extends StatefulElement {
                 <div id="content">
                     <div id="logoShimmer" class="shimmerBG"></div>
                     <img id="logo" style="display: none">
-                    <p class="mt-2" id="title">Connect your wallet to<br>
+                    <p class="mt-2" id="title">${Stateful.t("qrReaderRequestTitle")}<br>
                         <span id="sitename">${this.req.params.proposer.metadata.url.replaceAll("https://", "").replaceAll("http://", "")}?</span>
                     </p>
                 </div>
                 <div class="mt-3">
-                    <button class="button w-100" onclick="${accept}">Accept</button>
+                    <button class="button w-100" onclick="${accept}">${Stateful.t("qrReaderRequestAcceptBtn")}</button>
                 </div>
             </bottom-popup>
         `

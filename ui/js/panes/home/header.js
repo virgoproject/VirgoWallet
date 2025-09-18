@@ -25,13 +25,15 @@ class HomeHeader extends StatefulElement {
             document.body.appendChild(elem)
         })
 
-        let chainSelector = false
+        let chainSelector = document.querySelector("chain-selector")
         const chainClick = this.registerFunction(() => {
+            if(chainSelector && chainSelector.deleting) chainSelector = false
             if(!chainSelector){
                 chainSelector = document.createElement("chain-selector")
                 chainSelector.resetHome = () => {
                     _this.resetassets()
                     _this.runFunctions()
+                    chainSelector.removeWithAnimation()
                 }
                 document.body.appendChild(chainSelector)
                 this.querySelector("#chainNameIcon").classList.add("opened")
@@ -42,7 +44,7 @@ class HomeHeader extends StatefulElement {
             }
         })
 
-        let accountSelector = false
+        let accountSelector = document.querySelector("account-selector")
         const accountClick = this.registerFunction(() => {
             if(!accountSelector){
                 accountSelector = document.createElement("account-selector")
@@ -52,7 +54,9 @@ class HomeHeader extends StatefulElement {
                 }
                 document.body.appendChild(accountSelector)
                 this.querySelector("#accountBtn").classList.add("opened")
-                document.querySelector("chain-selector").remove()
+                for(const elem of document.querySelectorAll("chain-selector").values()){
+                    elem.remove()
+                }
             }else{
                 accountSelector.removeWithAnimation()
                 accountSelector = false

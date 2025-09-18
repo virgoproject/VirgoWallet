@@ -49,14 +49,14 @@ class AddToken extends StatefulElement {
             if(error) setError(false)
         })
 
-        let button = `<button class="button w-100 mt-3" id="next" disabled onclick="${nextClick}">Next</button>`
+        let button = `<button class="button w-100 mt-3" id="next" disabled onclick="${nextClick}">${Stateful.t("addTokenNextBtn")}</button>`
         if(contract && !error) button = `<button class="button w-100 mt-3" id="next" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
 
-        let label = `<p class="label text-left text-sm">Contract address</p>`
-        if(error) label = `<p class="label text-left text-sm error">Invalid contract address</p>`
+        let label = `<p class="label text-left text-sm">${Stateful.t("addTokenContractLabel")}</p>`
+        if(error) label = `<p class="label text-left text-sm error">${Stateful.t("addTokenInvalidContractLabel")}</p>`
 
         return `
-            <p class="text-center text-xl">Add a new token</p>
+            <p class="text-center text-xl">${Stateful.t("addTokenTitle")}</p>
             <div class="mt-3">
                 ${label}
                 <input type="text" class="input col-12" placeholder="0x4b4c..." id="contract" onfocus="${onFocus}" oninput="${contractInput}" ${contract && !error ? "disabled" : ""}>
@@ -70,27 +70,27 @@ class AddToken extends StatefulElement {
 
         const confirmClick = this.registerFunction(() => {
             addAsset(infos.name, infos.symbol, infos.decimals, infos.contract).then(function(){
-                notyf.success("Added "+infos.symbol+"!")
+                notyf.success(Stateful.t("addTokenSuccessNotif") + " "+infos.symbol+"!")
                 _this.resetParent()
                 _this.remove()
             })
         })
 
         return `
-            <p class="text-center text-xl">Add a new token</p>
+            <p class="text-center text-xl">${Stateful.t("addTokenTitle")}</p>
             <div class="mt-3">
-                <p class="label text-left text-sm">Name</p>
+                <p class="label text-left text-sm">${Stateful.t("addTokenNameLabel")}</p>
                 <input type="text" class="input col-12" disabled value="${infos.name}">
             </div>
             <div class="mt-3">
-                <p class="label text-left text-sm">Symbol</p>
+                <p class="label text-left text-sm">${Stateful.t("addTokenSymbolLabel")}</p>
                 <input type="text" class="input col-12" disabled value="${infos.symbol}">
             </div>
             <div class="mt-3">
-                <p class="label text-left text-sm">Decimals</p>
+                <p class="label text-left text-sm">${Stateful.t("addTokenDecimalsLabel")}</p>
                 <input type="text" class="input col-12" disabled value="${infos.decimals}">
             </div>
-            <button class="button w-100 mt-3" id="next" onclick="${confirmClick}">Confirm</button>
+            <button class="button w-100 mt-3" id="next" onclick="${confirmClick}">${Stateful.t("addTokenConfirmBtn")}</button>
         `
     }
 

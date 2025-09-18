@@ -39,11 +39,19 @@ class AirdropCard extends StatefulElement {
             return await getTokenDetailsCross(json.address, json.chainID)
         })
 
-        const {data: joined, loading: loading2} = this.useFunction(async () => {
-            return await checkAirdropJoined(json.id)
-        })
+        const joined = this.getAttribute("joined") == "true"
 
-        if(loading || loading2) return ""
+        if(loading) return `
+            <div class="mt-1 p-3" id="topWrapper">
+                <div id="logosWrapper">
+                    <div class="shimmerBG" id="shimmerLogo"></div>
+                </div>
+                <div class="shimmerBG" id="nameShimmer"></div>
+                <div id="amountWrapper">
+                    <div class="shimmerBG" id="amountShimmer"></div>
+                </div>
+            </div>
+        `
 
         const expandClick = this.registerFunction(() => {
             const wrapper = _this.querySelector("#wrapper")
@@ -65,7 +73,7 @@ class AirdropCard extends StatefulElement {
 
         const timeLeft = this.calcTimeLeft(json.endDate-Date.now())
 
-        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>Join this airdrop</button></div>`
+        let button = `<div class="col-12 mt-3"><button class="button w-100" onclick="${joinClick}" ${joined? "disabled" : ""}>${Stateful.t("airdropJoinBtn1")} ${json.xpReward} ${Stateful.t("airdropJoinBtn2")}</button></div>`
 
         if(json.endDate < Date.now())
             button = ""
@@ -80,29 +88,31 @@ class AirdropCard extends StatefulElement {
                     <div class="shimmerBG" id="shimmerChainLogo"></div>
                     <img id="chainLogo" style="display: none">
                 </div>
-                <p id="name">${data.name}</p>
+                <p id="name" class="weight-600">${data.name}</p>
                 <div id="amountWrapper">
-                    <p id="amount">${json.reward/json.winnersCount}</p>
-                    <p id="ticker"> ${data.ticker}</p>
-                    <i class="fa-regular fa-chevron-right" id="expand"></i>
+                    <p id="amount" class="text-gray-400">${Utils.formatAmount((BigInt(json.reward)/BigInt(json.winnersCount)).toString(), json.decimals)}</p>
+                    <p id="ticker" class="text-gray-400"> ${data.ticker}</p>
+                    <i class="fa-regular fa-chevron-right text-gray-400" id="expand"></i>
                 </div>
             </div>
             <div class="mt-3" id="details">
-                <div class="row">
-                    <div class="col-4 text-center">
-                        <p>${json.userJoined}</p>
-                        <p class="text-gray-400 text-sm">Participants</p>
+                <div class="d-flex justify-content-around">
+                    <div class="text-center">
+                        <p>${json.entryCount}</p>
+                        <p class="text-gray-400 text-sm">${Stateful.t("airdropParticipantsTitle")}</p>
                     </div>
-                    <div class="col-4 text-center">
+                    <div class="text-center">
                         <p>${json.winnersCount}</p>
-                        <p class="text-gray-400 text-sm">Winners</p>
+                        <p class="text-gray-400 text-sm">${Stateful.t("airdropWinnersTitle")}</p>
                     </div>
-                    <div class="col-4 text-center">
-                        <p>${timeLeft.value}</p>
-                        <p class="text-gray-400 text-sm">${timeLeft.label} left</p>
-                    </div>
-                    ${button}
+                    ${json.endDate < Date.now() ? "" : `
+                        <div class="text-center">
+                            <p>${timeLeft.value}</p>
+                            <p class="text-gray-400 text-sm">${timeLeft.label} ${Stateful.t("airdropTimeLeftTitle")}</p>
+                        </div>
+                    `}
                 </div>
+                ${button}
             </div>
         </div>
         `;
@@ -203,6 +213,19 @@ class AirdropCard extends StatefulElement {
             .opened #details {
                 display: block;
             }
+            
+            #nameShimmer {
+                width: 10ch;
+                height: 1em;
+                margin-left: 1em;
+                border-radius: 0.5em;
+            }
+            
+            #amountShimmer {
+                width: 5ch;
+                height: 1em;
+                border-radius: 0.5em;
+            }
         `;
     }
 
@@ -219,9 +242,9 @@ class AirdropCard extends StatefulElement {
 
         // Create an array with non-zero values
         const nonZeroValues = [
-            { label: 'Days', value: days },
-            { label: 'Hours', value: hours },
-            { label: 'Minutes', value: minutes }
+            { label: Stateful.t("airdropTimeLeftDays"), value: days },
+            { label: Stateful.t("airdropTimeLeftHours"), value: hours },
+            { label: Stateful.t("airdropTimeLeftMinutes"), value: minutes }
         ];
 
         // Find the first non-zero value
@@ -231,7 +254,7 @@ class AirdropCard extends StatefulElement {
         if (firstNonZero) {
             return firstNonZero;
         } else {
-            return { label: 'Minutes', value: 0 }
+            return { label: Stateful.t("airdropTimeLeftMinutes"), value: 0 }
         }
     }
 

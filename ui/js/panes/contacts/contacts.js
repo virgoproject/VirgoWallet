@@ -60,7 +60,7 @@ class ContactsList extends StatefulElement {
                 _this.querySelector("#inner").innerHTML = `
                     <div class="text-center mt-5 mb-5">
                         <img src="../images/notFound.png" class="img-fluid" />
-                        <h4>Contact not found!</h4>
+                        <h4>${Stateful.t("contactNotFound")}</h4>
                     </div>
                 `
                 return
@@ -86,7 +86,7 @@ class ContactsList extends StatefulElement {
             document.body.appendChild(elem)
         })
 
-        let searchBar = `<search-bar inputhandler="${onSearch}" id="search" placeholder="Search for a contact"></search-bar>`
+        let searchBar = `<search-bar inputhandler="${onSearch}" id="search" placeholder="${Stateful.t("contactSearchPlaceholder")}"></search-bar>`
 
         if(rows.length == 0){
             searchBar = ""
@@ -94,8 +94,8 @@ class ContactsList extends StatefulElement {
             rows.push(`
                 <div class="text-center mt-4">
                     <img src="../images/noContact.png" id="emptyImg">
-                    <p id="emptyTitle" class="text-lg mt-3 mb-1">No contacts yet!</p>
-                    <p id="emptySubtitle">Add an address to yours contacts to rapidly send crypto to it.</p>
+                    <p id="emptyTitle" class="text-lg mt-3 mb-1">${Stateful.t("noContactsTitle")}</p>
+                    <p id="emptySubtitle">${Stateful.t("noContactsSub")}</p>
                 </div>
             `)
         }
@@ -103,7 +103,7 @@ class ContactsList extends StatefulElement {
         return `
             <div class="fullpageSection">
                 <div id="wrapper">
-                    <section-header title="Contacts" backfunc="${back}"></section-header>
+                    <section-header title="${Stateful.t("contactsTitle")}" backfunc="${back}"></section-header>
                     ${searchBar}
                     <scroll-view id="scroll" onnearend="${onNearEnd}" onscrollup="${onScrollUp}" onscrolldown="${onScrollDown}">
                         <div id="inner" class="px-3">
@@ -111,7 +111,7 @@ class ContactsList extends StatefulElement {
                         </div>
                     </scroll-view>
                     <div class="p-3">
-                        <button class="button w-100" onclick="${addContactClick}">Add a contact</button>              
+                        <button class="button w-100" onclick="${addContactClick}">${Stateful.t("addContactBtn")}</button>              
                     </div>
                 </div>
             </div>

@@ -69,10 +69,10 @@ class TokenDetailsFull extends StatefulElement {
                 <section-header title="${data.name}" backfunc="${backClick}" logo="${"https://raw.githubusercontent.com/virgoproject/tokens/main/" + baseInfos.wallets[baseInfos.selectedWallet].wallet.chainID + "/" + data.contract + "/logo.png"}"></section-header>
                 <div class="d-flex px-3 mt-3">
                     <div class="menuElem ${menu == 'overview' ? 'selected' : ''} mr-2" id="overviewBtn" onclick="${menuClick}">
-                        Overview
+                        ${Stateful.t("tokenDetailsFullOverviewBtn")}
                     </div>
                     <div class="menuElem ${menu == 'news' ? 'selected' : ''} ml-2" id="newsBtn" onclick="${menuClick}">
-                        News
+                        ${Stateful.t("tokenDetailsFullNewsBtn")}
                     </div>
                 </div>
                 <scroll-view id="scroll" class="d-block mt-3">

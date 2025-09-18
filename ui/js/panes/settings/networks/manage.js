@@ -49,14 +49,14 @@ class ManageNetworks extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <section-header title="Manage Networks" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("manageNetworksTitle")}" backfunc="${back}"></section-header>
                 <div id="content">
                     <div id="list">
                         ${rows}    
                     </div>
                 </div>
                 <div class="row" id="addRow">
-                    <button class="button tab" id="addBtn">Add custom network</button>
+                    <button class="button tab" id="addBtn">${Stateful.t("manageNetworksAddBtn")}</button>
                 </div>
             </div>
         `

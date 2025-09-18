@@ -30,7 +30,7 @@ class TokenDetailsSimple extends StatefulElement {
         const removeClick = this.registerFunction(() => {
             removeToken(data.contract)
             document.getElementById("bal"+data.contract).remove()
-            notyf.success("Removed " + data.name + "!")
+            notyf.success(Stateful.t("tokenDetailsRemovedNotif") + " " + data.name + "!")
             _this.onclose()
         })
 
@@ -38,22 +38,22 @@ class TokenDetailsSimple extends StatefulElement {
             <section-header title="${data.name}" backfunc="${backClick}"></section-header>
             <div id="wrapper">
                 <div class="mt-3">
-                    <p class="label text-left text-sm">Name</p>
+                    <p class="label text-left text-sm">${Stateful.t("tokenDetailsNameLabel")}</p>
                     <input type="text" class="input col-12" id="contract" disabled value="${data.name}">
                 </div>
                 <div class="mt-3">
-                    <p class="label text-left text-sm">Symbol</p>
+                    <p class="label text-left text-sm">${Stateful.t("tokenDetailsSymbolLabel")}</p>
                     <input type="text" class="input col-12" id="contract" disabled value="${data.ticker}">
                 </div>
                 <div class="mt-3">
-                    <p class="label text-left text-sm">Decimals</p>
+                    <p class="label text-left text-sm">${Stateful.t("tokenDetailsDecimalsLabel")}</p>
                     <input type="text" class="input col-12" id="contract" disabled value="${data.decimals}">
                 </div>
                 <div class="mt-3">
-                    <p class="label text-left text-sm">Contract address</p>
+                    <p class="label text-left text-sm">${Stateful.t("tokenDetailsAddressLabel")}</p>
                     <input type="text" class="input col-12" id="contract" disabled value="${data.contract}">
                 </div>
-                <button class="button w-100 mt-3" onclick="${removeClick}">Remove ${data.ticker}</button>
+                <button class="button w-100 mt-3" onclick="${removeClick}">${Stateful.t("tokenDetailsRemoveBtn")} ${data.ticker}</button>
             </div>
         `;
     }

@@ -103,6 +103,10 @@ body {
     color: var(--green-400) !important;
 }
 
+.text-main-700 {
+    color: var(--main-700);
+}
+
 .button {
     color: white;
     background: var(--main-700);
@@ -766,6 +770,14 @@ iframe {
     line-height: 1;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
+.flex-0 {
+    flex: 0;
+}
+
 .shimmerBG {
     animation-duration: 9s;
     animation-fill-mode: forwards;
@@ -791,4 +803,13 @@ iframe {
     100% {
         background-position: 1200px 0;
     }
+}
+
+.weight-600 {
+    font-weight: 600!important;
+}
+
+.input.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }

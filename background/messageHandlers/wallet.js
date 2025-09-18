@@ -18,7 +18,7 @@ class WalletHandlers {
         checkAutolock()
 
         if(baseWallet === undefined)
-            sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled})
+            sendResponse({"locked": true, "biometricsEnabled": biometricsEnabled, "selectedLanguage": selectedLanguage})
         else {
             while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                 await new Promise(r => setTimeout(r, 10));
@@ -34,7 +34,7 @@ class WalletHandlers {
             setupDone = true
         }
 
-        return {
+        const infos = {
             "wallets": baseWallet.getWalletsJSON(),
             "selectedWallet": baseWallet.selectedWallet,
             "addresses": baseWallet.getCurrentWallet().getAddressesJSON(),
@@ -43,12 +43,13 @@ class WalletHandlers {
             "backupPopup": !baseWallet.isEncrypted() && backupPopupDate < Date.now(),
             "updatePopup":  baseWallet.version != VERSION,
             "connectedSites": connectedWebsites,
-            "notifications" : notifications,
-            "notificationsCount" : notifCounter,
             "selectedCurrency" : selectedCurrency,
+            "selectedLanguage" : selectedLanguage,
             "setupDone" : setupDone,
             "biometricsEnabled": biometricsEnabled
         }
+
+        return infos
     }
 
     static getChainInfos(request, sender, sendResponse){
@@ -61,6 +62,10 @@ class WalletHandlers {
         BaseWallet.loadFromJSON(request.password).then(async function(res){
             if(res){
                 browser.storage.session.set({"unlockPassword": request.password})
+
+                try {
+                    reactMessaging.storePassword(request.password)
+                }catch(e){}
 
                 while(baseWallet.getCurrentWallet().getAddressesJSON().length == 0){
                     await new Promise(r => setTimeout(r, 10));

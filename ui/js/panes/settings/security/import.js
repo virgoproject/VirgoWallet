@@ -48,11 +48,11 @@ class SettingsImportMnemonic extends StatefulElement {
             if(error) setError(false)
         })
 
-        let label = `<p class="label text-left text-sm">Seed phrase</p>`
+        let label = `<p class="label text-left text-sm">${Stateful.t("seedImportLabel")}</p>`
 
-        if(error) label = `<p class="label text-left text-sm" id="error">Invalid seed phrase</p>`
+        if(error) label = `<p class="label text-left text-sm" id="error">${Stateful.t("seedImportInvalidLabel")}</p>`
 
-        let button = `<button class="button w-100" id="confirm" disabled onclick="${onClick}">Recover wallet</button>`
+        let button = `<button class="button w-100" id="confirm" disabled onclick="${onClick}">${Stateful.t("seedImportConfirmBtn")}</button>`
         if(mnemonic) button = `<button class="button w-100" id="confirm" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         const pasteClick = this.registerFunction(async () => {
@@ -74,12 +74,12 @@ class SettingsImportMnemonic extends StatefulElement {
 
         return `
             <div class="fullpageSection">
-                <section-header title="Recover a wallet" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("seedImportTitle")}" backfunc="${back}"></section-header>
                 <div id="content" class="text-center">
                     ${label}
                     <textarea rows="4" class="input w-100 ${error ? 'is-invalid' : ''}" onfocus="${onFocus}" id="input" oninput="${onInput}"></textarea>
-                    <p id="pasteBtn" onclick="${pasteClick}">Paste</p>
-                    <p class="mt-2 text-gray-400 text-sm">Generally a 12 words (sometimes 18, 24) sentence without special characters.</p>
+                    <p id="pasteBtn" onclick="${pasteClick}">${Stateful.t("seedImportPasteBtn")}</p>
+                    <p class="mt-2 text-gray-400 text-sm">${Stateful.t("seedImportExpl")}</p>
                 </div>
                 <div id="nextWrapper">
                     ${button}
@@ -103,18 +103,17 @@ class SettingsImportMnemonic extends StatefulElement {
             setLoading(true)
         })
 
-        let button = `<button class="button w-100" id="confirm" onclick="${onClick}">I understand, proceed</button>`
+        let button = `<button class="button w-100" id="confirm" onclick="${onClick}">${Stateful.t("seedImportWarnConfirmBtn")}</button>`
 
         if(loading) button = `<button class="button w-100" id="confirm" disabled><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         return `
             <div class="fullpageSection">
-                <section-header title="Recover a wallet" backfunc="${back}"></section-header>
+                <section-header title="${Stateful.t("seedImportTitle")}" backfunc="${back}"></section-header>
                 <div id="content" class="text-center">
                     <div class="text-center"><i class="fa-solid fa-circle-exclamation text-red-400 text-7xl"></i></div>
-                    <h3 class="m-3">Warning</h3>
-                    <p>Restoring this wallet will erase your current wallet, be sure to have
-                        saved your seed phrase!</p>
+                    <h3 class="m-3">${Stateful.t("seedImportWarnTitle")}</h3>
+                    <p>${Stateful.t("seedImportWarnSub")}</p>
                 </div>
                 <div id="nextWrapper">
                     ${button}
@@ -139,7 +138,7 @@ class SettingsImportMnemonic extends StatefulElement {
                     document.getElementById("resumePane").appendChild(home)
                     document.getElementById("mainPane").style.display = "block"
 
-                    notyf.success("Wallet recovered!")
+                    notyf.success(Stateful.t("seedImportSuccessNotif"))
 
                     try {
                         document.querySelector("unlock-wallet").remove()

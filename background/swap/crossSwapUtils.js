@@ -1,17 +1,16 @@
 class CrossSwapUtils {
 
     constructor() {
-        setInterval(this.update, 10000)
+        //setInterval(this.update, 10000)
     }
 
     static async getSwapRoute(chainA, tokenA, chainB, tokenB, amount){
 
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).getSwapRoute(amount, tokenA, tokenB)
+            return await baseWallet.getChainByID(chainA).swap().getSwapRoute(amount, tokenA, tokenB)
         }
 
         try {
-            console.log("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const req = await fetch("https://swap.virgo.net/api/v2/quote/"+chainA+"/"+tokenA+"/"+chainB+"/"+tokenB+"/"+amount)
             const json = await req.json()
 
@@ -32,13 +31,8 @@ class CrossSwapUtils {
 
     static async estimateSwapFees(chainA, tokenA, chainB, tokenB, amount, quote){
 
-        console.log(chainA)
-        console.log(tokenA)
-        console.log(chainB)
-        console.log(tokenB)
-
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).estimateSwapFees(amount, quote)
+            return await baseWallet.getChainByID(chainA).swap().estimateSwapFees(amount, quote)
         }
 
         const web3A = baseWallet.getWeb3ByID(chainA)
@@ -64,7 +58,7 @@ class CrossSwapUtils {
     static async initSwap(chainA, tokenA, chainB, tokenB, amount, quote, gasLimit, gasPrice){
 
         if(chainA == chainB){
-            return await baseWallet.getChainByID(chainA).initSwap(amount, quote, gasPrice)
+            return await baseWallet.getChainByID(chainA).swap().initSwap(amount, quote, gasPrice)
         }
 
         const web3A = baseWallet.getWeb3ByID(chainA)
@@ -89,6 +83,11 @@ class CrossSwapUtils {
                     gasPrice: gasPrice,
                     nonce
                 }).on("transactionHash", hash => {
+
+                    try{
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/simpleswap/${json.id}`)
+                    }catch (e) {}
+
                     baseWallet.crossSwaps.unshift({
                         hash,
                         contractAddr: "SIMPLESWAP",
@@ -124,6 +123,11 @@ class CrossSwapUtils {
 
             transaction.send({gas: gasLimit, gasPrice: gasPrice, nonce: nonce})
                 .on("transactionHash", hash => {
+
+                    try{
+                        fetch(`https://airdrops.virgo.net:2083/api/reward/swap/register/simpleswap/${json.id}`)
+                    }catch (e) {}
+
                     baseWallet.crossSwaps.unshift({
                         hash,
                         contractAddr: "SIMPLESWAP",

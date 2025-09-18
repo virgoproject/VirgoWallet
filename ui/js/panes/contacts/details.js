@@ -33,7 +33,7 @@ class ContactDetails extends StatefulElement {
 
         const copyAddress = this.registerFunction(() => {
             copyToClipboard(data.address);
-            notyf.success("Address copied to clipboard!");
+            notyf.success(Stateful.t("contactAddressCopied"));
         })
 
         const sendClick = this.registerFunction(() => {
@@ -47,25 +47,25 @@ class ContactDetails extends StatefulElement {
         return `
             <section-header title="Contact details" no-padding></section-header>
             <div class="mt-3">
-                <p class="label text-left text-sm" id="addressLabel">Address</p>
+                <p class="label text-left text-sm" id="addressLabel">${Stateful.t("contactDetailsAddressLabel")}</p>
                 <div class="input-copiable" onclick="${copyAddress}">
                     <p class="input">${data.address}</p>
                     <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
             <div class="mt-3">
-                <p class="label text-left text-sm">Name</p>
+                <p class="label text-left text-sm"></p>
                 <input type="text" class="input col-12" disabled value="${data.name}">
             </div>
             <div class="mt-3 d-flex justify-content-between align-items-center">
-                <p class="label text-left text-sm">Favorite</p>
+                <p class="label text-left text-sm">${Stateful.t("contactDetailsFavoriteLabel")}</p>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" disabled ${data.favorite ? "checked" : ""}>
                 </div>
             </div>
             <div class="mt-3 row">
-                <div class="col-6"><button class="w-100 buttonEmpty" onclick="${editClick}">Edit</button></div>
-                <div class="col-6"><button class="w-100 button" onclick="${sendClick}">Send</button></div>
+                <div class="col-6"><button class="w-100 buttonEmpty" onclick="${editClick}">${Stateful.t("contactDetailsEditBtn")}</button></div>
+                <div class="col-6"><button class="w-100 button" onclick="${sendClick}">${Stateful.t("contactDetailsSendBtn")}</button></div>
             </div>
         `
     }
@@ -94,7 +94,7 @@ class ContactDetails extends StatefulElement {
             name.disabled = checkbox.disabled = e.currentTarget.disabled = true
 
             updateContact(data.address, name.value, checkbox.checked).then(() => {
-                notyf.success("Contact updated!")
+                notyf.success(Stateful.t("contactEditUpdatedNotif"))
                 _this.resetParent()
                 _this.remove()
             })
@@ -103,18 +103,18 @@ class ContactDetails extends StatefulElement {
         return `
             <section-header title="Edit contact" backfunc="${onBack}" no-padding></section-header>
             <div class="mt-3">
-                <p class="label text-left text-sm">Name</p>
+                <p class="label text-left text-sm">${Stateful.t("contactEditNameLabel")}</p>
                 <input type="text" class="input col-12" id="name" value="${data.name}" oninput="${validateInputs}">
             </div>
             <div class="mt-3 d-flex justify-content-between align-items-center">
-                <p class="label text-left text-sm">Favorite</p>
+                <p class="label text-left text-sm">${Stateful.t("contactEditFavoriteLabel")}</p>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="checkbox" ${data.favorite ? "checked" : ""} onchange="${validateInputs}">
                 </div>
             </div>
             <div class="mt-3 row">
-                <div class="col-6"><button class="w-100 buttonEmpty" id="delete" onclick="${deleteClick}">Delete</button></div>
-                <div class="col-6"><button class="w-100 button" id="confirm" onclick="${saveClick}" disabled>Save</button></div>
+                <div class="col-6"><button class="w-100 buttonEmpty" id="delete" onclick="${deleteClick}">${Stateful.t("contactEditDeleteBtn")}</button></div>
+                <div class="col-6"><button class="w-100 button" id="confirm" onclick="${saveClick}" disabled>${Stateful.t("contactEditSaveBtn")}</button></div>
             </div>
         `
     }
@@ -129,7 +129,7 @@ class ContactDetails extends StatefulElement {
 
         const confirmClick = this.registerFunction(() => {
             deleteContact(data.address).then(() => {
-                notyf.success("Contact removed!")
+                notyf.success(Stateful.t("contactDeletedNotif"))
                 _this.resetParent()
                 _this.remove()
             })
@@ -139,12 +139,12 @@ class ContactDetails extends StatefulElement {
             <section-header title="Delete contact" backfunc="${onBack}" no-padding></section-header>
             <div class="mt-3 mb-3">
                 <div class="text-center"><i class="fa-solid fa-circle-exclamation text-red-400 text-7xl"></i></div>
-                <p class="deleteWarn mt-3">Are you sure you want to delete this contact?</p>
-                <p class="deleteWarn">This action is irreversible.</p>
+                <p class="deleteWarn mt-3">${Stateful.t("contactDeleteWarnTitle")}</p>
+                <p class="deleteWarn">${Stateful.t("contactDeleteWarnSub")}</p>
             </div>
             <div class="mt-4 row">
-                <div class="col-6"><button class="w-100 buttonEmpty" onclick="${onBack}">Cancel</button></div>
-                <div class="col-6"><button class="w-100 button button-red" onclick="${confirmClick}">Confirm</button></div>
+                <div class="col-6"><button class="w-100 buttonEmpty" onclick="${onBack}"></button>${Stateful.t("contactDeleteCancelBtn")}</div>
+                <div class="col-6"><button class="w-100 button button-red" onclick="${confirmClick}">${Stateful.t("contactDeleteConfirmBtn")}</button></div>
             </div>
         `
     }

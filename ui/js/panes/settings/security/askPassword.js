@@ -33,6 +33,7 @@ class AskPassword extends StatefulElement {
 
         const onClose = this.registerFunction(() => {
             if(_this.callback) _this.callback(false)
+            _this.remove()
         })
 
         const onKeyDown = this.registerFunction(e => {
@@ -42,15 +43,15 @@ class AskPassword extends StatefulElement {
             target.onclick()
         })
 
-        let button = `<button class="button w-100" id="submit" onclick="${onClick}" disabled>Confirm</button>`
+        let button = `<button class="button w-100" id="submit" onclick="${onClick}" disabled>${Stateful.t("askPasswordConfirmBtn")}</button>`
 
         if(loading){
             button = `<button class="button w-100" id="submit" disabled><i class="fas fa-spinner fa-pulse"></i></button>`
         }
 
-        let label = `<p class="label text-left mb-1 text-sm">Enter your password</p>`
+        let label = `<p class="label text-left mb-1 text-sm">${Stateful.t("askPasswordLabel")}</p>`
 
-        if(error) label = `<p class="label text-left mb-1 text-sm text-red-400">Wrong password</p>`
+        if(error) label = `<p class="label text-left mb-1 text-sm text-red-400">${Stateful.t("askPasswordErrorLabel")}</p>`
 
         const eyeClick = this.registerFunction(e => {
             if(e.currentTarget.checked){
@@ -66,12 +67,12 @@ class AskPassword extends StatefulElement {
 
         return `
             <bottom-popup onclose="${onClose}">
-                <section-header title="Authentication required" no-padding></section-header>
+                <section-header title="${Stateful.t("askPasswordTitle")}" no-padding></section-header>
                 <div class="mb-4 mt-3">
                     ${label}
                     <div class="btnInputWrapper">
                     <input type="password" id="password" class="input"
-                           placeholder="Password" data-inputTarget="#submit" oninput="${onInput}" onfocus="${onFocus}" ${loading? "disabled" : ""} onkeydown="${onKeyDown}">
+                           placeholder="${Stateful.t("askPasswordInputPlaceholder")}" data-inputTarget="#submit" oninput="${onInput}" onfocus="${onFocus}" ${loading? "disabled" : ""} onkeydown="${onKeyDown}">
                         <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye" data-target="password">
                             <i class="fa-regular fa-eye"></i>
                         </div>

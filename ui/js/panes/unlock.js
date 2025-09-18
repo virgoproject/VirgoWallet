@@ -87,7 +87,7 @@ class UnlockWallet extends StatefulElement {
             document.body.appendChild(e)
         })
 
-        let button = `<button class="button w-100" disabled onclick="${unlockClick}" id="btn">Unlock</button>`
+        let button = `<button class="button w-100" disabled onclick="${unlockClick}" id="btn">${Stateful.t("unlockBtn")}</button>`
         if(loading) button = `<button class="button w-100" disabled id="btn"><i class="fa-solid fa-spinner-third fa-spin"></i></button>`
 
         const eyeClick = this.registerFunction(e => {
@@ -115,18 +115,18 @@ class UnlockWallet extends StatefulElement {
             <div class="fullpageSection" id="wrapper">
                 <div class="text-center">
                     <img src="../images/logoGradient.png" id="logo">
-                    <p id="title" class="mt-3 text-xl">Welcome</p>    
+                    <p id="title" class="mt-3 text-xl">${Stateful.t("unlockTitle")}</p>    
                 </div>
                 <div class="px-3 w-100">
                     <div>
-                        ${error ? `<p class="label text-left text-sm" id="error">Wrong password</p>` : `<p class="label text-left text-sm">Password</p>`}
+                        ${error ? `<p class="label text-left text-sm" id="error">${Stateful.t("unlockWrongLabel")}</p>` : `<p class="label text-left text-sm">${Stateful.t("unlockLabel")}</p>`}
                         <div class="btnInputWrapper">
                             ${biometricsAvailable ? `
                                 <div class="inputBtn text-xl" onclick="${biometricsClick}">
                                     <i class="fa-regular fa-fingerprint"></i>
                                 </div>
                             ` : ""}
-                            <input type="password" class="input" placeholder="Enter your password" oninput="${onInput}" onfocus="${onFocus}" onkeydown="${onKeyDown}" id="input" ${loading? "disabled" : ""}>
+                            <input type="password" class="input" placeholder="${Stateful.t("unlockPasswordPlaceholder")}" oninput="${onInput}" onfocus="${onFocus}" onkeydown="${onKeyDown}" id="input" ${loading? "disabled" : ""}>
                             <div class="inputBtn text-xl" onclick="${eyeClick}" id="eye">
                                 <i class="fa-regular fa-eye"></i>
                             </div>
@@ -137,8 +137,8 @@ class UnlockWallet extends StatefulElement {
                     </div>
                 </div>
                 <div class="text-center">
-                    <p id="recoverText">Can't connect? You can restore your<br>current wallet from your seed phrase.</p>
-                    <p id="recover" onclick="${recoverClick}">Recover Wallet</p>
+                    <p id="recoverText">${Stateful.t("unlockRecoverLabel1")}<br>${Stateful.t("unlockRecoverLabel2")}</p>
+                    <p id="recover" onclick="${recoverClick}">${Stateful.t("unlockRecoverBtn")}</p>
                 </div>
             </div>
         `;

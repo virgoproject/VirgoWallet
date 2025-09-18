@@ -29,7 +29,7 @@ class NetworksHandlers {
                 explorer = explorer + "/tx/"
             }
 
-            baseWallet.wallets.push(EthWallet.fromJSON(   {
+            let wallet = EthWallet.fromJSON({
                 "name": request.name,
                 "asset": request.symbol,
                 "ticker": request.symbol,
@@ -46,8 +46,13 @@ class NetworksHandlers {
                 "explorer": explorer,
                 "swapParams":false,
                 "testnet":false
-            }))
+            }, baseWallet)
+
+            baseWallet.wallets.push(wallet)
             baseWallet.save()
+
+            wallet.init()
+
             sendResponse({
                 status: 2
             })

@@ -31,7 +31,7 @@ class HomeMainBalance extends StatefulElement {
 
         const copyAddress = this.registerFunction(() => {
             copyToClipboard(data.address);
-            notyf.success("Address copied to clipboard!");
+            notyf.success(Stateful.t("homeAddressCopiedNotif"));
         })
 
         const qrClick = this.registerFunction(() => {
