@@ -100,10 +100,13 @@ class StatefulElement extends HTMLElement {
     }
 
     disconnectedCallback(){
-        for(const intervalId in this.intervals){
-            clearInterval(intervalId)
+        for(const interval of Object.values(this.intervals)){
+            if(interval !== undefined && interval.timeoutId !== null){
+                clearTimeout(interval.timeoutId)
+            }
         }
 
+        this.intervals = {}
         this.funcs = []
     }
 
@@ -221,8 +224,15 @@ class StatefulElement extends HTMLElement {
 
         const [data] = this.useState(funcHash, null);
 
+        const intervalEntry = { timeoutId: null, fetchData: null };
+
         const fetchData = async () => {
             if(!_this.funcs.includes(fetchData) && interval <= 0) return
+
+            if(interval > 0 && this.intervals[funcHash] === intervalEntry && intervalEntry.timeoutId !== null){
+                clearTimeout(intervalEntry.timeoutId);
+                intervalEntry.timeoutId = null;
+            }
 
             try {
                 const [state, setState] = this.useState(funcHash, null);
@@ -237,19 +247,17 @@ class StatefulElement extends HTMLElement {
                 console.error('Error fetching data:', error);
                 if(interval <= 0)
                     setTimeout(fetchData, 10000)
+            } finally {
+                if(interval > 0 && this.intervals[funcHash] === intervalEntry){
+                    intervalEntry.timeoutId = setTimeout(fetchData, interval);
+                }
             }
         };
 
-        if(interval > 0){
-            // Use setInterval to fetch data at regular intervals
-            const intervalId = setInterval(fetchData, interval);
-            this.intervals[intervalId] = fetchData
+        intervalEntry.fetchData = fetchData;
 
-            // Cleanup interval when the element is disconnected from the DOM
-            this.addEventListener('disconnectedCallback', () => {
-                console.log("clearing")
-                clearInterval(intervalId)
-            });
+        if(interval > 0){
+            this.intervals[funcHash] = intervalEntry
         }else{
             this.funcs.push(fetchData)
         }
@@ -341,8 +349,10 @@ class StatefulElement extends HTMLElement {
     }
 
     runIntervals(){
-        Object.values(this.intervals).forEach(func => {
-            func()
+        Object.values(this.intervals).forEach(interval => {
+            if(interval !== undefined && typeof interval.fetchData === "function"){
+                interval.fetchData()
+            }
         });
     }
 
