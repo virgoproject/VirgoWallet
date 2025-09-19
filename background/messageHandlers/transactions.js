@@ -14,7 +14,6 @@ class TransactionsHandlers {
 
     static getSpeedupGasPrice(request, sender, sendResponse){
         web3.eth.getTransaction(request.hash).then(transaction => {
-            console.log(transaction)
             web3.eth.getGasPrice().then(res => {
                 if(parseInt(transaction.gasPrice) > parseInt(res))
                     sendResponse({

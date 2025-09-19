@@ -55,19 +55,35 @@ class SendTokenConfirm extends StatefulElement {
             _this.remove()
         })
 
-        const confirmClick = this.registerFunction(() => {
-            sendTo(_this.address,
-                Utils.formatAmount(_this.amount, _this.token.decimals),
-                _this.token.contract,
-                _this.gasLimit,
-                _this.gasPrice)
-                .then(function(res){
-                    notyf.success(Stateful.t("sendConfirmSentNotif"))
-                    _this.feesEditor.remove()
-                    _this.removeParent()
-                    _this.remove()
-                })
+        const confirmClick = this.registerFunction(async () => {
+            if(sending) return
+
             setSending(true)
+
+            try {
+                const res = await sendTo(_this.address,
+                    Utils.formatAmount(_this.amount, _this.token.decimals),
+                    _this.token.contract,
+                    _this.gasLimit,
+                    _this.gasPrice)
+
+                if(res && res.error){
+                    const errorMessage = typeof res.error === "string" ? res.error : (res.error?.message ?? Stateful.t("transactionStatusFailed"))
+                    notyf.error(errorMessage)
+                    setSending(false)
+                    return
+                }
+
+                notyf.success(Stateful.t("sendConfirmSentNotif"))
+                _this.feesEditor.remove()
+                _this.removeParent()
+                _this.remove()
+            } catch (error) {
+                console.error("Failed to send transaction", error)
+                const message = error?.message ?? Stateful.t("transactionStatusFailed")
+                notyf.error(message)
+                setSending(false)
+            }
         })
 
         let button = `<button class="button w-100" id="next" ${this.btnDisabled ? "disabled" : ""} onclick="${confirmClick}">${Stateful.t("sendConfirmBtn")}</button>`

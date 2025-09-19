@@ -86,8 +86,36 @@ class TokensHandlers {
         TokensHandlers._sendTo(request, sendResponse)
     }
 
-    static async _sendTo(request, sendResponse){
+    static async _sendTo(request, sendResponse, attempt = 0){
         let txResume = null;
+        let responseSent = false;
+        const maxRetries = 3;
+
+        const getErrorMessage = (error) => {
+            if(error?.data?.originalError?.message) return error.data.originalError.message
+            if(error?.data?.message) return error.data.message
+            if(typeof error?.data === "string") return error.data
+            if(error?.message) return error.message
+
+            return "Failed to send transaction.";
+        }
+
+        const safeSendResponse = (payload) => {
+            if(responseSent) return
+            responseSent = true
+            sendResponse(payload)
+        }
+
+        const handleSendError = (error) => {
+            if(error?.code == -32000 && attempt < maxRetries){
+                baseWallet.selectWallet(baseWallet.selectedWallet)
+                TokensHandlers._sendTo(request, sendResponse, attempt + 1)
+                return
+            }
+
+            console.error("Error while sending transaction", error)
+            safeSendResponse({error: getErrorMessage(error)})
+        }
 
         //send native asset
         web3.eth.getTransactionCount(baseWallet.getCurrentAddress(), "pending").then(function(nonce){
@@ -116,7 +144,7 @@ class TokensHandlers {
                         }
                         console.log("Got hash: " + hash)
                         baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                        sendResponse(hash)
+                        safeSendResponse(hash)
                         baseWallet.save()
                     })
                     .on("confirmation", function(confirmationNumber, receipt, lastestBlockHash){
@@ -141,12 +169,7 @@ class TokensHandlers {
                         txResume.status = receipt.status
                         txResume.confirmations = confirmationNumber
                         baseWallet.save()
-                    }).catch(e => {
-                        if(e.code == -32000){
-                            baseWallet.selectWallet(baseWallet.selectedWallet)
-                            TokensHandlers._sendTo(request, sendResponse)
-                        }
-                })
+                    }).catch(handleSendError)
                 return
             }
 
@@ -176,7 +199,7 @@ class TokensHandlers {
                         "nonce": nonce
                     }
                     baseWallet.getCurrentWallet().transactions.unshift(txResume)
-                    sendResponse(hash)
+                    safeSendResponse(hash)
                     baseWallet.save()
 
                     setTimeout(function (){
@@ -211,13 +234,8 @@ class TokensHandlers {
                     txResume.status = receipt.status
                     txResume.confirmations = confirmationNumber
                     baseWallet.save()
-                }).catch(e => {
-                    if(e.code == -32000){
-                        baseWallet.selectWallet(baseWallet.selectedWallet)
-                        TokensHandlers._sendTo(request, sendResponse)
-                    }
-            })
-        })
+                }).catch(handleSendError)
+        }).catch(handleSendError)
     }
 
 
