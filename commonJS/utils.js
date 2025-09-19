@@ -67,10 +67,25 @@ class Utils {
         if(dotIndex < 0)
             dotIndex = amount.length-1
         const zerosToAdd = decimals - (amount.length - (dotIndex+1))
-        let res = amount.replace(".", "") + "0".repeat(zerosToAdd)
-        while(res.startsWith("0"))
-            res = res.substring(1)
-        return res
+
+        if(zerosToAdd < 0)
+            return "0"
+
+        try{
+            let res = amount.replace(".", "") + "0".repeat(zerosToAdd)
+            while(res.startsWith("0") && res.length > 1)
+                res = res.substring(1)
+
+            if(res === "")
+                return "0"
+
+            return res
+        }catch(error){
+            if(error instanceof RangeError)
+                return "0"
+
+            throw error
+        }
     }
 
     static isValidNumber(str) {

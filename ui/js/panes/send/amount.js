@@ -88,7 +88,9 @@ class SendTokenAmount extends StatefulElement {
             if(!Utils.isValidNumber(val))
                 val = "0"
 
-            this.nextDisabled = new BN(balance.balance).lt(new BN(Utils.toAtomicString(val, balance.decimals))) || Number(val) == 0 || balance.balance == 0
+            val = Utils.toAtomicString(val, balance.decimals)
+
+            this.nextDisabled = new BN(balance.balance).lt(new BN(val)) || val == "0" || balance.balance == 0
 
             this.querySelector("#next").disabled = this.nextDisabled
         })
