@@ -40,7 +40,6 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
 let web3Ready = null
 
 function checkWeb3State(){
-    console.log("cheeing")
     browser.runtime.sendMessage({command: 'isWeb3Ready', origin: window.location.origin})
         .then(function(response){
             if(response === web3Ready) return
