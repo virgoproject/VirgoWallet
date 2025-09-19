@@ -40,21 +40,22 @@ browser.runtime.sendMessage({command: 'getBaseInfos'})
 let web3Ready = null
 
 function checkWeb3State(){
-    browser.runtime.sendMessage({command: 'isWeb3Ready'})
+    console.log("cheeing")
+    browser.runtime.sendMessage({command: 'isWeb3Ready', origin: window.location.origin})
         .then(function(response){
             if(response === web3Ready) return
 
-            if(response)
+            if(response){
                 sendEvent("virgoConnected", null)
-            else
-                sendEvent("virgoDisonnected", null)
+            } else {
+                sendEvent("virgoAccountsChanged", [])
+                sendEvent("virgoDisconnected", null)
+            }
 
             web3Ready = response
         })
 }
-setInterval(() => {
-    checkWeb3State()
-}, 5000)
+setInterval(checkWeb3State, 1000)
 checkWeb3State()
 
 browser.runtime.onMessage.addListener(request => {

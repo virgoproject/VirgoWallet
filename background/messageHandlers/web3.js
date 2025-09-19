@@ -16,6 +16,29 @@ class Web3Handlers {
     }
 
     static isWeb3Ready(request, sender, sendResponse){
+        console.log("web3 ready req")
+        const origin = Web3Handlers._resolveRequestOrigin(request, sender)
+
+        if(!origin){
+            sendResponse(false)
+            return
+        }
+
+        const isConnectedSite = connectedWebsites.some(site => {
+            if(typeof site === "string")
+                return site === origin
+
+            if(site && typeof site === "object" && typeof site.origin === "string")
+                return site.origin === origin
+
+            return false
+        })
+
+        if(!isConnectedSite){
+            sendResponse(false)
+            return
+        }
+
         if(baseWallet === undefined){
             sendResponse(false)
             return
@@ -27,6 +50,21 @@ class Web3Handlers {
         }catch(e){
             sendResponse(true)
         }
+    }
+
+    static _resolveRequestOrigin(request, sender){
+        if(request && typeof request.origin === "string")
+            return request.origin
+
+        if(sender && sender.tab && typeof sender.tab.url === "string"){
+            try {
+                return new URL(sender.tab.url).origin
+            }catch(e){
+                return undefined
+            }
+        }
+
+        return undefined
     }
 
 }
