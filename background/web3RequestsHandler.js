@@ -175,6 +175,16 @@ function grantPendingAuthorization(auth, params){
                 success: true,
                 data: [baseWallet.getCurrentAddress()]
             })
+            if(auth.tabId && typeof auth.tabId === "number"){
+                setTimeout(() => {
+                    try {
+                        browser.tabs.sendMessage(auth.tabId, {command: "chainChanged", data: baseWallet.getCurrentWallet().chainID})
+                        browser.tabs.sendMessage(auth.tabId, {command: "accountsChanged", data: [baseWallet.getCurrentAddress()]})
+                    }catch(e){
+                        console.log(e)
+                    }
+                }, 500)
+            }
             break
 
         case "sendTx":
