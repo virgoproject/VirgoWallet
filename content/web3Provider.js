@@ -34,14 +34,16 @@ window.providerRequestTransmitter = new providerRequestTransmitter()
 
 console.log("virgo wallet - Injected Web3")
 
-virgoProvider = new Proxy({
+const virgoProviderTarget = {
     isVirgo: true,
     isEIP1193: true,
+    isMetaMask: true,
     networkVersion: '1',
     chainId: '0x1',
     selectedAddress: '',
     accounts: [],
     connected: false,
+    providers: [],
     isConnected: () => {
         return window.ethereum.connected
     },
@@ -143,9 +145,13 @@ virgoProvider = new Proxy({
         return virgoProvider
     },
     autoRefreshOnNetworkChange: false
-}, {
+}
+
+virgoProvider = new Proxy(virgoProviderTarget, {
     deleteProperty: () => true
 })
+
+virgoProviderTarget.providers = [virgoProvider]
 
 window.ethereum = virgoProvider
 
