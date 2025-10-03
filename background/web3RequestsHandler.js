@@ -1,3 +1,65 @@
+async function hasPendingPrompt(tabId, origin, type) {
+    await sweepStalePending()
+    console.log(pendingAuthorizations)
+    return Object.values(pendingAuthorizations || {}).some(a =>
+        a &&
+        a.status === 0 &&
+        a.tabId === tabId &&
+        a.origin === origin &&
+        a.type === type);
+}
+
+async function sweepStalePending() {
+    let changed = false;
+
+    for (const [reqId, auth] of Object.entries(pendingAuthorizations || {})) {
+        if (!auth) continue;
+
+        // Drop anything not pending
+        if (auth.status !== 0){
+            delete pendingAuthorizations[reqId];
+            changed = true;
+            continue;
+        }
+
+        // Expired by time
+        if (auth.expDate && auth.expDate <= Date.now()) {
+            try { refusePendingAuthorization(auth); } catch(e) {}
+            delete pendingAuthorizations[reqId];
+            changed = true;
+            continue;
+        }
+
+        // Popup already gone?
+        if (auth.popupId) {
+            try {
+                // Will throw if window doesn't exist
+                await browser.windows.get(auth.popupId);
+            } catch (e) {
+                try { refusePendingAuthorization(auth); } catch(_) {}
+                delete pendingAuthorizations[reqId];
+                changed = true;
+            }
+        }else{
+            delete pendingAuthorizations[reqId];
+            changed = true;
+        }
+    }
+
+    if (changed) await browser.storage.local.set({ pendingAuthorizations });
+}
+
+// Standard EIP-1193 "already pending" error
+function respondAlreadyPending(tabId, reqId) {
+    respondToWeb3Request(tabId, reqId, {
+        success: false,
+        error: {
+            message: "Request already pending. Please wait for the previous request to resolve.",
+            code: -32002
+        }
+    });
+}
+
 function web3IsLogged(tabId, reqId){
     if(baseWallet === undefined){
         browser.windows.create({
@@ -20,22 +82,17 @@ function web3IsLogged(tabId, reqId){
     return true
 }
 
-function askConnectToWebsite(origin, tabId, reqId){
+async function askConnectToWebsite(origin, tabId, reqId){
     if(!web3IsLogged(tabId, reqId)) return
 
-    const auth = {
-        type: "connect",
-        status: 0,
-        reqId: reqId,
-        tabId: tabId,
-        origin: origin,
-        expDate: Date.now() + 86400000
+    // Prevent duplicate connect popups for the same tab+origin
+    if (await hasPendingPrompt(tabId, origin, "connect")) {
+        console.log("popup already exists")
+        respondAlreadyPending(tabId, reqId);
+        return;
     }
 
-    pendingAuthorizations[reqId] = auth
-    browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
-
-    browser.windows.create({
+    const win = await browser.windows.create({
         url: '/ui/html/web3/authorize.html?id='+reqId+"&origin="+origin,
         type:'popup',
         height: 600,
@@ -43,10 +100,28 @@ function askConnectToWebsite(origin, tabId, reqId){
         top: 0,
         left: 0
     })
+
+    const auth = {
+        type: "connect",
+        status: 0,
+        reqId: reqId,
+        tabId: tabId,
+        origin: origin,
+        expDate: Date.now() + 86400000,
+        popupId: win.id
+    }
+
+    pendingAuthorizations[reqId] = auth
+    browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 }
 
 async function signTransaction(origin, from, to, value, data, gas, method, tabId, reqId){
     if(!web3IsLogged(tabId, reqId)) return
+
+    if (await hasPendingPrompt(tabId, origin, "sendTx")) {
+        respondAlreadyPending(tabId, reqId);
+        return;
+    }
 
     if(gas === undefined)
         gas = await web3.eth.estimateGas({
@@ -65,6 +140,32 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
     if(web3.utils.isHexStrict(gas))
         gas = web3.utils.hexToNumberString(gas)
 
+    let dataTx = TxIdentifier.getDecodeAbi(data)
+
+    let popup = false
+
+    switch (dataTx.contractAddr){
+        case "APPROVETOKEN":
+            popup = await browser.windows.create({
+                url: `/ui/html/web3/approveToken.html?id=${reqId}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: 0,
+                left: 0
+            })
+            break
+        default:
+            popup = await browser.windows.create({
+                url: `/ui/html/web3/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
+                type:'popup',
+                height: 600,
+                width: 370,
+                top: 0,
+                left: 0
+            })
+    }
+
     const auth = {
         type: "sendTx",
         status: 0,
@@ -77,54 +178,23 @@ async function signTransaction(origin, from, to, value, data, gas, method, tabId
         data: data,
         gas: gas,
         method: method,
-        expDate: Date.now() + 86400000
+        expDate: Date.now() + 86400000,
+        popupId: popup.id
     }
 
     pendingAuthorizations[reqId] = auth
     browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
-
-    let dataTx = TxIdentifier.getDecodeAbi(data)
-
-    switch (dataTx.contractAddr){
-        case "APPROVETOKEN":
-            await browser.windows.create({
-                url: `/ui/html/web3/approveToken.html?id=${reqId}&origin=${origin}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}&allowed=${to}&addr=${baseWallet.getCurrentAddress()}}`,
-                type:'popup',
-                height: 600,
-                width: 370,
-                top: 0,
-                left: 0
-            })
-            break
-        default:
-            await browser.windows.create({
-                url: `/ui/html/web3/signTransaction.html?id=${reqId}&origin=${origin}&from=${from}&to=${to}&value=${value}&data=${data}&gas=${gas}&decimals=${baseWallet.getCurrentWallet().decimals}&ticker=${baseWallet.getCurrentWallet().ticker}`,
-                type:'popup',
-                height: 600,
-                width: 370,
-                top: 0,
-                left: 0
-            })
-    }
 
 }
 
 async function signMessage(origin, data, tabId, reqId, method){
     if(!web3IsLogged(tabId, reqId)) return
 
-    const auth = {
-        type: "signMessage",
-        status: 0,
-        reqId: reqId,
-        tabId: tabId,
-        origin: origin,
-        data: data,
-        expDate: Date.now() + 86400000,
-        method: method
+    // Prevent duplicate connect popups for the same tab+origin
+    if (await hasPendingPrompt(tabId, origin, "signMessage")) {
+        respondAlreadyPending(tabId, reqId);
+        return;
     }
-
-    pendingAuthorizations[reqId] = auth
-    browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 
     let msg = data[1]
     if(method == "eth_signTypedData_v4"){
@@ -137,7 +207,7 @@ async function signMessage(origin, data, tabId, reqId, method){
 
     msg = btoa(msg)
 
-    browser.windows.create({
+    const popup = browser.windows.create({
         url: `/ui/html/web3/signMessage.html?id=${reqId}&origin=${origin}&data=${msg}`,
         type:'popup',
         height: 600,
@@ -145,6 +215,21 @@ async function signMessage(origin, data, tabId, reqId, method){
         top: 0,
         left: 0
     })
+
+    const auth = {
+        type: "signMessage",
+        status: 0,
+        reqId: reqId,
+        tabId: tabId,
+        origin: origin,
+        data: data,
+        expDate: Date.now() + 86400000,
+        method: method,
+        popupId: popup.id
+    }
+
+    pendingAuthorizations[reqId] = auth
+    browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations})
 }
 
 function resolveWeb3Authorization(request){
@@ -158,6 +243,9 @@ function resolveWeb3Authorization(request){
         grantPendingAuthorization(auth, request.params)
     else
         refusePendingAuthorization(auth)
+
+    delete pendingAuthorizations[request.id];
+    browser.storage.local.set({"pendingAuthorizations": pendingAuthorizations});
 }
 
 function respondToWeb3Request(tabId, reqId, response){
