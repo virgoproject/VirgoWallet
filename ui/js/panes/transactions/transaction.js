@@ -402,7 +402,7 @@ class TransactionCard extends StatefulElement {
 
             return `
                 <div class="d-flex">
-                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.ticker))}</span>
+                    <span id="amountAmount">+${Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.decimals))}</span>
                     <span id="amountTicker">${this.selectedWallet.ticker}</span>
                 </div>
             `
@@ -526,7 +526,7 @@ class TransactionCard extends StatefulElement {
         if(json.contractAddr == "WEB3_CALL" || json.contractAddr == "WRAP") {
             if(json.amount == 0) return ""
 
-            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.ticker))
+            amount = Utils.cutTo3Decimals(Utils.formatAmount(json.amount, this.selectedWallet.decimals))
             ticker = this.selectedWallet.ticker
         }
 
