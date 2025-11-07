@@ -204,7 +204,6 @@ async function signMessage(origin, data, tabId, reqId, method){
         msg = JSON.stringify(msg.message)
     }
 
-
     msg = btoa(msg)
 
     const popup = browser.windows.create({
@@ -512,6 +511,7 @@ function handleWeb3Request(origin, method, params, reqId, sender){
                 params: params
             }, function(error, resp){
                 if(!error){
+                    console.log(resp)
                     respondToWeb3Request(tabId, reqId, {
                         success: true,
                         data: resp.result

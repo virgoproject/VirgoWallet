@@ -110,6 +110,7 @@ browserShim.windows.create = (params) => {
     iframe.src = params.url.replace("/ui/html/", "")
     iframe.id = Date.now() + "." + Math.random()
     document.body.appendChild(iframe)
+    return {id: iframe.id}
 }
 
 browserShim.runtime.onMessage.addListener = (func) => {

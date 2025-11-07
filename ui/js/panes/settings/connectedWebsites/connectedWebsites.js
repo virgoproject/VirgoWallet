@@ -31,7 +31,7 @@ class ConnectedWebsites extends StatefulElement {
             const rows = []
 
             for(const connectedWebsite of connectedWebsites){
-                rows.push(`<connected-website data="${btoa(JSON.stringify(connectedWebsite))}"></connected-website>`)
+                rows.push(`<connected-website data="${Utils.toBase64(JSON.stringify(connectedWebsite))}"></connected-website>`)
             }
 
             content = rows

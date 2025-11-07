@@ -154,4 +154,17 @@ class Utils {
         return this.cutToDecimals(number, 3)
     }
 
+    static toBase64(str) {
+        const bytes = new TextEncoder().encode(str);
+        let bin = "";
+        for (const b of bytes) bin += String.fromCharCode(b);
+        return btoa(bin);
+    }
+
+    static fromBase64(b64) {
+        const bin = atob(b64);
+        const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+        return new TextDecoder().decode(bytes);
+    }
+
 }
